@@ -165,6 +165,126 @@ p$Normalize(1000)
 A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
 p<-MatCon$new(A)
 p$aap()
+
+## ------------------------------------------------
+## Method `MatCon$daup`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$daup()
+
+## ------------------------------------------------
+## Method `MatCon$CSI`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$CSI()
+
+## ------------------------------------------------
+## Method `MatCon$amah`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$amah()
+
+## ------------------------------------------------
+## Method `MatCon$amas`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$amas()
+
+## ------------------------------------------------
+## Method `MatCon$cau`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$cau()
+
+## ------------------------------------------------
+## Method `MatCon$cap`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$cap()
+
+## ------------------------------------------------
+## Method `MatCon$caup`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$caup()
+
+## ------------------------------------------------
+## Method `MatCon$KappaValue`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$KappaValue()
+
+## ------------------------------------------------
+## Method `MatCon$mkp`
+## ------------------------------------------------
+
+A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$mkp()
+
+## ------------------------------------------------
+## Method `MatCon$ami`
+## ------------------------------------------------
+
+A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$ami()
+
+## ------------------------------------------------
+## Method `MatCon$nmiu`
+## ------------------------------------------------
+
+A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmiu()
+
+## ------------------------------------------------
+## Method `MatCon$nmip`
+## ------------------------------------------------
+
+A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmip()
+
+## ------------------------------------------------
+## Method `MatCon$nmiam`
+## ------------------------------------------------
+
+A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmiam()
+
+## ------------------------------------------------
+## Method `MatCon$nmigm`
+## ------------------------------------------------
+
+A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmigm()
+
+## ------------------------------------------------
+## Method `MatCon$nmimx`
+## ------------------------------------------------
+
+A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmimx()
 }
 \references{
 Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
@@ -186,6 +306,14 @@ Finn, J. T. (1993). Use of the average mutual information index in evaluating cl
 Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
 
 Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
+
+Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
+
+Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
+
+Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
+
+Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -210,6 +338,21 @@ Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tab
 \item \href{#method-MatCon-aau}{\code{MatCon$aau()}}
 \item \href{#method-MatCon-Normalize}{\code{MatCon$Normalize()}}
 \item \href{#method-MatCon-aap}{\code{MatCon$aap()}}
+\item \href{#method-MatCon-daup}{\code{MatCon$daup()}}
+\item \href{#method-MatCon-CSI}{\code{MatCon$CSI()}}
+\item \href{#method-MatCon-amah}{\code{MatCon$amah()}}
+\item \href{#method-MatCon-amas}{\code{MatCon$amas()}}
+\item \href{#method-MatCon-cau}{\code{MatCon$cau()}}
+\item \href{#method-MatCon-cap}{\code{MatCon$cap()}}
+\item \href{#method-MatCon-caup}{\code{MatCon$caup()}}
+\item \href{#method-MatCon-KappaValue}{\code{MatCon$KappaValue()}}
+\item \href{#method-MatCon-mkp}{\code{MatCon$mkp()}}
+\item \href{#method-MatCon-ami}{\code{MatCon$ami()}}
+\item \href{#method-MatCon-nmiu}{\code{MatCon$nmiu()}}
+\item \href{#method-MatCon-nmip}{\code{MatCon$nmip()}}
+\item \href{#method-MatCon-nmiam}{\code{MatCon$nmiam()}}
+\item \href{#method-MatCon-nmigm}{\code{MatCon$nmigm()}}
+\item \href{#method-MatCon-nmimx}{\code{MatCon$nmimx()}}
 \item \href{#method-MatCon-clone}{\code{MatCon$clone()}}
 }
 }
@@ -905,7 +1048,7 @@ aau=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
 where:
 
 \enumerate{
-  \item `aau`: Average accuracy from user's perspective
+  \item `aau`: Average accuracy from user's perspective.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_ii`: diagonal element of the matrix.
@@ -970,7 +1113,7 @@ aap=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ji}}
 where:
 
 \enumerate{
-  \item `aap`: Average accuracy from producer's perspective
+  \item `aap`: Average accuracy from producer's perspective.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_ii`: diagonal element of the matrix.
@@ -984,6 +1127,512 @@ where:
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
 p<-MatCon$new(A)
 p$aap()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-daup"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-daup}{}}}
+\subsection{Method \code{daup()}}{
+It is the average of the average accuracy from user's and producer's perspective.
+
+
+\deqn{
+daup=\frac{aau+aap}{2}
+}
+
+where:
+
+\enumerate{
+  \item `daup`: Double average of user's and producer's perspective.
+  \item `aau`: Average accuracy from user's perspective.
+  \item `aap`: Average accuracy from producer's perspective.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$daup()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$daup()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-CSI"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-CSI}{}}}
+\subsection{Method \code{CSI()}}{
+The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness.
+
+
+\deqn{
+CSI=aau+aap-1
+}
+
+where:
+
+\enumerate{
+  \item `CSI`: Classification succes index.
+  \item `aau`: Average accuracy from user's perspective.
+  \item `aap`: Average accuracy from producer's perspective.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CSI()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$CSI()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-amah"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-amah}{}}}
+\subsection{Method \code{amah()}}{
+This function provides the average value of the Hellden mean precision index
+
+
+\deqn{
+amah=\frac{1}{\sqrt{card(p)}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
+}
+
+where:
+
+\enumerate{
+  \item `amah`: Average of Hellden's mean accuracy index.
+  \item `ua_i`: user accuracy.
+  \item `pa_i`: producer accuracy.
+  \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$amah()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$amah()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-amas"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-amas}{}}}
+\subsection{Method \code{amas()}}{
+This function provides the average of Short's mapping accuracy index.
+
+
+\deqn{
+amas=\frac{1}{\sqrt{card(p)}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
+}
+
+where:
+
+\enumerate{
+  \item `amas`: Average of Short's mapping accuracy index.
+  \item `x_ii`: diagonal element of the matrix.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+  \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$amas()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$amas()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-cau"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-cau}{}}}
+\subsection{Method \code{cau()}}{
+The combined accuracy is the average of the overall accuracy and average accuracy.
+
+
+\deqn{
+cau=\frac{oa+aau}{2}
+}
+
+where:
+
+\enumerate{
+  \item `cau`: Combined accuracy from user's perspective.
+  \item `oa`: Overall accuracy.
+  \item `aau`: Average accuracy from user's perspective.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$cau()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$cau()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-cap"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-cap}{}}}
+\subsection{Method \code{cap()}}{
+The combined accuracy is the average of the overall accuracy and average accuracy.
+
+
+\deqn{
+cap=\frac{oa+aap}{2}
+}
+
+where:
+
+\enumerate{
+  \item `cap`: Combined accuracy from producer's perspective
+  \item `oa`: overall accuracy.
+  \item `aap`: Average accuracy from producer's perspective.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$cap()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$cap()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-caup"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-caup}{}}}
+\subsection{Method \code{caup()}}{
+The combined accuracy is the average of the overall accuracy and average accuracy.
+
+
+\deqn{
+caup=\frac{oa+amah}{2}
+}
+
+where:
+
+\enumerate{
+  \item `caup`: Combined accuracy from both user's and producer's perspectives.
+  \item `oa`: Overall accuracy.
+  \item `amah`: Average of Hellden's mean accuracy index.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$caup()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$caup()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-KappaValue"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-KappaValue}{}}}
+\subsection{Method \code{KappaValue()}}{
+It measures the relationship of beyond chance agreement to expected disagreement.
+
+
+\deqn{
+ ea=\sum^n_{i=1} (\frac{x _{\cdot i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i \cdot}}{\sum_{j=1}^n x_{ij}}) \\
+KappaValue=\frac{oa-ea}{1-ea}
+}
+
+where:
+
+\enumerate{
+  \item `KappaValue`: Kappa coefficient.
+  \item `oa`: Overall accuracy.
+  \item `ea`: Expected accuracy of agreement if agreement were purely random.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$KappaValue()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$KappaValue()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-mkp"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-mkp}{}}}
+\subsection{Method \code{mkp()}}{
+It is the proportion of agreement after chance agreement is removed from consideration.
+
+
+\deqn{
+mkp=\frac{oa-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
+}
+
+where:
+
+\enumerate{
+  \item `mkp`: Modified kappa
+  \item `oa`: Overall accuracy.
+  \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$mkp()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$mkp()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-ami"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-ami}{}}}
+\subsection{Method \code{ami()}}{
+Average mutual information (AMI), is applied to the comparison of thematic maps.
+
+
+\deqn{
+ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log_{10} (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
+}
+
+where:
+
+\enumerate{
+  \item `ami`: Average mutual information.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ami()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$ami()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-nmiu"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-nmiu}{}}}
+\subsection{Method \code{nmiu()}}{
+\deqn{
+
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+nmiu=\frac{ami}{H(B)}
+}
+
+where:
+
+\enumerate{
+  \item `nmiu`: Normalized mutual information using the entropy on map.
+  \item `H(B)`: The entropy of the map.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+  \item `ami`: Average mutual information.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiu()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmiu()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-nmip"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-nmip}{}}}
+\subsection{Method \code{nmip()}}{
+\deqn{
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+nmip=\frac{ami}{H(A)}
+}
+
+where:
+
+\enumerate{
+  \item `nmip`: Normalized mutual information using the entropy on ground truthing.
+  \item `H(A)`: the entropy of the map.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+  \item `ami`: Average mutual information.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmip()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmip()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-nmiam"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-nmiam}{}}}
+\subsection{Method \code{nmiam()}}{
+\deqn{
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+nmiam=\frac{2ami}{HA+HB}
+}
+
+where:
+
+\enumerate{
+  \item `nmiam`: Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
+  \item `H(A)`: the entropy of the map.
+  \item `H(B)`: The entropy of the map.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+  \item `ami`: Average mutual information.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiam()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmiam()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-nmigm"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-nmigm}{}}}
+\subsection{Method \code{nmigm()}}{
+\deqn{
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+nmigm=\frac{ami}{\sqrt{H(A) \cdot H(B)}}
+}
+
+where:
+
+\enumerate{
+  \item `nmigm`: Normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
+  \item `H(A)`: the entropy of the map.
+  \item `H(B)`: The entropy of the map.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+  \item `ami`: Average mutual information.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmigm()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmigm()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-nmimx"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-nmimx}{}}}
+\subsection{Method \code{nmimx()}}{
+\deqn{
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{card(p)}}
+}
+
+where:
+
+\enumerate{
+  \item `nmimx`: Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
+  \item `H(A)`: the entropy of the map.
+  \item `H(B)`: The entropy of the map.
+  \item `x_.j`: sum with respect to j (rows).
+  \item `x_i.`: sum with respect to i (columns).
+  \item `ami`: Average mutual information.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmimx()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+p<-MatCon$new(A)
+p$nmimx()
 }
 \if{html}{\out{</div>}}
 

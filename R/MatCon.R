@@ -49,7 +49,7 @@ MatCon <- R6Class("MatCon",
 
                                  #Valores para chequear la MC
                                  #rango de la matriz
-                                 nk<-nrow(self$valores)
+                                 nk<-nrow(self$values)
                                  nfilas <- nrow(self$values)
                                  ncolumnas <- ncol(self$values)
                                  #suma de los elementos de la filas
@@ -74,6 +74,14 @@ MatCon <- R6Class("MatCon",
                              #    if((nfilas != nk)) {
                             #       error2<- TRUE #rg distinto a nfilas
                              #    }
+
+                                 if((nk==1)){
+                                   error2<-TRUE
+                                   print("Error tipo 2: Matriz de un solo elemento")
+                                   #La matriz debe de tener más de un elemento
+
+                                 }
+
                                  for (i in 1:nfilas){
                                    for (j in 1:ncolumnas){if(self$values[i,j]<0) {
                                      error3<-TRUE
@@ -481,17 +489,7 @@ MatCon <- R6Class("MatCon",
                             #Reference: Stehman(1997)
                             mcku = function(i){
 
-                               #ESTA CONDICION SOLO SE VERIFICA SI LA MATRIZ TIENE
-                               #UN ELEMENTO.. normalmento las mmatcon tienen más de un elemento
-                              #eliminamos esta condicion?
-
-                              if (1 - 1/sqrt(length(self$valores)) == 0) {
-                                stop ("/ by 0")
-                              }
-                              else
-                              {
-                                mcku = (self$uai(i) - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-                              }
+                               mcku = (self$uai(i) - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
 
                               return(mcku)
                             },
@@ -517,14 +515,7 @@ MatCon <- R6Class("MatCon",
 
                             mckp = function(i){
 
-                              #ESTA CONDICION SOLO SE VERIFICA SI LA MATRIZ TIENE
-                              #UN ELEMENTO.. COMPENSA TENERLA?
-                              if (1 - 1/sqrt(length(self$values)) == 0) {
-                                stop ("/ by 0")
-                              }
-                              else
-                              {mckp = (self$pai(i) - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-                              }
+                              mckp = (self$pai(i) - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
 
                               return(mckp)
                             },
@@ -559,7 +550,7 @@ MatCon <- R6Class("MatCon",
                                 #LN->nats
                                 HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
                                 HAbi = - sum ((self$valores[i,] / self$sumfil[i]) * log10(self$valores[i,] / self$sumfil[i]))
-
+                      #puede ser HA=0?
                               if (HA == 0){
                                 stop("/by 0")
                               }
@@ -619,7 +610,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `aau`: Average accuracy from user's perspective
+                            #'   \item `aau`: Average accuracy from user's perspective.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_ii`: diagonal element of the matrix.
@@ -688,7 +679,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `aap`: Average accuracy from producer's perspective
+                            #'   \item `aap`: Average accuracy from producer's perspective.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_ii`: diagonal element of the matrix.
@@ -705,6 +696,499 @@ MatCon <- R6Class("MatCon",
                               aap = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumcol)
 
                               return(aap)
+                            },
+
+                            #' @description It is the average of the average accuracy from user's and producer's perspective.
+                            #' @references Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
+                            #' @description
+                            #'  \deqn{
+                            #' daup=\frac{aau+aap}{2}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `daup`: Double average of user's and producer's perspective.
+                            #'   \item `aau`: Average accuracy from user's perspective.
+                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$daup()
+
+                            #Double average of user's and producer's perspective
+                            daup = function(){
+
+                              daup = (self$aau() + self$aap()) / 2
+
+                              return(daup)
+                            },
+
+
+                            #' @description The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness.
+                            #' @description
+                            #'  \deqn{
+                            #' CSI=aau+aap-1
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `CSI`: Classification succes index.
+                            #'   \item `aau`: Average accuracy from user's perspective.
+                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$CSI()
+
+                            #Classification succes index
+                            #Reference: Koukoulas and Blackburn(2001)
+                            CSI = function(){
+
+                              CSI = self$aau() + self$aap() - 1
+
+                              return(CSI)
+                            },
+
+
+                            #' @description This function provides the average value of the Hellden mean precision index
+                            #' @description
+                            #'  \deqn{
+                            #' amah=\frac{1}{\sqrt{card(p)}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `amah`: Average of Hellden's mean accuracy index.
+                            #'   \item `ua_i`: user accuracy.
+                            #'   \item `pa_i`: producer accuracy.
+                            #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$amah()
+
+                            #Average of Hellden's mean accuracy index
+                            amah = function(){
+
+                              amah = 1/sqrt(length(self$values)) * sum ((2*diag(self$values)) / (self$sumfil + self$sumcol))
+
+                              return(amah)
+                            },
+
+
+                            #' @description This function provides the average of Short's mapping accuracy index.
+                            #' @description
+                            #'  \deqn{
+                            #' amas=\frac{1}{\sqrt{card(p)}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `amas`: Average of Short's mapping accuracy index.
+                            #'   \item `x_ii`: diagonal element of the matrix.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$amas()
+
+                            #Average of Short's mapping accuracy index
+                            amas = function(){
+
+                              amas = 1/sqrt(length(self$values)) * sum (diag(self$values) / (self$sumfil + self$sumcol - diag(self$values)))
+                              sum1=self$sumfil+self$sumcol- diag(self$values)
+                              for (i in 1:length(sum1)) {
+                                if (sum1[i] == 0) {
+                                  stop ("/ by 0")
+                                }
+                              }
+                              return(amas)
+                            },
+
+
+                            #' @description The combined accuracy is the average of the overall accuracy and average accuracy.
+                            #' @description
+                            #'  \deqn{
+                            #' cau=\frac{oa+aau}{2}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `cau`: Combined accuracy from user's perspective.
+                            #'   \item `oa`: Overall accuracy.
+                            #'   \item `aau`: Average accuracy from user's perspective.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$cau()
+
+                            #Combined accuracy from user's perspective
+                            #Reference: Fung and LeDrew (1988)
+                            cau = function(){
+
+                              cau = (self$oa() + self$aau()) / 2
+
+                              return(cau)
+                            },
+
+                            #' @description The combined accuracy is the average of the overall accuracy and average accuracy.
+                            #' @description
+                            #'  \deqn{
+                            #' cap=\frac{oa+aap}{2}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `cap`: Combined accuracy from producer's perspective
+                            #'   \item `oa`: overall accuracy.
+                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$cap()
+
+                            #Combined accuracy from producer's perspective
+                            #Reference: Fung and LeDrew (1988)
+                            cap = function(){
+
+                              cap = (self$oa() + self$aap()) / 2
+
+                              return(cap)
+                            },
+
+
+                            #' @description The combined accuracy is the average of the overall accuracy and average accuracy.
+                            #' @description
+                            #'  \deqn{
+                            #' caup=\frac{oa+amah}{2}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `caup`: Combined accuracy from both user's and producer's perspectives.
+                            #'   \item `oa`: Overall accuracy.
+                            #'   \item `amah`: Average of Hellden's mean accuracy index.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$caup()
+
+                            #Combined accuracy from both user's and producer's perspectives
+                            caup = function(){
+
+                              caup= ( self$oa() + self$amah() ) / 2
+
+                              return(caup)
+                            },
+
+
+                            #' @description It measures the relationship of beyond chance agreement to expected disagreement.
+                            #' @description
+                            #'  \deqn{
+                            #'  ea=\sum^n_{i=1} (\frac{x _{\cdot i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i \cdot}}{\sum_{j=1}^n x_{ij}}) \\
+                            #' KappaValue=\frac{oa-ea}{1-ea}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `KappaValue`: Kappa coefficient.
+                            #'   \item `oa`: Overall accuracy.
+                            #'   \item `ea`: Expected accuracy of agreement if agreement were purely random.
+                            #' }
+                            #' @references Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$KappaValue()
+
+                            #KappaValue->nombre cambiado, ya existia base::kappa
+                            #Reference: Cohen(1960), Rosenfield and Fitzpatrick-Lins(1986)
+                            KappaValue = function(){
+
+                              ea = (sum (self$sumfil * self$sumcol))/sum(self$values)^2
+
+                              if (1-ea == 0){
+                                stop ("/ by 0")
+                              }
+                              else{
+                                kappa = (self$oa()- ea) / (1 - ea)
+                              }
+
+                              return(kappa)
+                            },
+
+
+                            #' @description It is the proportion of agreement after chance agreement is removed from consideration.
+                            #' @description
+                            #'  \deqn{
+                            #' mkp=\frac{oa-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `mkp`: Modified kappa
+                            #'   \item `oa`: Overall accuracy.
+                            #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$mkp()
+
+                            #Modified kappa
+                            #Reference: Aickin(1990)
+                            mkp = function(){
+
+                              mkp = (self$oa() - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+
+                              return(mkp)
+                            },
+
+                            #' @description Average mutual information (AMI), is applied to the comparison of thematic maps.
+                            #' @description
+                            #'  \deqn{
+                            #' ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log_{10} (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `ami`: Average mutual information.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$ami()
+
+                            #Average mutual information
+                            #Reference: Finn(1993)
+                            ami = function(){
+
+                              for (i in 1:length(self$sumcol)) {
+
+                                for(j in 1:length(self$sumcol)){
+                                  #si un elemento es 0 para
+                                  if(self$values[i,j]==0){
+                                    stop(" by 0")
+                                  }
+
+                                }
+                              }
+
+                              ami = sum ((self$values/sum(self$values)) * log10(self$values / ((self$sumfil * self$sumcol)/sum(self$values))))
+
+                              return(ami)
+                            },
+
+
+                            #' @description
+                            #'  \deqn{
+                            #'
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' nmiu=\frac{ami}{H(B)}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `nmiu`: Normalized mutual information using the entropy on map.
+                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #'   \item `ami`: Average mutual information.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$nmiu()
+
+                            #Normalized mutual information using the entropy on map
+                            #Reference: Finn(1993)
+                            nmiu = function(){
+
+                            HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
+
+                              if(HB == 0){
+                                stop("/ by 0")
+                              }
+
+                              nmiu = self$ami()/HB
+
+                              return(nmiu)
+                            },
+
+                            #' @description
+                            #'  \deqn{
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' nmip=\frac{ami}{H(A)}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `nmip`: Normalized mutual information using the entropy on ground truthing.
+                            #'   \item `H(A)`: the entropy of the map.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #'   \item `ami`: Average mutual information.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$nmip()
+
+
+                            #Normalized mutual information using the entropy on ground truthing
+                            #Reference: Finn(1993)
+                            nmip = function(){
+
+
+                              HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
+
+
+                              if (HA == 0){
+                                stop ("/ by 0")
+                              }
+                              else{
+                                nmip = self$ami()/HA
+                              }
+
+                              return(nmip)
+                            },
+
+                            #' @description
+                            #'  \deqn{
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' nmiam=\frac{2ami}{HA+HB}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `nmiam`: Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
+                            #'   \item `H(A)`: the entropy of the map.
+                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #'   \item `ami`: Average mutual information.
+                            #' }
+                            #' @examples
+                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$nmiam()
+
+                            #Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing
+                            #Reference: Strehl and Ghosh(2002)
+                            nmiam = function(){
+
+                                HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
+                                HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
+
+
+                              if (HA + HB == 0) {
+                                stop ("/ by 0")
+                              }
+                              else{
+                                nmiam = 2 * self$ami() / (HA + HB)
+                              }
+
+                              return(nmiam)
+                            },
+
+                            #' @description
+                            #'  \deqn{
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' nmigm=\frac{ami}{\sqrt{H(A) \cdot H(B)}}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `nmigm`: Normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
+                            #'   \item `H(A)`: the entropy of the map.
+                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #'   \item `ami`: Average mutual information.
+                            #' }
+                            #' @references Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
+                            #' @examples
+                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$nmigm()
+
+
+                            #Normalized mutual information using the geometric mean of the entropies on map and on ground truthing
+                            #Reference: Ghosh et al.(2002)
+                            nmigm = function(){
+
+                              HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
+                              HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
+
+
+                              if (HA * HB == 0) {
+                                stop ("/ by 0")
+                              }
+                              else{
+
+                                nmigm = self$ami() / sqrt(HA * HB)
+
+                              }
+
+                              return(nmigm)
+                            },
+
+                            #' @description
+                            #'  \deqn{
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{card(p)}}
+                            #' }
+                            #'
+                            #' where:
+                            #'
+                            #' \enumerate{
+                            #'   \item `nmimx`: Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
+                            #'   \item `H(A)`: the entropy of the map.
+                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `x_.j`: sum with respect to j (rows).
+                            #'   \item `x_i.`: sum with respect to i (columns).
+                            #'   \item `ami`: Average mutual information.
+                            #' }
+                            #' @references Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
+                            #' @examples
+                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' p<-MatCon$new(A)
+                            #' p$nmimx()
+
+                            #Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
+                            #Reference: Strehl(2002)
+                            nmimx = function(){
+                              nmimx = p$ami() / log10 (sqrt(length(self$values)))
+
+                              return (nmimx)
                             }
 
 
