@@ -285,6 +285,38 @@ p$nmigm()
 A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
 p<-MatCon$new(A)
 p$nmimx()
+
+## ------------------------------------------------
+## Method `MatCon$MPseudozeroes`
+## ------------------------------------------------
+
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
+p$MPseudozeroes()
+
+## ------------------------------------------------
+## Method `MatCon$MTypify`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$MTypify(RaR=5)
+
+## ------------------------------------------------
+## Method `MatCon$MAllParameters`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$MAllParameters()
+
+## ------------------------------------------------
+## Method `MatCon$CAccuracies`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$CAccuracies(alfa=0.1)
 }
 \references{
 Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
@@ -314,6 +346,8 @@ Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and
 Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
 
 Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
+
+Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -353,6 +387,10 @@ Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-
 \item \href{#method-MatCon-nmiam}{\code{MatCon$nmiam()}}
 \item \href{#method-MatCon-nmigm}{\code{MatCon$nmigm()}}
 \item \href{#method-MatCon-nmimx}{\code{MatCon$nmimx()}}
+\item \href{#method-MatCon-MPseudozeroes}{\code{MatCon$MPseudozeroes()}}
+\item \href{#method-MatCon-MTypify}{\code{MatCon$MTypify()}}
+\item \href{#method-MatCon-MAllParameters}{\code{MatCon$MAllParameters()}}
+\item \href{#method-MatCon-CAccuracies}{\code{MatCon$CAccuracies()}}
 \item \href{#method-MatCon-clone}{\code{MatCon$clone()}}
 }
 }
@@ -406,6 +444,9 @@ This represents a mathematical expression with a fraction.
 \item{\code{...}}{(ignored).}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Overall accuracy and variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -479,7 +520,7 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-vector of values with the user's accuracy indexes of all classes
+vector of values with the user's accuracy indexes of all classes and their variances.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -522,7 +563,7 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Class i user accuracy index
+Class i user accuracy index and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -565,7 +606,7 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Class i producer accuracy index
+Class i producer accuracy index and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -650,6 +691,9 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Average of user's and producer's accuracy and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -689,6 +733,9 @@ where:
 \item{\code{i}}{Class to evaluate.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Individual Classification Success Index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -771,6 +818,9 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Short's mapping accuracy and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -812,6 +862,9 @@ where:
 \item{\code{i}}{Class to evaluate.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Conditional kappa (user's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -855,6 +908,9 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Conditional kappa (producer's) and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -895,6 +951,9 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Modified conditional kappa (user's) and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -934,6 +993,9 @@ where:
 \item{\code{i}}{Class to evaluate.}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Modified conditional kappa (producer's) and variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -979,6 +1041,9 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Relative change of entropy given a category on map and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1023,6 +1088,9 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Relative change of entropy given a category on ground truthing and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
@@ -1057,6 +1125,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$aau()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Average accuracy from user's perspective and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1085,7 +1156,7 @@ An iterative process is carried out where each element is divided by the total o
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Normalized matrix (Class MatCon)
+Normalized matrix (Class MatCon) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1122,6 +1193,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$aap()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Average accuracy from producer's perspective and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1155,6 +1229,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$daup()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Double average of user's and producer's perspective and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1188,6 +1265,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$CSI()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Classification sucess index and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1222,6 +1302,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$amah()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Average of Hellden's mean accuracy index and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1257,6 +1340,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$amas()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Average of Short's mapping accuracy index and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1290,6 +1376,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$cau()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Combined accuracy from user's perspective and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1315,7 +1404,7 @@ cap=\frac{oa+aap}{2}
 where:
 
 \enumerate{
-  \item `cap`: Combined accuracy from producer's perspective
+  \item `cap`: Combined accuracy from producer's perspective.
   \item `oa`: overall accuracy.
   \item `aap`: Average accuracy from producer's perspective.
 }
@@ -1323,6 +1412,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$cap()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Combined accuracy from producer's perspective and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1356,6 +1448,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$caup()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Combined accuracy from both user's and producer's perspectives and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1390,6 +1485,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$KappaValue()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Kappa coefficient and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1423,6 +1521,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$mkp()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Modified kappa and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
@@ -1456,6 +1557,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$ami()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Average mutual information and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
@@ -1490,6 +1594,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiu()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Normalized mutual information using the entropy on map and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
@@ -1523,6 +1630,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$nmip()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Normalized mutual information using the entropy on ground truthing and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
@@ -1558,6 +1668,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiam()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
@@ -1593,6 +1706,9 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$nmigm()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Normalized mutual information using the geometric mean of the entropies on map and on ground truthing and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
@@ -1628,11 +1744,121 @@ where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$nmimx()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
 p<-MatCon$new(A)
 p$nmimx()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-MPseudozeroes"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MPseudozeroes}{}}}
+\subsection{Method \code{MPseudozeroes()}}{
+Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MPseudozeroes()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
+p$MPseudozeroes()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-MTypify"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MTypify}{}}}
+\subsection{Method \code{MTypify()}}{
+Cell values are typified. The total sum of the original matrix is used for the typification. Resulting values can be presented as real (parameter RaR=1) or as percentage (parameter RaR !=1)
+
+
+\deqn{
+MTypify=\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
+}
+
+where:
+
+\enumerate{
+  \item `MTyipify`: typed matrix.
+  \item `x_ij`: matrix element.
+  \item `sum{x_ij}`: sum of all the elements of the matrix.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MTypify(RaR = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{RaR}}{"1" indicates result as real, other values mean percentage as integer. By default RaR=1}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$MTypify(RaR=5)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-MAllParameters"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MAllParameters}{}}}
+\subsection{Method \code{MAllParameters()}}{
+Several parameters are calculated for the given Confusion Matrix. The parameters are: Dimension of the matrix, Total sum of cell values, Overall accuracy, Simplified variance of the Overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa,  per-class user's accuracy, per-clas producer's accuracy, matrix with pseudozeroes, k value for the calculation of pseudozeroes, L matrix for the calculation of pseudozeroes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MAllParameters()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$MAllParameters()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-CAccuracies"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-CAccuracies}{}}}
+\subsection{Method \code{CAccuracies()}}{
+User's and producer's accuracies and standard deviations are computed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuracies(alfa = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alfa}}{confidence level. By default alfa=0.05}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$CAccuracies(alfa=0.1)
 }
 \if{html}{\out{</div>}}
 
