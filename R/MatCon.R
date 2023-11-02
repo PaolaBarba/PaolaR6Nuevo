@@ -13,7 +13,7 @@
 
 # Ahora con R6
 MatCon <- R6Class("MatCon",
-                             public = list(
+                  public = list(
                                #inicializa la matriz de confución. debe de añadirse una matriz
                                values = NULL,
                                #inicializa nombre
@@ -702,7 +702,7 @@ MatCon <- R6Class("MatCon",
 
                               #}
 
-                              NormMatrix<-MatCon$new(x1,ID=sample(1:30,1,replace = TRUE))
+                              NormMatrix<-MatCon$new(x1,ID=sample(1:3000,1,replace = TRUE))
                               return(list(Norm=NormMatrix))
                             },
 
@@ -825,8 +825,7 @@ MatCon <- R6Class("MatCon",
                               return(list(amah=amah,Var=VarAmah))
                             },
 
-                    ########RARO LA FUNCION CSI Y AMAS DAN LOS MISMOS RESULTADOS
-                    ########ESTANDO DEFINIDAS DISTINTO, NO?
+
                             #' @description This function provides the average of Short's mapping accuracy index.
                             #' @description
                             #'  \deqn{
@@ -1062,7 +1061,6 @@ MatCon <- R6Class("MatCon",
 
                             #' @description
                             #'  \deqn{
-                            #'
                             #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
                             #' nmiu=\frac{ami}{H(B)}
                             #' }
@@ -1262,6 +1260,7 @@ MatCon <- R6Class("MatCon",
 
                       #' @description  Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0.
                       #' @references Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+                      #' @return An object of class MatCon with the matrix of Pseudoceros.
                       #' @examples
                       #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                       #' p<-MatCon$new(A)
@@ -1276,12 +1275,15 @@ MatCon <- R6Class("MatCon",
                         #      Este caso se deber?a controlar
 
                         #vemos si algun elemento es 0
+                        k=0
                         rg<-nrow(self$values)
                         for (i in 1:rg) {
                             for (j in 1:rg) {
-                              if((self$values[i,j]==0)==FALSE){
-                                cat("La Matriz de Pseudoceros elimina los ceros de la matriz. Su matriz no tiene ningun cero que eliminar.")
-                                }
+                              if((self$values[i,j]!=0)==TRUE){
+                                k=k+1
+                                if(k==length(self$values)){
+                                stop("La Matriz de Pseudoceros elimina los ceros de la matriz. Su matriz no tiene ningun cero que eliminar.")
+                                }}
                               }
                             }
 
@@ -1297,7 +1299,8 @@ MatCon <- R6Class("MatCon",
                           K <- (SumaMatriz*SumaMatriz - sum(MERROR*MERROR))/sum((SumaMatriz*MLandas - MERROR )^2)
                           MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(MERROR + K*MLandas)
                           #Que devuelva la matriz o un objeto de clase MAtCon?
-                          return(MPseudoceros)
+                          MPseudoceros1<-MatCon$new(MPseudoceros,ID=sample(1:3000,1,replace = TRUE))
+                          return(MPseudoceros1)
 
                         },
 
@@ -1310,11 +1313,12 @@ MatCon <- R6Class("MatCon",
                       #' where:
                       #'
                       #' \enumerate{
-                      #'   \item `MTyipify`: typed matrix.
+                      #'   \item `MTyipify`: typified matrix.
                       #'   \item `x_ij`: matrix element.
                       #'   \item `sum{x_ij}`: sum of all the elements of the matrix.
                       #' }
                       #' @param RaR "1" indicates result as real, other values mean percentage as integer. By default RaR=1
+                      #' @return Typified matrix
                       #' @examples
                       #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                       #' p<-MatCon$new(x)
@@ -1341,7 +1345,8 @@ MatCon <- R6Class("MatCon",
 
                       },
 
-                      #' @description  Several parameters are calculated for the given Confusion Matrix. The parameters are: Dimension of the matrix, Total sum of cell values, Overall accuracy, Simplified variance of the Overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa,  per-class user's accuracy, per-clas producer's accuracy, matrix with pseudozeroes, k value for the calculation of pseudozeroes, L matrix for the calculation of pseudozeroes
+                      #' @description  Several parameters are calculated for the given Confusion Matrix. The.
+                      #' @return Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
                       #' @examples
                       #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                       #' p<-MatCon$new(x)
@@ -1373,50 +1378,330 @@ MatCon <- R6Class("MatCon",
                           K <- (SumaMatriz*SumaMatriz - sum(self$values*self$values))/sum((SumaMatriz*MLandas - self$values)^2)
                           MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(self$values + K*MLandas)
 
-                          salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz, OAccuracy=PAcuerdo, VarOAccuracy=VarPAcuerdo, PAAzar=PAAzar,Kappa=Kappa,VarKappa=VarKappa,ExPro=ExProdu,ExUsu=ExUsuario,Kpseudo=K, MPseudoceros=MPseudoceros,MLandas=MLandas)
+                          salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz, OAccuracy=PAcuerdo, VarOAccuracy=VarPAcuerdo, Kappa=Kappa,VarKappa=VarKappa,ExPro=ExProdu,ExUsu=ExUsuario,Kpseudo=K, MPseudoceros=MPseudoceros,MLandas=MLandas)
                           return(salida)
 
                       },
 
                     #' @description  User's and producer's accuracies and standard deviations are computed
-                    #' @param alfa confidence level. By default alfa=0.05
+                    #' @return A list with the producer's accuracy, its standard deviation, the user's accuracy, and its standard deviation
                     #' @examples
                     #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                     #' p<-MatCon$new(x)
-                    #' p$CAccuracies(alfa=0.1)
+                    #' p$CAccuracies()
 
                     #User's and producer's accuracies and standard deviations are computed
-                    CAccuracies =function(alfa=NULL){
-                      if(!is.null(alfa)==TRUE){
-                        alfa<-alfa
-                      }else{alfa<-0.05}
+                    CAccuracies =function(){
+
                       #  calculation of Class accuracies and standard deviations
 
-                      MERROR=self$values
 
-                        nc <- nrow(MERROR)
-                        pcpa <-cbind() # Per class producer's accuracy
-                        pcua <-cbind() # Per class user's accuracy
+                        nc <- nrow(self$values)
 
-                        pcpasd <-cbind() # Per class producer's accuracy standard deviation
-                        pcuasd <-cbind() # Per class user's accuracy standard deviation
-
-                  #esto es lo mismo que pa,pai,ua,uai
                         for (i in 1:nc){
-                          p <- MERROR[i,i]/self$sumcol[i]
-                          u <- MERROR[i,i]/self$sumfil[i]
-                          pcpa <-cbind(pcpa,p)
-                          pcua <-cbind(pcua,u)
-                          pcpasd <- cbind(pcpasd,sqrt(p*(1-p)/self$sumcol[i]) )
-                          pcuasd <- cbind(pcuasd,sqrt(u*(1-u)/self$sumfil[i]) )
+                          pcpa <- self$pa()[[1]]
+                          pcua <-self$ua()[[1]]
+                          pcpasd <- sqrt(self$pa()[[2]])
+                          pcuasd <- sqrt(self$ua()[[2]])
 
                         }
                         return(list(PrAcc=pcpa,PrAccSDeviation=pcpasd,UAcc= pcua, UAccSDeviation=pcuasd))
 
+                    },
+
+
+                    #' @description  User's and producer's weighted accuracies and standard deviations are computed.
+                    #' @param MP matrix of weights
+                    #' @return Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
+                    #' @examples
+                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(x)
+                    #' MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+                    #' p$CAccuraciesW(MP)
+
+                    #User's and producer's weighted accuracies and standard deviations are computed
+                    CAccuraciesW =function(MP){
+                      #  Calculation of weighted Class accuracies
+                      #  The error matrix and the weight matrix are required
+                      #  The weights for diagonal cells are 1
+                      #  The values of the weights for the off-diagonal cells  must be in the range [0,1]
+                      #MV<-self$values
+
+
+                        # UnWeighted marginals (quantities)
+                        ncol <- self$sumcol
+                        nrow<- self$sumfil
+
+                        # In %
+                        MV<- self$values/sum(self$values)
+
+                        # Weighted matrix
+                        WMERROR<-MV*MP
+
+                        # Weighted OA
+                        WOA <- sum(diag(WMERROR))/sum(WMERROR)
+
+                        # Weighted marginals
+                        mcol<- apply(WMERROR,2,sum)
+                        mrow<- apply(WMERROR,1,sum)
+
+                        # UnWeighted marginals (proportions)
+                        p_j <- apply(MV,2,sum)
+                        pi_ <- apply(MV,1,sum)
+
+                        # Initialization of vectors
+                        nc <- nrow(MV)
+                        wi_<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        w_j<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+
+                        # Weighted per class user's and producer's accuracies
+                        wpcua<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        wpcpa<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+
+                        pcpasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class producer's accuracy standard deviation
+                        pcuasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class user's accuracy standard deviation
+
+                        for (i in 1:nc){
+                          wi_[i]    <- sum(p_j*MP[i,])
+                          w_j[i]    <- sum(pi_*MP[,i])
+                          wpcua[i]  <- sum(WMERROR[i,])/sum(MV[i,])
+                          wpcpa[i]  <- sum(WMERROR[,i])/sum(MV[,i])
+                          pcpasd[i] <- sqrt(wpcpa[i]*(1-wpcpa[i])/ncol[i])
+                          pcuasd[i] <- sqrt(wpcua[i]*(1-wpcua[i])/nrow[i])
+                        }
+
+                        return(list(WMERROR=WMERROR, WOA=WOA, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUAcc= wpcua, WUAccSDeviation=pcuasd))
+
+                    },
+
+
+                    #' @description  Overall Kappa agreement index and variance elements are computed
+                    #' @return Overall accuracy, Expected accuracy of agreement if agreement were purely random,,, coefficient kappa, standar desviation kappa,
+                    #' @examples
+                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p$DetailedKappa()
+
+                    #Overall Kappa agreement index and its variance are computed
+                    DetailedKappa=function (){
+                        nc <- nrow(self$values)
+                        SumaMatriz <-sum(self$values)
+                        # UnWeighted marginals (quantities)
+
+                        ##########NO ENTIENDO MUY BIEN QUE HACE ESTA FUNCION.
+                        ####### QUE SON O3,O4
+                        # The 4 coefficients
+                        O1 <- sum(diag(self$values))/SumaMatriz #OA
+                        O2 <- sum((self$sumcol*self$sumfil))/(SumaMatriz*SumaMatriz) #EA
+                        O3 <- sum(diag(self$values)*(self$sumcol+self$sumfil))/(SumaMatriz*SumaMatriz)
+                        mintermedia1<- matrix(rep(self$sumcol, nc), nrow =nc, ncol=nc, byrow=TRUE)
+                        mintermedia2<- matrix(rep(self$sumfil, nc), nrow =nc, ncol=nc, byrow=FALSE)
+                        mintermedia3 <-(mintermedia1+mintermedia2)^2
+                        O4 <- sum(self$values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
+
+                        t1 <- (1-O1) #no oa
+                        t2<- (1-O2) #no ea
+
+                        K <- (O1-O2)/t2 #KappaValue
+
+                        t3<- 2*O1*O2-O3
+                        t4<- O4-4*(O2^2)
+                        t5<- O1*t1/(t2^2)+2*t1*t3/(t2^3)+(t1^2)*t4/(t2^4)
+                        SdK <- sqrt((1/SumaMatriz)*t5)
+                        CV <- SdK/K
+                        #NO SE QUE SON O3,O4,CV,SdK,t3,t4,t5
+
+                        return(list(O1=O1, O2=O2, O3=O3,O4=O4, K=K, SdK=SdK, CV=CV))
+                    },
+
+                    #' @description Class Kappa agreement index (conditional Kappa) and its variance are computed
+                    #' @examples
+                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p$DetailedCKappa ()
+
+                    #Class  Kappa agreement index and variance elements  are computed
+                    DetailedCKappa = function(){
+
+                        SumaMatriz <-sum(self$values)
+
+                        # In %
+                        #MERROR<- self$values/sum(self$values)
+                        MERROR<-self$values
+
+                        # UnWeighted marginals (quantities)
+                        pcol <- apply(MERROR,2,sum)
+                        prow<- apply(MERROR,1,sum)
+
+                        # Initialization of vectors
+                        nc  <- nrow(MERROR)
+                        Ki_ <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        K_j <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+
+                        Ki_sd <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        K_jsd <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+
+
+                        for (i in 1:nc){
+                          Ki_[i] <- ((MERROR[i,i]/prow[i])-pcol[i])/(1-pcol[i])
+                          K_j[i] <- ((MERROR[i,i]/pcol[i])-prow[i])/(1-prow[i])
+
+                          ti1 <- prow[i]-MERROR[i,i]
+                          ti2<-  ti1/((prow[i]^3)*(1-pcol[i])^3)
+                          ti3<-  ti1*(pcol[i]*prow[i]-MERROR[i,i])
+                          ti4<-  MERROR[i,i]*(1-pcol[i]-prow[i]+MERROR[i,i])
+                          Ki_sd[i] <- sqrt((1/SumaMatriz)*ti2*(ti3+ti4))
+
+                          tj1 <- pcol[i]-MERROR[i,i]
+                          tj2<-  tj1/((pcol[i]^3)*(1-prow[i])^3)
+                          tj3<-  tj1*(pcol[i]*prow[i]-MERROR[i,i])
+                          tj4<-  MERROR[i,i]*(1-pcol[i]-prow[i]+MERROR[i,i])
+                          K_jsd[i] <- sqrt((1/SumaMatriz)*tj2*(tj3+tj4))
+                        }
+
+                        return(list(Ki_=Ki_, Ki_Sd=Ki_sd, K_j=K_j, K_jsd=K_jsd))
+
+                        },
+
+                    #' @description  Overall Kappa agreement index (Weighted) and its variance are computed
+                    #' @param MW  matrix of weights
+                    #' @examples
+                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(x)
+                    #' p$DetailedWKappa(MW)
+
+                    # Overall Kappa agreement index (Weighted) and variance elements  are computed
+                    DetailedWKappa = function(MW){
+
+                        nc <- nrow(self$values)
+                        SumaMatriz <-sum(self$values)
+
+                        # In %
+                        MERROR<- self$values/SumaMatriz
+
+                        # UnWeighted marginals (prob)
+                        pcol <- apply(MERROR,2,sum)
+                        prow<- apply(MERROR,1,sum)
+
+                        # Weighted matrix
+                        WMERROR<-MERROR*MP
+
+                        # The 4 coefficients
+                        Ow1 <- sum(MW*MERROR)
+                        Ow2 <- sum(t(MW*prow)*pcol)
+                        c1<- (1-Ow1)
+                        c2<- (1-Ow2)
+                        wi_ <- MW %*% pcol
+                        w_j <- MP %*% prow
+                        mintermedia1<- matrix(rep(wi_, nc), nrow =nc, ncol=nc, byrow=FALSE)
+                        mintermedia2<- matrix(rep(w_j, nc), nrow =nc, ncol=nc, byrow=TRUE)
+                        mintermedia3 <-(mintermedia1+mintermedia2)*c1
+                        mintermedia4 <- (MW*c2-mintermedia3)^2
+                        Ow4 <- sum(MERROR*mintermedia4)
+
+                        K <- (Ow1-Ow2)/c2
+                        SdK <- sqrt((Ow4-(Ow1*Ow2-2*Ow2+Ow1)^2)/(SumaMatriz*(c2^4)))
+                        CV <- SdK/K
+
+                        return(list(Ow1=Ow1, Ow2=Ow2, Ow4=Ow4, K=K, SdK=SdK, CV=CV))
+
+                      },
+
+                    #' @description  Overall Tau agreement index and variance elements  are computed
+                    #' @param VP vector of proportions (as matrix)
+                    #' @examples
+                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+                    #' p<-MatCon$new(x)
+                    #' p$DetailedTau(VP)
+
+                    #Overall Tau agreement index and variance elements  are computed
+                    DetailedTau = function(VP){
+
+                        nc <- nrow(self$values)
+                        SumaMatriz <-sum(self$values)
+
+                        # In %
+                        MERROR<- self$values/SumaMatriz
+
+                        # UnWeighted marginals (prob)
+                        pcol <- apply(MERROR,2,sum)
+                        prow<- apply(MERROR,1,sum)
+
+
+                        O1 <- sum(diag(MERROR)  )
+                        O2 <- sum(VP*pcol)
+                        O3 <- sum(diag(MERROR)*(VP+pcol))
+
+                        mintermedia1<- matrix(rep(pcol, nc), nrow =nc, ncol=nc, byrow=FALSE)
+                        mintermedia2<- matrix(rep(VP, nc), nrow =nc, ncol=nc, byrow=TRUE)
+                        mintermedia3 <-(mintermedia1+mintermedia2)^2
+
+                        O4 <- sum(MERROR*mintermedia3)
+
+                        t1<- (1-O1)
+                        t2<- (1-O2)
+                        t3<- O1*t1/(t2^2)
+                        t4<- 2*t1*(2*O1*O2-O3)/(t2^3)
+                        t5<- (t1^2)*(O4-4*O2^2)/(t2^4)
+                        Tau <- (O1-O2)/t2
+                        SdT <- sqrt((t3+t4+t5)/SumaMatriz)
+                        CV<- SdT/Tau
+
+                        return(list(O1=O1, O2=O2, O3=O3,O4=O4, Tau=Tau, SdT=SdT, CV=CV))
+                    },
+
+                    #' @description  Quantity, Exchange and Shift values are computed
+                    #' @param TI time interval (default value = 1)
+                    #' @param SF Scale factor for results (default value = 1)
+                    #' @examples
+                    #' x <- t(matrix(c(0,1,1,2,0,0,0,2,0), nrow =3, ncol=3))
+                    #' p<-MatCon$new(x)
+                    #' p$QES(TI=1, SF=6)
+
+
+                    # Quantity, Exchange and Shift values are computed
+                    QES = function(TI=1, SF=1){
+                      # Overall Quantity, Exchange and Shift values
+                      # TI Time interval
+                      # SF Scale factor
+                        nc <- nrow(self$values)
+                        SumaMatriz <-sum(self$values)
+                        SumaDigonal<-sum(diag(self$values))
+
+                        ee<- matrix(rep(0, nc*nc), nrow =nc, ncol=nc, byrow=TRUE)
+                        d<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        q<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        e<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        s<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+                        for (j in 1:nc){
+                          for (i in 1:nc){
+                            if (i>j){#diagonal 0?
+                              ee[j,i] <-  (min(self$values[i,j], self$values[j,i]))*2
+                            }else{
+                              ee[j,i] <- 0
+                            }
+                          }
+                        }
+
+                        for (j in 1:nc){
+                          d[j]<-d[j]+ sum(self$values[,j])+ sum(self$values[j,])-2*self$values[j,j]
+                          q[j]<-q[j]+ abs(sum(self$values[,j])- sum(self$values[j,]))
+                          e[j]<-e[j]+ sum(ee[,j])+sum(ee[j,])
+                          s[j]<-d[j]- q[j]-e[j]
+                        }
+
+                        d<-d/((TI)*SumaMatriz)
+                        q<-q/((TI)*SumaMatriz)
+                        e<-e/((TI)*SumaMatriz)
+                        s<-s/((TI)*SumaMatriz)
+
+                        D<- SF*sum(d)/2
+                        Q<- SF*sum(q)/2
+                        E<- SF*sum(e)/2
+                        S<- SF*sum(s)/2
+
+                        return(list(ODifference=D, OQuantity=Q, OExchange=E, OShift=S, d=d, q=q, e=e, s=s))
                     }
-
-
-
 
 
 

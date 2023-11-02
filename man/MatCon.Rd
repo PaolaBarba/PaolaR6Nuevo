@@ -316,7 +316,56 @@ p$MAllParameters()
 
 x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(x)
-p$CAccuracies(alfa=0.1)
+p$CAccuracies()
+
+## ------------------------------------------------
+## Method `MatCon$CAccuraciesW`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+p$CAccuraciesW(MP)
+
+## ------------------------------------------------
+## Method `MatCon$DetailedKappa`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p$DetailedKappa()
+
+## ------------------------------------------------
+## Method `MatCon$DetailedCKappa`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p$DetailedCKappa ()
+
+## ------------------------------------------------
+## Method `MatCon$DetailedWKappa`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$DetailedWKappa(MW)
+
+## ------------------------------------------------
+## Method `MatCon$DetailedTau`
+## ------------------------------------------------
+
+x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+p<-MatCon$new(x)
+p$DetailedTau(VP)
+
+## ------------------------------------------------
+## Method `MatCon$QES`
+## ------------------------------------------------
+
+x <- t(matrix(c(0,1,1,2,0,0,0,2,0), nrow =3, ncol=3))
+p<-MatCon$new(x)
+p$QES(TI=1, SF=6)
 }
 \references{
 Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
@@ -391,6 +440,12 @@ Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio 
 \item \href{#method-MatCon-MTypify}{\code{MatCon$MTypify()}}
 \item \href{#method-MatCon-MAllParameters}{\code{MatCon$MAllParameters()}}
 \item \href{#method-MatCon-CAccuracies}{\code{MatCon$CAccuracies()}}
+\item \href{#method-MatCon-CAccuraciesW}{\code{MatCon$CAccuraciesW()}}
+\item \href{#method-MatCon-DetailedKappa}{\code{MatCon$DetailedKappa()}}
+\item \href{#method-MatCon-DetailedCKappa}{\code{MatCon$DetailedCKappa()}}
+\item \href{#method-MatCon-DetailedWKappa}{\code{MatCon$DetailedWKappa()}}
+\item \href{#method-MatCon-DetailedTau}{\code{MatCon$DetailedTau()}}
+\item \href{#method-MatCon-QES}{\code{MatCon$QES()}}
 \item \href{#method-MatCon-clone}{\code{MatCon$clone()}}
 }
 }
@@ -1576,7 +1631,6 @@ p$ami()
 \if{latex}{\out{\hypertarget{method-MatCon-nmiu}{}}}
 \subsection{Method \code{nmiu()}}{
 \deqn{
-
 H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
 nmiu=\frac{ami}{H(B)}
 }
@@ -1767,6 +1821,9 @@ Small values are calculated for empty cells of the matrix. All non-empty cells o
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$MPseudozeroes()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+An object of class MatCon with the matrix of Pseudoceros.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
@@ -1792,7 +1849,7 @@ MTypify=\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
 where:
 
 \enumerate{
-  \item `MTyipify`: typed matrix.
+  \item `MTyipify`: typified matrix.
   \item `x_ij`: matrix element.
   \item `sum{x_ij}`: sum of all the elements of the matrix.
 }
@@ -1806,6 +1863,9 @@ where:
 \item{\code{RaR}}{"1" indicates result as real, other values mean percentage as integer. By default RaR=1}
 }
 \if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Typified matrix
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1822,11 +1882,14 @@ p$MTypify(RaR=5)
 \if{html}{\out{<a id="method-MatCon-MAllParameters"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-MAllParameters}{}}}
 \subsection{Method \code{MAllParameters()}}{
-Several parameters are calculated for the given Confusion Matrix. The parameters are: Dimension of the matrix, Total sum of cell values, Overall accuracy, Simplified variance of the Overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa,  per-class user's accuracy, per-clas producer's accuracy, matrix with pseudozeroes, k value for the calculation of pseudozeroes, L matrix for the calculation of pseudozeroes
+Several parameters are calculated for the given Confusion Matrix. The.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$MAllParameters()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
@@ -1844,21 +1907,174 @@ p$MAllParameters()
 \subsection{Method \code{CAccuracies()}}{
 User's and producer's accuracies and standard deviations are computed
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuracies(alfa = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuracies()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list with the producer's accuracy, its standard deviation, the user's accuracy, and its standard deviation
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+p$CAccuracies()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-CAccuraciesW"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-CAccuraciesW}{}}}
+\subsection{Method \code{CAccuraciesW()}}{
+User's and producer's weighted accuracies and standard deviations are computed.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuraciesW(MP)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{alfa}}{confidence level. By default alfa=0.05}
+\item{\code{MP}}{matrix of weights}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(x)
+MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+p$CAccuraciesW(MP)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-DetailedKappa"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-DetailedKappa}{}}}
+\subsection{Method \code{DetailedKappa()}}{
+Overall Kappa agreement index and variance elements are computed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedKappa()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Overall accuracy, Expected accuracy of agreement if agreement were purely random,,, coefficient kappa, standar desviation kappa,
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p$DetailedKappa()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-DetailedCKappa"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-DetailedCKappa}{}}}
+\subsection{Method \code{DetailedCKappa()}}{
+Class Kappa agreement index (conditional Kappa) and its variance are computed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedCKappa()}\if{html}{\out{</div>}}
+}
+
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p$DetailedCKappa ()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-DetailedWKappa"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-DetailedWKappa}{}}}
+\subsection{Method \code{DetailedWKappa()}}{
+Overall Kappa agreement index (Weighted) and its variance are computed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedWKappa(MW)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{MW}}{matrix of weights}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p<-MatCon$new(x)
-p$CAccuracies(alfa=0.1)
+p$DetailedWKappa(MW)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-DetailedTau"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-DetailedTau}{}}}
+\subsection{Method \code{DetailedTau()}}{
+Overall Tau agreement index and variance elements  are computed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedTau(VP)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{VP}}{vector of proportions (as matrix)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+p<-MatCon$new(x)
+p$DetailedTau(VP)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-QES"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-QES}{}}}
+\subsection{Method \code{QES()}}{
+Quantity, Exchange and Shift values are computed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$QES(TI = 1, SF = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{TI}}{time interval (default value = 1)}
+
+\item{\code{SF}}{Scale factor for results (default value = 1)}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{x <- t(matrix(c(0,1,1,2,0,0,0,2,0), nrow =3, ncol=3))
+p<-MatCon$new(x)
+p$QES(TI=1, SF=6)
 }
 \if{html}{\out{</div>}}
 
