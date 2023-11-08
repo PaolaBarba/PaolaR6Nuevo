@@ -1,14 +1,14 @@
 #' @title Confusion matrix
 #' @description Using the confusion matrix, various indices are calculated.
 #' @param values Confusion matrix
-#' @param ID Identifier (optional)
-#' @param Date System or user-provided date (optional)
+#' @param ID Identifier. By default ID is a random number between 1 and 1000.
+#' @param Date Date provided by the user. By default the date provided by the system will be taken.
 #' @return Object of class MatCon #y mas
 #' @export MatCon
 #' @importFrom R6 R6Class
 #' @examples
-#' C = matrix( c(5, 0, 1, 0,4,0,0,0,3), nrow=3,  ncol=3)
-#' mc2 <- MatCon$new (C,ID=5,Date="27-10-2023")
+#' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+#' mc <- MatCon$new (A,ID=5,Date="27-10-2023")
 
 
 # Ahora con R6
@@ -115,7 +115,7 @@ MatCon <- R6Class("MatCon",
 
 
                                #' @description Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken.
-                               #' @param ... (ignored).
+                               # #' @param ... (ignored).
                                #' @description
                                #' The mathematical expression is:
                                #'
@@ -133,30 +133,30 @@ MatCon <- R6Class("MatCon",
                                #' @return Overall accuracy and variance.
                                #' @references Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
                                #' @examples
-                               #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                               #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                                #' p<-MatCon$new(A)
                                #' p$oa()
 
-                               oa = function(...) {
+                               oa = function() {
                                  indice <- sum(diag(self$values))/sum(self$values)
                                  VarIndic<-abs((indice*(1-indice))/sum(self$values))
                                  return(list(oa=indice,Var=VarIndic))
                                },
 
-                               #' @description Determines whether a value is decimal or not.
-                               #' @param ... (ignored).
-                               #' @return TRUE or FALSE
-                               #' @examples
-                               #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
-                               #' p<-MatCon$new(A)
-                               #' p$dec()
+                             #  #' @description Determines whether a value is decimal or not.
+                             #  # #' @param ... (ignored).
+                            #   #' @return TRUE or FALSE
+                             #  #' @examples
+                            #   #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                             #  #' p<-MatCon$new(A)
+                            #   #' p$dec()
 
-                               dec = function(...){
-                                 for (i in 1:length(self$values)){
-                                   dec = if (round(self$values[i],0) == self$values[i]) {FALSE} else {TRUE}
-                                 }
-                                 return(dec)
-                               },
+                             #  dec = function(){
+                            #   for (i in 1:length(self$values)){
+                            #       dec = if (round(self$values[i],0) == self$values[i]) {FALSE} else {TRUE}
+                             #    }
+                            #     return(dec)
+                             #  },
 
 
                                #' @description  The accuracy from the point of view of a map user, not the map maker.
@@ -173,14 +173,14 @@ MatCon <- R6Class("MatCon",
                                #'   \item `x_ii`: diagonal element of the matrix.
                                #'   \item `x_ij`: element of the matrix.
                                #' }
-                               #' @param ... (ignored).
-                               #' @return vector of values with the user's accuracy indexes of all classes and their variances.
+                               # #' @param ... (ignored).
+                               #' @return Vector of values with the user's accuracy indexes of all classes and their variances.
                                #' @examples
-                               #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                               #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                                #' p<-MatCon$new(A,ID=1,Date="30/10/2023")
                                #' p$ua()
 
-                               ua = function(...){
+                               ua = function(){
                                  n <- sqrt(length(self$values))
                                  ua <- rep(0,n)
                                  VarUa<-rep(0,n)
@@ -210,7 +210,7 @@ MatCon <- R6Class("MatCon",
                                #' @param i User class to evaluate
                                #' @return Class i user accuracy index and their variance.
                                #' @examples
-                               #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                               #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                                #' p<-MatCon$new(A)
                                #' p$uai(2)
 
@@ -237,7 +237,7 @@ MatCon <- R6Class("MatCon",
                                #' @param i Producer class to evaluate
                                #' @return Class i producer accuracy index and their variance.
                                #' @examples
-                               #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                               #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                                #' p<-MatCon$new(A)
                                #' p$pai(1)
 
@@ -263,14 +263,14 @@ MatCon <- R6Class("MatCon",
                                #'   \item `x_jj`: diagonal element of the matrix.
                                #'   \item `x_ij`: element of the matrix.
                                #' }
-                               #' @param ... (ignored).
+                               # #' @param ... (ignored).
                                #' @return Vector of values with the producer's accuracy indexes of all classes
                                #' @examples
-                               #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                               #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                                #' p<-MatCon$new(A)
                                #' p$pa()
 
-                               pa = function (...){
+                               pa = function (){
                                  n <- sqrt(length(self$values))
                                  pa <- rep(0,n)
                                  VarPai<-rep(0,n)
@@ -290,14 +290,14 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `aup`: Average of user's and producer's accuracy.
+                            #'   \item `aup`: average of user's and producer's accuracy.
                             #'   \item `ua_i`: user accuracy
                             #'   \item `pa_i`: producer accuracy.
                             #' }
                             #' @return Average of user's and producer's accuracy and its variance.
                             #' @param i Class to evaluate.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$aup(2)
 
@@ -319,7 +319,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `ICSI`: Individual classification success index.
+                            #'   \item `ICSI`: individual classification success index.
                             #'   \item `ua_i`: user accuracy.
                             #'   \item `pa_i`: producer accuracy.
                             #' }
@@ -328,7 +328,7 @@ MatCon <- R6Class("MatCon",
                             #' @references Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
                             #' @param i Class to evaluate.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$ICSI(2)
                             ICSI = function(i){
@@ -355,8 +355,9 @@ MatCon <- R6Class("MatCon",
                             #' @param i Class to evaluate.
                             #' @references Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
                             #' @references Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
+                            #' @return Hellden's mean accuracy.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$mah(2)
 
@@ -393,7 +394,7 @@ MatCon <- R6Class("MatCon",
                             #' @param i Class to evaluate.
                             #' @return Short's mapping accuracy and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$mas(2)
 
@@ -420,7 +421,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `cku`: Conditional kappa (user's).
+                            #'   \item `cku`: conditional kappa (user's).
                             #'   \item `ua_i`: user accuracy.
                             #'   \item `x_ii`: diagonal element of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
@@ -429,7 +430,7 @@ MatCon <- R6Class("MatCon",
                             #' @return Conditional kappa (user's) and its variance.
                             #' @param i Class to evaluate.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$cku(2)
 
@@ -455,7 +456,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `ckp`: Conditional kappa (producer's).
+                            #'   \item `ckp`: conditional kappa (producer's).
                             #'   \item `pa_i`: producer accuracy.
                             #'   \item `x_ii`: diagonal element of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
@@ -464,7 +465,7 @@ MatCon <- R6Class("MatCon",
                             #' @return Conditional kappa (producer's) and its variance.
                             #' @param i Class to evaluate.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$ckp(2)
 
@@ -491,7 +492,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `mcku`: Modified conditional kappa (user's).
+                            #'   \item `mcku`: modified conditional kappa (user's).
                             #'   \item `ua_i`: user accuracy.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #' }
@@ -499,7 +500,7 @@ MatCon <- R6Class("MatCon",
                             #' @param i Class to evaluate.
                             #' @references Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$mcku(2)
 
@@ -523,15 +524,15 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `mckp`: Modified conditional kappa (producer's).
+                            #'   \item `mckp`: modified conditional kappa (producer's).
                             #'   \item `pa_i`: producer accuracy.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #' }
                             #' @return Modified conditional kappa (producer's) and variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
-                            #' p$mckp(2)
+                            #' p$mckp(4)
 
                             mckp = function(i){
 
@@ -545,33 +546,48 @@ MatCon <- R6Class("MatCon",
                             #' @references Finn, J. T. (1993). Use of the average mutual information index in evaluating classification error and consistency. International Journal of Geographical Information Science, 7(4), 349-366.
                             #' @description
                             #'  \deqn{
-                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-                            #' H(A|b_i)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{j=1} x_{\cdot j} }) \cdot \log (\frac{x_{ij}}{\sum^n_{j=1} x_{\cdot j}}) ) \\
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
+                            #' H(A|b_i)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{j=1} x_{\cdot j} }) \cdot \log (\frac{x_{ij}}{\sum^n_{j=1} x_{\cdot j}}) )
+                            #' }
+                            #' \deqn{
                             #' ecnu= \frac{H(A)-H(A|b_i)}{H(A)}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `ecnu`: Relative change of entropy given a category on map.
+                            #'   \item `ecnu`: relative change of entropy given a category on map.
                             #'   \item `H(A)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
                             #'   \item `H(A|b_i)`: Entropy of map A knowing that the location corresponding to map B is in class b_i.
                             #' }
                             #' @return Relative change of entropy given a category on map and its variance.
-                            #' @param i Class to evaluate.
+                            #' @param i Class to evaluate (row).
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$ecnu(2)
 
-                            ecnu = function(i){
+                            #pueden ser valores negativos si la entropia(incertidumbre) aumenta y
+                            #positivos si la entropia disminuye
+                            #Clases por filas. si algun elemento es 0 en la fila se obtiene un error,
+                            #debido al log
+                            ecnu = function(i,v=NULL){
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+
                                 #log10 ->Hartleys (unidades de entropia)
                                 #log2->bits
                                 #LN->nats
-                                HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
-                                HAbi = - sum ((self$values[i,] / self$sumfil[i]) * log10(self$values[i,] / self$sumfil[i]))
+
+                              ##na.rm=TRUE. De esta forma hace el sumatorio con los valores que tenga e ignora NA
+                                HA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+                                HAbi = - sum ((self$values[i,] / self$sumfil[i]) * log(self$values[i,] / self$sumfil[i],base=v),na.rm=TRUE)
                       #puede ser HA=0?
                               if (HA == 0){
                                 stop("/by 0")
@@ -581,22 +597,27 @@ MatCon <- R6Class("MatCon",
                                 VarEcnu=abs((ecnu*(1-ecnu))/sum(self$values)) #no estoy muy segura, pero intervienen todos los valores de la matriz.
                               }
 
-                              return(list(ecnu=ecnu,Var=VarEcnu))
+                              return(list(ecnu=ecnu,Var=VarEcnu,HA=HA,HAbi=HAbi))
                             },
 
                             #' @description Relative entropy is a quantity that measures the difference between two ground truthing.
                             #' @param i Class to evaluate
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @description
                             #'  \deqn{
-                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-                            #' H(B|a_j)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{i=1} x_{i \cdot} }) \cdot \log (\frac{x_{ij}}{\sum^n_{i=1} x_{i \cdot}}) ) \\
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
+                            #' H(B|a_j)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{i=1} x_{i \cdot} }) \cdot \log (\frac{x_{ij}}{\sum^n_{i=1} x_{i \cdot}}) )
+                            #' }
+                            #' \deqn{
                             #' ecnp= \frac{H(B)-H(B|a_j)}{H(B)}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `ecnp`: Relative change of entropy given a category on ground truthing.
+                            #'   \item `ecnp`: relative change of entropy given a category on ground truthing.
                             #'   \item `H(B)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
@@ -604,15 +625,18 @@ MatCon <- R6Class("MatCon",
                             #' }
                             #' @return Relative change of entropy given a category on ground truthing and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
-                            #' p$ecnp(2)
+                            #' p$ecnp(4)
                             #Relative change of entropy given a category on ground truthing
                             #Reference: Finn(1993)
-                            ecnp = function(i){
+                            ecnp = function(i,v=NULL){
 
-                                HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
-                                HBaj = - sum ((self$values[,i] / self$sumcol[i]) * log10(self$values[,i] / self$sumcol[i]))
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+                                HB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base = v)),na.rm=TRUE)
+                                HBaj = - sum ((self$values[,i] / self$sumcol[i]) * log(self$values[,i] / self$sumcol[i],base=v),na.rm=TRUE)
 
                               if (HB == 0){
                                 stop("/by 0")
@@ -635,14 +659,14 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `aau`: Average accuracy from user's perspective.
+                            #'   \item `aau`: average accuracy from user's perspective.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_ii`: diagonal element of the matrix.
                             #' }
                             #' @return Average accuracy from user's perspective and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$aau()
 
@@ -661,14 +685,13 @@ MatCon <- R6Class("MatCon",
                             },
 
                             #' @references Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
-                            #' @param n Iteration
+                            #' @param n Iteration. By default n=100.
                             #' @return Normalized matrix (Class MatCon) and its variance.
                             #' @description An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
-                            #' p$Normalize()
-                            #' p$Normalize(1000)
+                            #' p$Normalize()$values
 
                             Normalize=function(n=NULL){
                               #Da la opcion de añadir un numero concreto de iteraciones
@@ -715,14 +738,14 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #'   \item `aap`: average accuracy from producer's perspective.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_ii`: diagonal element of the matrix.
                             #' }
                             #' @return Average accuracy from producer's perspective and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$aap()
 
@@ -746,13 +769,13 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `daup`: Double average of user's and producer's perspective.
-                            #'   \item `aau`: Average accuracy from user's perspective.
-                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #'   \item `daup`: double average of user's and producer's perspective.
+                            #'   \item `aau`: average accuracy from user's perspective.
+                            #'   \item `aap`: average accuracy from producer's perspective.
                             #' }
                             #' @return Double average of user's and producer's perspective and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$daup()
 
@@ -775,13 +798,13 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `CSI`: Classification succes index.
-                            #'   \item `aau`: Average accuracy from user's perspective.
-                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #'   \item `CSI`: classification succes index.
+                            #'   \item `aau`: average accuracy from user's perspective.
+                            #'   \item `aap`: average accuracy from producer's perspective.
                             #' }
                             #' @return Classification sucess index and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$CSI()
 
@@ -805,14 +828,14 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `amah`: Average of Hellden's mean accuracy index.
+                            #'   \item `amah`: average of Hellden's mean accuracy index.
                             #'   \item `ua_i`: user accuracy.
                             #'   \item `pa_i`: producer accuracy.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #' }
                             #' @return Average of Hellden's mean accuracy index and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$amah()
 
@@ -835,7 +858,7 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `amas`: Average of Short's mapping accuracy index.
+                            #'   \item `amas`: average of Short's mapping accuracy index.
                             #'   \item `x_ii`: diagonal element of the matrix.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
@@ -843,7 +866,7 @@ MatCon <- R6Class("MatCon",
                             #' }
                             #' @return Average of Short's mapping accuracy index and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$amas()
 
@@ -871,13 +894,13 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `cau`: Combined accuracy from user's perspective.
-                            #'   \item `oa`: Overall accuracy.
-                            #'   \item `aau`: Average accuracy from user's perspective.
+                            #'   \item `cau`: combined accuracy from user's perspective.
+                            #'   \item `oa`: overall accuracy.
+                            #'   \item `aau`: average accuracy from user's perspective.
                             #' }
                             #' @return Combined accuracy from user's perspective and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$cau()
 
@@ -900,13 +923,13 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `cap`: Combined accuracy from producer's perspective.
+                            #'   \item `cap`: combined accuracy from producer's perspective.
                             #'   \item `oa`: overall accuracy.
-                            #'   \item `aap`: Average accuracy from producer's perspective.
+                            #'   \item `aap`: average accuracy from producer's perspective.
                             #' }
                             #' @return Combined accuracy from producer's perspective and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$cap()
 
@@ -930,13 +953,13 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `caup`: Combined accuracy from both user's and producer's perspectives.
-                            #'   \item `oa`: Overall accuracy.
-                            #'   \item `amah`: Average of Hellden's mean accuracy index.
+                            #'   \item `caup`: combined accuracy from both user's and producer's perspectives.
+                            #'   \item `oa`: overall accuracy.
+                            #'   \item `amah`: average of Hellden's mean accuracy index.
                             #' }
                             #' @return Combined accuracy from both user's and producer's perspectives and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$caup()
 
@@ -961,13 +984,13 @@ MatCon <- R6Class("MatCon",
                             #'
                             #' \enumerate{
                             #'   \item `KappaValue`: Kappa coefficient.
-                            #'   \item `oa`: Overall accuracy.
-                            #'   \item `ea`: Expected accuracy of agreement if agreement were purely random.
+                            #'   \item `oa`: overall accuracy.
+                            #'   \item `ea`: expected accuracy of agreement if agreement were purely random.
                             #' }
                             #' @return Kappa coefficient and its variance.
                             #' @references Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$KappaValue()
 
@@ -982,7 +1005,8 @@ MatCon <- R6Class("MatCon",
                               }
                               else{
                                 kappa = (self$oa()[[1]]- ea) / (1 - ea)
-                                VarKappa=abs((kappa*(1-kappa))/sum(self$values))
+                                #segun el manual de calidad
+                                VarKappa=abs((self$oa()[[1]]*(1-self$oa()[[1]]))/(sum(self$values)*(1-ea)^2))
                               }
 
                               return(list(Kappa=kappa,Var=VarKappa))
@@ -998,13 +1022,13 @@ MatCon <- R6Class("MatCon",
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `mkp`: Modified kappa
-                            #'   \item `oa`: Overall accuracy.
+                            #'   \item `mkp`: modified kappa
+                            #'   \item `oa`: overall accuracy.
                             #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
                             #' }
                             #' @return Modified kappa and its variance.
                             #' @examples
-                            #' A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$mkp()
 
@@ -1021,38 +1045,42 @@ MatCon <- R6Class("MatCon",
                             #' @description Average mutual information (AMI), is applied to the comparison of thematic maps.
                             #' @description
                             #'  \deqn{
-                            #' ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log_{10} (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
+                            #' ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `ami`: Average mutual information.
+                            #'   \item `ami`: average mutual information.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
                             #' }
                             #' @return Average mutual information and its variance.
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$ami()
 
                             #Average mutual information
                             #Reference: Finn(1993)
-                            ami = function(){
+                            ami = function(v=NULL){
 
-                              for (i in 1:length(self$sumcol)) {
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+                             # for (i in 1:length(self$sumcol)) {
 
-                                for(j in 1:length(self$sumcol)){
+                                #for(j in 1:length(self$sumcol)){
                                   #si un elemento es 0 para
-                                  if(self$values[i,j]==0){
-                                    stop(" by 0")
-                                  }
+                                 # if(self$values[i,j]==0){
+                                  #  stop(" by 0")
+                                  #}
 
-                                }
-                              }
+                                #}
+                              #}
 
-                              ami = sum ((self$values/sum(self$values)) * log10(self$values / ((self$sumfil * self$sumcol)/sum(self$values))))
+                              ami = sum ((self$values/sum(self$values)) * log(self$values / ((self$sumfil * self$sumcol)/sum(self$values)),base=v),na.rm=TRUE)
                               VarAmi=abs((ami*(1-ami))/sum(self$values))
 
                               return(list(ami=ami,Var=VarAmi))
@@ -1061,36 +1089,42 @@ MatCon <- R6Class("MatCon",
 
                             #' @description
                             #'  \deqn{
-                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
                             #' nmiu=\frac{ami}{H(B)}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `nmiu`: Normalized mutual information using the entropy on map.
-                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `nmiu`: normalized mutual information using the entropy on map.
+                            #'   \item `H(B)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
-                            #'   \item `ami`: Average mutual information.
+                            #'   \item `ami`: average mutual information.
                             #' }
                             #' @return Normalized mutual information using the entropy on map and its variance.
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$nmiu()
 
                             #Normalized mutual information using the entropy on map
                             #Reference: Finn(1993)
-                            nmiu = function(){
+                            nmiu = function(v=NULL){
 
-                            HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+                            HB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
 
                               if(HB == 0){
                                 stop("/ by 0")
                               }
 
-                              nmiu = self$ami()[[1]]/HB
+                              nmiu = self$ami(v)[[1]]/HB
                               VarNmiu=abs((nmiu*(1-nmiu))/sum(self$values))
 
                               return(list(nmiu=nmiu,Var=VarNmiu))
@@ -1098,32 +1132,38 @@ MatCon <- R6Class("MatCon",
 
                             #' @description
                             #'  \deqn{
-                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
                             #' nmip=\frac{ami}{H(A)}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `nmip`: Normalized mutual information using the entropy on ground truthing.
+                            #'   \item `nmip`: normalized mutual information using the entropy on ground truthing.
                             #'   \item `H(A)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
-                            #'   \item `ami`: Average mutual information.
+                            #'   \item `ami`: average mutual information.
                             #' }
                             #' @return Normalized mutual information using the entropy on ground truthing and its variance.
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$nmip()
 
 
                             #Normalized mutual information using the entropy on ground truthing
                             #Reference: Finn(1993)
-                            nmip = function(){
+                            nmip = function(v=NULL){
 
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
 
-                              HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
+                              HA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
 
 
                               if (HA == 0){
@@ -1139,40 +1179,48 @@ MatCon <- R6Class("MatCon",
 
                             #' @description
                             #'  \deqn{
-                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
                             #' nmiam=\frac{2ami}{HA+HB}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `nmiam`: Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
+                            #'   \item `nmiam`: normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
                             #'   \item `H(A)`: the entropy of the map.
-                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `H(B)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
-                            #'   \item `ami`: Average mutual information.
+                            #'   \item `ami`: average mutual information.
                             #' }
                             #' @return Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing and its variance.
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$nmiam()
 
                             #Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing
                             #Reference: Strehl and Ghosh(2002)
-                            nmiam = function(){
+                            nmiam = function(v=NULL){
 
-                                HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
-                                HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+                                HB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
+                                HA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
 
 
                               if (HA + HB == 0) {
                                 stop ("/ by 0")
                               }
                               else{
-                                nmiam = 2 * self$ami()[[1]] / (HA + HB)
+                                nmiam = 2 * self$ami(v)[[1]] / (HA + HB)
                                 VarNmiam= abs((nmiam*(1-nmiam))/sum(self$values))
                               }
 
@@ -1181,35 +1229,43 @@ MatCon <- R6Class("MatCon",
 
                             #' @description
                             #'  \deqn{
-                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
                             #' nmigm=\frac{ami}{\sqrt{H(A) \cdot H(B)}}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `nmigm`: Normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
+                            #'   \item `nmigm`: normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
                             #'   \item `H(A)`: the entropy of the map.
-                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `H(B)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
-                            #'   \item `ami`: Average mutual information.
+                            #'   \item `ami`: average mutual information.
                             #' }
                             #' @return Normalized mutual information using the geometric mean of the entropies on map and on ground truthing and its variance.
                             #' @references Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$nmigm()
 
 
                             #Normalized mutual information using the geometric mean of the entropies on map and on ground truthing
                             #Reference: Ghosh et al.(2002)
-                            nmigm = function(){
+                            nmigm = function(v=NULL){
 
-                              HB = - sum ((self$sumfil/sum(self$values)) * (log10(self$sumfil/sum(self$values))))
-                              HA = - sum ((self$sumcol/sum(self$values)) * (log10(self$sumcol/sum(self$values))))
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+                              HB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
+                              HA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
 
 
                               if (HA * HB == 0) {
@@ -1217,7 +1273,7 @@ MatCon <- R6Class("MatCon",
                               }
                               else{
 
-                                nmigm = self$ami()[[1]] / sqrt(HA * HB)
+                                nmigm = self$ami(v)[[1]] / sqrt(HA * HB)
                                 VarNmigm=abs((nmigm*(1-nmigm)))
 
                               }
@@ -1227,32 +1283,40 @@ MatCon <- R6Class("MatCon",
 
                             #' @description
                             #'  \deqn{
-                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+                            #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
+                            #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+                            #' }
+                            #' \deqn{
                             #' nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{card(p)}}
                             #' }
                             #'
                             #' where:
                             #'
                             #' \enumerate{
-                            #'   \item `nmimx`: Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
+                            #'   \item `nmimx`: normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
                             #'   \item `H(A)`: the entropy of the map.
-                            #'   \item `H(B)`: The entropy of the map.
+                            #'   \item `H(B)`: the entropy of the map.
                             #'   \item `x_.j`: sum with respect to j (rows).
                             #'   \item `x_i.`: sum with respect to i (columns).
-                            #'   \item `ami`: Average mutual information.
+                            #'   \item `ami`: average mutual information.
                             #' }
                             #' @return Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
                             #' @references Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
+                            #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
                             #' @examples
-                            #' A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                             #' p<-MatCon$new(A)
                             #' p$nmimx()
 
                             #Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
                             #Reference: Strehl(2002)
-                            nmimx = function(){
-                              nmimx = self$ami()[[1]] / log10 (sqrt(length(self$values)))
+                            nmimx = function(v=NULL){
+                              if(!is.null(v)){
+                                v<-v
+                              }else{v<-10}
+                              nmimx = self$ami(v)[[1]] / log(sqrt(length(self$values)),base=v)
                               VarNmimx=abs((nmimx*(1-nmimx))/sum(self$values))
 
                               return (list(nmimx=nmimx,Var=VarNmimx))
@@ -1264,7 +1328,7 @@ MatCon <- R6Class("MatCon",
                       #' @examples
                       #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                       #' p<-MatCon$new(A)
-                      #' p$MPseudozeroes()
+                      #' p$MPseudozeroes()$values
 
 
 
@@ -1292,10 +1356,8 @@ MatCon <- R6Class("MatCon",
 
 
                           SumaMatriz <-sum(MERROR)
-                          SumaColumnas <- apply (MERROR, 1, sum)
-                          SumaFilas <- apply (MERROR, 2, sum)
 
-                          MLandas <- (SumaFilas %*% t(SumaColumnas))/(SumaMatriz*SumaMatriz)
+                          MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
                           K <- (SumaMatriz*SumaMatriz - sum(MERROR*MERROR))/sum((SumaMatriz*MLandas - MERROR )^2)
                           MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(MERROR + K*MLandas)
                           #Que devuelva la matriz o un objeto de clase MAtCon?
@@ -1317,11 +1379,11 @@ MatCon <- R6Class("MatCon",
                       #'   \item `x_ij`: matrix element.
                       #'   \item `sum{x_ij}`: sum of all the elements of the matrix.
                       #' }
-                      #' @param RaR "1" indicates result as real, other values mean percentage as integer. By default RaR=1
+                      #' @param RaR "1" indicates result as real, other values mean percentage as integer. By default RaR=1.
                       #' @return Typified matrix
                       #' @examples
-                      #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-                      #' p<-MatCon$new(x)
+                      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                      #' p<-MatCon$new(A)
                       #' p$MTypify(RaR=5)
 
                       #Cell Values of a matrix are typified
@@ -1348,8 +1410,8 @@ MatCon <- R6Class("MatCon",
                       #' @description  Several parameters are calculated for the given Confusion Matrix. The.
                       #' @return Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
                       #' @examples
-                      #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-                      #' p<-MatCon$new(x)
+                      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                      #' p<-MatCon$new(A)
                       #' p$MAllParameters()
 
                       #Several global and per-class parameters are calculated
@@ -1373,6 +1435,7 @@ MatCon <- R6Class("MatCon",
                           PAAzar <- sum((self$sumfil*self$sumcol))/(SumaMatriz*SumaMatriz)
                           Kappa <- self$KappaValue()[[1]]
                           VarPAcuerdo <- PAcuerdo *(1-PAcuerdo)/SumaMatriz
+                          ####VARKAPPA ME SALE DISTINTA AQUI Y EN KAPPAVALUE
                           VarKappa <-  VarPAcuerdo / ((1-PAAzar)*(1-PAAzar))
                           MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
                           K <- (SumaMatriz*SumaMatriz - sum(self$values*self$values))/sum((SumaMatriz*MLandas - self$values)^2)
@@ -1386,8 +1449,8 @@ MatCon <- R6Class("MatCon",
                     #' @description  User's and producer's accuracies and standard deviations are computed
                     #' @return A list with the producer's accuracy, its standard deviation, the user's accuracy, and its standard deviation
                     #' @examples
-                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-                    #' p<-MatCon$new(x)
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(A)
                     #' p$CAccuracies()
 
                     #User's and producer's accuracies and standard deviations are computed
@@ -1411,11 +1474,11 @@ MatCon <- R6Class("MatCon",
 
 
                     #' @description  User's and producer's weighted accuracies and standard deviations are computed.
-                    #' @param MP matrix of weights
+                    #' @param MP Matrix of weights
                     #' @return Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
                     #' @examples
-                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-                    #' p<-MatCon$new(x)
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(A)
                     #' MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
                     #' p$CAccuraciesW(MP)
 
@@ -1478,7 +1541,8 @@ MatCon <- R6Class("MatCon",
                     #' @description  Overall Kappa agreement index and variance elements are computed
                     #' @return Overall accuracy, Expected accuracy of agreement if agreement were purely random,,, coefficient kappa, standar desviation kappa,
                     #' @examples
-                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(A)
                     #' p$DetailedKappa()
 
                     #Overall Kappa agreement index and its variance are computed
@@ -1514,10 +1578,14 @@ MatCon <- R6Class("MatCon",
                     },
 
                     #' @description Class Kappa agreement index (conditional Kappa) and its variance are computed
+                    #' @return Kappa index and its standard deviation.
                     #' @examples
-                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(A)
                     #' p$DetailedCKappa ()
 
+                    #Tenia otra matriz de ejemplo pero salian warnings en el calculo de la
+                    #desviación tipica, por eso he acabado poniendo esta de ejemplo.
                     #Class  Kappa agreement index and variance elements  are computed
                     DetailedCKappa = function(){
 
@@ -1557,16 +1625,17 @@ MatCon <- R6Class("MatCon",
                           K_jsd[i] <- sqrt((1/SumaMatriz)*tj2*(tj3+tj4))
                         }
 
-                        return(list(Ki_=Ki_, Ki_Sd=Ki_sd, K_j=K_j, K_jsd=K_jsd))
+                        return(list(SumaMatriz=SumaMatriz,ti1=ti1,ti2=ti2,tj2=tj2,SumaTi=ti3+ti4, SumaTj=tj3+tj4,Ki_=Ki_, Ki_Sd=Ki_sd, K_j=K_j, K_jsd=K_jsd))
 
                         },
 
                     #' @description  Overall Kappa agreement index (Weighted) and its variance are computed
-                    #' @param MW  matrix of weights
+                    #' @param MW  Matrix of weights.
+                    #' @return Kappa index and its variance.
                     #' @examples
-                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                     #' MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-                    #' p<-MatCon$new(x)
+                    #' p<-MatCon$new(A)
                     #' p$DetailedWKappa(MW)
 
                     # Overall Kappa agreement index (Weighted) and variance elements  are computed
@@ -1583,7 +1652,7 @@ MatCon <- R6Class("MatCon",
                         prow<- apply(MERROR,1,sum)
 
                         # Weighted matrix
-                        WMERROR<-MERROR*MP
+                        WMERROR<-MERROR*MW
 
                         # The 4 coefficients
                         Ow1 <- sum(MW*MERROR)
@@ -1591,7 +1660,7 @@ MatCon <- R6Class("MatCon",
                         c1<- (1-Ow1)
                         c2<- (1-Ow2)
                         wi_ <- MW %*% pcol
-                        w_j <- MP %*% prow
+                        w_j <- MW %*% prow
                         mintermedia1<- matrix(rep(wi_, nc), nrow =nc, ncol=nc, byrow=FALSE)
                         mintermedia2<- matrix(rep(w_j, nc), nrow =nc, ncol=nc, byrow=TRUE)
                         mintermedia3 <-(mintermedia1+mintermedia2)*c1
@@ -1606,12 +1675,13 @@ MatCon <- R6Class("MatCon",
 
                       },
 
-                    #' @description  Overall Tau agreement index and variance elements  are computed
-                    #' @param VP vector of proportions (as matrix)
+                    #' @description  Overall Tau agreement index and variance elements  are computed.
+                    #' @param VP Vector of proportions (as matrix)
+                    #' @return NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
                     #' @examples
-                    #' x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
                     #' VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
-                    #' p<-MatCon$new(x)
+                    #' p<-MatCon$new(A)
                     #' p$DetailedTau(VP)
 
                     #Overall Tau agreement index and variance elements  are computed
@@ -1638,8 +1708,8 @@ MatCon <- R6Class("MatCon",
 
                         O4 <- sum(MERROR*mintermedia3)
 
-                        t1<- (1-O1)
-                        t2<- (1-O2)
+                        t1<- (1-O1) #probabilidad error general porporcional
+                        t2<- (1-O2) #probabilidad error productor proporcional
                         t3<- O1*t1/(t2^2)
                         t4<- 2*t1*(2*O1*O2-O3)/(t2^3)
                         t5<- (t1^2)*(O4-4*O2^2)/(t2^4)
@@ -1647,15 +1717,22 @@ MatCon <- R6Class("MatCon",
                         SdT <- sqrt((t3+t4+t5)/SumaMatriz)
                         CV<- SdT/Tau
 
+                        #TAU SEGUN MANUAL
+                        #Ca<-1/nrow(self$values)
+                        #Tau<-((self$oa()[[1]]-Ca)/(1-Ca))
+                        #VarTau=((self$oa()[[1]]*(1-self$oa()[[1]]))/(sum(self$values)*(1-Ca)))
+
+
                         return(list(O1=O1, O2=O2, O3=O3,O4=O4, Tau=Tau, SdT=SdT, CV=CV))
                     },
 
                     #' @description  Quantity, Exchange and Shift values are computed
-                    #' @param TI time interval (default value = 1)
+                    #' @param TI Time interval (default value = 1)
                     #' @param SF Scale factor for results (default value = 1)
+                    #' @return NO VEO MUY CLARO QUE HACE
                     #' @examples
-                    #' x <- t(matrix(c(0,1,1,2,0,0,0,2,0), nrow =3, ncol=3))
-                    #' p<-MatCon$new(x)
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' p<-MatCon$new(A)
                     #' p$QES(TI=1, SF=6)
 
 
@@ -1675,7 +1752,7 @@ MatCon <- R6Class("MatCon",
                         s<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
                         for (j in 1:nc){
                           for (i in 1:nc){
-                            if (i>j){#diagonal 0?
+                            if (i>j){#diagonal 0//triangular superior
                               ee[j,i] <-  (min(self$values[i,j], self$values[j,i]))*2
                             }else{
                               ee[j,i] <- 0
@@ -1684,7 +1761,7 @@ MatCon <- R6Class("MatCon",
                         }
 
                         for (j in 1:nc){
-                          d[j]<-d[j]+ sum(self$values[,j])+ sum(self$values[j,])-2*self$values[j,j]
+                          d[j]<-d[j]+ sum(self$values[,j])+sum(self$values[j,])-2*self$values[j,j]
                           q[j]<-q[j]+ abs(sum(self$values[,j])- sum(self$values[j,]))
                           e[j]<-e[j]+ sum(ee[,j])+sum(ee[j,])
                           s[j]<-d[j]- q[j]-e[j]

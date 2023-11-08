@@ -10,30 +10,22 @@ Object of class MatCon #y mas
 Using the confusion matrix, various indices are calculated.
 }
 \examples{
-C = matrix( c(5, 0, 1, 0,4,0,0,0,3), nrow=3,  ncol=3)
-mc2 <- MatCon$new (C,ID=5,Date="27-10-2023")
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+mc <- MatCon$new (A,ID=5,Date="27-10-2023")
 
 ## ------------------------------------------------
 ## Method `MatCon$oa`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$oa()
-
-## ------------------------------------------------
-## Method `MatCon$dec`
-## ------------------------------------------------
-
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
-p<-MatCon$new(A)
-p$dec()
 
 ## ------------------------------------------------
 ## Method `MatCon$ua`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A,ID=1,Date="30/10/2023")
 p$ua()
 
@@ -41,7 +33,7 @@ p$ua()
 ## Method `MatCon$uai`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$uai(2)
 
@@ -49,7 +41,7 @@ p$uai(2)
 ## Method `MatCon$pai`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$pai(1)
 
@@ -57,7 +49,7 @@ p$pai(1)
 ## Method `MatCon$pa`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$pa()
 
@@ -65,7 +57,7 @@ p$pa()
 ## Method `MatCon$aup`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aup(2)
 
@@ -73,7 +65,7 @@ p$aup(2)
 ## Method `MatCon$ICSI`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ICSI(2)
 
@@ -81,7 +73,7 @@ p$ICSI(2)
 ## Method `MatCon$mah`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mah(2)
 
@@ -89,7 +81,7 @@ p$mah(2)
 ## Method `MatCon$mas`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mas(2)
 
@@ -97,7 +89,7 @@ p$mas(2)
 ## Method `MatCon$cku`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$cku(2)
 
@@ -105,7 +97,7 @@ p$cku(2)
 ## Method `MatCon$ckp`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ckp(2)
 
@@ -113,7 +105,7 @@ p$ckp(2)
 ## Method `MatCon$mcku`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mcku(2)
 
@@ -121,15 +113,15 @@ p$mcku(2)
 ## Method `MatCon$mckp`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$mckp(2)
+p$mckp(4)
 
 ## ------------------------------------------------
 ## Method `MatCon$ecnu`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ecnu(2)
 
@@ -137,15 +129,15 @@ p$ecnu(2)
 ## Method `MatCon$ecnp`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$ecnp(2)
+p$ecnp(4)
 
 ## ------------------------------------------------
 ## Method `MatCon$aau`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aau()
 
@@ -153,16 +145,15 @@ p$aau()
 ## Method `MatCon$Normalize`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$Normalize()
-p$Normalize(1000)
+p$Normalize()$values
 
 ## ------------------------------------------------
 ## Method `MatCon$aap`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aap()
 
@@ -170,7 +161,7 @@ p$aap()
 ## Method `MatCon$daup`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$daup()
 
@@ -178,7 +169,7 @@ p$daup()
 ## Method `MatCon$CSI`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$CSI()
 
@@ -186,7 +177,7 @@ p$CSI()
 ## Method `MatCon$amah`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$amah()
 
@@ -194,7 +185,7 @@ p$amah()
 ## Method `MatCon$amas`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$amas()
 
@@ -202,7 +193,7 @@ p$amas()
 ## Method `MatCon$cau`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$cau()
 
@@ -210,7 +201,7 @@ p$cau()
 ## Method `MatCon$cap`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$cap()
 
@@ -218,7 +209,7 @@ p$cap()
 ## Method `MatCon$caup`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$caup()
 
@@ -226,7 +217,7 @@ p$caup()
 ## Method `MatCon$KappaValue`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$KappaValue()
 
@@ -234,7 +225,7 @@ p$KappaValue()
 ## Method `MatCon$mkp`
 ## ------------------------------------------------
 
-A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mkp()
 
@@ -242,7 +233,7 @@ p$mkp()
 ## Method `MatCon$ami`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ami()
 
@@ -250,7 +241,7 @@ p$ami()
 ## Method `MatCon$nmiu`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmiu()
 
@@ -258,7 +249,7 @@ p$nmiu()
 ## Method `MatCon$nmip`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmip()
 
@@ -266,7 +257,7 @@ p$nmip()
 ## Method `MatCon$nmiam`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmiam()
 
@@ -274,7 +265,7 @@ p$nmiam()
 ## Method `MatCon$nmigm`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmigm()
 
@@ -282,7 +273,7 @@ p$nmigm()
 ## Method `MatCon$nmimx`
 ## ------------------------------------------------
 
-A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmimx()
 
@@ -292,38 +283,38 @@ p$nmimx()
 
 A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$MPseudozeroes()
+p$MPseudozeroes()$values
 
 ## ------------------------------------------------
 ## Method `MatCon$MTypify`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$MTypify(RaR=5)
 
 ## ------------------------------------------------
 ## Method `MatCon$MAllParameters`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$MAllParameters()
 
 ## ------------------------------------------------
 ## Method `MatCon$CAccuracies`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$CAccuracies()
 
 ## ------------------------------------------------
 ## Method `MatCon$CAccuraciesW`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p$CAccuraciesW(MP)
 
@@ -331,40 +322,42 @@ p$CAccuraciesW(MP)
 ## Method `MatCon$DetailedKappa`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$DetailedKappa()
 
 ## ------------------------------------------------
 ## Method `MatCon$DetailedCKappa`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$DetailedCKappa ()
 
 ## ------------------------------------------------
 ## Method `MatCon$DetailedWKappa`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+p<-MatCon$new(A)
 p$DetailedWKappa(MW)
 
 ## ------------------------------------------------
 ## Method `MatCon$DetailedTau`
 ## ------------------------------------------------
 
-x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
-p<-MatCon$new(x)
+p<-MatCon$new(A)
 p$DetailedTau(VP)
 
 ## ------------------------------------------------
 ## Method `MatCon$QES`
 ## ------------------------------------------------
 
-x <- t(matrix(c(0,1,1,2,0,0,0,2,0), nrow =3, ncol=3))
-p<-MatCon$new(x)
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$QES(TI=1, SF=6)
 }
 \references{
@@ -403,7 +396,6 @@ Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio 
 \itemize{
 \item \href{#method-MatCon-new}{\code{MatCon$new()}}
 \item \href{#method-MatCon-oa}{\code{MatCon$oa()}}
-\item \href{#method-MatCon-dec}{\code{MatCon$dec()}}
 \item \href{#method-MatCon-ua}{\code{MatCon$ua()}}
 \item \href{#method-MatCon-uai}{\code{MatCon$uai()}}
 \item \href{#method-MatCon-pai}{\code{MatCon$pai()}}
@@ -462,9 +454,9 @@ Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio 
 \describe{
 \item{\code{values}}{Confusion matrix}
 
-\item{\code{ID}}{Identifier (optional)}
+\item{\code{ID}}{Identifier. By default ID is a random number between 1 and 1000.}
 
-\item{\code{Date}}{System or user-provided date (optional)}
+\item{\code{Date}}{Date provided by the user. By default the date provided by the system will be taken.}
 }
 \if{html}{\out{</div>}}
 }
@@ -490,54 +482,17 @@ Where:
 }
 This represents a mathematical expression with a fraction.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$oa(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$oa()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 Overall accuracy and variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$oa()
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-dec"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-dec}{}}}
-\subsection{Method \code{dec()}}{
-Determines whether a value is decimal or not.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$dec(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-TRUE or FALSE
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
-p<-MatCon$new(A)
-p$dec()
 }
 \if{html}{\out{</div>}}
 
@@ -564,22 +519,15 @@ where:
   \item `x_ij`: element of the matrix.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ua(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ua()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
-vector of values with the user's accuracy indexes of all classes and their variances.
+Vector of values with the user's accuracy indexes of all classes and their variances.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A,ID=1,Date="30/10/2023")
 p$ua()
 }
@@ -622,7 +570,7 @@ Class i user accuracy index and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$uai(2)
 }
@@ -665,7 +613,7 @@ Class i producer accuracy index and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$pai(1)
 }
@@ -693,22 +641,15 @@ where:
   \item `x_ij`: element of the matrix.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$pa(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$pa()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 Vector of values with the producer's accuracy indexes of all classes
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$pa()
 }
@@ -731,7 +672,7 @@ aup=\frac{ua_i+pa_i}{2}
 where:
 
 \enumerate{
-  \item `aup`: Average of user's and producer's accuracy.
+  \item `aup`: average of user's and producer's accuracy.
   \item `ua_i`: user accuracy
   \item `pa_i`: producer accuracy.
 }
@@ -751,7 +692,7 @@ Average of user's and producer's accuracy and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aup(2)
 }
@@ -774,7 +715,7 @@ ICSI=ua_i+pa_i-1
 where:
 
 \enumerate{
-  \item `ICSI`: Individual classification success index.
+  \item `ICSI`: individual classification success index.
   \item `ua_i`: user accuracy.
   \item `pa_i`: producer accuracy.
 }
@@ -794,7 +735,7 @@ Individual Classification Success Index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ICSI(2)
 }
@@ -832,9 +773,12 @@ where:
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Hellden's mean accuracy.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mah(2)
 }
@@ -878,7 +822,7 @@ Short's mapping accuracy and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mas(2)
 }
@@ -901,7 +845,7 @@ cku=\frac{ua_i-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}
 where:
 
 \enumerate{
-  \item `cku`: Conditional kappa (user's).
+  \item `cku`: conditional kappa (user's).
   \item `ua_i`: user accuracy.
   \item `x_ii`: diagonal element of the matrix.
   \item `x_.j`: sum with respect to j (rows).
@@ -923,7 +867,7 @@ Conditional kappa (user's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$cku(2)
 }
@@ -946,7 +890,7 @@ ckp=\frac{pa_i-\frac{\sum^n_{j=1} x_{ \cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}
 where:
 
 \enumerate{
-  \item `ckp`: Conditional kappa (producer's).
+  \item `ckp`: conditional kappa (producer's).
   \item `pa_i`: producer accuracy.
   \item `x_ii`: diagonal element of the matrix.
   \item `x_.j`: sum with respect to j (rows).
@@ -968,7 +912,7 @@ Conditional kappa (producer's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ckp(2)
 }
@@ -991,7 +935,7 @@ mcku=\frac{ua_i-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
 where:
 
 \enumerate{
-  \item `mcku`: Modified conditional kappa (user's).
+  \item `mcku`: modified conditional kappa (user's).
   \item `ua_i`: user accuracy.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
 }
@@ -1011,7 +955,7 @@ Modified conditional kappa (user's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mcku(2)
 }
@@ -1034,7 +978,7 @@ mckp=\frac{pa_i-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
 where:
 
 \enumerate{
-  \item `mckp`: Modified conditional kappa (producer's).
+  \item `mckp`: modified conditional kappa (producer's).
   \item `pa_i`: producer accuracy.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
 }
@@ -1054,9 +998,9 @@ Modified conditional kappa (producer's) and variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$mckp(2)
+p$mckp(4)
 }
 \if{html}{\out{</div>}}
 
@@ -1071,28 +1015,34 @@ Relative entropy is a quantity that measures the difference between two maps.
 
 
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-H(A|b_i)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{j=1} x_{\cdot j} }) \cdot \log (\frac{x_{ij}}{\sum^n_{j=1} x_{\cdot j}}) ) \\
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
+H(A|b_i)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{j=1} x_{\cdot j} }) \cdot \log (\frac{x_{ij}}{\sum^n_{j=1} x_{\cdot j}}) )
+}
+\deqn{
 ecnu= \frac{H(A)-H(A|b_i)}{H(A)}
 }
 
 where:
 
 \enumerate{
-  \item `ecnu`: Relative change of entropy given a category on map.
+  \item `ecnu`: relative change of entropy given a category on map.
   \item `H(A)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
   \item `H(A|b_i)`: Entropy of map A knowing that the location corresponding to map B is in class b_i.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ecnu(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ecnu(i, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate (row).}
+
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
 }
 \if{html}{\out{</div>}}
 }
@@ -1101,7 +1051,7 @@ Relative change of entropy given a category on map and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ecnu(2)
 }
@@ -1118,28 +1068,34 @@ Relative entropy is a quantity that measures the difference between two ground t
 
 
 \deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-H(B|a_j)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{i=1} x_{i \cdot} }) \cdot \log (\frac{x_{ij}}{\sum^n_{i=1} x_{i \cdot}}) ) \\
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
+H(B|a_j)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{i=1} x_{i \cdot} }) \cdot \log (\frac{x_{ij}}{\sum^n_{i=1} x_{i \cdot}}) )
+}
+\deqn{
 ecnp= \frac{H(B)-H(B|a_j)}{H(B)}
 }
 
 where:
 
 \enumerate{
-  \item `ecnp`: Relative change of entropy given a category on ground truthing.
+  \item `ecnp`: relative change of entropy given a category on ground truthing.
   \item `H(B)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
   \item `H(B|a_j)`: Entropy of map B knowing that the location corresponding to map A is in class a_j.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ecnp(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ecnp(i, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate}
+
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
 }
 \if{html}{\out{</div>}}
 }
@@ -1148,9 +1104,9 @@ Relative change of entropy given a category on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$ecnp(2)
+p$ecnp(4)
 }
 \if{html}{\out{</div>}}
 
@@ -1171,7 +1127,7 @@ aau=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
 where:
 
 \enumerate{
-  \item `aau`: Average accuracy from user's perspective.
+  \item `aau`: average accuracy from user's perspective.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_ii`: diagonal element of the matrix.
@@ -1185,7 +1141,7 @@ Average accuracy from user's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aau()
 }
@@ -1206,7 +1162,7 @@ An iterative process is carried out where each element is divided by the total o
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n}}{Iteration}
+\item{\code{n}}{Iteration. By default n=100.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1215,10 +1171,9 @@ Normalized matrix (Class MatCon) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$Normalize()
-p$Normalize(1000)
+p$Normalize()$values
 }
 \if{html}{\out{</div>}}
 
@@ -1239,7 +1194,7 @@ aap=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ji}}
 where:
 
 \enumerate{
-  \item `aap`: Average accuracy from producer's perspective.
+  \item `aap`: average accuracy from producer's perspective.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_ii`: diagonal element of the matrix.
@@ -1253,7 +1208,7 @@ Average accuracy from producer's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aap()
 }
@@ -1276,9 +1231,9 @@ daup=\frac{aau+aap}{2}
 where:
 
 \enumerate{
-  \item `daup`: Double average of user's and producer's perspective.
-  \item `aau`: Average accuracy from user's perspective.
-  \item `aap`: Average accuracy from producer's perspective.
+  \item `daup`: double average of user's and producer's perspective.
+  \item `aau`: average accuracy from user's perspective.
+  \item `aap`: average accuracy from producer's perspective.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$daup()}\if{html}{\out{</div>}}
@@ -1289,7 +1244,7 @@ Double average of user's and producer's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$daup()
 }
@@ -1312,9 +1267,9 @@ CSI=aau+aap-1
 where:
 
 \enumerate{
-  \item `CSI`: Classification succes index.
-  \item `aau`: Average accuracy from user's perspective.
-  \item `aap`: Average accuracy from producer's perspective.
+  \item `CSI`: classification succes index.
+  \item `aau`: average accuracy from user's perspective.
+  \item `aap`: average accuracy from producer's perspective.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$CSI()}\if{html}{\out{</div>}}
@@ -1325,7 +1280,7 @@ Classification sucess index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$CSI()
 }
@@ -1348,7 +1303,7 @@ amah=\frac{1}{\sqrt{card(p)}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}
 where:
 
 \enumerate{
-  \item `amah`: Average of Hellden's mean accuracy index.
+  \item `amah`: average of Hellden's mean accuracy index.
   \item `ua_i`: user accuracy.
   \item `pa_i`: producer accuracy.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
@@ -1362,7 +1317,7 @@ Average of Hellden's mean accuracy index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$amah()
 }
@@ -1385,7 +1340,7 @@ amas=\frac{1}{\sqrt{card(p)}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{i
 where:
 
 \enumerate{
-  \item `amas`: Average of Short's mapping accuracy index.
+  \item `amas`: average of Short's mapping accuracy index.
   \item `x_ii`: diagonal element of the matrix.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
@@ -1400,7 +1355,7 @@ Average of Short's mapping accuracy index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$amas()
 }
@@ -1423,9 +1378,9 @@ cau=\frac{oa+aau}{2}
 where:
 
 \enumerate{
-  \item `cau`: Combined accuracy from user's perspective.
-  \item `oa`: Overall accuracy.
-  \item `aau`: Average accuracy from user's perspective.
+  \item `cau`: combined accuracy from user's perspective.
+  \item `oa`: overall accuracy.
+  \item `aau`: average accuracy from user's perspective.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$cau()}\if{html}{\out{</div>}}
@@ -1436,7 +1391,7 @@ Combined accuracy from user's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$cau()
 }
@@ -1459,9 +1414,9 @@ cap=\frac{oa+aap}{2}
 where:
 
 \enumerate{
-  \item `cap`: Combined accuracy from producer's perspective.
+  \item `cap`: combined accuracy from producer's perspective.
   \item `oa`: overall accuracy.
-  \item `aap`: Average accuracy from producer's perspective.
+  \item `aap`: average accuracy from producer's perspective.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$cap()}\if{html}{\out{</div>}}
@@ -1472,7 +1427,7 @@ Combined accuracy from producer's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$cap()
 }
@@ -1495,9 +1450,9 @@ caup=\frac{oa+amah}{2}
 where:
 
 \enumerate{
-  \item `caup`: Combined accuracy from both user's and producer's perspectives.
-  \item `oa`: Overall accuracy.
-  \item `amah`: Average of Hellden's mean accuracy index.
+  \item `caup`: combined accuracy from both user's and producer's perspectives.
+  \item `oa`: overall accuracy.
+  \item `amah`: average of Hellden's mean accuracy index.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$caup()}\if{html}{\out{</div>}}
@@ -1508,7 +1463,7 @@ Combined accuracy from both user's and producer's perspectives and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$caup()
 }
@@ -1533,8 +1488,8 @@ where:
 
 \enumerate{
   \item `KappaValue`: Kappa coefficient.
-  \item `oa`: Overall accuracy.
-  \item `ea`: Expected accuracy of agreement if agreement were purely random.
+  \item `oa`: overall accuracy.
+  \item `ea`: expected accuracy of agreement if agreement were purely random.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$KappaValue()}\if{html}{\out{</div>}}
@@ -1545,7 +1500,7 @@ Kappa coefficient and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$KappaValue()
 }
@@ -1568,8 +1523,8 @@ mkp=\frac{oa-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
 where:
 
 \enumerate{
-  \item `mkp`: Modified kappa
-  \item `oa`: Overall accuracy.
+  \item `mkp`: modified kappa
+  \item `oa`: overall accuracy.
   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
 }
 \subsection{Usage}{
@@ -1581,7 +1536,7 @@ Modified kappa and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,1,0,0,2,0,0,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mkp()
 }
@@ -1598,26 +1553,33 @@ Average mutual information (AMI), is applied to the comparison of thematic maps.
 
 
 \deqn{
-ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log_{10} (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
+ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
 }
 
 where:
 
 \enumerate{
-  \item `ami`: Average mutual information.
+  \item `ami`: average mutual information.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ami()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ami(v = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Average mutual information and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$ami()
 }
@@ -1631,29 +1593,38 @@ p$ami()
 \if{latex}{\out{\hypertarget{method-MatCon-nmiu}{}}}
 \subsection{Method \code{nmiu()}}{
 \deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
 nmiu=\frac{ami}{H(B)}
 }
 
 where:
 
 \enumerate{
-  \item `nmiu`: Normalized mutual information using the entropy on map.
-  \item `H(B)`: The entropy of the map.
+  \item `nmiu`: normalized mutual information using the entropy on map.
+  \item `H(B)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: Average mutual information.
+  \item `ami`: average mutual information.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiu()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiu(v = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Normalized mutual information using the entropy on map and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmiu()
 }
@@ -1667,29 +1638,38 @@ p$nmiu()
 \if{latex}{\out{\hypertarget{method-MatCon-nmip}{}}}
 \subsection{Method \code{nmip()}}{
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
 nmip=\frac{ami}{H(A)}
 }
 
 where:
 
 \enumerate{
-  \item `nmip`: Normalized mutual information using the entropy on ground truthing.
+  \item `nmip`: normalized mutual information using the entropy on ground truthing.
   \item `H(A)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: Average mutual information.
+  \item `ami`: average mutual information.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmip()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmip(v = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Normalized mutual information using the entropy on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmip()
 }
@@ -1703,31 +1683,42 @@ p$nmip()
 \if{latex}{\out{\hypertarget{method-MatCon-nmiam}{}}}
 \subsection{Method \code{nmiam()}}{
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
 nmiam=\frac{2ami}{HA+HB}
 }
 
 where:
 
 \enumerate{
-  \item `nmiam`: Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
+  \item `nmiam`: normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
   \item `H(A)`: the entropy of the map.
-  \item `H(B)`: The entropy of the map.
+  \item `H(B)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: Average mutual information.
+  \item `ami`: average mutual information.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiam()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiam(v = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmiam()
 }
@@ -1741,31 +1732,42 @@ p$nmiam()
 \if{latex}{\out{\hypertarget{method-MatCon-nmigm}{}}}
 \subsection{Method \code{nmigm()}}{
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
 nmigm=\frac{ami}{\sqrt{H(A) \cdot H(B)}}
 }
 
 where:
 
 \enumerate{
-  \item `nmigm`: Normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
+  \item `nmigm`: normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
   \item `H(A)`: the entropy of the map.
-  \item `H(B)`: The entropy of the map.
+  \item `H(B)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: Average mutual information.
+  \item `ami`: average mutual information.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmigm()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmigm(v = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Normalized mutual information using the geometric mean of the entropies on map and on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmigm()
 }
@@ -1779,31 +1781,42 @@ p$nmigm()
 \if{latex}{\out{\hypertarget{method-MatCon-nmimx}{}}}
 \subsection{Method \code{nmimx()}}{
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) ) \\
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) ) \\
+H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
+H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+}
+\deqn{
 nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{card(p)}}
 }
 
 where:
 
 \enumerate{
-  \item `nmimx`: Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
+  \item `nmimx`: normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
   \item `H(A)`: the entropy of the map.
-  \item `H(B)`: The entropy of the map.
+  \item `H(B)`: the entropy of the map.
   \item `x_.j`: sum with respect to j (rows).
   \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: Average mutual information.
+  \item `ami`: average mutual information.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmimx()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmimx(v = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(36,5,4,7,2,2,6,1,20),nrow=3,ncol=3)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$nmimx()
 }
@@ -1828,7 +1841,7 @@ An object of class MatCon with the matrix of Pseudoceros.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
-p$MPseudozeroes()
+p$MPseudozeroes()$values
 }
 \if{html}{\out{</div>}}
 
@@ -1860,7 +1873,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{RaR}}{"1" indicates result as real, other values mean percentage as integer. By default RaR=1}
+\item{\code{RaR}}{"1" indicates result as real, other values mean percentage as integer. By default RaR=1.}
 }
 \if{html}{\out{</div>}}
 }
@@ -1869,8 +1882,8 @@ Typified matrix
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$MTypify(RaR=5)
 }
 \if{html}{\out{</div>}}
@@ -1892,8 +1905,8 @@ Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Varianc
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$MAllParameters()
 }
 \if{html}{\out{</div>}}
@@ -1915,8 +1928,8 @@ A list with the producer's accuracy, its standard deviation, the user's accuracy
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$CAccuracies()
 }
 \if{html}{\out{</div>}}
@@ -1936,7 +1949,7 @@ User's and producer's weighted accuracies and standard deviations are computed.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{MP}}{matrix of weights}
+\item{\code{MP}}{Matrix of weights}
 }
 \if{html}{\out{</div>}}
 }
@@ -1945,8 +1958,8 @@ Matrix formed with its original elements and their corresponding weights, genera
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p$CAccuraciesW(MP)
 }
@@ -1969,7 +1982,8 @@ Overall accuracy, Expected accuracy of agreement if agreement were purely random
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$DetailedKappa()
 }
 \if{html}{\out{</div>}}
@@ -1986,9 +2000,13 @@ Class Kappa agreement index (conditional Kappa) and its variance are computed
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedCKappa()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Kappa index and its standard deviation.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$DetailedCKappa ()
 }
 \if{html}{\out{</div>}}
@@ -2008,15 +2026,18 @@ Overall Kappa agreement index (Weighted) and its variance are computed
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{MW}}{matrix of weights}
+\item{\code{MW}}{Matrix of weights.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+Kappa index and its variance.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-p<-MatCon$new(x)
+p<-MatCon$new(A)
 p$DetailedWKappa(MW)
 }
 \if{html}{\out{</div>}}
@@ -2028,7 +2049,7 @@ p$DetailedWKappa(MW)
 \if{html}{\out{<a id="method-MatCon-DetailedTau"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-DetailedTau}{}}}
 \subsection{Method \code{DetailedTau()}}{
-Overall Tau agreement index and variance elements  are computed
+Overall Tau agreement index and variance elements  are computed.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedTau(VP)}\if{html}{\out{</div>}}
 }
@@ -2036,15 +2057,18 @@ Overall Tau agreement index and variance elements  are computed
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{VP}}{vector of proportions (as matrix)}
+\item{\code{VP}}{Vector of proportions (as matrix)}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
-p<-MatCon$new(x)
+p<-MatCon$new(A)
 p$DetailedTau(VP)
 }
 \if{html}{\out{</div>}}
@@ -2064,16 +2088,19 @@ Quantity, Exchange and Shift values are computed
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{TI}}{time interval (default value = 1)}
+\item{\code{TI}}{Time interval (default value = 1)}
 
 \item{\code{SF}}{Scale factor for results (default value = 1)}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Returns}{
+NO VEO MUY CLARO QUE HACE
+}
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{x <- t(matrix(c(0,1,1,2,0,0,0,2,0), nrow =3, ncol=3))
-p<-MatCon$new(x)
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
 p$QES(TI=1, SF=6)
 }
 \if{html}{\out{</div>}}
