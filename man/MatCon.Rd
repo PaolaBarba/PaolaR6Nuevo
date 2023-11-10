@@ -142,6 +142,14 @@ p<-MatCon$new(A)
 p$aau()
 
 ## ------------------------------------------------
+## Method `MatCon$BootStrap`
+## ------------------------------------------------
+
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
+p$BootStrap(2)
+
+## ------------------------------------------------
 ## Method `MatCon$Normalize`
 ## ------------------------------------------------
 
@@ -344,6 +352,15 @@ p<-MatCon$new(A)
 p$DetailedWKappa(MW)
 
 ## ------------------------------------------------
+## Method `MatCon$Tau`
+## ------------------------------------------------
+
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+p<-MatCon$new(A)
+p$Tau()
+
+## ------------------------------------------------
 ## Method `MatCon$DetailedTau`
 ## ------------------------------------------------
 
@@ -379,6 +396,8 @@ Finn, J. T. (1993). Use of the average mutual information index in evaluating cl
 
 Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
 
+Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
+
 Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
 
 Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
@@ -390,6 +409,8 @@ Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for 
 Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
 
 Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+
+Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -411,6 +432,7 @@ Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio 
 \item \href{#method-MatCon-ecnu}{\code{MatCon$ecnu()}}
 \item \href{#method-MatCon-ecnp}{\code{MatCon$ecnp()}}
 \item \href{#method-MatCon-aau}{\code{MatCon$aau()}}
+\item \href{#method-MatCon-BootStrap}{\code{MatCon$BootStrap()}}
 \item \href{#method-MatCon-Normalize}{\code{MatCon$Normalize()}}
 \item \href{#method-MatCon-aap}{\code{MatCon$aap()}}
 \item \href{#method-MatCon-daup}{\code{MatCon$daup()}}
@@ -436,6 +458,7 @@ Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio 
 \item \href{#method-MatCon-DetailedKappa}{\code{MatCon$DetailedKappa()}}
 \item \href{#method-MatCon-DetailedCKappa}{\code{MatCon$DetailedCKappa()}}
 \item \href{#method-MatCon-DetailedWKappa}{\code{MatCon$DetailedWKappa()}}
+\item \href{#method-MatCon-Tau}{\code{MatCon$Tau()}}
 \item \href{#method-MatCon-DetailedTau}{\code{MatCon$DetailedTau()}}
 \item \href{#method-MatCon-QES}{\code{MatCon$QES()}}
 \item \href{#method-MatCon-clone}{\code{MatCon$clone()}}
@@ -1144,6 +1167,36 @@ Average accuracy from user's perspective and its variance.
 \preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aau()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-BootStrap"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-BootStrap}{}}}
+\subsection{Method \code{BootStrap()}}{
+N resamples of the confusion matrix are performed
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$BootStrap(n)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{Number of resamples.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+n simulated matrices, from the confusion matrix, applying the multinomial distribution
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
+p$BootStrap(2)
 }
 \if{html}{\out{</div>}}
 
@@ -2039,6 +2092,30 @@ Kappa index and its variance.
 MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$DetailedWKappa(MW)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-Tau"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-Tau}{}}}
+\subsection{Method \code{Tau()}}{
+Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Tau()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Tau index and its variance.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+p<-MatCon$new(A)
+p$Tau()
 }
 \if{html}{\out{</div>}}
 

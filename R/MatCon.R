@@ -32,6 +32,7 @@ MatCon <- R6Class("MatCon",
 
                                initialize = function(values,ID=NULL,Date=NULL) {
                                  #El usuario debe dar la matriz de confusion
+                                 ##elementos de la matriz de confusion
                                  self$values<-values
 
                                  #Es opcional que identifique su matriz.
@@ -66,6 +67,7 @@ MatCon <- R6Class("MatCon",
                                  error5<- FALSE
                                  error6<- FALSE
 
+                                 ##Vemos que realmente es una matriz de confusion
                                  if((nfilas != ncolumnas)) {
                                    error1<- TRUE
                                    print("Error tipo 1: Matriz no cuadrada")#error matriz no cuadra
@@ -115,7 +117,6 @@ MatCon <- R6Class("MatCon",
 
 
                                #' @description Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken.
-                               # #' @param ... (ignored).
                                #' @description
                                #' The mathematical expression is:
                                #'
@@ -181,6 +182,7 @@ MatCon <- R6Class("MatCon",
                                #' p$ua()
 
                                ua = function(){
+                                #rango matriz
                                  n <- sqrt(length(self$values))
                                  ua <- rep(0,n)
                                  VarUa<-rep(0,n)
@@ -303,7 +305,7 @@ MatCon <- R6Class("MatCon",
 
                             #Average of user's and producer's accuracy
                             aup=function(i){
-
+                              #exactitud usuario y productor [[2]] seria la varianza
                               aup = (self$uai(i)[[1]] + self$pai(i)[[1]])/2
                               VarAup=abs((aup*(1-aup))/(self$sumcol[i]+self$sumfil[i]))
 
@@ -684,6 +686,42 @@ MatCon <- R6Class("MatCon",
                               return (list(aau=aau,Var=VarAau))
                             },
 
+                            #' @description N resamples of the confusion matrix are performed
+                            #' @param n Number of resamples.
+                            #' @return n simulated matrices, from the confusion matrix, applying the multinomial distribution
+                            #' @references Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
+                            #' @examples
+                            #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                            #' p<-MatCon$new(A)
+                            #' p$BootStrap(2)
+
+                            BootStrap=function(n){
+                             #rango matriz
+                              nc<-ncol(self$values)
+                              #convertimos en vector
+                             M1<-as.vector(self$values)
+                             #calculamos prob
+                             prob<-M1/sum(M1)
+                             #definimos M2 lista de matrices
+                             M2<-list()
+                             #remuestreo con multinomial
+                             boots<-rmultinom(n,sum(M1),prob)
+                             #guardamos en las matrices simuladas
+                             for(i in 1:ncol(boots)){
+
+                               M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
+
+                             }
+
+                             #talvez se deberia de las M2 como clae MatCon??
+                             #para poder aplicarle luego las funciones normalize
+                             #y MPseudozeroes de forma más cómoda?
+
+
+                             return(list(OriginalMatrix=self$values,BootStrap=M2))
+                             },
+
+
                             #' @references Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
                             #' @param n Iteration. By default n=100.
                             #' @return Normalized matrix (Class MatCon) and its variance.
@@ -726,7 +764,7 @@ MatCon <- R6Class("MatCon",
                               #}
 
                               NormMatrix<-MatCon$new(x1,ID=sample(1:3000,1,replace = TRUE))
-                              return(list(Norm=NormMatrix))
+                              return(list(NormMatrix))
                             },
 
                             #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly.
@@ -1674,6 +1712,25 @@ MatCon <- R6Class("MatCon",
                         return(list(Ow1=Ow1, Ow2=Ow2, Ow4=Ow4, K=K, SdK=SdK, CV=CV))
 
                       },
+
+                    #' @description  Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups.
+                    #' @return Tau index and its variance.
+                    #' @references Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
+                    #' @examples
+                    #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+                    #' VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+                    #' p<-MatCon$new(A)
+                    #' p$Tau()
+
+                    Tau = function(){
+
+                      Ca<-1/nrow(self$values)
+                      Tau<-((self$oa()[[1]]-Ca)/(1-Ca))
+                      VarTau=((self$oa()[[1]]*(1-self$oa()[[1]]))/(sum(self$values)*(1-Ca)))
+
+
+                      return(list(Tau=Tau,Var=VarTau))
+                    },
 
                     #' @description  Overall Tau agreement index and variance elements  are computed.
                     #' @param VP Vector of proportions (as matrix)
