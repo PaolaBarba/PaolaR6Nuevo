@@ -4,20 +4,20 @@
 \alias{MatCon}
 \title{Confusion matrix}
 \value{
-Object of class MatCon #y mas
+Object of class MatCon
 }
 \description{
 Using the confusion matrix, various indices are calculated.
 }
 \examples{
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 mc <- MatCon$new (A,ID=5,Date="27-10-2023")
 
 ## ------------------------------------------------
 ## Method `MatCon$oa`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$oa()
 
@@ -25,7 +25,7 @@ p$oa()
 ## Method `MatCon$ua`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A,ID=1,Date="30/10/2023")
 p$ua()
 
@@ -33,7 +33,7 @@ p$ua()
 ## Method `MatCon$uai`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$uai(2)
 
@@ -41,7 +41,7 @@ p$uai(2)
 ## Method `MatCon$pai`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pai(1)
 
@@ -49,7 +49,7 @@ p$pai(1)
 ## Method `MatCon$pa`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pa()
 
@@ -57,7 +57,7 @@ p$pa()
 ## Method `MatCon$aup`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aup(2)
 
@@ -65,7 +65,7 @@ p$aup(2)
 ## Method `MatCon$ICSI`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ICSI(2)
 
@@ -81,7 +81,7 @@ p$mah(2)
 ## Method `MatCon$mas`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mas(2)
 
@@ -89,7 +89,7 @@ p$mas(2)
 ## Method `MatCon$cku`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cku(2)
 
@@ -97,7 +97,7 @@ p$cku(2)
 ## Method `MatCon$ckp`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ckp(2)
 
@@ -105,7 +105,7 @@ p$ckp(2)
 ## Method `MatCon$mcku`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mcku(2)
 
@@ -113,7 +113,7 @@ p$mcku(2)
 ## Method `MatCon$mckp`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mckp(4)
 
@@ -121,7 +121,7 @@ p$mckp(4)
 ## Method `MatCon$ecnu`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnu(2)
 
@@ -129,7 +129,7 @@ p$ecnu(2)
 ## Method `MatCon$ecnp`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnp(4)
 
@@ -137,7 +137,7 @@ p$ecnp(4)
 ## Method `MatCon$aau`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aau()
 
@@ -145,7 +145,7 @@ p$aau()
 ## Method `MatCon$BootStrap`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$BootStrap(2)
 
@@ -153,7 +153,7 @@ p$BootStrap(2)
 ## Method `MatCon$Normalize`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$Normalize()$values
 
@@ -169,7 +169,7 @@ p$aap()
 ## Method `MatCon$daup`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$daup()
 
@@ -177,7 +177,7 @@ p$daup()
 ## Method `MatCon$CSI`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CSI()
 
@@ -185,7 +185,7 @@ p$CSI()
 ## Method `MatCon$amah`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amah()
 
@@ -193,7 +193,7 @@ p$amah()
 ## Method `MatCon$amas`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amas()
 
@@ -201,7 +201,7 @@ p$amas()
 ## Method `MatCon$cau`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cau()
 
@@ -209,7 +209,7 @@ p$cau()
 ## Method `MatCon$cap`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cap()
 
@@ -217,7 +217,7 @@ p$cap()
 ## Method `MatCon$caup`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$caup()
 
@@ -225,7 +225,7 @@ p$caup()
 ## Method `MatCon$KappaValue`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$KappaValue()
 
@@ -233,7 +233,7 @@ p$KappaValue()
 ## Method `MatCon$mkp`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mkp()
 
@@ -241,7 +241,7 @@ p$mkp()
 ## Method `MatCon$ami`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ami()
 
@@ -249,7 +249,7 @@ p$ami()
 ## Method `MatCon$nmiu`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiu()
 
@@ -257,7 +257,7 @@ p$nmiu()
 ## Method `MatCon$nmip`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmip()
 
@@ -265,7 +265,7 @@ p$nmip()
 ## Method `MatCon$nmiam`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiam()
 
@@ -273,7 +273,7 @@ p$nmiam()
 ## Method `MatCon$nmigm`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmigm()
 
@@ -281,7 +281,7 @@ p$nmigm()
 ## Method `MatCon$nmimx`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmimx()
 
@@ -289,7 +289,7 @@ p$nmimx()
 ## Method `MatCon$MPseudozeroes`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MPseudozeroes()$values
 
@@ -297,7 +297,7 @@ p$MPseudozeroes()$values
 ## Method `MatCon$MTypify`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MTypify(RaR=5)
 
@@ -305,7 +305,7 @@ p$MTypify(RaR=5)
 ## Method `MatCon$MAllParameters`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MAllParameters()
 
@@ -313,7 +313,7 @@ p$MAllParameters()
 ## Method `MatCon$CAccuracies`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CAccuracies()
 
@@ -330,7 +330,7 @@ p$CAccuraciesW(MP)
 ## Method `MatCon$DetailedKappa`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedKappa()
 
@@ -338,7 +338,7 @@ p$DetailedKappa()
 ## Method `MatCon$DetailedCKappa`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedCKappa ()
 
@@ -346,7 +346,7 @@ p$DetailedCKappa ()
 ## Method `MatCon$DetailedWKappa`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$DetailedWKappa(MW)
@@ -355,8 +355,7 @@ p$DetailedWKappa(MW)
 ## Method `MatCon$Tau`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$Tau()
 
@@ -364,7 +363,7 @@ p$Tau()
 ## Method `MatCon$DetailedTau`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
 p<-MatCon$new(A)
 p$DetailedTau(VP)
@@ -373,7 +372,7 @@ p$DetailedTau(VP)
 ## Method `MatCon$QES`
 ## ------------------------------------------------
 
-A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$QES(TI=1, SF=6)
 }
@@ -513,7 +512,7 @@ Overall accuracy and variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$oa()
 }
@@ -550,7 +549,7 @@ Vector of values with the user's accuracy indexes of all classes and their varia
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A,ID=1,Date="30/10/2023")
 p$ua()
 }
@@ -593,7 +592,7 @@ Class i user accuracy index and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$uai(2)
 }
@@ -636,7 +635,7 @@ Class i producer accuracy index and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pai(1)
 }
@@ -672,7 +671,7 @@ Vector of values with the producer's accuracy indexes of all classes
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pa()
 }
@@ -715,7 +714,7 @@ Average of user's and producer's accuracy and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aup(2)
 }
@@ -758,7 +757,7 @@ Individual Classification Success Index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ICSI(2)
 }
@@ -845,7 +844,7 @@ Short's mapping accuracy and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mas(2)
 }
@@ -890,7 +889,7 @@ Conditional kappa (user's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cku(2)
 }
@@ -935,7 +934,7 @@ Conditional kappa (producer's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ckp(2)
 }
@@ -978,7 +977,7 @@ Modified conditional kappa (user's) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mcku(2)
 }
@@ -1021,7 +1020,7 @@ Modified conditional kappa (producer's) and variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mckp(4)
 }
@@ -1074,7 +1073,7 @@ Relative change of entropy given a category on map and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnu(2)
 }
@@ -1127,7 +1126,7 @@ Relative change of entropy given a category on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnp(4)
 }
@@ -1164,7 +1163,7 @@ Average accuracy from user's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aau()
 }
@@ -1194,7 +1193,7 @@ n simulated matrices, from the confusion matrix, applying the multinomial distri
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$BootStrap(2)
 }
@@ -1224,7 +1223,7 @@ Normalized matrix (Class MatCon) and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$Normalize()$values
 }
@@ -1297,7 +1296,7 @@ Double average of user's and producer's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$daup()
 }
@@ -1333,7 +1332,7 @@ Classification sucess index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CSI()
 }
@@ -1370,7 +1369,7 @@ Average of Hellden's mean accuracy index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amah()
 }
@@ -1408,7 +1407,7 @@ Average of Short's mapping accuracy index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amas()
 }
@@ -1444,7 +1443,7 @@ Combined accuracy from user's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cau()
 }
@@ -1480,7 +1479,7 @@ Combined accuracy from producer's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cap()
 }
@@ -1516,7 +1515,7 @@ Combined accuracy from both user's and producer's perspectives and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$caup()
 }
@@ -1553,7 +1552,7 @@ Kappa coefficient and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$KappaValue()
 }
@@ -1589,7 +1588,7 @@ Modified kappa and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mkp()
 }
@@ -1632,7 +1631,7 @@ Average mutual information and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ami()
 }
@@ -1677,7 +1676,7 @@ Normalized mutual information using the entropy on map and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiu()
 }
@@ -1722,7 +1721,7 @@ Normalized mutual information using the entropy on ground truthing and its varia
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmip()
 }
@@ -1771,7 +1770,7 @@ Normalized mutual information using the arithmetic mean of the entropies on map 
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiam()
 }
@@ -1820,7 +1819,7 @@ Normalized mutual information using the geometric mean of the entropies on map a
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmigm()
 }
@@ -1869,7 +1868,7 @@ Normalized mutual information using the arithmetic mean of the maximum entropies
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmimx()
 }
@@ -1892,7 +1891,7 @@ An object of class MatCon with the matrix of Pseudoceros.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MPseudozeroes()$values
 }
@@ -1935,7 +1934,7 @@ Typified matrix
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MTypify(RaR=5)
 }
@@ -1958,7 +1957,7 @@ Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Varianc
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MAllParameters()
 }
@@ -1981,7 +1980,7 @@ A list with the producer's accuracy, its standard deviation, the user's accuracy
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CAccuracies()
 }
@@ -2035,7 +2034,7 @@ Overall accuracy, Expected accuracy of agreement if agreement were purely random
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedKappa()
 }
@@ -2058,7 +2057,7 @@ Kappa index and its standard deviation.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedCKappa ()
 }
@@ -2088,7 +2087,7 @@ Kappa index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$DetailedWKappa(MW)
@@ -2112,8 +2111,7 @@ Tau index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$Tau()
 }
@@ -2143,7 +2141,7 @@ NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau in
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
 p<-MatCon$new(A)
 p$DetailedTau(VP)
@@ -2176,7 +2174,7 @@ NO VEO MUY CLARO QUE HACE
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$QES(TI=1, SF=6)
 }
