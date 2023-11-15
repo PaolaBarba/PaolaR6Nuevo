@@ -2,9 +2,23 @@
 % Please edit documentation in R/MatCon.R
 \name{MatCon}
 \alias{MatCon}
+\alias{See}
+\alias{reference}
+\alias{[11].}
+\alias{[12].}
+\alias{[13].}
 \title{Confusion matrix}
 \value{
-Object of class MatCon
+Object of class MatCon or or an error if a matrix is not entered.
+\itemize{
+ \item \code{Error type 1}: Non-square matrix.
+ \item \code{Error type 2}: Single element matrix.
+ \item \code{Error type 3}: negative values.
+ \item \code{Error type 4}: Sum of elements 0.
+ \item \code{Error type 5}: Sum of rows 0.
+ \item \code{Error type 6}: Sum of columns 0.
+ \item \code{Error type 7}: It is not a matrix.
+}
 }
 \description{
 Using the confusion matrix, various indices are calculated.
@@ -12,6 +26,7 @@ Using the confusion matrix, various indices are calculated.
 \examples{
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 mc <- MatCon$new (A,ID=5,Date="27-10-2023")
+
 
 ## ------------------------------------------------
 ## Method `MatCon$oa`
@@ -21,6 +36,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$oa()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$ua`
 ## ------------------------------------------------
@@ -28,6 +44,7 @@ p$oa()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A,ID=1,Date="30/10/2023")
 p$ua()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$uai`
@@ -37,6 +54,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$uai(2)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$pai`
 ## ------------------------------------------------
@@ -44,6 +62,7 @@ p$uai(2)
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pai(1)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$pa`
@@ -53,6 +72,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pa()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$aup`
 ## ------------------------------------------------
@@ -60,6 +80,7 @@ p$pa()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aup(2)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$ICSI`
@@ -69,6 +90,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ICSI(2)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$mah`
 ## ------------------------------------------------
@@ -76,6 +98,7 @@ p$ICSI(2)
 A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mah(2)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$mas`
@@ -85,6 +108,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mas(2)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$cku`
 ## ------------------------------------------------
@@ -92,6 +116,7 @@ p$mas(2)
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cku(2)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$ckp`
@@ -101,6 +126,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ckp(2)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$mcku`
 ## ------------------------------------------------
@@ -108,6 +134,7 @@ p$ckp(2)
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mcku(2)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$mckp`
@@ -117,6 +144,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mckp(4)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$ecnu`
 ## ------------------------------------------------
@@ -124,6 +152,7 @@ p$mckp(4)
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnu(2)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$ecnp`
@@ -133,6 +162,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnp(4)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$aau`
 ## ------------------------------------------------
@@ -141,21 +171,6 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aau()
 
-## ------------------------------------------------
-## Method `MatCon$BootStrap`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$BootStrap(2)
-
-## ------------------------------------------------
-## Method `MatCon$Normalize`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$Normalize()$values
 
 ## ------------------------------------------------
 ## Method `MatCon$aap`
@@ -165,6 +180,7 @@ A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aap()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$daup`
 ## ------------------------------------------------
@@ -172,6 +188,7 @@ p$aap()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$daup()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$CSI`
@@ -181,6 +198,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CSI()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$amah`
 ## ------------------------------------------------
@@ -188,6 +206,7 @@ p$CSI()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amah()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$amas`
@@ -197,6 +216,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amas()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$cau`
 ## ------------------------------------------------
@@ -204,6 +224,7 @@ p$amas()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cau()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$cap`
@@ -213,6 +234,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cap()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$caup`
 ## ------------------------------------------------
@@ -220,6 +242,7 @@ p$cap()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$caup()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$KappaValue`
@@ -229,6 +252,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$KappaValue()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$mkp`
 ## ------------------------------------------------
@@ -236,6 +260,7 @@ p$KappaValue()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mkp()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$ami`
@@ -245,6 +270,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ami()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$nmiu`
 ## ------------------------------------------------
@@ -252,6 +278,7 @@ p$ami()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiu()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$nmip`
@@ -261,6 +288,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmip()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$nmiam`
 ## ------------------------------------------------
@@ -268,6 +296,7 @@ p$nmip()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiam()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$nmigm`
@@ -277,6 +306,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmigm()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$nmimx`
 ## ------------------------------------------------
@@ -284,6 +314,25 @@ p$nmigm()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmimx()
+
+
+## ------------------------------------------------
+## Method `MatCon$BootStrap`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A)
+p$BootStrap(2)
+
+
+## ------------------------------------------------
+## Method `MatCon$Normalize`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A)
+p$Normalize()$values
+
 
 ## ------------------------------------------------
 ## Method `MatCon$MPseudozeroes`
@@ -293,6 +342,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MPseudozeroes()$values
 
+
 ## ------------------------------------------------
 ## Method `MatCon$MTypify`
 ## ------------------------------------------------
@@ -300,6 +350,7 @@ p$MPseudozeroes()$values
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MTypify(RaR=5)
+
 
 ## ------------------------------------------------
 ## Method `MatCon$MAllParameters`
@@ -309,6 +360,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MAllParameters()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$CAccuracies`
 ## ------------------------------------------------
@@ -316,6 +368,7 @@ p$MAllParameters()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CAccuracies()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$CAccuraciesW`
@@ -326,6 +379,7 @@ p<-MatCon$new(A)
 MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p$CAccuraciesW(MP)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$DetailedKappa`
 ## ------------------------------------------------
@@ -334,6 +388,7 @@ A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedKappa()
 
+
 ## ------------------------------------------------
 ## Method `MatCon$DetailedCKappa`
 ## ------------------------------------------------
@@ -341,6 +396,7 @@ p$DetailedKappa()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedCKappa ()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$DetailedWKappa`
@@ -351,6 +407,7 @@ MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$DetailedWKappa(MW)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$Tau`
 ## ------------------------------------------------
@@ -358,6 +415,7 @@ p$DetailedWKappa(MW)
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$Tau()
+
 
 ## ------------------------------------------------
 ## Method `MatCon$DetailedTau`
@@ -368,6 +426,7 @@ VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
 p<-MatCon$new(A)
 p$DetailedTau(VP)
 
+
 ## ------------------------------------------------
 ## Method `MatCon$QES`
 ## ------------------------------------------------
@@ -375,41 +434,46 @@ p$DetailedTau(VP)
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$QES(TI=1, SF=6)
+
 }
 \references{
-Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
+[1] Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
 
-Koukoulas, S., & Blackburn, G. A. (2001). Introducing new indices for accuracy evaluation of classified images representing semi-natural woodland environments. Photogrammetric Engineering and Remote Sensing, 67(4), 499-510.
+[2] Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
 
-Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
+[3] Koukoulas, S., & Blackburn, G. A. (2001). Introducing new indices for accuracy evaluation of classified images representing semi-natural woodland environments. Photogrammetric Engineering and Remote Sensing, 67(4), 499-510.
 
-Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
+[4] Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
 
-Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
+[5] Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
 
-Short, N. M. (1982). The Landsat tutorial workbook: Basics of satellite remote sensing (Vol. 1078). National Aeronautics and Space Administration, Scientific and Technical Information Branch.
+[6] Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
 
-Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
+[7] Short, N. M. (1982). The Landsat tutorial workbook: Basics of satellite remote sensing (Vol. 1078). National Aeronautics and Space Administration, Scientific and Technical Information Branch.
 
-Finn, J. T. (1993). Use of the average mutual information index in evaluating classification error and consistency. International Journal of Geographical Information Science, 7(4), 349-366.
+[8] Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
 
-Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
+[9] Finn, J. T. (1993). Use of the average mutual information index in evaluating classification error and consistency. International Journal of Geographical Information Science, 7(4), 349-366.
 
-Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
+[10] Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
 
-Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
+[11] Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
 
-Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
+[11] Strehl, A., & Ghosh, J. (2002). Cluster ensembles---a knowledge reuse framework for combining multiple partitions. Journal of machine learning research, 3(Dec), 583-617.
 
-Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
+[12] Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
 
-Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
+[13] Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
 
-Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
+[14] Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
 
-Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+[15] Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
 
-Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
+[16] Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+
+[17] Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
+
+[18] Pontius Jr, R. G., & Santacruz, A. (2014). Quantity, exchange, and shift components of difference in a square contingency table. International Journal of Remote Sensing, 35(21), 7543-7554.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -431,8 +495,6 @@ Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la infor
 \item \href{#method-MatCon-ecnu}{\code{MatCon$ecnu()}}
 \item \href{#method-MatCon-ecnp}{\code{MatCon$ecnp()}}
 \item \href{#method-MatCon-aau}{\code{MatCon$aau()}}
-\item \href{#method-MatCon-BootStrap}{\code{MatCon$BootStrap()}}
-\item \href{#method-MatCon-Normalize}{\code{MatCon$Normalize()}}
 \item \href{#method-MatCon-aap}{\code{MatCon$aap()}}
 \item \href{#method-MatCon-daup}{\code{MatCon$daup()}}
 \item \href{#method-MatCon-CSI}{\code{MatCon$CSI()}}
@@ -449,6 +511,8 @@ Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la infor
 \item \href{#method-MatCon-nmiam}{\code{MatCon$nmiam()}}
 \item \href{#method-MatCon-nmigm}{\code{MatCon$nmigm()}}
 \item \href{#method-MatCon-nmimx}{\code{MatCon$nmimx()}}
+\item \href{#method-MatCon-BootStrap}{\code{MatCon$BootStrap()}}
+\item \href{#method-MatCon-Normalize}{\code{MatCon$Normalize()}}
 \item \href{#method-MatCon-MPseudozeroes}{\code{MatCon$MPseudozeroes()}}
 \item \href{#method-MatCon-MTypify}{\code{MatCon$MTypify()}}
 \item \href{#method-MatCon-MAllParameters}{\code{MatCon$MAllParameters()}}
@@ -467,6 +531,7 @@ Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la infor
 \if{html}{\out{<a id="method-MatCon-new"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-new}{}}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this [R6][R6::R6Class] class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$new(values, ID = NULL, Date = NULL)}\if{html}{\out{</div>}}
 }
@@ -487,7 +552,7 @@ Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la infor
 \if{html}{\out{<a id="method-MatCon-oa"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-oa}{}}}
 \subsection{Method \code{oa()}}{
-Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken.
+Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken. See reference [1].
 
 
 The mathematical expression is:
@@ -515,6 +580,7 @@ Overall accuracy and variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$oa()
+
 }
 \if{html}{\out{</div>}}
 
@@ -525,7 +591,7 @@ p$oa()
 \if{html}{\out{<a id="method-MatCon-ua"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ua}{}}}
 \subsection{Method \code{ua()}}{
-The accuracy from the point of view of a map user, not the map maker.
+The accuracy from the point of view of a map user, not the map maker. See reference [1].
 
 
 The mathematical expression is:
@@ -552,6 +618,7 @@ Vector of values with the user's accuracy indexes of all classes and their varia
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A,ID=1,Date="30/10/2023")
 p$ua()
+
 }
 \if{html}{\out{</div>}}
 
@@ -562,7 +629,7 @@ p$ua()
 \if{html}{\out{<a id="method-MatCon-uai"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-uai}{}}}
 \subsection{Method \code{uai()}}{
-The accuracy from the point of view of a map user, not the map maker.
+The accuracy from the point of view of a map user, not the map maker. See reference [1].
 
 
 \deqn{
@@ -595,6 +662,7 @@ Class i user accuracy index and their variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$uai(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -605,7 +673,7 @@ p$uai(2)
 \if{html}{\out{<a id="method-MatCon-pai"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-pai}{}}}
 \subsection{Method \code{pai()}}{
-The map accuracy from the point of view of the map maker (the producer).
+The map accuracy from the point of view of the map maker (the producer). See reference [1].
 
 
 \deqn{
@@ -638,6 +706,7 @@ Class i producer accuracy index and their variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pai(1)
+
 }
 \if{html}{\out{</div>}}
 
@@ -648,7 +717,7 @@ p$pai(1)
 \if{html}{\out{<a id="method-MatCon-pa"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-pa}{}}}
 \subsection{Method \code{pa()}}{
-The map accuracy from the point of view of the map maker (the producer).
+The map accuracy from the point of view of the map maker (the producer). See reference [1].
 
 
 \deqn{
@@ -674,6 +743,7 @@ Vector of values with the producer's accuracy indexes of all classes
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$pa()
+
 }
 \if{html}{\out{</div>}}
 
@@ -684,7 +754,7 @@ p$pa()
 \if{html}{\out{<a id="method-MatCon-aup"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-aup}{}}}
 \subsection{Method \code{aup()}}{
-Average of the accuracy from the point of view of a map user, not the map maker and the map accuracy from the point of view of the map maker (the producer).
+Average of the accuracy from the point of view of a map user, not the map maker and the map accuracy from the point of view of the map maker (the producer). See reference [2].
 
 
 \deqn{
@@ -717,6 +787,7 @@ Average of user's and producer's accuracy and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aup(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -727,7 +798,7 @@ p$aup(2)
 \if{html}{\out{<a id="method-MatCon-ICSI"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ICSI}{}}}
 \subsection{Method \code{ICSI()}}{
-The Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest.
+The Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. See reference [3,4].
 
 
 \deqn{
@@ -760,6 +831,7 @@ Individual Classification Success Index and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ICSI(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -770,7 +842,7 @@ p$ICSI(2)
 \if{html}{\out{<a id="method-MatCon-mah"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-mah}{}}}
 \subsection{Method \code{mah()}}{
-The probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.
+The probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map. See references [5,6].
 
 
 \deqn{
@@ -803,6 +875,7 @@ Hellden's mean accuracy.
 \preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$mah(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -813,7 +886,7 @@ p$mah(2)
 \if{html}{\out{<a id="method-MatCon-mas"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-mas}{}}}
 \subsection{Method \code{mas()}}{
-Mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission).
+Mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). See references [6,7].
 
 
 \deqn{
@@ -847,6 +920,7 @@ Short's mapping accuracy and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mas(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -857,7 +931,7 @@ p$mas(2)
 \if{html}{\out{<a id="method-MatCon-cku"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-cku}{}}}
 \subsection{Method \code{cku()}}{
-Conditional Kappa will identify the degree of agreement between the two raters for each possible category.
+Conditional Kappa will identify the degree of agreement between the two raters for each possible category. See reference [6].
 
 
 \deqn{
@@ -892,6 +966,7 @@ Conditional kappa (user's) and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cku(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -902,7 +977,7 @@ p$cku(2)
 \if{html}{\out{<a id="method-MatCon-ckp"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ckp}{}}}
 \subsection{Method \code{ckp()}}{
-Conditional Kappa will identify the degree of agreement between the two raters for each possible category.
+Conditional Kappa will identify the degree of agreement between the two raters for each possible category. See reference [6].
 
 
 \deqn{
@@ -937,6 +1012,7 @@ Conditional kappa (producer's) and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ckp(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -947,7 +1023,7 @@ p$ckp(2)
 \if{html}{\out{<a id="method-MatCon-mcku"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-mcku}{}}}
 \subsection{Method \code{mcku()}}{
-Modified kappa index for the user
+Modified kappa index for the user. See reference [8]
 
 
 \deqn{
@@ -980,6 +1056,7 @@ Modified conditional kappa (user's) and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mcku(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -990,7 +1067,7 @@ p$mcku(2)
 \if{html}{\out{<a id="method-MatCon-mckp"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-mckp}{}}}
 \subsection{Method \code{mckp()}}{
-Modified kappa index for the producer
+Modified kappa index for the producer. See reference [8].
 
 
 \deqn{
@@ -1023,6 +1100,7 @@ Modified conditional kappa (producer's) and variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mckp(4)
+
 }
 \if{html}{\out{</div>}}
 
@@ -1033,7 +1111,7 @@ p$mckp(4)
 \if{html}{\out{<a id="method-MatCon-ecnu"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ecnu}{}}}
 \subsection{Method \code{ecnu()}}{
-Relative entropy is a quantity that measures the difference between two maps.
+Relative entropy is a quantity that measures the difference between two maps. See reference [9].
 
 
 \deqn{
@@ -1076,6 +1154,7 @@ Relative change of entropy given a category on map and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnu(2)
+
 }
 \if{html}{\out{</div>}}
 
@@ -1086,7 +1165,7 @@ p$ecnu(2)
 \if{html}{\out{<a id="method-MatCon-ecnp"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ecnp}{}}}
 \subsection{Method \code{ecnp()}}{
-Relative entropy is a quantity that measures the difference between two ground truthing.
+Relative entropy is a quantity that measures the difference between two ground truthing. See reference [8].
 
 
 \deqn{
@@ -1129,6 +1208,7 @@ Relative change of entropy given a category on ground truthing and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ecnp(4)
+
 }
 \if{html}{\out{</div>}}
 
@@ -1139,7 +1219,7 @@ p$ecnp(4)
 \if{html}{\out{<a id="method-MatCon-aau"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-aau}{}}}
 \subsection{Method \code{aau()}}{
-The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly.
+The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
 
 
 \deqn{
@@ -1166,66 +1246,7 @@ Average accuracy from user's perspective and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$aau()
-}
-\if{html}{\out{</div>}}
 
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-BootStrap"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-BootStrap}{}}}
-\subsection{Method \code{BootStrap()}}{
-N resamples of the confusion matrix are performed
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$BootStrap(n)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Number of resamples.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-n simulated matrices, from the confusion matrix, applying the multinomial distribution
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$BootStrap(2)
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-Normalize"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-Normalize}{}}}
-\subsection{Method \code{Normalize()}}{
-An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Normalize(n = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{Iteration. By default n=100.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Normalized matrix (Class MatCon) and its variance.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$Normalize()$values
 }
 \if{html}{\out{</div>}}
 
@@ -1236,7 +1257,7 @@ p$Normalize()$values
 \if{html}{\out{<a id="method-MatCon-aap"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-aap}{}}}
 \subsection{Method \code{aap()}}{
-The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly.
+The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
 
 
 \deqn{
@@ -1263,6 +1284,7 @@ Average accuracy from producer's perspective and its variance.
 \preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$aap()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1273,7 +1295,7 @@ p$aap()
 \if{html}{\out{<a id="method-MatCon-daup"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-daup}{}}}
 \subsection{Method \code{daup()}}{
-It is the average of the average accuracy from user's and producer's perspective.
+It is the average of the average accuracy from user's and producer's perspective. See reference [2].
 
 
 \deqn{
@@ -1299,6 +1321,7 @@ Double average of user's and producer's perspective and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$daup()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1309,7 +1332,7 @@ p$daup()
 \if{html}{\out{<a id="method-MatCon-CSI"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-CSI}{}}}
 \subsection{Method \code{CSI()}}{
-The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness.
+The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness. See reference [3,4].
 
 
 \deqn{
@@ -1335,6 +1358,7 @@ Classification sucess index and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CSI()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1345,7 +1369,7 @@ p$CSI()
 \if{html}{\out{<a id="method-MatCon-amah"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-amah}{}}}
 \subsection{Method \code{amah()}}{
-This function provides the average value of the Hellden mean precision index
+This function provides the average value of the Hellden mean precision index. See reference [2].
 
 
 \deqn{
@@ -1372,6 +1396,7 @@ Average of Hellden's mean accuracy index and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amah()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1382,7 +1407,7 @@ p$amah()
 \if{html}{\out{<a id="method-MatCon-amas"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-amas}{}}}
 \subsection{Method \code{amas()}}{
-This function provides the average of Short's mapping accuracy index.
+This function provides the average of Short's mapping accuracy index. See reference [2].
 
 
 \deqn{
@@ -1410,6 +1435,7 @@ Average of Short's mapping accuracy index and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$amas()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1420,7 +1446,7 @@ p$amas()
 \if{html}{\out{<a id="method-MatCon-cau"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-cau}{}}}
 \subsection{Method \code{cau()}}{
-The combined accuracy is the average of the overall accuracy and average accuracy.
+The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
 
 
 \deqn{
@@ -1446,6 +1472,7 @@ Combined accuracy from user's perspective and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cau()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1456,7 +1483,7 @@ p$cau()
 \if{html}{\out{<a id="method-MatCon-cap"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-cap}{}}}
 \subsection{Method \code{cap()}}{
-The combined accuracy is the average of the overall accuracy and average accuracy.
+The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
 
 
 \deqn{
@@ -1482,6 +1509,7 @@ Combined accuracy from producer's perspective and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$cap()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1492,7 +1520,7 @@ p$cap()
 \if{html}{\out{<a id="method-MatCon-caup"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-caup}{}}}
 \subsection{Method \code{caup()}}{
-The combined accuracy is the average of the overall accuracy and average accuracy.
+The combined accuracy is the average of the overall accuracy and average accuracy. See reference [2].
 
 
 \deqn{
@@ -1518,6 +1546,7 @@ Combined accuracy from both user's and producer's perspectives and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$caup()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1528,7 +1557,7 @@ p$caup()
 \if{html}{\out{<a id="method-MatCon-KappaValue"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-KappaValue}{}}}
 \subsection{Method \code{KappaValue()}}{
-It measures the relationship of beyond chance agreement to expected disagreement.
+It measures the relationship of beyond chance agreement to expected disagreement. See reference [11].
 
 
 \deqn{
@@ -1555,6 +1584,7 @@ Kappa coefficient and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$KappaValue()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1565,7 +1595,7 @@ p$KappaValue()
 \if{html}{\out{<a id="method-MatCon-mkp"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-mkp}{}}}
 \subsection{Method \code{mkp()}}{
-It is the proportion of agreement after chance agreement is removed from consideration.
+It is the proportion of agreement after chance agreement is removed from consideration. See reference [2].
 
 
 \deqn{
@@ -1591,6 +1621,7 @@ Modified kappa and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$mkp()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1601,7 +1632,7 @@ p$mkp()
 \if{html}{\out{<a id="method-MatCon-ami"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ami}{}}}
 \subsection{Method \code{ami()}}{
-Average mutual information (AMI), is applied to the comparison of thematic maps.
+Average mutual information (AMI), is applied to the comparison of thematic maps. See reference [9].
 
 
 \deqn{
@@ -1634,6 +1665,7 @@ Average mutual information and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$ami()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1644,6 +1676,9 @@ p$ami()
 \if{html}{\out{<a id="method-MatCon-nmiu"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-nmiu}{}}}
 \subsection{Method \code{nmiu()}}{
+See reference [9].
+
+
 \deqn{
 H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
 }
@@ -1679,6 +1714,7 @@ Normalized mutual information using the entropy on map and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiu()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1689,6 +1725,9 @@ p$nmiu()
 \if{html}{\out{<a id="method-MatCon-nmip"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-nmip}{}}}
 \subsection{Method \code{nmip()}}{
+See reference [9].
+
+
 \deqn{
 H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
 }
@@ -1724,6 +1763,7 @@ Normalized mutual information using the entropy on ground truthing and its varia
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmip()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1773,6 +1813,7 @@ Normalized mutual information using the arithmetic mean of the entropies on map 
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmiam()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1822,6 +1863,7 @@ Normalized mutual information using the geometric mean of the entropies on map a
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmigm()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1871,6 +1913,69 @@ Normalized mutual information using the arithmetic mean of the maximum entropies
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$nmimx()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-BootStrap"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-BootStrap}{}}}
+\subsection{Method \code{BootStrap()}}{
+N resamples of the confusion matrix are performed. See reference [14].
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$BootStrap(n)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{Number of resamples.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+n simulated matrices, from the confusion matrix, applying the multinomial distribution
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A)
+p$BootStrap(2)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-Normalize"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-Normalize}{}}}
+\subsection{Method \code{Normalize()}}{
+An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. See reference [15,16].
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Normalize(n = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{Iteration. By default n=100.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Normalized matrix (Class MatCon) and its variance.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A)
+p$Normalize()$values
+
 }
 \if{html}{\out{</div>}}
 
@@ -1881,7 +1986,7 @@ p$nmimx()
 \if{html}{\out{<a id="method-MatCon-MPseudozeroes"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-MPseudozeroes}{}}}
 \subsection{Method \code{MPseudozeroes()}}{
-Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0.
+Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. See reference [16].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$MPseudozeroes()}\if{html}{\out{</div>}}
 }
@@ -1894,6 +1999,7 @@ An object of class MatCon with the matrix of Pseudoceros.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MPseudozeroes()$values
+
 }
 \if{html}{\out{</div>}}
 
@@ -1937,6 +2043,7 @@ Typified matrix
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MTypify(RaR=5)
+
 }
 \if{html}{\out{</div>}}
 
@@ -1947,7 +2054,7 @@ p$MTypify(RaR=5)
 \if{html}{\out{<a id="method-MatCon-MAllParameters"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-MAllParameters}{}}}
 \subsection{Method \code{MAllParameters()}}{
-Several parameters are calculated for the given Confusion Matrix. The.
+Several parameters are calculated for the given Confusion Matrix. See references [1,11,16].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$MAllParameters()}\if{html}{\out{</div>}}
 }
@@ -1960,6 +2067,7 @@ Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Varianc
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$MAllParameters()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1970,7 +2078,7 @@ p$MAllParameters()
 \if{html}{\out{<a id="method-MatCon-CAccuracies"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-CAccuracies}{}}}
 \subsection{Method \code{CAccuracies()}}{
-User's and producer's accuracies and standard deviations are computed
+User's and producer's accuracies and standard deviations are computed. See reference [1].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuracies()}\if{html}{\out{</div>}}
 }
@@ -1983,6 +2091,7 @@ A list with the producer's accuracy, its standard deviation, the user's accuracy
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$CAccuracies()
+
 }
 \if{html}{\out{</div>}}
 
@@ -1993,7 +2102,7 @@ p$CAccuracies()
 \if{html}{\out{<a id="method-MatCon-CAccuraciesW"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-CAccuraciesW}{}}}
 \subsection{Method \code{CAccuraciesW()}}{
-User's and producer's weighted accuracies and standard deviations are computed.
+User's and producer's weighted accuracies and standard deviations are computed. See reference [1].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuraciesW(MP)}\if{html}{\out{</div>}}
 }
@@ -2014,6 +2123,7 @@ Matrix formed with its original elements and their corresponding weights, genera
 p<-MatCon$new(A)
 MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p$CAccuraciesW(MP)
+
 }
 \if{html}{\out{</div>}}
 
@@ -2037,6 +2147,7 @@ Overall accuracy, Expected accuracy of agreement if agreement were purely random
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedKappa()
+
 }
 \if{html}{\out{</div>}}
 
@@ -2060,6 +2171,7 @@ Kappa index and its standard deviation.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$DetailedCKappa ()
+
 }
 \if{html}{\out{</div>}}
 
@@ -2091,6 +2203,7 @@ Kappa index and its variance.
 MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 p$DetailedWKappa(MW)
+
 }
 \if{html}{\out{</div>}}
 
@@ -2101,7 +2214,7 @@ p$DetailedWKappa(MW)
 \if{html}{\out{<a id="method-MatCon-Tau"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-Tau}{}}}
 \subsection{Method \code{Tau()}}{
-Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups.
+Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. See reference [17].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$Tau()}\if{html}{\out{</div>}}
 }
@@ -2114,6 +2227,7 @@ Tau index and its variance.
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$Tau()
+
 }
 \if{html}{\out{</div>}}
 
@@ -2145,6 +2259,7 @@ NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau in
 VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
 p<-MatCon$new(A)
 p$DetailedTau(VP)
+
 }
 \if{html}{\out{</div>}}
 
@@ -2155,7 +2270,7 @@ p$DetailedTau(VP)
 \if{html}{\out{<a id="method-MatCon-QES"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-QES}{}}}
 \subsection{Method \code{QES()}}{
-Quantity, Exchange and Shift values are computed
+Quantity, Exchange and Shift values are computed. See reference [18].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$QES(TI = 1, SF = 1)}\if{html}{\out{</div>}}
 }
@@ -2177,6 +2292,7 @@ NO VEO MUY CLARO QUE HACE
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
 p$QES(TI=1, SF=6)
+
 }
 \if{html}{\out{</div>}}
 

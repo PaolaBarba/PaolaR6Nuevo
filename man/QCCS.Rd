@@ -14,6 +14,7 @@ vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
 prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
 A <- QCCS$new(vectors,prob)
 
+
 ## ------------------------------------------------
 ## Method `QCCS$QCCS`
 ## ------------------------------------------------
@@ -22,9 +23,10 @@ vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
 prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
 A <- QCCS$new(vectors,prob)
 A$QCCS()
+
 }
 \references{
-Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balboa, J. L. (2019). Thematic accuracy quality control by means of a set of multinomials. Applied Sciences, 9(20), 4240.
+[1] Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balboa, J. L. (2019). Thematic accuracy quality control by means of a set of multinomials. Applied Sciences, 9(20), 4240.
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -38,6 +40,7 @@ Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balbo
 \if{html}{\out{<a id="method-QCCS-new"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-new}{}}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this [R6][R6::R6Class] class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$new(vectors, prob)}\if{html}{\out{</div>}}
 }
@@ -45,9 +48,9 @@ Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balbo
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{vectors}}{vector list}
+\item{\code{vectors}}{vector list.}
 
-\item{\code{prob}}{probabilities list}
+\item{\code{p}}{probabilities list.}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,7 +59,7 @@ Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balbo
 \if{html}{\out{<a id="method-QCCS-QCCS"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-QCCS}{}}}
 \subsection{Method \code{QCCS()}}{
-Using a list of vectors and their corresponding probabilities, through a multinomial distribution, the p value is calculated using each of the vectors.
+Using a list of vectors and their corresponding probabilities, through a multinomial distribution, the p value is calculated using each of the vectors. See reference [1].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$QCCS()}\if{html}{\out{</div>}}
 }
@@ -70,6 +73,7 @@ The p value is obtained for each vector, and using the Bonferroni criterion it i
 prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
 A <- QCCS$new(vectors,prob)
 A$QCCS()
+
 }
 \if{html}{\out{</div>}}
 

@@ -1,20 +1,31 @@
 #' @title Quality Control Columns Set
 #' @description The p value is calculated using the multinomial distribution from vectors and their corresponding probabilities.
-#' @param vectors vector list
-#' @param prob probabilities list
+# #' @param vectors vector list
+# #' @param prob probabilities list
 #' @return Object of class QCCS
 #' @export QCCS
-#' @references Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balboa, J. L. (2019). Thematic accuracy quality control by means of a set of multinomials. Applied Sciences, 9(20), 4240.
+#' @references [1] Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balboa, J. L. (2019). Thematic accuracy quality control by means of a set of multinomials. Applied Sciences, 9(20), 4240.
 #' @importFrom R6 R6Class
 #' @importFrom stats dmultinom
 #' @examples
 #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
 #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
 #' A <- QCCS$new(vectors,prob)
+#'
+#' @aliases
 
 
 QCCS <- R6Class("QCCS",
   public = list(
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
+    #' @param vectors vector list.
+    #' @param p probabilities list.
+    #'
+    #' @concept
+
+
     vectors = NULL,
     prob = NULL,
   initialize = function(vectors, prob) {
@@ -36,17 +47,20 @@ QCCS <- R6Class("QCCS",
             print("Deben tener el mismo tama\xF1o los vectores y sus correspondientes probabilidades")
         }
       }
+
   },
 
   #Funcion QCCS publica. Para calcular p-valor se usan test-*tol
 
-      #' @description Using a list of vectors and their corresponding probabilities, through a multinomial distribution, the p value is calculated using each of the vectors.
+      #' @description Using a list of vectors and their corresponding probabilities, through a multinomial distribution, the p value is calculated using each of the vectors. See reference [1].
       #' @return The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
       #' @examples
       #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
       #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
       #' A <- QCCS$new(vectors,prob)
       #' A$QCCS()
+      #'
+      #' @aliases
 
     QCCS = function() {
       n <- length(self$vectors)

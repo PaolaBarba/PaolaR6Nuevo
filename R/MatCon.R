@@ -3,12 +3,25 @@
 #' @param values Confusion matrix
 #' @param ID Identifier. By default ID is a random number between 1 and 1000.
 #' @param Date Date provided by the user. By default the date provided by the system will be taken.
-#' @return Object of class MatCon
+#' @return Object of class MatCon or or an error if a matrix is not entered.
+#' \itemize{
+#'  \item \code{Error type 1}: Non-square matrix.
+#'  \item \code{Error type 2}: Single element matrix.
+#'  \item \code{Error type 3}: negative values.
+#'  \item \code{Error type 4}: Sum of elements 0.
+#'  \item \code{Error type 5}: Sum of rows 0.
+#'  \item \code{Error type 6}: Sum of columns 0.
+#'  \item \code{Error type 7}: It is not a matrix.
+#'}
+#'
 #' @export MatCon
 #' @importFrom R6 R6Class
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 #' mc <- MatCon$new (A,ID=5,Date="27-10-2023")
+#'
+#' @aliases
+
 
 MatCon <- R6Class("MatCon",
   public = list(
@@ -24,6 +37,15 @@ MatCon <- R6Class("MatCon",
     sumfil=NULL,
     #suma columnas
     sumcol=NULL,
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
+    #' @param values Confusion matrix
+    #' @param ID Identifier. By default ID is a random number between 1 and 1000.
+    #' @param Date Date provided by the user. By default the date provided by the system will be taken.
+    #'
+    #' @concept
 
 #aqui añado todos los parametros
   initialize = function(values,ID=NULL,Date=NULL) {
@@ -58,46 +80,52 @@ MatCon <- R6Class("MatCon",
   error4<- FALSE
   error5<- FALSE
   error6<- FALSE
+  error7<- FALSE
 #Vemos que realmente es una matriz de confusion
    if((nfilas != ncolumnas)) {
      error1<- TRUE
-     print("Error tipo 1: Matriz no cuadrada")
+     print("Error type 1: Non-square matrix")
    }
 
    if((nk==1)){
      error2<-TRUE
-     print("Error tipo 2: Matriz de un solo elemento")
+     print("Error type 2: Single element matrix")
    }
 
    for (i in 1:nfilas){
     for (j in 1:ncolumnas){
       if(self$values[i,j]<0){
      error3<-TRUE
-     print("Error tipo 3: valores negativos")
+     print("Error type 3: negative values")
       }
      }
     }
    if(sum(self$values)==0 ){
      error4<-TRUE
-     print("Error tipo 4: Suma de elementos 0 ")
+     print("Error type 4: Sum of elements 0")
    }
    if(sum(apply(self$values,1,sum))==0 ){
      error5<-TRUE
-     print("Error tipo 5: Suma filas 0")
+     print("Error type 5: Sum of rows 0")
    }
    if(sum(apply(self$values,2,sum))==0 ){
      error6<-TRUE
-     print("Error tipo 5: Suma columnas 0")
+     print("Error type 6: Sum of columns 0")
    }
-if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) || (error5==TRUE) || (error6 == TRUE)) {
-   warning("Errores de tipo 1, 2, 3,4,5 o 6") #chequeo hecho
+   if(is.matrix(self$values) == FALSE){
+     error7<-TRUE
+     print("Error type 7: It is not a matrix")
+   }
+if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
+   warning("Errores de tipo 1, 2, 3, 4, 5, 6 o 7") #chequeo hecho
    stop()
    }
   },
 
 
 
-      #' @description Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken.
+
+      #' @description Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken. See reference [1].
       #' @description
       #' The mathematical expression is:
       #'
@@ -113,11 +141,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' This represents a mathematical expression with a fraction.
       #' @return Overall accuracy and variance.
-      #' @references Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
+      #' @references [1] Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$oa()
+      #'
+      #' @aliases
 
      oa = function() {
      indice <- sum(diag(self$values))/sum(self$values)
@@ -125,7 +155,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(oa=indice,Var=VarIndic))
      },
 
-      #' @description  The accuracy from the point of view of a map user, not the map maker.
+      #' @description  The accuracy from the point of view of a map user, not the map maker. See reference [1].
       #' @description
       #' The mathematical expression is:
       #' \deqn{
@@ -144,6 +174,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,ID=1,Date="30/10/2023")
       #' p$ua()
+      #'
+      #' @aliases
+
+
 
      ua = function(){
      #rango matriz
@@ -158,7 +192,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(ua=ua,Var=VarUa))
      },
 
-      #' @description The accuracy from the point of view of a map user, not the map maker.
+      #' @description The accuracy from the point of view of a map user, not the map maker. See reference [1].
       #' @description
       #'  \deqn{
       #' ua_{i}=\frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
@@ -177,6 +211,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$uai(2)
+      #'
+      #' @aliases
 
      uai=function(i){
       uai = self$values[i,i] / self$sumfil[i]
@@ -184,7 +220,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(ua=uai,Var=VarUai))
      },
 
-      #' @description  The map accuracy from the point of view of the map maker (the producer).
+      #' @description  The map accuracy from the point of view of the map maker (the producer). See reference [1].
       #' @description
       #'  \deqn{
       #' pa_{i}=\frac{x_{jj}}{\sum_{j=1}^n x_{ij}}
@@ -203,6 +239,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$pai(1)
+      #'
+      #' @aliases
 
      pai = function(i){
       pai = self$values[i,i] / self$sumcol[i]
@@ -211,7 +249,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description  The map accuracy from the point of view of the map maker (the producer).
+      #' @description  The map accuracy from the point of view of the map maker (the producer). See reference [1].
       #' @description
       #'  \deqn{
       #' pa=\frac{x_{jj}}{\sum_{j=1}^n x_{ij}}
@@ -229,6 +267,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$pa()
+      #'
+      #' @aliases
 
      pa = function (){
       n <- sqrt(length(self$values))
@@ -241,7 +281,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(pa=pa,Var=VarPai))
      },
 
-      #' @description  Average of the accuracy from the point of view of a map user, not the map maker and the map accuracy from the point of view of the map maker (the producer).
+      #' @description  Average of the accuracy from the point of view of a map user, not the map maker and the map accuracy from the point of view of the map maker (the producer). See reference [2].
       #' @description
       #'  \deqn{
       #' aup=\frac{ua_i+pa_i}{2}
@@ -256,10 +296,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return Average of user's and producer's accuracy and its variance.
       #' @param i Class to evaluate.
+      #' @references [2] Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$aup(2)
+      #'
+      #' @aliases
 
      aup=function(i){
       aup = (self$uai(i)[[1]] + self$pai(i)[[1]])/2
@@ -267,7 +310,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(aup=aup,Var=VarAup))
      },
 
-      #' @description  The Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest.
+      #' @description  The Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. See reference [3,4].
       #' @description
       #'  \deqn{
       #' ICSI=ua_i+pa_i-1
@@ -281,13 +324,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `pa_i`: producer accuracy.
       #' }
       #' @return Individual Classification Success Index and its variance.
-      #' @references Koukoulas, S., & Blackburn, G. A. (2001). Introducing new indices for accuracy evaluation of classified images representing semi-natural woodland environments. Photogrammetric Engineering and Remote Sensing, 67(4), 499-510.
-      #' @references Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
+      #' @references [3] Koukoulas, S., & Blackburn, G. A. (2001). Introducing new indices for accuracy evaluation of classified images representing semi-natural woodland environments. Photogrammetric Engineering and Remote Sensing, 67(4), 499-510.
+      #' @references [4] Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
       #' @param i Class to evaluate.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$ICSI(2)
+      #'
+      #' @aliases
 
      ICSI = function(i){
       ICSI = self$uai(i)[[1]] + self$pai(i)[[1]] - 1
@@ -295,7 +340,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return (list(ICSI=ICSI,Var=VarICSI))
      },
 
-      #' @description  The probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.
+      #' @description  The probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map. See references [5,6].
       #' @description
       #'  \deqn{
       #' mah=\frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
@@ -309,13 +354,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `pa_i`: producer accuracy.
       #' }
       #' @param i Class to evaluate.
-      #' @references Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
-      #' @references Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
+      #' @references [5] Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
+      #' @references [6] Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
       #' @return Hellden's mean accuracy.
       #' @examples
       #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
       #' p<-MatCon$new(A)
       #' p$mah(2)
+      #'
+      #' @aliases
+
      mah = function(i){
 
        #esta condicion se daria cuando el elemento de la diagonal
@@ -330,7 +378,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(mah=mah,Var=VarMah))
      },
 
-      #' @description  Mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission).
+      #' @description  Mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). See references [6,7].
       #' @description
       #'  \deqn{
       #' mas=\frac{x_{ii}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
@@ -344,13 +392,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `x_.j`: sum with respect to j (rows).
       #'   \item `x_i.`: sum with respect to i (columns).
       #' }
-      #' @references Short, N. M. (1982). The Landsat tutorial workbook: Basics of satellite remote sensing (Vol. 1078). National Aeronautics and Space Administration, Scientific and Technical Information Branch.
+      #' @references [7] Short, N. M. (1982). The Landsat tutorial workbook: Basics of satellite remote sensing (Vol. 1078). National Aeronautics and Space Administration, Scientific and Technical Information Branch.
       #' @param i Class to evaluate.
       #' @return Short's mapping accuracy and its variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$mas(2)
+      #'
+      #' @aliases
 
      mas = function(i){
       if (self$sumfil[i] + self$sumcol[i] - self$values[i,i] == 0) {
@@ -363,7 +413,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(mas=mas,Var=VarMas))
      },
 
-      #' @description Conditional Kappa will identify the degree of agreement between the two raters for each possible category.
+      #' @description Conditional Kappa will identify the degree of agreement between the two raters for each possible category. See reference [6].
       #' @description
       #'  \deqn{
       #' cku=\frac{ua_i-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
@@ -384,6 +434,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$cku(2)
+      #'
+      #' @aliases
 
      cku = function(i){
       if (1 - self$sumcol[i]/sum(self$values) == 0) {
@@ -396,7 +448,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(cku=cku,Var=VarCku))
      },
 
-      #' @description Conditional Kappa will identify the degree of agreement between the two raters for each possible category.
+      #' @description Conditional Kappa will identify the degree of agreement between the two raters for each possible category. See reference [6].
       #' @description
       #'  \deqn{
       #' ckp=\frac{pa_i-\frac{\sum^n_{j=1} x_{ \cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{j=1} x_{\cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
@@ -417,6 +469,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$ckp(2)
+      #'
+      #' @aliases
 
      ckp = function(i){
       if (1 - self$sumfil[i]/sum(self$values) == 0) {
@@ -428,7 +482,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(ckp=ckp,Var=VarCkp))
      },
 
-      #' @description Modified kappa index for the user
+      #' @description Modified kappa index for the user. See reference [8]
       #' @description
       #'  \deqn{
       #' mcku=\frac{ua_i-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
@@ -443,11 +497,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return Modified conditional kappa (user's) and its variance.
       #' @param i Class to evaluate.
-      #' @references Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
+      #' @references [8] Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$mcku(2)
+      #'
+      #' @aliases
 
      mcku = function(i){
        mcku = (self$uai(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
@@ -455,7 +511,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(mcku=mcku,Var=VarMcku))
      },
 
-      #' @description Modified kappa index for the producer
+      #' @description Modified kappa index for the producer. See reference [8].
       #' @param i Class to evaluate.
       #' @description
       #'  \deqn{
@@ -474,6 +530,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$mckp(4)
+      #'
+      #' @aliases
 
      mckp = function(i){
       mckp = (self$pai(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
@@ -481,8 +539,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(mckp=mckp,Var=VarMckp))
      },
 
-     #' @description Relative entropy is a quantity that measures the difference between two maps.
-     #' @references Finn, J. T. (1993). Use of the average mutual information index in evaluating classification error and consistency. International Journal of Geographical Information Science, 7(4), 349-366.
+     #' @description Relative entropy is a quantity that measures the difference between two maps. See reference [9].
+     #' @references [9] Finn, J. T. (1993). Use of the average mutual information index in evaluating classification error and consistency. International Journal of Geographical Information Science, 7(4), 349-366.
      #' @description
      #'  \deqn{
      #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -510,6 +568,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
      #' p<-MatCon$new(A)
      #' p$ecnu(2)
+     #'
+     #' @aliases
 
         #pueden ser valores negativos si la entropia(incertidumbre) aumenta y
         #positivos si la entropia disminuye
@@ -537,7 +597,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
     return(list(ecnu=ecnu,Var=VarEcnu,HA=HA,HAbi=HAbi))
     },
 
-     #' @description Relative entropy is a quantity that measures the difference between two ground truthing.
+     #' @description Relative entropy is a quantity that measures the difference between two ground truthing. See reference [8].
      #' @param i Class to evaluate
      #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
      #' @description
@@ -565,6 +625,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
      #' p<-MatCon$new(A)
      #' p$ecnp(4)
+     #'
+     #' @aliases
 
     ecnp = function(i,v=NULL){
      if(!is.null(v)){
@@ -582,8 +644,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
     return(list(ecnp=ecnp,Var=VarEcnp))
     },
 
-      #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly.
-      #' @references Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
+      #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
+      #' @references [10] Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
       #' @description
       #'  \deqn{
       #' aau=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
@@ -602,6 +664,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$aau()
+      #'
+      #' @aliases
 
      aau = function(){
        for (i in 1:length(self$sumfil)) {
@@ -614,80 +678,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return (list(aau=aau,Var=VarAau))
      },
 
-      #' @description N resamples of the confusion matrix are performed
-      #' @param n Number of resamples.
-      #' @return n simulated matrices, from the confusion matrix, applying the multinomial distribution
-      #' @references Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$BootStrap(2)
-
-     BootStrap=function(n){
-      #rango matriz
-      nc<-ncol(self$values)
-      #convertimos en vector
-      M1<-as.vector(self$values)
-      #calculamos prob
-      prob<-M1/sum(M1)
-      #definimos M2 lista de matrices
-      M2<-list()
-      #remuestreo con multinomial
-      boots<-rmultinom(n,sum(M1),prob)
-      #guardamos en las matrices simuladas
-       for(i in 1:ncol(boots)){
-         M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
-       }
-
-         #talvez se deberia de guardar M2 como clase MatCon??
-         #para poder aplicarle luego las funciones normalize
-         #y MPseudozeroes de forma más cómoda?
-     return(list(OriginalMatrix=self$values,BootStrap=M2))
-     },
-
-
-      #' @references Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
-      #' @param n Iteration. By default n=100.
-      #' @return Normalized matrix (Class MatCon) and its variance.
-      #' @description An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$Normalize()$values
-
-     Normalize=function(n=NULL){
-      #Da la opcion de añadir un numero concreto de iteraciones
-      #o si no se da un numero concreto, se realizan 100 iteraciones
-      if(!is.null(n)){
-       n <- n
-       }else{n<-100}
-
-       rg<-nrow(self$values)
-       x1<-self$values
-       VarNorm<-matrix()
-        for (k in 1:n) {
-          sumfilas=apply(x1,1,sum)
-           for (i in 1:rg) {
-             x1[i,]=x1[i,]/sumfilas[i]
-           }
-          sumcolumnas=apply(x1,2,sum)
-           for (j in 1:rg) {
-             x1[,j]=x1[,j]/sumcolumnas[j]
-           }
-        }
-        #no estoy nada segura de esta forma de sacar la varianza aqui
-
-      #for (i in 1:rg) {
-      # for (j in 1:rg) {
-      #  VarNorm[i,j]=(x1[i,j]*(1-x1[i,j])/sum(self$values))
-      #}
-      #}
-
-     NormMatrix<-MatCon$new(x1,ID=sample(1:3000,1,replace = TRUE))
-     return(NormMatrix)
-     },
-
-      #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly.
+      #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
       #' @description
       #'  \deqn{
       #' aap=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ji}}
@@ -706,6 +697,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
       #' p<-MatCon$new(A)
       #' p$aap()
+      #'
+      #' @aliases
 
      aap = function(){
       aap = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumcol)
@@ -713,8 +706,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(aap=aap,Var=VarAap))
      },
 
-      #' @description It is the average of the average accuracy from user's and producer's perspective.
-      #' @references Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
+      #' @description It is the average of the average accuracy from user's and producer's perspective. See reference [2].
       #' @description
       #'  \deqn{
       #' daup=\frac{aau+aap}{2}
@@ -732,6 +724,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$daup()
+      #'
+      #' @aliases
 
      daup = function(){
       daup = (self$aau()[[1]] + self$aap()[[1]]) / 2
@@ -740,7 +734,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness.
+      #' @description The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness. See reference [3,4].
       #' @description
       #'  \deqn{
       #' CSI=aau+aap-1
@@ -758,6 +752,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$CSI()
+      #'
+      #' @aliases
 
      CSI = function(){
       CSI = self$aau()[[1]] + self$aap()[[1]] - 1
@@ -766,7 +762,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description This function provides the average value of the Hellden mean precision index
+      #' @description This function provides the average value of the Hellden mean precision index. See reference [2].
       #' @description
       #'  \deqn{
       #' amah=\frac{1}{\sqrt{card(p)}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
@@ -785,6 +781,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$amah()
+      #'
+      #' @aliases
 
      amah = function(){
       amah = 1/sqrt(length(self$values)) * sum ((2*diag(self$values)) / (self$sumfil + self$sumcol))
@@ -793,7 +791,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description This function provides the average of Short's mapping accuracy index.
+      #' @description This function provides the average of Short's mapping accuracy index. See reference [2].
       #' @description
       #'  \deqn{
       #' amas=\frac{1}{\sqrt{card(p)}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
@@ -813,6 +811,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$amas()
+      #'
+      #' @aliases
 
      amas = function(){
       amas = 1/sqrt(length(self$values)) * sum (diag(self$values) / (self$sumfil + self$sumcol - diag(self$values)))
@@ -827,7 +827,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description The combined accuracy is the average of the overall accuracy and average accuracy.
+      #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
       #' @description
       #'  \deqn{
       #' cau=\frac{oa+aau}{2}
@@ -845,6 +845,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$cau()
+      #'
+      #' @aliases
 
      cau = function(){
       cau = (self$oa()[[1]] + self$aau()[[1]]) / 2
@@ -853,7 +855,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(cau=cau,Var=VarCau))
      },
 
-      #' @description The combined accuracy is the average of the overall accuracy and average accuracy.
+      #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
       #' @description
       #'  \deqn{
       #' cap=\frac{oa+aap}{2}
@@ -871,6 +873,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$cap()
+      #'
+      #' @aliases
 
      cap = function(){
       cap = (self$oa()[[1]] + self$aap()[[1]]) / 2
@@ -878,7 +882,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(cap=cap,Var=VarCap))
      },
 
-      #' @description The combined accuracy is the average of the overall accuracy and average accuracy.
+      #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [2].
       #' @description
       #'  \deqn{
       #' caup=\frac{oa+amah}{2}
@@ -896,6 +900,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$caup()
+      #'
+      #' @aliases
 
      caup = function(){
       caup= ( self$oa()[[1]] + self$amah()[[1]] ) / 2
@@ -903,7 +909,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(caup=caup,Var=VarCaup))
      },
 
-      #' @description It measures the relationship of beyond chance agreement to expected disagreement.
+      #' @description It measures the relationship of beyond chance agreement to expected disagreement. See reference [11].
       #' @description
       #'  \deqn{
       #'  ea=\sum^n_{i=1} (\frac{x _{\cdot i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i \cdot}}{\sum_{j=1}^n x_{ij}}) \\
@@ -918,11 +924,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `ea`: expected accuracy of agreement if agreement were purely random.
       #' }
       #' @return Kappa coefficient and its variance.
-      #' @references Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
+      #' @references [11] Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$KappaValue()
+      #'
+      #' @aliases
 
      KappaValue = function(){
       ea = (sum (self$sumfil * self$sumcol))/sum(self$values)^2
@@ -937,7 +945,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description It is the proportion of agreement after chance agreement is removed from consideration.
+      #' @description It is the proportion of agreement after chance agreement is removed from consideration. See reference [2].
       #' @description
       #'  \deqn{
       #' mkp=\frac{oa-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
@@ -955,6 +963,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$mkp()
+      #'
+      #' @aliases
 
      mkp = function(){
       mkp = (self$oa()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
@@ -962,7 +972,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(mkp=mkp,Var=VarMkp))
      },
 
-      #' @description Average mutual information (AMI), is applied to the comparison of thematic maps.
+      #' @description Average mutual information (AMI), is applied to the comparison of thematic maps. See reference [9].
       #' @description
       #'  \deqn{
       #' ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
@@ -981,6 +991,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$ami()
+      #'
+      #' @aliases
 
      ami = function(v=NULL){
       if(!is.null(v)){
@@ -993,6 +1005,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
+      #' @description See reference [9].
       #' @description
       #'  \deqn{
       #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1016,6 +1029,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$nmiu()
+      #'
+      #' @aliases
 
      nmiu = function(v=NULL){
       if(!is.null(v)){
@@ -1033,6 +1048,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmiu=nmiu,Var=VarNmiu))
      },
 
+      #' @description See reference [9].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1056,6 +1072,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$nmip()
+      #'
+      #' @aliases
 
      nmip = function(v=NULL){
       if(!is.null(v)){
@@ -1072,6 +1090,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmip=nmip,Var=VarNmip))
      },
 
+      #' See reference [11].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1095,10 +1114,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing and its variance.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+      #' @references [11] Strehl, A., & Ghosh, J. (2002). Cluster ensembles---a knowledge reuse framework for combining multiple partitions. Journal of machine learning research, 3(Dec), 583-617.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$nmiam()
+      #'
+      #' @aliases
 
      nmiam = function(v=NULL){
       if(!is.null(v)){
@@ -1117,6 +1139,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmiam=nmiam,Var=VarNmiam))
      },
 
+      #' See reference [12].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1139,12 +1162,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `ami`: average mutual information.
       #' }
       #' @return Normalized mutual information using the geometric mean of the entropies on map and on ground truthing and its variance.
-      #' @references Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
+      #' @references [12] Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$nmigm()
+      #'
+      #' @aliases
 
      nmigm = function(v=NULL){
       if(!is.null(v)){
@@ -1161,6 +1186,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmigm=nmigm,Var=VarNmigm))
      },
 
+      #' See reference [13].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1183,12 +1209,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `ami`: average mutual information.
       #' }
       #' @return Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
-      #' @references Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
+      #' @references [13] Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$nmimx()
+      #'
+      #' @aliases
 
      nmimx = function(v=NULL){
        if(!is.null(v)){
@@ -1201,15 +1229,93 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return (list(nmimx=nmimx,Var=VarNmimx))
      },
 
-      #' @description  Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0.
-      #' @references Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+      #' @description N resamples of the confusion matrix are performed. See reference [14].
+      #' @param n Number of resamples.
+      #' @return n simulated matrices, from the confusion matrix, applying the multinomial distribution
+      #' @references [14] Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$BootStrap(2)
+      #'
+      #' @aliases
+
+     BootStrap=function(n){
+      #rango matriz
+      nc<-ncol(self$values)
+      #convertimos en vector
+      M1<-as.vector(self$values)
+      #calculamos prob
+      prob<-M1/sum(M1)
+      #definimos M2 lista de matrices
+      M2<-list()
+      #remuestreo con multinomial
+      boots<-rmultinom(n,sum(M1),prob)
+      #guardamos en las matrices simuladas
+        for(i in 1:ncol(boots)){
+          M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
+        }
+
+      #talvez se deberia de guardar M2 como clase MatCon??
+      #para poder aplicarle luego las funciones normalize
+      #y MPseudozeroes de forma más cómoda?
+     return(list(OriginalMatrix=self$values,BootStrap=M2))
+     },
+
+
+      #' @references [15] Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
+      #' @references [16] Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+      #' @param n Iteration. By default n=100.
+      #' @return Normalized matrix (Class MatCon) and its variance.
+      #' @description An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. See reference [15,16].
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$Normalize()$values
+      #'
+      #' @aliases
+
+     Normalize=function(n=NULL){
+      #Da la opcion de añadir un numero concreto de iteraciones
+      #o si no se da un numero concreto, se realizan 100 iteraciones
+      if(!is.null(n)){
+        n <- n
+      }else{n<-100}
+
+      rg<-nrow(self$values)
+      x1<-self$values
+      VarNorm<-matrix()
+        for (k in 1:n) {
+        sumfilas=apply(x1,1,sum)
+          for (i in 1:rg) {
+          x1[i,]=x1[i,]/sumfilas[i]
+          }
+        sumcolumnas=apply(x1,2,sum)
+          for (j in 1:rg) {
+          x1[,j]=x1[,j]/sumcolumnas[j]
+          }
+        }
+        #no estoy nada segura de esta forma de sacar la varianza aqui
+
+        #for (i in 1:rg) {
+        # for (j in 1:rg) {
+        #  VarNorm[i,j]=(x1[i,j]*(1-x1[i,j])/sum(self$values))
+        #}
+        #}
+
+     NormMatrix<-MatCon$new(x1,ID=sample(1:3000,1,replace = TRUE))
+     return(NormMatrix)
+     },
+
+
+      #' @description  Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. See reference [16].
       #' @return An object of class MatCon with the matrix of Pseudoceros.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$MPseudozeroes()$values
-
-
+      #'
+      #' @aliases
 
      MPseudozeroes = function(){
 
@@ -1259,6 +1365,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$MTypify(RaR=5)
+      #'
+      #' @aliases
 
      MTypify =function(RaR=NULL){
       if(!is.null(RaR)){
@@ -1279,12 +1387,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
      },
 
-      #' @description  Several parameters are calculated for the given Confusion Matrix. The.
+      #' @description  Several parameters are calculated for the given Confusion Matrix. See references [1,11,16].
       #' @return Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$MAllParameters()
+      #'
+      #' @aliases
 
      MAllParameters=function(){
      # ******************************************
@@ -1313,12 +1423,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(salida)
      },
 
-      #' @description  User's and producer's accuracies and standard deviations are computed
+      #' @description  User's and producer's accuracies and standard deviations are computed. See reference [1].
       #' @return A list with the producer's accuracy, its standard deviation, the user's accuracy, and its standard deviation
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$CAccuracies()
+      #'
+      #' @aliases
 
      CAccuracies =function(){
       #  calculation of Class accuracies and standard deviations
@@ -1333,7 +1445,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description  User's and producer's weighted accuracies and standard deviations are computed.
+      #' @description  User's and producer's weighted accuracies and standard deviations are computed. See reference [1].
       #' @param MP Matrix of weights
       #' @return Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
       #' @examples
@@ -1341,6 +1453,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' p<-MatCon$new(A)
       #' MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
       #' p$CAccuraciesW(MP)
+      #'
+      #' @aliases
 
      CAccuraciesW =function(MP){
      #  Calculation of weighted Class accuracies
@@ -1395,6 +1509,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$DetailedKappa()
+      #'
+      #' @aliases
 
      DetailedKappa=function (){
        nc <- nrow(self$values)
@@ -1428,6 +1544,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$DetailedCKappa ()
+      #'
+      #' @aliases
 
 
      DetailedCKappa = function(){
@@ -1470,6 +1588,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
       #' p<-MatCon$new(A)
       #' p$DetailedWKappa(MW)
+      #'
+      #' @aliases
 
      DetailedWKappa = function(MW){
        nc <- nrow(self$values)
@@ -1500,13 +1620,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(Ow1=Ow1, Ow2=Ow2, Ow4=Ow4, K=K, SdK=SdK, CV=CV))
      },
 
-      #' @description  Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups.
+      #' @description  Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. See reference [17].
       #' @return Tau index and its variance.
-      #' @references Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
+      #' @references [17] Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$Tau()
+      #'
+      #' @aliases
 
      Tau = function(){
         Ca<-1/nrow(self$values)
@@ -1523,6 +1645,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
       #' p<-MatCon$new(A)
       #' p$DetailedTau(VP)
+      #'
+      #' @aliases
 
      DetailedTau = function(VP){
        nc <- nrow(self$values)
@@ -1550,14 +1674,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(O1=O1, O2=O2, O3=O3,O4=O4, Tau=Tau, SdT=SdT, CV=CV))
      },
 
-      #' @description  Quantity, Exchange and Shift values are computed
+      #' @description  Quantity, Exchange and Shift values are computed. See reference [18].
       #' @param TI Time interval (default value = 1)
+      #' @references [18] Pontius Jr, R. G., & Santacruz, A. (2014). Quantity, exchange, and shift components of difference in a square contingency table. International Journal of Remote Sensing, 35(21), 7543-7554.
       #' @param SF Scale factor for results (default value = 1)
       #' @return NO VEO MUY CLARO QUE HACE
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$QES(TI=1, SF=6)
+      #'
+      #' @aliases
 
      QES = function(TI=1, SF=1){
       # Overall Quantity, Exchange and Shift values
