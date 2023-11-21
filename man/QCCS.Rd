@@ -10,6 +10,11 @@ Object of class QCCS
 The p value is calculated using the multinomial distribution from vectors and their corresponding probabilities.
 }
 \examples{
+
+## ------------------------------------------------
+## Method `QCCS$new`
+## ------------------------------------------------
+
 vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
 prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
 A <- QCCS$new(vectors,prob)
@@ -42,7 +47,7 @@ A$QCCS()
 \subsection{Method \code{new()}}{
 Creates a new instance of this [R6][R6::R6Class] class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$new(vectors, prob)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$new(vectors, prob, ID = NULL, Date = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -50,10 +55,27 @@ Creates a new instance of this [R6][R6::R6Class] class.
 \describe{
 \item{\code{vectors}}{vector list.}
 
-\item{\code{p}}{probabilities list.}
+\item{\code{prob}}{probabilities list.}
+
+\item{\code{ID}}{Identifier. By default ID is a date in YYYYMMDD format}
+
+\item{\code{Date}}{Date provided by the user. By default the date provided by the system will be taken.}
+
+\item{\code{Source}}{Indicates where the matrix comes from (article, project, etc.). By default is NULL.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
+prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
+A <- QCCS$new(vectors,prob)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-QCCS-QCCS"></a>}}

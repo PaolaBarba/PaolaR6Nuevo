@@ -1,9 +1,10 @@
 #' @title Confusion matrix
 #' @description Using the confusion matrix, various indices are calculated.
 #' @param values Confusion matrix
-#' @param ID Identifier. By default ID is a random number between 1 and 1000.
+#' @param ID Identifier. By default ID is a date in YYYYMMDD format
 #' @param Date Date provided by the user. By default the date provided by the system will be taken.
-#' @return Object of class MatCon or or an error if a matrix is not entered.
+#' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
+#' @return Object of class MatCon or an error if a matrix is not entered.
 #' \itemize{
 #'  \item \code{Error type 1}: Non-square matrix.
 #'  \item \code{Error type 2}: Single element matrix.
@@ -25,55 +26,81 @@
 
 MatCon <- R6Class("MatCon",
   public = list(
-    #inicializa la matriz de confución. Debe de añadirse una matriz
+    #initialize the confusion matrix. An array must be added
     values = NULL,
-    #inicializa nombre
+    #initialize name
     ID = NULL,
-    #inicializa rango
+    #initialize range
     nk = NULL,
-    #inicializando Fecha
+    #initialize date
     Date = NULL,
-    #inicializa suma filas
+    #Source Matrix
+    Source=NULL,
+    #initialize sumfil
     sumfil=NULL,
-    #suma columnas
+    #initialize sumcol
     sumcol=NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param values Confusion matrix
-    #' @param ID Identifier. By default ID is a random number between 1 and 1000.
+    #' @param ID Identifier. By default ID is a date in YYYYMMDD format
     #' @param Date Date provided by the user. By default the date provided by the system will be taken.
+    #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
+    #' @return Object of class MatCon or an error if a matrix is not entered.
+    #' @examples
+    #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+    #' mc <- MatCon$new (A,ID=5,Date="27-10-2023")
     #'
-    #' @concept
+    #' @aliases
 
-#aqui añado todos los parametros
-  initialize = function(values,ID=NULL,Date=NULL) {
-  #El usuario debe dar la matriz de confusion
-  #elementos de la matriz de confusion
+#All parameters are entered
+initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
+
+
+# Initializing values -----------------------------------------------------
+
+
+
   self$values<-values
-  #Es opcional que identifique su matriz.
-  #Si añade este valor pues se le da un ID personalizado a la MC
-  #sino se le dará un número aleatorio que puede ir de 1 a 1000
-  #ID="Nombre" o ID=5
-  if(!is.null(ID)){
-    self$ID <- ID
-  }else{self$ID<-sample(c(1:1000),1,replace=FALSE)}
-  #Si no se añade fecha (Date=2710, Date="27-10", Date="27/10")
-  #En ese caso se tomara la fecha del sistema
+  #It is optional that you identify your parent.
+  #If you add this value, a custom ID is given to the MC
+  #otherwise you will be given today's date as ID
+  #ID="Name" or ID=YYYYMMDD
+  if(is.null(ID)){
+    secuencia <- sprintf("%s-%03d", format(Sys.Date(),"%Y%m%d"), 1:999)
+    self$ID <- secuencia[1]
+    secuencia <- setdiff(secuencia, secuencia[1])
+  }else{
+    self$ID<-ID
+  }
+  #If no date is added (Date=2710, Date="27-10", Date="27/10")
+  #In that case the system date will be taken
   if(!is.null(Date)){
     self$Date<-Date
   }else{self$Date <- Sys.Date()}
 
-  #Valores para chequear la MC
-    #rango de la matriz
+  if(!is.null(Source)){
+    self$Source <- Source
+  }else{self$Source<-NULL}
+
+  #Values to check the MC
+  #array rank
   nk<-nrow(self$values)
   nfilas <- nrow(self$values)
   ncolumnas <- ncol(self$values)
-    #suma de los elementos de la filas
-  self$sumfil<-apply(self$values,1,sum) #definido para algunas funciones
-    #suma de los elementos de la columna
-  self$sumcol<-apply(self$values,2,sum) #definido para algunas funciones
+  #sum of row elements
+  self$sumfil<-apply(self$values,1,sum)
+  #sum of col elements
+  self$sumcol<-apply(self$values,2,sum)
+
+
+
+# Matrix check ------------------------------------------------------------
+
+
+
   error1<- FALSE
   error2<- FALSE
   error3<- FALSE
@@ -81,7 +108,6 @@ MatCon <- R6Class("MatCon",
   error5<- FALSE
   error6<- FALSE
   error7<- FALSE
-#Vemos que realmente es una matriz de confusion
    if((nfilas != ncolumnas)) {
      error1<- TRUE
      print("Error type 1: Non-square matrix")
@@ -117,11 +143,14 @@ MatCon <- R6Class("MatCon",
      print("Error type 7: It is not a matrix")
    }
 if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
-   warning("Errores de tipo 1, 2, 3, 4, 5, 6 o 7") #chequeo hecho
+   warning("Type errors 1, 2, 3, 4, 5, 6 or 7")
    stop()
    }
   },
 
+
+
+# Functions that return indices and variances -----------------------------
 
 
 
@@ -130,29 +159,34 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' oa = \frac{\sum_{i=1}^{n} x_{ii}}{\sum_{i, j=1}^{n} x_{ij}}
+      #' OverallAcc = \frac{\sum_{i=1}^{n} x_{ii}}{\sum_{i, j=1}^{n} x_{ij}}
       #' }
       #'
+      #' \deqn{
+      #' \sigma^2_{OverallAcc}=\frac{OverallAcc \cdot (1-OverallAcc)}{N}
+      #' }
       #' Where:
       #' \enumerate{
-      #'   \item `oa`: overall accuracy.
-      #'   \item `x_ii`: diagonal element of the matrix.
-      #'   \item `x_ij`: element of the matrix.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item x_ii: diagonal element of the matrix.
+      #'   \item x_ij: element of the matrix.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
-      #' This represents a mathematical expression with a fraction.
+      #'
       #' @return Overall accuracy and variance.
       #' @references [1] Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
+      #' @rdname
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
-      #' p$oa()
+      #' p$OverallAcc()
       #'
       #' @aliases
 
-     oa = function() {
+     OverallAcc = function() {
      indice <- sum(diag(self$values))/sum(self$values)
      VarIndic<-abs((indice*(1-indice))/sum(self$values))
-     return(list(oa=indice,Var=VarIndic))
+     return(list(OverallAcc=indice,Var=VarIndic))
      },
 
       #' @description  The accuracy from the point of view of a map user, not the map maker. See reference [1].
@@ -485,7 +519,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description Modified kappa index for the user. See reference [8]
       #' @description
       #'  \deqn{
-      #' mcku=\frac{ua_i-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
+      #' mcku=\frac{ua_i-\frac{1}{\sqrt{N}}}{1-\frac{1}{\sqrt{N}}}
       #' }
       #'
       #' where:
@@ -493,7 +527,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' \enumerate{
       #'   \item `mcku`: modified conditional kappa (user's).
       #'   \item `ua_i`: user accuracy.
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of elements of the matrix.
       #' }
       #' @return Modified conditional kappa (user's) and its variance.
       #' @param i Class to evaluate.
@@ -515,7 +549,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @param i Class to evaluate.
       #' @description
       #'  \deqn{
-      #' mckp=\frac{pa_i-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
+      #' mckp=\frac{pa_i-\frac{1}{\sqrt{N}}}{1-\frac{1}{\sqrt{N}}}
       #' }
       #'
       #' where:
@@ -523,7 +557,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' \enumerate{
       #'   \item `mckp`: modified conditional kappa (producer's).
       #'   \item `pa_i`: producer accuracy.
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
       #' @return Modified conditional kappa (producer's) and variance.
       #' @examples
@@ -648,14 +682,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @references [10] Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
       #' @description
       #'  \deqn{
-      #' aau=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+      #' aau=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
       #'   \item `aau`: average accuracy from user's perspective.
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #'   \item `x_.j`: sum with respect to j (rows).
       #'   \item `x_ii`: diagonal element of the matrix.
       #' }
@@ -681,20 +715,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
       #' @description
       #'  \deqn{
-      #' aap=\frac{1}{\sqrt{card(p)}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ji}}
+      #' aap=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ji}}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
       #'   \item `aap`: average accuracy from producer's perspective.
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #'   \item `x_.j`: sum with respect to j (rows).
       #'   \item `x_ii`: diagonal element of the matrix.
       #' }
       #' @return Average accuracy from producer's perspective and its variance.
       #' @examples
-      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+      #' A <- matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
       #' p$aap()
       #'
@@ -765,7 +799,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description This function provides the average value of the Hellden mean precision index. See reference [2].
       #' @description
       #'  \deqn{
-      #' amah=\frac{1}{\sqrt{card(p)}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
+      #' amah=\frac{1}{\sqrt{N}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
       #' }
       #'
       #' where:
@@ -774,7 +808,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `amah`: average of Hellden's mean accuracy index.
       #'   \item `ua_i`: user accuracy.
       #'   \item `pa_i`: producer accuracy.
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
       #' @return Average of Hellden's mean accuracy index and its variance.
       #' @examples
@@ -794,7 +828,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description This function provides the average of Short's mapping accuracy index. See reference [2].
       #' @description
       #'  \deqn{
-      #' amas=\frac{1}{\sqrt{card(p)}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
+      #' amas=\frac{1}{\sqrt{N}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
       #' }
       #'
       #' where:
@@ -804,7 +838,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `x_ii`: diagonal element of the matrix.
       #'   \item `x_.j`: sum with respect to j (rows).
       #'   \item `x_i.`: sum with respect to i (columns).
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
       #' @return Average of Short's mapping accuracy index and its variance.
       #' @examples
@@ -830,15 +864,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
       #' @description
       #'  \deqn{
-      #' cau=\frac{oa+aau}{2}
+      #' cau=\frac{OverallAcc+aau}{2}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `cau`: combined accuracy from user's perspective.
-      #'   \item `oa`: overall accuracy.
-      #'   \item `aau`: average accuracy from user's perspective.
+      #'   \item cau: combined accuracy from user's perspective.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item aau: average accuracy from user's perspective.
       #' }
       #' @return Combined accuracy from user's perspective and its variance.
       #' @examples
@@ -849,7 +883,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      cau = function(){
-      cau = (self$oa()[[1]] + self$aau()[[1]]) / 2
+      cau = (self$OverallAcc()[[1]] + self$aau()[[1]]) / 2
       VarCau=abs((cau*(1-cau))/sum(self$values))
      #esta bien la varianza así? o deberia de ser cada una por un lado?(que ya esta calculada)
      return(list(cau=cau,Var=VarCau))
@@ -858,15 +892,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
       #' @description
       #'  \deqn{
-      #' cap=\frac{oa+aap}{2}
+      #' cap=\frac{OverallAcc+aap}{2}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `cap`: combined accuracy from producer's perspective.
-      #'   \item `oa`: overall accuracy.
-      #'   \item `aap`: average accuracy from producer's perspective.
+      #'   \item cap: combined accuracy from producer's perspective.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item aap: average accuracy from producer's perspective.
       #' }
       #' @return Combined accuracy from producer's perspective and its variance.
       #' @examples
@@ -877,7 +911,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      cap = function(){
-      cap = (self$oa()[[1]] + self$aap()[[1]]) / 2
+      cap = (self$OverallAcc()[[1]] + self$aap()[[1]]) / 2
       VarCap=abs((cap*(1-cap))/sum(self$values))
      return(list(cap=cap,Var=VarCap))
      },
@@ -885,15 +919,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [2].
       #' @description
       #'  \deqn{
-      #' caup=\frac{oa+amah}{2}
+      #' caup=\frac{OverallAcc+amah}{2}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `caup`: combined accuracy from both user's and producer's perspectives.
-      #'   \item `oa`: overall accuracy.
-      #'   \item `amah`: average of Hellden's mean accuracy index.
+      #'   \item caup: combined accuracy from both user's and producer's perspectives.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item amah: average of Hellden's mean accuracy index.
       #' }
       #' @return Combined accuracy from both user's and producer's perspectives and its variance.
       #' @examples
@@ -904,7 +938,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      caup = function(){
-      caup= ( self$oa()[[1]] + self$amah()[[1]] ) / 2
+      caup= ( self$OverallAcc()[[1]] + self$amah()[[1]] ) / 2
       VarCaup=abs((caup*(1-caup))/sum(self$values))
      return(list(caup=caup,Var=VarCaup))
      },
@@ -913,15 +947,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description
       #'  \deqn{
       #'  ea=\sum^n_{i=1} (\frac{x _{\cdot i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i \cdot}}{\sum_{j=1}^n x_{ij}}) \\
-      #' KappaValue=\frac{oa-ea}{1-ea}
+      #' KappaValue=\frac{OverallAcc-ea}{1-ea}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `KappaValue`: Kappa coefficient.
-      #'   \item `oa`: overall accuracy.
-      #'   \item `ea`: expected accuracy of agreement if agreement were purely random.
+      #'   \item KappaValue: Kappa coefficient.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item ea: expected accuracy of agreement if agreement were purely random.
       #' }
       #' @return Kappa coefficient and its variance.
       #' @references [11] Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
@@ -937,9 +971,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       if (1-ea == 0){
        stop ("/ by 0")
       }else{
-        kappa = (self$oa()[[1]]- ea) / (1 - ea)
+        kappa = (self$OverallAcc()[[1]]- ea) / (1 - ea)
         #segun el manual de calidad
-        VarKappa=abs((self$oa()[[1]]*(1-self$oa()[[1]]))/(sum(self$values)*(1-ea)^2))
+        VarKappa=abs((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-ea)^2))
       }
      return(list(Kappa=kappa,Var=VarKappa))
      },
@@ -948,15 +982,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description It is the proportion of agreement after chance agreement is removed from consideration. See reference [2].
       #' @description
       #'  \deqn{
-      #' mkp=\frac{oa-\frac{1}{\sqrt{card(p)}}}{1-\frac{1}{\sqrt{card(p)}}}
+      #' mkp=\frac{OverallAcc-\frac{1}{\sqrt{N}}}{1-\frac{1}{\sqrt{N}}}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `mkp`: modified kappa
-      #'   \item `oa`: overall accuracy.
-      #'   \item `card(p)`: number of elements of the matrix, cardinal of the matrix.
+      #'   \item mkp: modified kappa
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
       #' @return Modified kappa and its variance.
       #' @examples
@@ -967,7 +1001,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      mkp = function(){
-      mkp = (self$oa()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+      mkp = (self$OverallAcc()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
       VarMkp=abs((mkp*(1-mkp))/sum(self$values))
      return(list(mkp=mkp,Var=VarMkp))
      },
@@ -1090,7 +1124,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmip=nmip,Var=VarNmip))
      },
 
-      #' See reference [11].
+      #' @description See reference [12].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1114,7 +1148,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing and its variance.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @references [11] Strehl, A., & Ghosh, J. (2002). Cluster ensembles---a knowledge reuse framework for combining multiple partitions. Journal of machine learning research, 3(Dec), 583-617.
+      #' @references [12] Strehl, A., & Ghosh, J. (2002). Cluster ensembles---a knowledge reuse framework for combining multiple partitions. Journal of machine learning research, 3(Dec), 583-617.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
@@ -1139,7 +1173,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmiam=nmiam,Var=VarNmiam))
      },
 
-      #' See reference [12].
+      #' @description See reference [13].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1162,7 +1196,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `ami`: average mutual information.
       #' }
       #' @return Normalized mutual information using the geometric mean of the entropies on map and on ground truthing and its variance.
-      #' @references [12] Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
+      #' @references [13] Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -1186,7 +1220,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(nmigm=nmigm,Var=VarNmigm))
      },
 
-      #' See reference [13].
+      #' @description See reference [14].
       #' @description
       #'  \deqn{
       #' H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1195,7 +1229,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
       #' }
       #' \deqn{
-      #' nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{card(p)}}
+      #' nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{N}}
       #' }
       #'
       #' where:
@@ -1209,7 +1243,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item `ami`: average mutual information.
       #' }
       #' @return Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
-      #' @references [13] Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
+      #' @references [14] Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -1229,199 +1263,55 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return (list(nmimx=nmimx,Var=VarNmimx))
      },
 
-      #' @description N resamples of the confusion matrix are performed. See reference [14].
-      #' @param n Number of resamples.
-      #' @return n simulated matrices, from the confusion matrix, applying the multinomial distribution
-      #' @references [14] Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$BootStrap(2)
-      #'
-      #' @aliases
-
-     BootStrap=function(n){
-      #rango matriz
-      nc<-ncol(self$values)
-      #convertimos en vector
-      M1<-as.vector(self$values)
-      #calculamos prob
-      prob<-M1/sum(M1)
-      #definimos M2 lista de matrices
-      M2<-list()
-      #remuestreo con multinomial
-      boots<-rmultinom(n,sum(M1),prob)
-      #guardamos en las matrices simuladas
-        for(i in 1:ncol(boots)){
-          M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
-        }
-
-      #talvez se deberia de guardar M2 como clase MatCon??
-      #para poder aplicarle luego las funciones normalize
-      #y MPseudozeroes de forma más cómoda?
-     return(list(OriginalMatrix=self$values,BootStrap=M2))
-     },
 
 
-      #' @references [15] Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
-      #' @references [16] Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
-      #' @param n Iteration. By default n=100.
-      #' @return Normalized matrix (Class MatCon) and its variance.
-      #' @description An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. See reference [15,16].
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$Normalize()$values
-      #'
-      #' @aliases
-
-     Normalize=function(n=NULL){
-      #Da la opcion de añadir un numero concreto de iteraciones
-      #o si no se da un numero concreto, se realizan 100 iteraciones
-      if(!is.null(n)){
-        n <- n
-      }else{n<-100}
-
-      rg<-nrow(self$values)
-      x1<-self$values
-      VarNorm<-matrix()
-        for (k in 1:n) {
-        sumfilas=apply(x1,1,sum)
-          for (i in 1:rg) {
-          x1[i,]=x1[i,]/sumfilas[i]
-          }
-        sumcolumnas=apply(x1,2,sum)
-          for (j in 1:rg) {
-          x1[,j]=x1[,j]/sumcolumnas[j]
-          }
-        }
-        #no estoy nada segura de esta forma de sacar la varianza aqui
-
-        #for (i in 1:rg) {
-        # for (j in 1:rg) {
-        #  VarNorm[i,j]=(x1[i,j]*(1-x1[i,j])/sum(self$values))
-        #}
-        #}
-
-     NormMatrix<-MatCon$new(x1,ID=sample(1:3000,1,replace = TRUE))
-     return(NormMatrix)
-     },
-
-
-      #' @description  Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. See reference [16].
-      #' @return An object of class MatCon with the matrix of Pseudoceros.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$MPseudozeroes()$values
-      #'
-      #' @aliases
-
-     MPseudozeroes = function(){
-
-       # Modifica la matriz a?adiendo Pseudoceros
-       # OJO: Esto no se debe hacer si todas las celdas tienen alg?n contenido
-       #      Este caso se deber?a controlar
-
-       #vemos si algun elemento es 0
-       k=0
-       rg<-nrow(self$values)
-        for (i in 1:rg) {
-         for (j in 1:rg) {
-          if((self$values[i,j]!=0)==TRUE){
-            k=k+1
-             if(k==length(self$values)){
-               stop("La Matriz de Pseudoceros elimina los ceros de la matriz. Su matriz no tiene ningun cero que eliminar.")
-             }}
-        }
-       }
-
-       MERROR=self$values
-       SumaMatriz <-sum(MERROR)
-       MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
-       K <- (SumaMatriz*SumaMatriz - sum(MERROR*MERROR))/sum((SumaMatriz*MLandas - MERROR )^2)
-       MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(MERROR + K*MLandas)
-
-       MPseudoceros1<-MatCon$new(MPseudoceros,ID=sample(1:3000,1,replace = TRUE))
-     return(MPseudoceros1)
-     },
-
-      #' @description  Cell values are typified. The total sum of the original matrix is used for the typification. Resulting values can be presented as real (parameter RaR=1) or as percentage (parameter RaR !=1)
+      #' @description  Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. See reference [15].
+      #' @return Tau index and its variance.
       #' @description
-      #'  \deqn{
-      #' MTypify=\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
+      #' The mathematical expression is:
+      #'
+      #' \deqn{
+      #' CoefAccPr=\frac{1}{M}
+      #' }
+      #' \deqn{
+      #' Tau = \frac{OverallAcc-CoefAccPr}{1-CoefAccPr}
       #' }
       #'
-      #' where:
+      #' \deqn{
+      #' \sigma^2_{Tau}=\frac{OverallAcc \cdot (1-OverallAcc)}{N \cdot (1-CoefAccPr)^2}
+      #' }
       #'
+      #' Where:
       #' \enumerate{
-      #'   \item `MTyipify`: typified matrix.
-      #'   \item `x_ij`: matrix element.
-      #'   \item `sum{x_ij}`: sum of all the elements of the matrix.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item CoefAccPr: a priori random agreement coefficient.
+      #'   \item M: number of classes.
+      #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
-      #' @param RaR "1" indicates result as real, other values mean percentage as integer. By default RaR=1.
-      #' @return Typified matrix
+      #' @references [15] Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
-      #' p$MTypify(RaR=5)
+      #' p$Tau()
       #'
       #' @aliases
 
-     MTypify =function(RaR=NULL){
-      if(!is.null(RaR)){
-        RaR <- RaR
-      }else{R<-1}
-      # Crea una matriz en la que todos los elementos son proporciones
-      # tal que la suma de todos los elementos es 1
-        MERROR=self$values
-        MatrizSalida <- MERROR/(sum(MERROR))
-        if (RaR==1){
-         MatrizSalida <- MERROR/(sum(MERROR))
-         return(MatrizSalida)
-        }else{
-          MatrizSalida <- MERROR/(sum(MERROR))
-          MatrizSalida[] <- as.integer(100*MatrizSalida)
-          return(MatrizSalida)
-          }
-
+     Tau = function(){
+        Ca<-1/nrow(self$values)
+        Tau<-((self$OverallAcc()[[1]]-Ca)/(1-Ca))
+        VarTau=((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-Ca)))
+     return(list(Tau=Tau,Var=VarTau))
      },
 
-      #' @description  Several parameters are calculated for the given Confusion Matrix. See references [1,11,16].
-      #' @return Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$MAllParameters()
-      #'
-      #' @aliases
 
-     MAllParameters=function(){
-     # ******************************************
-     # Calculo par?metros generales sobre  la matriz de error
-     # Estos par?metros son:
-     # PA = Porcentaje de acuerdo
-     # Kappa = Indice Kappa
-     # Exactitud de usuario
-     # Exactitud de productor
-     # Varianzas
-     # Matriz de pseudoceros
-      oa<-self$oa()
-      dimension <- nrow(self$values)
-      SumaMatriz <-sum(self$values)
-      PAcuerdo <- oa[[1]]
-      ExProdu <- self$pa()[[1]]
-      ExUsuario <-self$ua()[[1]]
-      PAAzar <- sum((self$sumfil*self$sumcol))/(SumaMatriz*SumaMatriz)
-      Kappa <- self$KappaValue()[[1]]
-      VarPAcuerdo <- PAcuerdo *(1-PAcuerdo)/SumaMatriz
-      VarKappa <-  VarPAcuerdo / ((1-PAAzar)*(1-PAAzar))
-      MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
-      K <- (SumaMatriz*SumaMatriz - sum(self$values*self$values))/sum((SumaMatriz*MLandas - self$values)^2)
-      MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(self$values + K*MLandas)
-      salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz, OAccuracy=PAcuerdo, VarOAccuracy=VarPAcuerdo, Kappa=Kappa,VarKappa=VarKappa,ExPro=ExProdu,ExUsu=ExUsuario,Kpseudo=K, MPseudoceros=MPseudoceros,MLandas=MLandas)
-     return(salida)
-     },
+
+
+# Functions that return multiple indices ----------------------------------
+
+
+
+
+
 
       #' @description  User's and producer's accuracies and standard deviations are computed. See reference [1].
       #' @return A list with the producer's accuracy, its standard deviation, the user's accuracy, and its standard deviation
@@ -1442,64 +1332,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
          pcuasd <- sqrt(self$ua()[[2]])
        }
      return(list(PrAcc=pcpa,PrAccSDeviation=pcpasd,UAcc= pcua, UAccSDeviation=pcuasd))
-     },
-
-
-      #' @description  User's and producer's weighted accuracies and standard deviations are computed. See reference [1].
-      #' @param MP Matrix of weights
-      #' @return Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
-      #' @examples
-      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-      #' p<-MatCon$new(A)
-      #' MP<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-      #' p$CAccuraciesW(MP)
-      #'
-      #' @aliases
-
-     CAccuraciesW =function(MP){
-     #  Calculation of weighted Class accuracies
-     #  The error matrix and the weight matrix are required
-     #  The weights for diagonal cells are 1
-     #  The values of the weights for the off-diagonal cells  must be in the range [0,1]
-
-
-     # UnWeighted marginals (quantities)
-        ncol <- self$sumcol
-        nrow<- self$sumfil
-
-        # In %
-        MV<- self$values/sum(self$values)
-        # Weighted matrix
-        WMERROR<-MV*MP
-
-        # Weighted OA
-        WOA <- sum(diag(WMERROR))/sum(WMERROR)
-        # Weighted marginals
-        mcol<- apply(WMERROR,2,sum)
-        mrow<- apply(WMERROR,1,sum)
-        # UnWeighted marginals (proportions)
-        p_j <- apply(MV,2,sum)
-        pi_ <- apply(MV,1,sum)
-
-        # Initialization of vectors
-        nc <- nrow(MV)
-        wi_<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        w_j<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        # Weighted per class user's and producer's accuracies
-        wpcua<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        wpcpa<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        pcpasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class producer's accuracy standard deviation
-        pcuasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class user's accuracy standard deviation
-            for (i in 1:nc){
-                wi_[i]    <- sum(p_j*MP[i,])
-                w_j[i]    <- sum(pi_*MP[,i])
-                wpcua[i]  <- sum(WMERROR[i,])/sum(MV[i,])
-                wpcpa[i]  <- sum(WMERROR[,i])/sum(MV[,i])
-                pcpasd[i] <- sqrt(wpcpa[i]*(1-wpcpa[i])/ncol[i])
-                pcuasd[i] <- sqrt(wpcua[i]*(1-wpcua[i])/nrow[i])
-            }
-
-     return(list(WMERROR=WMERROR, WOA=WOA, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUAcc= wpcua, WUAccSDeviation=pcuasd))
      },
 
 
@@ -1537,6 +1369,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
      return(list(O1=O1, O2=O2, O3=O3,O4=O4, K=K, SdK=SdK, CV=CV))
      },
+
 
       #' @description Class Kappa agreement index (conditional Kappa) and its variance are computed
       #' @return Kappa index and its standard deviation.
@@ -1580,103 +1413,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(SumaMatriz=SumaMatriz,ti1=ti1,ti2=ti2,tj2=tj2,SumaTi=ti3+ti4, SumaTj=tj3+tj4,Ki_=Ki_, Ki_Sd=Ki_sd, K_j=K_j, K_jsd=K_jsd))
      },
 
-      #' @description  Overall Kappa agreement index (Weighted) and its variance are computed
-      #' @param MW  Matrix of weights.
-      #' @return Kappa index and its variance.
-      #' @examples
-      #' A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' MW<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-      #' p<-MatCon$new(A)
-      #' p$DetailedWKappa(MW)
-      #'
-      #' @aliases
 
-     DetailedWKappa = function(MW){
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
-      # In %
-       MERROR<- self$values/SumaMatriz
-      # UnWeighted marginals (prob)
-       pcol <- apply(MERROR,2,sum)
-       prow<- apply(MERROR,1,sum)
-      # Weighted matrix
-       WMERROR<-MERROR*MW
-
-      # The 4 coefficients
-       Ow1 <- sum(MW*MERROR)
-       Ow2 <- sum(t(MW*prow)*pcol)
-       c1<- (1-Ow1)
-       c2<- (1-Ow2)
-       wi_ <- MW %*% pcol
-       w_j <- MW %*% prow
-       mintermedia1<- matrix(rep(wi_, nc), nrow =nc, ncol=nc, byrow=FALSE)
-       mintermedia2<- matrix(rep(w_j, nc), nrow =nc, ncol=nc, byrow=TRUE)
-       mintermedia3 <-(mintermedia1+mintermedia2)*c1
-       mintermedia4 <- (MW*c2-mintermedia3)^2
-       Ow4 <- sum(MERROR*mintermedia4)
-       K <- (Ow1-Ow2)/c2
-       SdK <- sqrt((Ow4-(Ow1*Ow2-2*Ow2+Ow1)^2)/(SumaMatriz*(c2^4)))
-       CV <- SdK/K
-     return(list(Ow1=Ow1, Ow2=Ow2, Ow4=Ow4, K=K, SdK=SdK, CV=CV))
-     },
-
-      #' @description  Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. See reference [17].
-      #' @return Tau index and its variance.
-      #' @references [17] Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$Tau()
-      #'
-      #' @aliases
-
-     Tau = function(){
-        Ca<-1/nrow(self$values)
-        Tau<-((self$oa()[[1]]-Ca)/(1-Ca))
-        VarTau=((self$oa()[[1]]*(1-self$oa()[[1]]))/(sum(self$values)*(1-Ca)))
-     return(list(Tau=Tau,Var=VarTau))
-     },
-
-      #' @description  Overall Tau agreement index and variance elements  are computed.
-      #' @param VP Vector of proportions (as matrix)
-      #' @return NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' VP <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$DetailedTau(VP)
-      #'
-      #' @aliases
-
-     DetailedTau = function(VP){
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
-      # In %
-       MERROR<- self$values/SumaMatriz
-      # UnWeighted marginals (prob)
-       pcol <- apply(MERROR,2,sum)
-       prow<- apply(MERROR,1,sum)
-       O1 <- sum(diag(MERROR)  )
-       O2 <- sum(VP*pcol)
-       O3 <- sum(diag(MERROR)*(VP+pcol))
-       mintermedia1<- matrix(rep(pcol, nc), nrow =nc, ncol=nc, byrow=FALSE)
-       mintermedia2<- matrix(rep(VP, nc), nrow =nc, ncol=nc, byrow=TRUE)
-       mintermedia3 <-(mintermedia1+mintermedia2)^2
-       O4 <- sum(MERROR*mintermedia3)
-       t1<- (1-O1) #probabilidad error general porporcional
-       t2<- (1-O2) #probabilidad error productor proporcional
-       t3<- O1*t1/(t2^2)
-       t4<- 2*t1*(2*O1*O2-O3)/(t2^3)
-       t5<- (t1^2)*(O4-4*O2^2)/(t2^4)
-       Tau <- (O1-O2)/t2
-       SdT <- sqrt((t3+t4+t5)/SumaMatriz)
-       CV<- SdT/Tau
-     return(list(O1=O1, O2=O2, O3=O3,O4=O4, Tau=Tau, SdT=SdT, CV=CV))
-     },
-
-      #' @description  Quantity, Exchange and Shift values are computed. See reference [18].
+      #' @description  Quantity, Exchange and Shift values are computed. See reference [16].
       #' @param TI Time interval (default value = 1)
-      #' @references [18] Pontius Jr, R. G., & Santacruz, A. (2014). Quantity, exchange, and shift components of difference in a square contingency table. International Journal of Remote Sensing, 35(21), 7543-7554.
+      #' @references [16] Pontius Jr, R. G., & Santacruz, A. (2014). Quantity, exchange, and shift components of difference in a square contingency table. International Journal of Remote Sensing, 35(21), 7543-7554.
       #' @param SF Scale factor for results (default value = 1)
       #' @return NO VEO MUY CLARO QUE HACE
       #' @examples
@@ -1690,29 +1430,29 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       # Overall Quantity, Exchange and Shift values
       # TI Time interval
       # SF Scale factor
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
-       SumaDigonal<-sum(diag(self$values))
-       ee<- matrix(rep(0, nc*nc), nrow =nc, ncol=nc, byrow=TRUE)
-       d<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-       q<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-       e<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-       s<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+      nc <- nrow(self$values)
+      SumaMatriz <-sum(self$values)
+      SumaDigonal<-sum(diag(self$values))
+      ee<- matrix(rep(0, nc*nc), nrow =nc, ncol=nc, byrow=TRUE)
+      d<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+      q<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+      e<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+      s<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         for (j in 1:nc){
           for (i in 1:nc){
             if (i>j){#diagonal 0//triangular superior
-              ee[j,i] <-  (min(self$values[i,j], self$values[j,i]))*2
+            ee[j,i] <-  (min(self$values[i,j], self$values[j,i]))*2
             }else{
               ee[j,i] <- 0
-              }
+            }
           }
         }
 
         for (j in 1:nc){
-          d[j]<-d[j]+ sum(self$values[,j])+sum(self$values[j,])-2*self$values[j,j]
-          q[j]<-q[j]+ abs(sum(self$values[,j])- sum(self$values[j,]))
-          e[j]<-e[j]+ sum(ee[,j])+sum(ee[j,])
-          s[j]<-d[j]- q[j]-e[j]
+        d[j]<-d[j]+ sum(self$values[,j])+sum(self$values[j,])-2*self$values[j,j]
+        q[j]<-q[j]+ abs(sum(self$values[,j])- sum(self$values[j,]))
+        e[j]<-e[j]+ sum(ee[,j])+sum(ee[j,])
+        s[j]<-d[j]- q[j]-e[j]
         }
 
       d<-d/((TI)*SumaMatriz)
@@ -1724,7 +1464,314 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       E<- SF*sum(e)/2
       S<- SF*sum(s)/2
      return(list(ODifference=D, OQuantity=Q, OExchange=E, OShift=S, d=d, q=q, e=e, s=s))
+     },
+
+
+
+
+# Functions that return matrices ------------------------------------------
+
+
+
+
+      #' @description  Several parameters are calculated for the given Confusion Matrix. See references [1,11,16].
+      #' @return Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$MAllParameters()
+      #'
+      #' @aliases
+
+     MAllParameters=function(){
+     # ******************************************
+     # Calculo par?metros generales sobre  la matriz de error
+     # Estos par?metros son:
+     # PA = Porcentaje de acuerdo
+     # Kappa = Indice Kappa
+     # Exactitud de usuario
+     # Exactitud de productor
+     # Varianzas
+     # Matriz de pseudoceros
+      OverallAcc<-self$OverallAcc()
+      dimension <- nrow(self$values)
+      SumaMatriz <-sum(self$values)
+      PAcuerdo <- OverallAcc[[1]]
+      ExProdu <- self$pa()[[1]]
+      ExUsuario <-self$ua()[[1]]
+      PAAzar <- sum((self$sumfil*self$sumcol))/(SumaMatriz*SumaMatriz)
+      Kappa <- self$KappaValue()[[1]]
+      VarPAcuerdo <- PAcuerdo *(1-PAcuerdo)/SumaMatriz
+      VarKappa <-  VarPAcuerdo / ((1-PAAzar)*(1-PAAzar))
+      MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
+      K <- (SumaMatriz*SumaMatriz - sum(self$values*self$values))/sum((SumaMatriz*MLandas - self$values)^2)
+      MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(self$values + K*MLandas)
+      salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz, OverallAcc=PAcuerdo, VarOverallAcc=VarPAcuerdo, Kappa=Kappa,VarKappa=VarKappa,ExPro=ExProdu,ExUsu=ExUsuario,Kpseudo=K, MPseudoceros=MPseudoceros,MLandas=MLandas)
+     return(salida)
+     },
+
+
+      #' @description N resamples of the confusion matrix are performed. See reference [17].
+      #' @param n Number of resamples.
+      #' @return n simulated matrices, from the confusion matrix, applying the multinomial distribution
+      #' @references [17] Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$BootStrap(2)
+      #'
+      #' @aliases
+
+     BootStrap=function(n){
+      #rango matriz
+      nc<-ncol(self$values)
+      #convertimos en vector
+      M1<-as.vector(self$values)
+      #calculamos prob
+      prob<-M1/sum(M1)
+      #definimos M2 lista de matrices
+      M2<-list()
+      #remuestreo con multinomial
+      boots<-rmultinom(n,sum(M1),prob)
+      #guardamos en las matrices simuladas
+        for(i in 1:ncol(boots)){
+          M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
+        }
+
+      #talvez se deberia de guardar M2 como clase MatCon??
+      #para poder aplicarle luego las funciones normalize
+      #y MPseudozeroes de forma más cómoda?
+     return(list(OriginalMatrix=self$values,BootStrap=M2))
+     },
+
+
+      #' @references [18] Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
+      #' @references [19] Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+      #' @param n Iteration. By default n=100.
+      #' @return Normalized matrix (Class MatCon) and its variance.
+      #' @description An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. See reference [18,19].
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$Normalize()$values
+      #'
+      #' @aliases
+
+     Normalize=function(n=NULL){
+      #Da la opcion de añadir un numero concreto de iteraciones
+      #o si no se da un numero concreto, se realizan 100 iteraciones
+      if(!is.null(n)){
+        n <- n
+      }else{n<-100}
+
+      rg<-nrow(self$values)
+      x1<-self$values
+      VarNorm<-matrix()
+        for (k in 1:n) {
+        sumfilas=apply(x1,1,sum)
+          for (i in 1:rg) {
+          x1[i,]=x1[i,]/sumfilas[i]
+          }
+        sumcolumnas=apply(x1,2,sum)
+          for (j in 1:rg) {
+          x1[,j]=x1[,j]/sumcolumnas[j]
+          }
+        }
+        #no estoy nada segura de esta forma de sacar la varianza aqui
+
+        #for (i in 1:rg) {
+        # for (j in 1:rg) {
+        #  VarNorm[i,j]=(x1[i,j]*(1-x1[i,j])/sum(self$values))
+        #}
+        #}
+
+     NormMatrix<-MatCon$new(x1,ID=sample(1:3000,1,replace = TRUE))
+     return(NormMatrix)
+     },
+
+
+
+      #' @description  Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. See reference [19].
+      #' @return An object of class MatCon with the matrix of Pseudoceros.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$MPseudozeroes()$values
+      #'
+      #' @aliases
+
+     MPseudozeroes = function(){
+
+       # Modifica la matriz a?adiendo Pseudoceros
+       # OJO: Esto no se debe hacer si todas las celdas tienen alg?n contenido
+       #      Este caso se deber?a controlar
+
+       #vemos si algun elemento es 0
+       k=0
+       rg<-nrow(self$values)
+        for (i in 1:rg) {
+         for (j in 1:rg) {
+          if((self$values[i,j]!=0)==TRUE){
+            k=k+1
+             if(k==length(self$values)){
+               stop("La Matriz de Pseudoceros elimina los ceros de la matriz. Su matriz no tiene ningun cero que eliminar.")
+             }}
+        }
+       }
+
+       MERROR=self$values
+       SumaMatriz <-sum(MERROR)
+       MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
+       K <- (SumaMatriz*SumaMatriz - sum(MERROR*MERROR))/sum((SumaMatriz*MLandas - MERROR )^2)
+       MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(MERROR + K*MLandas)
+
+       MPseudoceros1<-MatCon$new(MPseudoceros,ID=sample(1:3000,1,replace = TRUE))
+     return(MPseudoceros1)
+     },
+
+
+
+# Functions that use weight matrices --------------------------------------
+
+
+
+
+      #' @description  Overall Tau agreement index and variance elements  are computed.
+      #' @param WV Weights vector (as matrix)
+      #' @return NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' WV <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$DetailedTau(WV)
+      #'
+      #' @aliases
+
+     DetailedTau = function(WV){
+       nc <- nrow(self$values)
+       SumaMatriz <-sum(self$values)
+      # In %
+       MERROR<- self$values/SumaMatriz
+      # UnWeighted marginals (prob)
+       pcol <- apply(MERROR,2,sum)
+       prow<- apply(MERROR,1,sum)
+       O1 <- sum(diag(MERROR)  )
+       O2 <- sum(WV*pcol)
+       O3 <- sum(diag(MERROR)*(WV+pcol))
+       mintermedia1<- matrix(rep(pcol, nc), nrow =nc, ncol=nc, byrow=FALSE)
+       mintermedia2<- matrix(rep(WV, nc), nrow =nc, ncol=nc, byrow=TRUE)
+       mintermedia3 <-(mintermedia1+mintermedia2)^2
+       O4 <- sum(MERROR*mintermedia3)
+       t1<- (1-O1) #probabilidad error general porporcional
+       t2<- (1-O2) #probabilidad error productor proporcional
+       t3<- O1*t1/(t2^2)
+       t4<- 2*t1*(2*O1*O2-O3)/(t2^3)
+       t5<- (t1^2)*(O4-4*O2^2)/(t2^4)
+       Tau <- (O1-O2)/t2
+       SdT <- sqrt((t3+t4+t5)/SumaMatriz)
+       CV<- SdT/Tau
+     return(list(WeightsVector=WV, O1=O1, O2=O2, O3=O3,O4=O4, Tau=Tau, SdT=SdT, CV=CV))
+     },
+
+      #' @description  Overall Kappa agreement index (Weighted) and its variance are computed
+      #' @param WM  Weight matrix
+      #' @return Weight matrix, kappa index obtained from the original matrix and the weight matrix, and its variance.
+      #' @examples
+      #' A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+      #' p<-MatCon$new(A)
+      #' p$DetailedWKappa(WM)
+      #'
+      #' @aliases
+
+     DetailedWKappa = function(WM){
+       nc <- nrow(self$values)
+       SumaMatriz <-sum(self$values)
+      # In %
+       MERROR<- self$values/SumaMatriz
+      # UnWeighted marginals (prob)
+       pcol <- apply(MERROR,2,sum)
+       prow<- apply(MERROR,1,sum)
+      # Weighted matrix
+       WMERROR<-MERROR*WM
+
+      # The 4 coefficients
+       Ow1 <- sum(WM*MERROR)
+       Ow2 <- sum(t(WM*prow)*pcol)
+       c1<- (1-Ow1)
+       c2<- (1-Ow2)
+       wi_ <- WM %*% pcol
+       w_j <- WM %*% prow
+       mintermedia1<- matrix(rep(wi_, nc), nrow =nc, ncol=nc, byrow=FALSE)
+       mintermedia2<- matrix(rep(w_j, nc), nrow =nc, ncol=nc, byrow=TRUE)
+       mintermedia3 <-(mintermedia1+mintermedia2)*c1
+       mintermedia4 <- (WM*c2-mintermedia3)^2
+       Ow4 <- sum(MERROR*mintermedia4)
+       K <- (Ow1-Ow2)/c2
+       SdK <- sqrt((Ow4-(Ow1*Ow2-2*Ow2+Ow1)^2)/(SumaMatriz*(c2^4)))
+       CV <- SdK/K
+     return(list(WeightMatrix=WM,Ow1=Ow1, Ow2=Ow2, Ow4=Ow4, K=K, SdK=SdK, CV=CV))
+     },
+
+
+      #' @description  User's and producer's weighted accuracies and standard deviations are computed. See reference [1].
+      #' @param WM Weight matrix
+      #' @return Weight matrix, Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
+      #' @examples
+      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+      #' p<-MatCon$new(A)
+      #' WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
+      #' p$CAccuraciesW(WM)
+      #'
+      #' @aliases
+
+     CAccuraciesW =function(WM){
+     #  Calculation of weighted Class accuracies
+     #  The error matrix and the weight matrix are required
+     #  The weights for diagonal cells are 1
+     #  The values of the weights for the off-diagonal cells  must be in the range [0,1]
+
+
+     # UnWeighted marginals (quantities)
+        ncol <- self$sumcol
+        nrow<- self$sumfil
+
+        # In %
+        MV<- self$values/sum(self$values)
+        # Weighted matrix
+        WMERROR<-MV*WM
+
+        # Weighted OA
+        WOverallAcc <- sum(diag(WMERROR))/sum(WMERROR)
+        # Weighted marginals
+        mcol<- apply(WMERROR,2,sum)
+        mrow<- apply(WMERROR,1,sum)
+        # UnWeighted marginals (proportions)
+        p_j <- apply(MV,2,sum)
+        pi_ <- apply(MV,1,sum)
+
+        # Initialization of vectors
+        nc <- nrow(MV)
+        wi_<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+        w_j<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+        # Weighted per class user's and producer's accuracies
+        wpcua<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+        wpcpa<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+        pcpasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class producer's accuracy standard deviation
+        pcuasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class user's accuracy standard deviation
+            for (i in 1:nc){
+                wi_[i]    <- sum(p_j*WM[i,])
+                w_j[i]    <- sum(pi_*WM[,i])
+                wpcua[i]  <- sum(WMERROR[i,])/sum(MV[i,])
+                wpcpa[i]  <- sum(WMERROR[,i])/sum(MV[,i])
+                pcpasd[i] <- sqrt(wpcpa[i]*(1-wpcpa[i])/ncol[i])
+                pcuasd[i] <- sqrt(wpcua[i]*(1-wpcua[i])/nrow[i])
+            }
+
+     return(list(WeightMatrix=WM,WMERROR=WMERROR, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUAcc= wpcua, WUAccSDeviation=pcuasd))
      }
+
+
 
    ),
    private = list(
