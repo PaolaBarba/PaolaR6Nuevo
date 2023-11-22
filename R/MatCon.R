@@ -5,6 +5,8 @@
 #' @param Date Date provided by the user. By default the date provided by the system will be taken.
 #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
 #' @return Object of class MatCon or an error if a matrix is not entered.
+#' @details
+#' List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Non-square matrix.
 #'  \item \code{Error type 2}: Single element matrix.
@@ -42,16 +44,17 @@ MatCon <- R6Class("MatCon",
     sumcol=NULL,
 
     #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #' Public method to create an instance of the MatCon class. When creating it, values must be given to the matrix. The optional possibility of adding metadata to the matrix is offered.
+    #' The creation includes a series of checks on the data that, if not met, give coded error messages. The values of the matrix must be organized in such a way that the columns represent the categories in the reference and the rows represent the categories in the product being evaluated.
     #'
     #' @param values Confusion matrix
-    #' @param ID Identifier. By default ID is a date in YYYYMMDD format
+    #' @param ID Identifier. By default, the date in YYYYMMDD format will be taken as the ID.
     #' @param Date Date provided by the user. By default the date provided by the system will be taken.
     #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
-    #' @return Object of class MatCon or an error if a matrix is not entered.
+    #' @return Object of class MatCon or an error if a matrix isn't entered.
     #' @examples
     #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-    #' mc <- MatCon$new (A,ID=5,Date="27-10-2023")
+    #' mc <- MatCon$new (A,ID=5,Date="27-10-2023",Source="Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press")
     #'
     #' @aliases
 
@@ -154,7 +157,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken. See reference [1].
+      #' @description Public method to calculate the global index called Overall accuracy. The Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken. The method also offers the variance. The reference [1] is followed for the computations.
       #' @description
       #' The mathematical expression is:
       #'
@@ -170,12 +173,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item OverallAcc: overall accuracy.
       #'   \item x_ii: diagonal element of the matrix.
       #'   \item x_ij: element of the matrix.
-      #'   \item N: number of elements of the matrix, cardinal of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #'
-      #' @return Overall accuracy and variance.
+      #' @return Overall accuracy and variance as a list.
       #' @references [1] Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
-      #' @rdname
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
@@ -186,391 +188,537 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      OverallAcc = function() {
      indice <- sum(diag(self$values))/sum(self$values)
      VarIndic<-abs((indice*(1-indice))/sum(self$values))
-     return(list(OverallAcc=indice,Var=VarIndic))
+     return(list(OverallAcc=indice,VarOverallAcc=VarIndic))
      },
 
-      #' @description  The accuracy from the point of view of a map user, not the map maker. See reference [1].
+
+
+
+      #' @description Public method for deriving a class index called user's accuracy. The user's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the row of the class i. The method also offers the variance. The reference [1] if followed for the computations.
       #' @description
       #' The mathematical expression is:
       #' \deqn{
-      #' ua=\frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+      #' UserAcc=\frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
       #' }
-      #'
+      #'  \deqn{
+      #' \sigma^2_{UserAcc}=\frac{UserAcc \cdot (1-UserAcc)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `ua`: user accuracy.
-      #'   \item `x_ii`: diagonal element of the matrix.
-      #'   \item `x_ij`: element of the matrix.
+      #'   \item UserAcc: user accuracy.
+      #'   \item x_ii: diagonal element of the matrix.
+      #'   \item x_ij: element of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Vector of values with the user's accuracy indexes of all classes and their variances.
+      #' @return A list with a vector of values for the user's accuracy index of all classes and another vector with their variances.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,ID=1,Date="30/10/2023")
-      #' p$ua()
+      #' p<-MatCon$new(A)
+      #' p$UserAcc()
       #'
       #' @aliases
 
-
-
-     ua = function(){
-     #rango matriz
+     UserAcc = function(){
+     #matrix range
      n <- sqrt(length(self$values))
-     ua <- rep(0,n)
-     VarUa<-rep(0,n)
+     UserAcc <- rep(0,n)
+     VarUserAcc<-rep(0,n)
        for (i in 1:n){
-         ua[i] <- self$values[i,i] / self$sumfil[i]
-         #Ind Exactitud Usuario para todas las clases a la vez
-         VarUa[i]<-abs((ua[i]*(1-ua[i]))/self$sumfil[i])
+         UserAcc[i] <- self$values[i,i] / self$sumfil[i]
+         VarUserAcc[i]<-abs((UserAcc[i]*(1-UserAcc[i]))/self$sumfil[i])
        }
-     return(list(ua=ua,Var=VarUa))
+     return(list(UserAcc=UserAcc,VarUserAcc=VarUserAcc))
      },
 
-      #' @description The accuracy from the point of view of a map user, not the map maker. See reference [1].
+
+
+
+      #' @description Public method where the user's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the row of class i. The method also offers variance. The reference [1] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' ua_{i}=\frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+      #' UserAcc_{i}=\frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
       #' }
+      #' \deqn{
+      #' \sigma^2_{UserAcc_i}=\frac{UserAcc_i \cdot (1-UserAcc_i)}{N}
+      #' }
+      #'
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `ua_i`: user accuracy.
-      #'   \item `x_ii`: diagonal element of the matrix.
-      #'   \item `x_ij`: element of the matrix.
+      #'   \item UserAcc_i: user accuracy index for class i.
+      #'   \item x_ii: diagonal element of the matrix.
+      #'   \item x_ij: element of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @param i User class to evaluate
-      #' @return Class i user accuracy index and their variance.
+      #' @return A list of the user's accuracy index values for class i and its variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
-      #' p$uai(2)
+      #' p$UserAcc_i(2)
       #'
       #' @aliases
 
-     uai=function(i){
-      uai = self$values[i,i] / self$sumfil[i]
-      VarUai=abs((uai*(1-uai))/self$sumfil[i]) #o suma fila?????
-     return(list(ua=uai,Var=VarUai))
-     },
-
-      #' @description  The map accuracy from the point of view of the map maker (the producer). See reference [1].
-      #' @description
-      #'  \deqn{
-      #' pa_{i}=\frac{x_{jj}}{\sum_{j=1}^n x_{ij}}
-      #' }
-      #'
-      #' where:
-      #'
-      #' \enumerate{
-      #'   \item `pa_i`: producer accuracy.
-      #'   \item `x_jj`: diagonal element of the matrix.
-      #'   \item `x_ij`: element of the matrix.
-      #' }
-      #' @param i Producer class to evaluate
-      #' @return Class i producer accuracy index and their variance.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$pai(1)
-      #'
-      #' @aliases
-
-     pai = function(i){
-      pai = self$values[i,i] / self$sumcol[i]
-      VarPai=abs((pai*(1-pai))/self$sumcol[i])
-     return(list(pa=pai,Var=VarPai))
+     UserAcc_i=function(i){
+      UserAcc_i = self$values[i,i] / self$sumfil[i]
+      VarUserAcc_i=abs((UserAcc_i*(1-UserAcc_i))/self$sumfil[i])
+     return(list(UserAcc_i=UserAcc_i,VarUserAcc_i=VarUserAcc_i))
      },
 
 
-      #' @description  The map accuracy from the point of view of the map maker (the producer). See reference [1].
+
+
+      #' @description  Public method for deriving a class index called producer's accuracy. The producer's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the column of the class i. The method also offers the variance. The reference [1] if followed for the computations.
       #' @description
       #'  \deqn{
-      #' pa=\frac{x_{jj}}{\sum_{j=1}^n x_{ij}}
+      #' ProdAcc=\frac{x_{jj}}{\sum_{j=1}^n x_{ij}}
       #' }
-      #'
+      #'\deqn{
+      #' \sigma^2_{ProdAcc}=\frac{ProdAcc \cdot (1-ProdAcc)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `pa`: producer accuracy.
-      #'   \item `x_jj`: diagonal element of the matrix.
-      #'   \item `x_ij`: element of the matrix.
+      #'   \item ProdAcc: producer accuracy.
+      #'   \item x_jj: diagonal element of the matrix.
+      #'   \item x_ij: element of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Vector of values with the producer's accuracy indexes of all classes
+      #' @return A list with a vector of values for the producer's accuracy index of all classes and another vector with their variances.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
-      #' p$pa()
+      #' p$ProdAcc()
       #'
       #' @aliases
 
-     pa = function (){
+     ProdAcc = function (){
       n <- sqrt(length(self$values))
-      pa <- rep(0,n)
-      VarPai<-rep(0,n)
+      ProdAcc <- rep(0,n)
+      VarProdAcc<-rep(0,n)
         for(i in 1:n){
-          pa[i] <- self$values[i,i] / self$sumcol[i]
-          VarPai[i]<-abs((pa[i]*(1-pa[i]))/self$sumcol[i])
+          ProdAcc[i] <- self$values[i,i] / self$sumcol[i]
+          VarProdAcc[i]<-abs((ProdAcc[i]*(1-ProdAcc[i]))/self$sumcol[i])
         }
-     return(list(pa=pa,Var=VarPai))
+     return(list(ProdAcc=ProdAcc,VarProdAcc=VarProdAcc))
      },
 
-      #' @description  Average of the accuracy from the point of view of a map user, not the map maker and the map accuracy from the point of view of the map maker (the producer). See reference [2].
+
+
+
+      #' @description  Public method where the producer's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the column of class i. The method also offers variance. The reference [1] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' aup=\frac{ua_i+pa_i}{2}
+      #' ProdAcc_{i}=\frac{x_{jj}}{\sum_{j=1}^n x_{ij}}
+      #' }
+      #'\deqn{
+      #' \sigma^2_{ProdAcc_i}=\frac{ProdAcc_i \cdot (1-ProdAcc_i)}{N}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `aup`: average of user's and producer's accuracy.
-      #'   \item `ua_i`: user accuracy
-      #'   \item `pa_i`: producer accuracy.
+      #'   \item ProdAcc_i: producer accuracy index for class i.
+      #'   \item x_jj: diagonal element of the matrix.
+      #'   \item x_ij: element of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Average of user's and producer's accuracy and its variance.
+      #' @param i Producer class to evaluate.
+      #' @return A list of the producer's accuracy index values for class i and its variance
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A)
+      #' p$ProdAcc_i(1)
+      #'
+      #' @aliases
+
+     ProdAcc_i = function(i){
+      ProdAcc_i = self$values[i,i] / self$sumcol[i]
+      VarProdAcc_i=abs((ProdAcc_i*(1-ProdAcc_i))/self$sumcol[i])
+     return(list(ProdAcc_i=ProdAcc_i,VarProdAcc_i=VarProdAcc_i))
+     },
+
+
+
+      #' @description Public method that provides the average of the accuracy rates of the user and producer of a specific class. The method also offers variance. The reference [2] is followed for the calculations.
+      #' @description
+      #' The mathematical expression is:
+      #'  \deqn{
+      #' AvUserProdAcc_i=\frac{UserAcc_i+ProdAcc_i}{2}
+      #' }
+      #'\deqn{
+      #' \sigma^2_{AvUserProdAcc_i}=\frac{AvUserProdAcc_i \cdot (1-AvUserProdAcc_i)}{N}
+      #' }
+      #' where:
+      #'
+      #' \enumerate{
+      #'   \item AvUserProdAcc_i: average of user's and producer's accuracy.
+      #'   \item UserAcc_i: user accuracy index for class i.
+      #'   \item ProdAcc_i: producer accuracy index for class i.
+      #'   \item N: number of cases involved in the calculation of the index.
+      #' }
+      #' @return A list with average of user's and producer's accuracy and its variance for class i.
       #' @param i Class to evaluate.
       #' @references [2] Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
-      #' p$aup(2)
+      #' p$AvUserProdAcc_i(2)
       #'
       #' @aliases
 
-     aup=function(i){
-      aup = (self$uai(i)[[1]] + self$pai(i)[[1]])/2
-      VarAup=abs((aup*(1-aup))/(self$sumcol[i]+self$sumfil[i]))
-     return(list(aup=aup,Var=VarAup))
+     AvUserProdAcc_i = function(i){
+      AvUserProdAcc_i = (self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]])/2
+      VarAvUserProdAcc_i=abs((AvUserProdAcc_i*(1-AvUserProdAcc_i))/(self$sumcol[i]+self$sumfil[i]))
+     return(list(AvUserProdAcc_i=AvUserProdAcc_i,VarAvUserProdAcc_i=VarAvUserProdAcc_i))
      },
 
-      #' @description  The Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. See reference [3,4].
-      #' @description
+
+
+
+      #' @description Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The reference [3,4] is followed for the calculations.
+      #' @description The mathematical expression is:
       #'  \deqn{
-      #' ICSI=ua_i+pa_i-1
+      #' Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
+      #' }
+      #'  \deqn{
+      #' VarSucess=\frac{Sucess \cdot (1-Sucess)}{N}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item `ICSI`: individual classification success index.
-      #'   \item `ua_i`: user accuracy.
-      #'   \item `pa_i`: producer accuracy.
+      #'   \item Sucess: classification succes index.
+      #'   \item AvUserAcc: average accuracy from user's perspective.
+      #'   \item AvProdAcc: average accuracy from producer's perspective.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Individual Classification Success Index and its variance.
+      #' @return A list with the classification success index and its variance.
+      #' @examples
+      #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),nrow=3,ncol=3)
+      #' p<-MatCon$new(A,Source="Labatut, V., & Cherifi, H. (2011). Evaluation of performance measures for classifiers comparison. arXiv preprint arXiv:1112.4133.")
+      #' p$Sucess()
+      #'
+      #' @aliases
+
+     Sucess = function(){
+      Sucess = self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]] - 1
+       #NO ESTOY SEGURA DE ESE 2*
+       VarSucess=abs((Sucess*(1-Sucess))/2*sum(self$values))
+     return(list(Sucess=Sucess,VarSucess=VarSucess))
+     },
+
+
+
+
+      #' @description  Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The reference [3,4] is followed for the calculations.
+      #' @description
+      #' The mathematical expression is:
+      #'  \deqn{
+      #' Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
+      #' }
+      #'
+      #' \deqn{
+      #' \sigma^2_{Sucess_i}=\frac{Sucess_i \cdot (1-Sucess_i)}{N}
+      #' }
+      #'
+      #' where:
+      #'
+      #' \enumerate{
+      #'   \item Sucess_i: individual classification success index.
+      #'   \item UserAcc_i: user accuracy index for class i.
+      #'   \item ProdAcc_i: producer accuracy index for class i.
+      #'   \item N: number of cases involved in the calculation of the index.
+      #' }
+      #' @return A list with the individual classification success index and its variance.
       #' @references [3] Koukoulas, S., & Blackburn, G. A. (2001). Introducing new indices for accuracy evaluation of classified images representing semi-natural woodland environments. Photogrammetric Engineering and Remote Sensing, 67(4), 499-510.
       #' @references [4] Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
       #' @param i Class to evaluate.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$ICSI(2)
+      #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),nrow=3,ncol=3)
+      #' p<-MatCon$new(A,Source="Labatut, V., & Cherifi, H. (2011). Evaluation of performance measures for classifiers comparison. arXiv preprint arXiv:1112.4133.")
+      #' p$Sucess_i(2)
       #'
       #' @aliases
 
-     ICSI = function(i){
-      ICSI = self$uai(i)[[1]] + self$pai(i)[[1]] - 1
-      VarICSI=abs((ICSI*(1-ICSI))/(self$sumcol[i]+self$sumfil[i]))
-     return (list(ICSI=ICSI,Var=VarICSI))
+     Sucess_i = function(i){
+      Sucess_i = self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]] - 1
+      VarSucess_i=abs((Sucess_i*(1-Sucess_i))/(self$sumcol[i]+self$sumfil[i]))
+     return (list(Sucess_i=Sucess_i,VarSucess_i=VarSucess_i))
      },
 
-      #' @description  The probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map. See references [5,6].
+
+
+
+
+      #' @description  Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference [5,6] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' mah=\frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
+      #' AvHelldenAcc_i=\frac{2}{\frac{1}{UserAcc_i}+\frac{1}{ProdAcc_i}}
       #' }
-      #'
+      #' \deqn{
+      #' \sigma^2_{AvHelldenAcc_i}=\frac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `mah`: Hellden's mean accuracy.
-      #'   \item `ua_i`: user accuracy.
-      #'   \item `pa_i`: producer accuracy.
+      #'   \item AvHelldenAcc_i: Hellden's mean accuracy.
+      #'   \item UserAcc_i: user accuracy index for class i.
+      #'   \item ProdAcc_i: producer accuracy index for class i.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @param i Class to evaluate.
       #' @references [5] Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
       #' @references [6] Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
-      #' @return Hellden's mean accuracy.
+      #' @return A list with Hellden's mean accuracy and its variance.
       #' @examples
-      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-      #' p<-MatCon$new(A)
-      #' p$mah(2)
+      #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.")
+      #' p$AvHelldenAcc_i(2)
       #'
       #' @aliases
 
-     mah = function(i){
+     AvHelldenAcc_i = function(i){
 
        #esta condicion se daria cuando el elemento de la diagonal
        #sea 0, ¿poco probable? se puede eliminar esta condicion?
-       if (self$uai(i)[[1]] == 0 || self$pai(i)[[1]] == 0) {
+       if (self$UserAcc_i(i)[[1]] == 0 || self$ProdAcc_i(i)[[1]] == 0) {
         stop ("/ by 0")
        }else{
-         mah = 2 / (1/self$uai(i)[[1]] + 1/self$pai(i)[[1]])
-         VarMah=abs((mah*(1-mah))/(self$sumcol[i]+self$sumfil[i]))
+          AvHelldenAcc_i= 2 / (1/self$UserAcc_i(i)[[1]] + 1/self$ProdAcc_i(i)[[1]])
+         VarAvHelldenAcc_i=abs((AvHelldenAcc_i*(1-AvHelldenAcc_i))/(self$sumcol[i]+self$sumfil[i]))
          }
 
-     return(list(mah=mah,Var=VarMah))
+     return(list(AvHelldenAcc_i=AvHelldenAcc_i,VarAvHelldenAcc_i=VarAvHelldenAcc_i))
      },
 
-      #' @description  Mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). See references [6,7].
+
+
+
+      #' @description Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The reference [6,7] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' mas=\frac{x_{ii}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
+      #' ShortAcc_i=\frac{x_{ii}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
       #' }
-      #'
+      #'\deqn{
+      #' \sigma^2_{ShortAcc_i}=\frac{ShortAcc_i \cdot (1-ShortAcc_i)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `mas`: Short's mapping accuracy
-      #'   \item `x_ii`: diagonal element of the matrix.
-      #'   \item `x_.j`: sum with respect to j (rows).
-      #'   \item `x_i.`: sum with respect to i (columns).
+      #'   \item ShortAcc_i: Short's mapping accuracy
+      #'   \item x_ii: diagonal element of the matrix.
+      #'   \item x_j.: sum of all elements in rows j.
+      #'   \item x_.j: sum of all elements in column j.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @references [7] Short, N. M. (1982). The Landsat tutorial workbook: Basics of satellite remote sensing (Vol. 1078). National Aeronautics and Space Administration, Scientific and Technical Information Branch.
       #' @param i Class to evaluate.
-      #' @return Short's mapping accuracy and its variance.
+      #' @return A list with Short's mapping accuracy and its variance.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$mas(2)
+      #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.")
+      #' p$ShortAcc_i(2)
       #'
       #' @aliases
 
-     mas = function(i){
+     ShortAcc_i = function(i){
       if (self$sumfil[i] + self$sumcol[i] - self$values[i,i] == 0) {
       stop ("/ by 0")
       }else{
-        mas = self$values[i,i] / (self$sumfil[i] + self$sumcol[i] - self$values[i,i])
-        VarMas=abs((mas*(1-mas))/(self$sumcol[i]+self$sumfil[i]))
+        ShortAcc_i = self$values[i,i] / (self$sumfil[i] + self$sumcol[i] - self$values[i,i])
+        VarShortAcc_i=abs((ShortAcc_i*(1-ShortAcc_i))/(self$sumcol[i]+self$sumfil[i]))
         }
 
-     return(list(mas=mas,Var=VarMas))
+     return(list(ShortAcc_i=ShortAcc_i,VarShortAcc_i=VarShortAcc_i))
      },
 
-      #' @description Conditional Kappa will identify the degree of agreement between the two raters for each possible category. See reference [6].
+
+
+
+
+      #' @description Public method that evaluates the kappa coefficient from the user's perspective, for a specific class i. The method also offers variance. The reference [6] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' cku=\frac{ua_i-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+      #' UserKappa_i=\frac{UserAcc_i-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
       #' }
-      #'
+      #'#'  \deqn{
+      #' \sigma^2_{UserKappa_i}=\frac{UserKappa_i \cdot (1-UserKappa_i)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `cku`: conditional kappa (user's).
-      #'   \item `ua_i`: user accuracy.
-      #'   \item `x_ii`: diagonal element of the matrix.
-      #'   \item `x_.j`: sum with respect to j (rows).
-      #'   \item `x_i.`: sum with respect to i (columns).
+      #'   \item UserKappa_i: coefficient kappa (user's).
+      #'   \item UserAcc_i: user accuracy index for class i.
+      #'   \item x_ii: diagonal element of the matrix.
+      #'   \item x_j.: sum of all elements in rows j.
+      #'   \item x_.j: sum of all elements in column j.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Conditional kappa (user's) and its variance.
+      #' @return A list with coefficient kappa (user's) and its variance.
       #' @param i Class to evaluate.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$cku(2)
+      #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Næsset, E. (1996). Conditional tau coefficient for assessment of producer's accuracy of classified remotely sensed data. ISPRS Journal of Photogrammetry and Remote sensing, 51(2), 91-98.")
+      #' p$UserKappa_i(2)
       #'
       #' @aliases
 
-     cku = function(i){
+     UserKappa_i = function(i){
       if (1 - self$sumcol[i]/sum(self$values) == 0) {
        stop ("/ by 0")
       }else{
-        cku = (self$uai(i)[[1]] - self$sumcol[i]/sum(self$values)) / (1 - self$sumcol[i]/sum(self$values))
-        VarCku=abs((cku*(1-cku))/self$sumfil[i])
+        UserKappa_i = (self$UserAcc_i(i)[[1]] - self$sumcol[i]/sum(self$values)) / (1 - self$sumcol[i]/sum(self$values))
+        VarUserKappa_i=abs((UserKappa_i*(1-UserKappa_i))/self$sumfil[i])
         }
 
-     return(list(cku=cku,Var=VarCku))
+     return(list(UserKappa_i=UserKappa_i,VarUserKappa_i=VarUserKappa_i))
      },
 
-      #' @description Conditional Kappa will identify the degree of agreement between the two raters for each possible category. See reference [6].
+
+
+
+      #' @description Public method that evaluates the kappa coefficient from the producer's perspective, for a specific class i. The method also offers variance. The reference [6] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' ckp=\frac{pa_i-\frac{\sum^n_{j=1} x_{ \cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{j=1} x_{\cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+      #' ProdKappa_i=\frac{ProdAcc_i-\frac{\sum^n_{j=1} x_{ \cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{j=1} x_{\cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
       #' }
-      #'
+      #'  \deqn{
+      #' \sigma^2_{ProdKappa_i}=\frac{ProdKappa_i \cdot (1- ProdKappa_i)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `ckp`: conditional kappa (producer's).
-      #'   \item `pa_i`: producer accuracy.
-      #'   \item `x_ii`: diagonal element of the matrix.
-      #'   \item `x_.j`: sum with respect to j (rows).
-      #'   \item `x_i.`: sum with respect to i (columns).
+      #'   \item ProdKappa_i: coefficient kappa (producer's).
+      #'   \item ProdAcc_i: producer accuracy.
+      #'   \item x_ii: diagonal element of the matrix.
+      #'   \item x_j.: sum of all elements in rows j.
+      #'   \item x_.j: sum of all elements in column j.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Conditional kappa (producer's) and its variance.
+      #' @return A list with coefficient kappa (producer's) and its variance.
       #' @param i Class to evaluate.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$ckp(2)
+      #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Næsset, E. (1996). Conditional tau coefficient for assessment of producer's accuracy of classified remotely sensed data. ISPRS Journal of Photogrammetry and Remote sensing, 51(2), 91-98.")
+      #' p$ProdKappa_i(2)
       #'
       #' @aliases
 
-     ckp = function(i){
+      ProdKappa_i = function(i){
       if (1 - self$sumfil[i]/sum(self$values) == 0) {
        stop ("/ by 0")
       }else{
-        ckp = (self$pai(i)[[1]] - self$sumfil[i]/sum(self$values)) / (1 - self$sumfil[i]/sum(self$values))
-        VarCkp=abs((ckp*(1-ckp))/self$sumcol[i])
+        ProdKappa_i = (self$ProdAcc_i(i)[[1]] - self$sumfil[i]/sum(self$values)) / (1 - self$sumfil[i]/sum(self$values))
+        VarProdKappa_i=abs((ProdKappa_i*(1-ProdKappa_i))/self$sumcol[i])
         }
-     return(list(ckp=ckp,Var=VarCkp))
+     return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i))
      },
 
-      #' @description Modified kappa index for the user. See reference [8]
+
+      #' @description Public method that provides the overall modified kappa coefficient. The method also offers variance. The reference [8,20] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' mcku=\frac{ua_i-\frac{1}{\sqrt{N}}}{1-\frac{1}{\sqrt{N}}}
+      #' ModKappa=\frac{OverallAcc-\frac{1}{\sqrt{M}}}{1-\frac{1}{\sqrt{M}}}
       #' }
-      #'
+      #' \deqn{
+      #' \sigma^2_{ModKappa}=\frac{ModKappa \cdot (1- ModKappa)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `mcku`: modified conditional kappa (user's).
-      #'   \item `ua_i`: user accuracy.
-      #'   \item N: number of elements of the matrix.
+      #'   \item ModKappa: modified coefficient kappa.
+      #'   \item OverallAcc: overall accuracy.
+      #'   \item M: number of elements of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Modified conditional kappa (user's) and its variance.
+      #' @return A list with modified coefficient kappa and its variance.
+      #' @param i Class to evaluate.
+      #' @references [20] Foody, G. M. (1992). On the compensation for chance agreement in image classification accuracy assessment. Photogrammetric engineering and remote sensing, 58(10), 1459-1460.
+      #' @examples
+      #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Foody, G. M. (1992). On the compensation for chance agreement in image classification accuracy assessment. Photogrammetric engineering and remote sensing, 58(10), 1459-1460.")
+      #' p$ModKappa()
+      #'
+      #' @aliases
+
+     ModKappa = function(i){
+       ModKappa= (self$OverallAcc()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+       VarModKappa=abs((ModKappa*(1-ModKappa))/self$values)
+     return(list(ModKappa=ModKappa,VarModKappa=VarModKappa))
+     },
+
+
+
+
+      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The reference [8,20] is followed for the calculations.
+      #' @description
+      #'  \deqn{
+      #' ModKappaUser_i=\frac{UserAcc_i-\frac{1}{\sqrt{M}}}{1-\frac{1}{\sqrt{M}}}
+      #' }
+      #' \deqn{
+      #' \sigma^2_{ModKappaUser_i}=\frac{ModKappaUser_i \cdot (1- ModKappaUser_i)}{N}
+      #' }
+      #' where:
+      #'
+      #' \enumerate{
+      #'   \item ModKappaUser_i: modified coefficient kappa (user's).
+      #'   \item UserAcc_i: user accuracy.
+      #'   \item M: number of elements of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
+      #' }
+      #' @return A list with modified coefficient kappa (user's) and its variance.
       #' @param i Class to evaluate.
       #' @references [8] Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$mcku(2)
+      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.")
+      #' p$ModKappaUser_i(2)
       #'
       #' @aliases
 
-     mcku = function(i){
-       mcku = (self$uai(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-       VarMcku=abs((mcku*(1-mcku))/self$sumfil[i])
-     return(list(mcku=mcku,Var=VarMcku))
+     ModKappaUser_i = function(i){
+       ModKappaUser_i = (self$UserAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+       VarModKappaUser_i=abs((ModKappaUser_i*(1-ModKappaUser_i))/self$sumfil[i])
+     return(list(ModKappaUser_i=ModKappaUser_i,VarModKappaUser_i=VarModKappaUser_i))
      },
 
-      #' @description Modified kappa index for the producer. See reference [8].
-      #' @param i Class to evaluate.
+
+
+
+
+      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The reference [8,20] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' mckp=\frac{pa_i-\frac{1}{\sqrt{N}}}{1-\frac{1}{\sqrt{N}}}
+      #' ModKappaProd_i=\frac{ProdAcc_i-\frac{1}{\sqrt{M}}}{1-\frac{1}{\sqrt{M}}}
       #' }
-      #'
+      #' \deqn{
+      #' \sigma^2_{ModKappaProd_i}=\frac{ModKappaProd_i \cdot (1- ModKappaProd_i)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `mckp`: modified conditional kappa (producer's).
-      #'   \item `pa_i`: producer accuracy.
-      #'   \item N: number of elements of the matrix, cardinal of the matrix.
+      #'   \item ModKappaUser_i: modified coefficient kappa (producer's).
+      #'   \item ProdAcc_i: producer accuracy.
+      #'   \item M: number of elements of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Modified conditional kappa (producer's) and variance.
+      #' @return A list with modified coefficient kappa (producer's) and its variance.
+      #' @param i Class to evaluate.
+      #' @references [8] Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$mckp(4)
+      #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.")
+      #' p$ModKappaProd_i(2)
       #'
       #' @aliases
 
-     mckp = function(i){
-      mckp = (self$pai(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-      VarMckp=abs((mckp*(1-mckp))/self$sumcol[i])
-     return(list(mckp=mckp,Var=VarMckp))
+     ModKappaProd_i = function(i){
+      ModKappaProd_i = (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+      VarModKappaProd_i=abs((ModKappaProd_i*(1-ModKappaProd_i))/self$sumcol[i])
+     return(list(ModKappaProd_i=ModKappaProd_i,VarModKappaProd_i=VarModKappaProd_i))
      },
 
      #' @description Relative entropy is a quantity that measures the difference between two maps. See reference [9].
@@ -591,8 +739,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #' \enumerate{
      #'   \item `ecnu`: relative change of entropy given a category on map.
      #'   \item `H(A)`: the entropy of the map.
-     #'   \item `x_.j`: sum with respect to j (rows).
-     #'   \item `x_i.`: sum with respect to i (columns).
+     #'   \item `x_j.`: sum of all elements in rows j.
+     #'   \item `x_.j`: sum of all elements in column j.
      #'   \item `H(A|b_i)`: Entropy of map A knowing that the location corresponding to map B is in class b_i.
      #' }
      #' @return Relative change of entropy given a category on map and its variance.
@@ -650,8 +798,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #' \enumerate{
      #'   \item `ecnp`: relative change of entropy given a category on ground truthing.
      #'   \item `H(B)`: the entropy of the map.
-     #'   \item `x_.j`: sum with respect to j (rows).
-     #'   \item `x_i.`: sum with respect to i (columns).
+     #'   \item x_j.: sum of all elements in rows j.
+     #'   \item x_.j: sum of all elements in column j.
      #'   \item `H(B|a_j)`: Entropy of map B knowing that the location corresponding to map A is in class a_j.
      #' }
      #' @return Relative change of entropy given a category on ground truthing and its variance.
@@ -678,80 +826,89 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
     return(list(ecnp=ecnp,Var=VarEcnp))
     },
 
-      #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
+
+
+
+      #' @description Public method that provides the user's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the user's perspective. The method also offers variance. The reference [10] is followed for the calculations.
       #' @references [10] Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
       #' @description
       #'  \deqn{
-      #' aau=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+      #' AvUserAcc=\frac{1}{\sqrt{M}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{j+}}
       #' }
-      #'
+      #'\deqn{
+      #' \sigma^2_{AvUserAcc}=\frac{AvUserAcc \cdot (1-AvUserAcc)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `aau`: average accuracy from user's perspective.
-      #'   \item N: number of elements of the matrix, cardinal of the matrix.
-      #'   \item `x_.j`: sum with respect to j (rows).
+      #'   \item AvUserAcc: average accuracy from user's perspective.
+      #'   \item `x_j.`: sum of all elements in rows j.
       #'   \item `x_ii`: diagonal element of the matrix.
+      #'   \item M: number of elements of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Average accuracy from user's perspective and its variance.
+      #' @return A list with the average accuracy from user's perspective and its variance.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$aau()
+      #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
+      #' p<-MatCon$new(A,Source="Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.")
+      #' p$AvUserAcc()
       #'
       #' @aliases
 
-     aau = function(){
+     AvUserAcc = function(){
        for (i in 1:length(self$sumfil)) {
           if (self$sumfil[i] == 0) {
             stop ("/ by 0")
           }
        }
-      aau = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumfil)
-      VarAau=abs((aau*(1-aau))/sum(self$values)) #sum de todos los sumfil..self$values intervienen
-     return (list(aau=aau,Var=VarAau))
+      AvUserAcc = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumfil)
+      VarAvUserAcc=abs((AvUserAcc*(1-AvUserAcc))/sum(self$values)) #sum de todos los sumfil..self$values intervienen
+     return (list(AvUserAcc=AvUserAcc,VarAvUserAcc=VarAvUserAcc))
      },
 
-      #' @description The average accuracy is an average of the accuracy of individual categories. Because the individual categories can be the user's or the producer's accuracy, it can be computed in both ways accordingly. See reference [10].
+      #' @description Public method that provides the producer's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the producer's perspective. The method also offers variance. The reference [10] is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' aap=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{ji}}
+      #' AvProdAcc=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{+j}}
       #' }
-      #'
+      #'\deqn{
+      #' \sigma^2_{AvProdAcc}=\frac{AvProdAcc \cdot (1-AvProdAcc)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
-      #'   \item `aap`: average accuracy from producer's perspective.
-      #'   \item N: number of elements of the matrix, cardinal of the matrix.
-      #'   \item `x_.j`: sum with respect to j (rows).
+      #'   \item `AvProdAcc: average accuracy from producer's perspective.
+      #'   \item `x_.j`: sum of all elements in column j.
       #'   \item `x_ii`: diagonal element of the matrix.
+      #'   \item M: number of elements of the matrix.
+      #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @return Average accuracy from producer's perspective and its variance.
+      #' @return A list with the average accuracy from producer's perspective and its variance.
       #' @examples
-      #' A <- matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$aap()
+      #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
+      #' p<-MatCon$new(A,Source="Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.")
+      #' p$AvProdAcc()
       #'
       #' @aliases
 
-     aap = function(){
-      aap = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumcol)
-      VarAap=abs((aap*(1-aap))/sum(self$values))
-     return(list(aap=aap,Var=VarAap))
+     AvProdAcc = function(){
+      AvProdAcc = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumcol)
+      VarAvProdAcc=abs((AvProdAcc*(1-AvProdAcc))/sum(self$values))
+     return(list(AvProdAcc=AvProdAcc,VarAvProdAcc=VarAvProdAcc))
      },
 
       #' @description It is the average of the average accuracy from user's and producer's perspective. See reference [2].
       #' @description
       #'  \deqn{
-      #' daup=\frac{aau+aap}{2}
+      #' daup=\frac{AvUserAcc+AvProdAcc}{2}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
       #'   \item `daup`: double average of user's and producer's perspective.
-      #'   \item `aau`: average accuracy from user's perspective.
-      #'   \item `aap`: average accuracy from producer's perspective.
+      #'   \item AvUserAcc: average accuracy from user's perspective.
+      #'   \item AvProdAcc: average accuracy from producer's perspective.
       #' }
       #' @return Double average of user's and producer's perspective and its variance.
       #' @examples
@@ -762,37 +919,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      daup = function(){
-      daup = (self$aau()[[1]] + self$aap()[[1]]) / 2
+      daup = (self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
       VarDaup=abs((daup*(1-daup))/sum(self$values))
      return(list(daup=daup,Var=VarDaup))
-     },
-
-
-      #' @description The Classification Success Index (CSI) applies to all classes and gives an overall estimation of classification effectiveness. See reference [3,4].
-      #' @description
-      #'  \deqn{
-      #' CSI=aau+aap-1
-      #' }
-      #'
-      #' where:
-      #'
-      #' \enumerate{
-      #'   \item `CSI`: classification succes index.
-      #'   \item `aau`: average accuracy from user's perspective.
-      #'   \item `aap`: average accuracy from producer's perspective.
-      #' }
-      #' @return Classification sucess index and its variance.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$CSI()
-      #'
-      #' @aliases
-
-     CSI = function(){
-      CSI = self$aau()[[1]] + self$aap()[[1]] - 1
-      VarCSI=abs((CSI*(1-CSI))/sum(self$values))
-     return(list(CSI=CSI,Var=VarCSI))
      },
 
 
@@ -864,7 +993,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
       #' @description
       #'  \deqn{
-      #' cau=\frac{OverallAcc+aau}{2}
+      #' cau=\frac{OverallAcc+AvUserAcc}{2}
       #' }
       #'
       #' where:
@@ -872,7 +1001,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' \enumerate{
       #'   \item cau: combined accuracy from user's perspective.
       #'   \item OverallAcc: overall accuracy.
-      #'   \item aau: average accuracy from user's perspective.
+      #'   \item AvUserAcc: average accuracy from user's perspective.
       #' }
       #' @return Combined accuracy from user's perspective and its variance.
       #' @examples
@@ -883,7 +1012,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      cau = function(){
-      cau = (self$OverallAcc()[[1]] + self$aau()[[1]]) / 2
+      cau = (self$OverallAcc()[[1]] + self$AvUserAcc()[[1]]) / 2
       VarCau=abs((cau*(1-cau))/sum(self$values))
      #esta bien la varianza así? o deberia de ser cada una por un lado?(que ya esta calculada)
      return(list(cau=cau,Var=VarCau))
@@ -892,7 +1021,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @description The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
       #' @description
       #'  \deqn{
-      #' cap=\frac{OverallAcc+aap}{2}
+      #' cap=\frac{OverallAcc+AvProdAcc}{2}
       #' }
       #'
       #' where:
@@ -900,7 +1029,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' \enumerate{
       #'   \item cap: combined accuracy from producer's perspective.
       #'   \item OverallAcc: overall accuracy.
-      #'   \item aap: average accuracy from producer's perspective.
+      #'   \item AvProdAcc: average accuracy from producer's perspective.
       #' }
       #' @return Combined accuracy from producer's perspective and its variance.
       #' @examples
@@ -911,7 +1040,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @aliases
 
      cap = function(){
-      cap = (self$OverallAcc()[[1]] + self$aap()[[1]]) / 2
+      cap = (self$OverallAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
       VarCap=abs((cap*(1-cap))/sum(self$values))
      return(list(cap=cap,Var=VarCap))
      },
@@ -979,32 +1108,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description It is the proportion of agreement after chance agreement is removed from consideration. See reference [2].
-      #' @description
-      #'  \deqn{
-      #' mkp=\frac{OverallAcc-\frac{1}{\sqrt{N}}}{1-\frac{1}{\sqrt{N}}}
-      #' }
-      #'
-      #' where:
-      #'
-      #' \enumerate{
-      #'   \item mkp: modified kappa
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item N: number of elements of the matrix, cardinal of the matrix.
-      #' }
-      #' @return Modified kappa and its variance.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
-      #' p$mkp()
-      #'
-      #' @aliases
 
-     mkp = function(){
-      mkp = (self$OverallAcc()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-      VarMkp=abs((mkp*(1-mkp))/sum(self$values))
-     return(list(mkp=mkp,Var=VarMkp))
-     },
 
       #' @description Average mutual information (AMI), is applied to the comparison of thematic maps. See reference [9].
       #' @description
@@ -1326,12 +1430,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #  calculation of Class accuracies and standard deviations
       nc <- nrow(self$values)
        for (i in 1:nc){
-         pcpa <- self$pa()[[1]]
-         pcua <-self$ua()[[1]]
-         pcpasd <- sqrt(self$pa()[[2]])
-         pcuasd <- sqrt(self$ua()[[2]])
+         pcpa <- self$ProdAcc()[[1]]
+         pcua <-self$UserAcc()[[1]]
+         pcpasd <- sqrt(self$ProdAcc()[[2]])
+         pcuasd <- sqrt(self$UserAcc()[[2]])
        }
-     return(list(PrAcc=pcpa,PrAccSDeviation=pcpasd,UAcc= pcua, UAccSDeviation=pcuasd))
+     return(list(ProdAcc=pcpa,ProdAccSDeviation=pcpasd,UserAcc= pcua, UserAccSDeviation=pcuasd))
      },
 
 
@@ -1497,8 +1601,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       dimension <- nrow(self$values)
       SumaMatriz <-sum(self$values)
       PAcuerdo <- OverallAcc[[1]]
-      ExProdu <- self$pa()[[1]]
-      ExUsuario <-self$ua()[[1]]
+      ExProdu <- self$ProdAcc()[[1]]
+      UserAcc <-self$UserAcc()[[1]]
       PAAzar <- sum((self$sumfil*self$sumcol))/(SumaMatriz*SumaMatriz)
       Kappa <- self$KappaValue()[[1]]
       VarPAcuerdo <- PAcuerdo *(1-PAcuerdo)/SumaMatriz
@@ -1506,7 +1610,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
       K <- (SumaMatriz*SumaMatriz - sum(self$values*self$values))/sum((SumaMatriz*MLandas - self$values)^2)
       MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(self$values + K*MLandas)
-      salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz, OverallAcc=PAcuerdo, VarOverallAcc=VarPAcuerdo, Kappa=Kappa,VarKappa=VarKappa,ExPro=ExProdu,ExUsu=ExUsuario,Kpseudo=K, MPseudoceros=MPseudoceros,MLandas=MLandas)
+      salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz, OverallAcc=PAcuerdo, VarOverallAcc=VarPAcuerdo, Kappa=Kappa,VarKappa=VarKappa,ProdAcc=ExProdu,UserAcc=UserAcc,Kpseudo=K, MPseudoceros=MPseudoceros,MLandas=MLandas)
      return(salida)
      },
 
@@ -1768,7 +1872,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
                 pcuasd[i] <- sqrt(wpcua[i]*(1-wpcua[i])/nrow[i])
             }
 
-     return(list(WeightMatrix=WM,WMERROR=WMERROR, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUAcc= wpcua, WUAccSDeviation=pcuasd))
+     return(list(WeightMatrix=WM,WMERROR=WMERROR, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUserAcc= wpcua, WUserAccSDeviation=pcuasd))
      }
 
 
