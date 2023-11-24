@@ -443,9 +443,13 @@ p$UserProdAcc_W(WM)
 }
 \references{
 \insertRef{congalton2008}{PaolaR6Nuevo}
+
 \insertRef{liu2007}{PaolaR6Nuevo}
+
 \insertRef{koukoulas2001}{PaolaR6Nuevo}
+
 \insertRef{turk2002}{PaolaR6Nuevo}
+
 \insertRef{hellden1980}{PaolaR6Nuevo}
 
 [6] Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.

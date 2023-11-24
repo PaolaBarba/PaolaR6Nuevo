@@ -22,9 +22,13 @@
 #' @importFrom Rdpack reprompt
 #' @references
 #' \insertRef{congalton2008}{PaolaR6Nuevo}
+#'
 #' \insertRef{liu2007}{PaolaR6Nuevo}
+#'
 #' \insertRef{koukoulas2001}{PaolaR6Nuevo}
+#'
 #' \insertRef{turk2002}{PaolaR6Nuevo}
+#'
 #' \insertRef{hellden1980}{PaolaR6Nuevo}
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
