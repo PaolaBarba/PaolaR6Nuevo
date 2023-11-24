@@ -156,7 +156,7 @@ p$ModKappa()
 ## ------------------------------------------------
 
 A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
-p<-MatCon$new(A,Source="Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.")
+p<-MatCon$new(A,Source="Liu et al., 2007")
 p$ModKappaUser_i(2)
 
 
@@ -165,26 +165,26 @@ p$ModKappaUser_i(2)
 ## ------------------------------------------------
 
 A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
-p<-MatCon$new(A,Source="Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.")
+p<-MatCon$new(A,Source="Liu et al., 2007")
 p$ModKappaProd_i(2)
 
 
 ## ------------------------------------------------
-## Method `MatCon$ecnu`
+## Method `MatCon$EntropUser_i`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$ecnu(2)
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$EntropUser_i(1)
 
 
 ## ------------------------------------------------
-## Method `MatCon$ecnp`
+## Method `MatCon$EntropProd_i`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$ecnp(4)
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$EntropProd_i(2)
 
 
 ## ------------------------------------------------
@@ -206,138 +206,138 @@ p$AvProdAcc()
 
 
 ## ------------------------------------------------
-## Method `MatCon$daup`
+## Method `MatCon$AvUserProdAcc`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$daup()
+p$AvUserProdAcc()
 
 
 ## ------------------------------------------------
-## Method `MatCon$amah`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$amah()
-
-
-## ------------------------------------------------
-## Method `MatCon$amas`
+## Method `MatCon$AvHelldenAcc`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$amas()
+p$AvHelldenAcc()
 
 
 ## ------------------------------------------------
-## Method `MatCon$cau`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$cau()
-
-
-## ------------------------------------------------
-## Method `MatCon$cap`
+## Method `MatCon$AvShortAcc`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$cap()
+p$AvShortAcc()
 
 
 ## ------------------------------------------------
-## Method `MatCon$caup`
+## Method `MatCon$CombUserAcc`
+## ------------------------------------------------
+
+A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
+p<-MatCon$new(A)
+p$CombUserAcc()
+
+
+## ------------------------------------------------
+## Method `MatCon$CombProdAcc`
+## ------------------------------------------------
+
+A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
+p<-MatCon$new(A)
+p$CombProdAcc()
+
+
+## ------------------------------------------------
+## Method `MatCon$CombUserProdAcc`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$caup()
+p$CombUserProdAcc()
 
 
 ## ------------------------------------------------
-## Method `MatCon$KappaValue`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$KappaValue()
-
-
-## ------------------------------------------------
-## Method `MatCon$ami`
+## Method `MatCon$Kappa`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$ami()
+p$Kappa()
 
 
 ## ------------------------------------------------
-## Method `MatCon$nmiu`
+## Method `MatCon$Entrop`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$nmiu()
-
-
-## ------------------------------------------------
-## Method `MatCon$nmip`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$nmip()
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al.,2007")
+p$Entrop()
 
 
 ## ------------------------------------------------
-## Method `MatCon$nmiam`
+## Method `MatCon$NormEntropUser`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$nmiam()
-
-
-## ------------------------------------------------
-## Method `MatCon$nmigm`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$nmigm()
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$NormEntropUser()
 
 
 ## ------------------------------------------------
-## Method `MatCon$nmimx`
+## Method `MatCon$NormEntropProd`
+## ------------------------------------------------
+
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$NormEntropProd()
+
+
+## ------------------------------------------------
+## Method `MatCon$AvNormEntrop`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$nmimx()
+p$AvNormEntrop()
+
+
+## ------------------------------------------------
+## Method `MatCon$GeomAvNormEntrop`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A)
+p$GeomAvNormEntrop()
+
+
+## ------------------------------------------------
+## Method `MatCon$AvMaxNormEntrop`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A)
+p$AvMaxNormEntrop()
 
 
 ## ------------------------------------------------
 ## Method `MatCon$Tau`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-MatCon$new(A)
 p$Tau()
 
 
 ## ------------------------------------------------
-## Method `MatCon$CAccuracies`
+## Method `MatCon$UserProdAcc`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$CAccuracies()
+p<-MatCon$new(A,Source="Congalton&Green,2008")
+p$UserProdAcc()
 
 
 ## ------------------------------------------------
@@ -345,17 +345,17 @@ p$CAccuracies()
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
+p<-MatCon$new(A,Source="Congalton&Green,2008")
 p$DetailedKappa()
 
 
 ## ------------------------------------------------
-## Method `MatCon$DetailedCKappa`
+## Method `MatCon$DetailedCondKappa`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$DetailedCKappa ()
+p<-MatCon$new(A,Source="Congalton&Green,2008")
+p$DetailedCondKappa ()
 
 
 ## ------------------------------------------------
@@ -368,49 +368,57 @@ p$QES(TI=1, SF=6)
 
 
 ## ------------------------------------------------
-## Method `MatCon$MAllParameters`
+## Method `MatCon$MTypify`
+## ------------------------------------------------
+
+A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
+p$MTypify(RaR=5)
+
+## ------------------------------------------------
+## Method `MatCon$AllParameters`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$MAllParameters()
+p$AllParameters()
 
 
 ## ------------------------------------------------
-## Method `MatCon$BootStrap`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$BootStrap(2)
-
-
-## ------------------------------------------------
-## Method `MatCon$Normalize`
+## Method `MatCon$MBootStrap`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$Normalize()$values
+p$MBootStrap(2)
 
 
 ## ------------------------------------------------
-## Method `MatCon$MPseudozeroes`
+## Method `MatCon$MNormalize`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-MatCon$new(A)
-p$MPseudozeroes()$values
+p$MNormalize()$values
 
 
 ## ------------------------------------------------
-## Method `MatCon$DetailedTau`
+## Method `MatCon$MPseudoZeroes`
+## ------------------------------------------------
+
+A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
+p<-MatCon$new(A)
+p$MPseudoZeroes()$values
+
+
+## ------------------------------------------------
+## Method `MatCon$DetailedWTau`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 WV <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
 p<-MatCon$new(A)
-p$DetailedTau(WV)
+p$DetailedWTau(WV)
 
 
 ## ------------------------------------------------
@@ -424,25 +432,21 @@ p$DetailedWKappa(WM)
 
 
 ## ------------------------------------------------
-## Method `MatCon$CAccuraciesW`
+## Method `MatCon$UserProdAcc_W`
 ## ------------------------------------------------
 
 A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-p$CAccuraciesW(WM)
+p$UserProdAcc_W(WM)
 
 }
 \references{
-[1] Story, M., & Congalton, R. G. (1986). Accuracy assessment: a user’s perspective. Photogrammetric Engineering and remote sensing, 52(3), 397-399.
-
-[2] Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.
-
-[3] Koukoulas, S., & Blackburn, G. A. (2001). Introducing new indices for accuracy evaluation of classified images representing semi-natural woodland environments. Photogrammetric Engineering and Remote Sensing, 67(4), 499-510.
-
-[4] Turk, G. (2002). Map evaluation and" chance correction". Photogrammetric Engineering and Remote Sensing, 68(2), 123-129.
-
-[5] Helldén, U. (1980). A test of landsat-2 imagery and digital data for thematic mapping illustrated by an environmental study in northern Kenya, Lund University. Natural Geography Institute Report No. 47.
+\insertRef{congalton2008}{PaolaR6Nuevo}
+\insertRef{liu2007}{PaolaR6Nuevo}
+\insertRef{koukoulas2001}{PaolaR6Nuevo}
+\insertRef{turk2002}{PaolaR6Nuevo}
+\insertRef{hellden1980}{PaolaR6Nuevo}
 
 [6] Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
 
@@ -495,35 +499,36 @@ p$CAccuraciesW(WM)
 \item \href{#method-MatCon-ModKappa}{\code{MatCon$ModKappa()}}
 \item \href{#method-MatCon-ModKappaUser_i}{\code{MatCon$ModKappaUser_i()}}
 \item \href{#method-MatCon-ModKappaProd_i}{\code{MatCon$ModKappaProd_i()}}
-\item \href{#method-MatCon-ecnu}{\code{MatCon$ecnu()}}
-\item \href{#method-MatCon-ecnp}{\code{MatCon$ecnp()}}
+\item \href{#method-MatCon-EntropUser_i}{\code{MatCon$EntropUser_i()}}
+\item \href{#method-MatCon-EntropProd_i}{\code{MatCon$EntropProd_i()}}
 \item \href{#method-MatCon-AvUserAcc}{\code{MatCon$AvUserAcc()}}
 \item \href{#method-MatCon-AvProdAcc}{\code{MatCon$AvProdAcc()}}
-\item \href{#method-MatCon-daup}{\code{MatCon$daup()}}
-\item \href{#method-MatCon-amah}{\code{MatCon$amah()}}
-\item \href{#method-MatCon-amas}{\code{MatCon$amas()}}
-\item \href{#method-MatCon-cau}{\code{MatCon$cau()}}
-\item \href{#method-MatCon-cap}{\code{MatCon$cap()}}
-\item \href{#method-MatCon-caup}{\code{MatCon$caup()}}
-\item \href{#method-MatCon-KappaValue}{\code{MatCon$KappaValue()}}
-\item \href{#method-MatCon-ami}{\code{MatCon$ami()}}
-\item \href{#method-MatCon-nmiu}{\code{MatCon$nmiu()}}
-\item \href{#method-MatCon-nmip}{\code{MatCon$nmip()}}
-\item \href{#method-MatCon-nmiam}{\code{MatCon$nmiam()}}
-\item \href{#method-MatCon-nmigm}{\code{MatCon$nmigm()}}
-\item \href{#method-MatCon-nmimx}{\code{MatCon$nmimx()}}
+\item \href{#method-MatCon-AvUserProdAcc}{\code{MatCon$AvUserProdAcc()}}
+\item \href{#method-MatCon-AvHelldenAcc}{\code{MatCon$AvHelldenAcc()}}
+\item \href{#method-MatCon-AvShortAcc}{\code{MatCon$AvShortAcc()}}
+\item \href{#method-MatCon-CombUserAcc}{\code{MatCon$CombUserAcc()}}
+\item \href{#method-MatCon-CombProdAcc}{\code{MatCon$CombProdAcc()}}
+\item \href{#method-MatCon-CombUserProdAcc}{\code{MatCon$CombUserProdAcc()}}
+\item \href{#method-MatCon-Kappa}{\code{MatCon$Kappa()}}
+\item \href{#method-MatCon-Entrop}{\code{MatCon$Entrop()}}
+\item \href{#method-MatCon-NormEntropUser}{\code{MatCon$NormEntropUser()}}
+\item \href{#method-MatCon-NormEntropProd}{\code{MatCon$NormEntropProd()}}
+\item \href{#method-MatCon-AvNormEntrop}{\code{MatCon$AvNormEntrop()}}
+\item \href{#method-MatCon-GeomAvNormEntrop}{\code{MatCon$GeomAvNormEntrop()}}
+\item \href{#method-MatCon-AvMaxNormEntrop}{\code{MatCon$AvMaxNormEntrop()}}
 \item \href{#method-MatCon-Tau}{\code{MatCon$Tau()}}
-\item \href{#method-MatCon-CAccuracies}{\code{MatCon$CAccuracies()}}
+\item \href{#method-MatCon-UserProdAcc}{\code{MatCon$UserProdAcc()}}
 \item \href{#method-MatCon-DetailedKappa}{\code{MatCon$DetailedKappa()}}
-\item \href{#method-MatCon-DetailedCKappa}{\code{MatCon$DetailedCKappa()}}
+\item \href{#method-MatCon-DetailedCondKappa}{\code{MatCon$DetailedCondKappa()}}
 \item \href{#method-MatCon-QES}{\code{MatCon$QES()}}
-\item \href{#method-MatCon-MAllParameters}{\code{MatCon$MAllParameters()}}
-\item \href{#method-MatCon-BootStrap}{\code{MatCon$BootStrap()}}
-\item \href{#method-MatCon-Normalize}{\code{MatCon$Normalize()}}
-\item \href{#method-MatCon-MPseudozeroes}{\code{MatCon$MPseudozeroes()}}
-\item \href{#method-MatCon-DetailedTau}{\code{MatCon$DetailedTau()}}
+\item \href{#method-MatCon-MTypify}{\code{MatCon$MTypify()}}
+\item \href{#method-MatCon-AllParameters}{\code{MatCon$AllParameters()}}
+\item \href{#method-MatCon-MBootStrap}{\code{MatCon$MBootStrap()}}
+\item \href{#method-MatCon-MNormalize}{\code{MatCon$MNormalize()}}
+\item \href{#method-MatCon-MPseudoZeroes}{\code{MatCon$MPseudoZeroes()}}
+\item \href{#method-MatCon-DetailedWTau}{\code{MatCon$DetailedWTau()}}
 \item \href{#method-MatCon-DetailedWKappa}{\code{MatCon$DetailedWKappa()}}
-\item \href{#method-MatCon-CAccuraciesW}{\code{MatCon$CAccuraciesW()}}
+\item \href{#method-MatCon-UserProdAcc_W}{\code{MatCon$UserProdAcc_W()}}
 \item \href{#method-MatCon-clone}{\code{MatCon$clone()}}
 }
 }
@@ -568,7 +573,7 @@ mc <- MatCon$new (A,ID=5,Date="27-10-2023",Source="Congalton, R.G., & Green, K. 
 \if{html}{\out{<a id="method-MatCon-OverallAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-OverallAcc}{}}}
 \subsection{Method \code{OverallAcc()}}{
-Public method to calculate the global index called Overall accuracy. The Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken. The method also offers the variance. The reference [1] is followed for the computations.
+Public method to calculate the global index called Overall accuracy. The Overall accuracy for a particular classified image/map is then calculated by dividing the sum of the entries that form the major diagonal (i.e., the number of correct classifications) by the total number of samples taken. The method also offers the variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 
 
 The mathematical expression is:
@@ -610,7 +615,7 @@ p$OverallAcc()
 \if{html}{\out{<a id="method-MatCon-UserAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-UserAcc}{}}}
 \subsection{Method \code{UserAcc()}}{
-Public method for deriving a class index called user's accuracy. The user's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the row of the class i. The method also offers the variance. The reference [1] if followed for the computations.
+Public method for deriving a class index called user's accuracy. The user's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the row of the class i. The method also offers the variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 
 
 The mathematical expression is:
@@ -651,7 +656,7 @@ p$UserAcc()
 \if{html}{\out{<a id="method-MatCon-UserAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-UserAcc_i}{}}}
 \subsection{Method \code{UserAcc_i()}}{
-Public method where the user's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the row of class i. The method also offers variance. The reference [1] is followed for the calculations.
+Public method where the user's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the row of class i. The method also offers variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -700,7 +705,7 @@ p$UserAcc_i(2)
 \if{html}{\out{<a id="method-MatCon-ProdAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ProdAcc}{}}}
 \subsection{Method \code{ProdAcc()}}{
-Public method for deriving a class index called producer's accuracy. The producer's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the column of the class i. The method also offers the variance. The reference [1] if followed for the computations.
+Public method for deriving a class index called producer's accuracy. The producer's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the column of the class i. The method also offers the variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} if followed for the computations.
 
 
 \deqn{
@@ -740,7 +745,7 @@ p$ProdAcc()
 \if{html}{\out{<a id="method-MatCon-ProdAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ProdAcc_i}{}}}
 \subsection{Method \code{ProdAcc_i()}}{
-Public method where the producer's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the column of class i. The method also offers variance. The reference [1] is followed for the calculations.
+Public method where the producer's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the column of class i. The method also offers variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -788,7 +793,7 @@ p$ProdAcc_i(1)
 \if{html}{\out{<a id="method-MatCon-AvUserProdAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-AvUserProdAcc_i}{}}}
 \subsection{Method \code{AvUserProdAcc_i()}}{
-Public method that provides the average of the accuracy rates of the user and producer of a specific class. The method also offers variance. The reference [2] is followed for the calculations.
+Public method that provides the average of the accuracy rates of the user and producer of a specific class. The method also offers variance. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
 
 
 The mathematical expression is:
@@ -836,7 +841,7 @@ p$AvUserProdAcc_i(2)
 \if{html}{\out{<a id="method-MatCon-Sucess"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-Sucess}{}}}
 \subsection{Method \code{Sucess()}}{
-Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The reference [3,4] is followed for the calculations.
+Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The reference \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
 
 
 The mathematical expression is:
@@ -878,7 +883,7 @@ p$Sucess()
 \if{html}{\out{<a id="method-MatCon-Sucess_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-Sucess_i}{}}}
 \subsection{Method \code{Sucess_i()}}{
-Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The reference [3,4] is followed for the calculations.
+Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The reference \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
 
 
 The mathematical expression is:
@@ -928,7 +933,7 @@ p$Sucess_i(2)
 \if{html}{\out{<a id="method-MatCon-AvHelldenAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-AvHelldenAcc_i}{}}}
 \subsection{Method \code{AvHelldenAcc_i()}}{
-Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference [5,6] is followed for the calculations.
+Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference [6] \insertCite{hellden1980}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -979,7 +984,7 @@ Public method that provides Short's mapping accuracy for each class is stated as
 
 
 \deqn{
-ShortAcc_i=\frac{x_{ii}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
+ShortAcc_i=\frac{x_{ii}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}-x_{ii}}
 }
 \deqn{
 \sigma^2_{ShortAcc_i}=\frac{ShortAcc_i \cdot (1-ShortAcc_i)}{N}
@@ -989,8 +994,8 @@ where:
 \enumerate{
   \item ShortAcc_i: Short's mapping accuracy
   \item x_ii: diagonal element of the matrix.
-  \item x_j.: sum of all elements in rows j.
-  \item x_.j: sum of all elements in column j.
+  \item x_j+: sum of all elements in rows j.
+  \item x_+j: sum of all elements in column j.
   \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
@@ -1027,7 +1032,7 @@ Public method that evaluates the kappa coefficient from the user's perspective, 
 
 
 \deqn{
-UserKappa_i=\frac{UserAcc_i-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{i=1} x_{i \cdot }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+UserKappa_i=\frac{UserAcc_i-\frac{\sum^n_{i=1} x_{i + }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{i=1} x_{i + }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
 }
 #'  \deqn{
 \sigma^2_{UserKappa_i}=\frac{UserKappa_i \cdot (1-UserKappa_i)}{N}
@@ -1038,8 +1043,8 @@ where:
   \item UserKappa_i: coefficient kappa (user's).
   \item UserAcc_i: user accuracy index for class i.
   \item x_ii: diagonal element of the matrix.
-  \item x_j.: sum of all elements in rows j.
-  \item x_.j: sum of all elements in column j.
+  \item x_j+: sum of all elements in rows j.
+  \item x_+j: sum of all elements in column j.
   \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
@@ -1076,7 +1081,7 @@ Public method that evaluates the kappa coefficient from the producer's perspecti
 
 
 \deqn{
-ProdKappa_i=\frac{ProdAcc_i-\frac{\sum^n_{j=1} x_{ \cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{j=1} x_{\cdot j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+ProdKappa_i=\frac{ProdAcc_i-\frac{\sum^n_{j=1} x_{ + j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{j=1} x_{+ j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
 }
  \deqn{
 \sigma^2_{ProdKappa_i}=\frac{ProdKappa_i \cdot (1- ProdKappa_i)}{N}
@@ -1085,10 +1090,10 @@ where:
 
 \enumerate{
   \item ProdKappa_i: coefficient kappa (producer's).
-  \item ProdAcc_i: producer accuracy.
+  \item ProdAcc_i: producer accuracy index for class i.
   \item x_ii: diagonal element of the matrix.
-  \item x_j.: sum of all elements in rows j.
-  \item x_.j: sum of all elements in column j.
+  \item x_j+: sum of all elements in rows j.
+  \item x_+j: sum of all elements in column j.
   \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
@@ -1181,7 +1186,7 @@ where:
 
 \enumerate{
   \item ModKappaUser_i: modified coefficient kappa (user's).
-  \item UserAcc_i: user accuracy.
+  \item UserAcc_i: user accuracy index for class i.
   \item M: number of elements of the matrix.
   \item N: number of cases involved in the calculation of the index.
 }
@@ -1202,7 +1207,7 @@ A list with modified coefficient kappa (user's) and its variance.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
-p<-MatCon$new(A,Source="Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.")
+p<-MatCon$new(A,Source="Liu et al., 2007")
 p$ModKappaUser_i(2)
 
 }
@@ -1228,7 +1233,7 @@ where:
 
 \enumerate{
   \item ModKappaUser_i: modified coefficient kappa (producer's).
-  \item ProdAcc_i: producer accuracy.
+  \item ProdAcc_i: producer accuracy index for class i.
   \item M: number of elements of the matrix.
   \item N: number of cases involved in the calculation of the index.
 }
@@ -1249,7 +1254,7 @@ A list with modified coefficient kappa (producer's) and its variance.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
-p<-MatCon$new(A,Source="Liu, C., Frazier, P., & Kumar, L. (2007). Comparative assessment of the measures of thematic classification accuracy. Remote sensing of environment, 107(4), 606-616.")
+p<-MatCon$new(A,Source="Liu et al., 2007")
 p$ModKappaProd_i(2)
 
 }
@@ -1259,33 +1264,37 @@ p$ModKappaProd_i(2)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-ecnu"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-ecnu}{}}}
-\subsection{Method \code{ecnu()}}{
-Relative entropy is a quantity that measures the difference between two maps. See reference [9].
+\if{html}{\out{<a id="method-MatCon-EntropUser_i"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-EntropUser_i}{}}}
+\subsection{Method \code{EntropUser_i()}}{
+Public method that calculates relative change of entropy given a category on map. That is, the degree of uncertainty of the category. The method also offers variance. The reference [9] is followed for the calculations.
 
 
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-H(A|b_i)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{j=1} x_{\cdot j} }) \cdot \log (\frac{x_{ij}}{\sum^n_{j=1} x_{\cdot j}}) )
+Entrop_i(A|b_i)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{j=1} x_{+ j} }) \cdot \log (\frac{x_{ij}}{\sum^n_{j=1} x_{+ j}}) )
 }
 \deqn{
-ecnu= \frac{H(A)-H(A|b_i)}{H(A)}
+EntropUser_i= \frac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
+}
+\deqn{
+\sigma^2_{EntropUser_i}= \frac{EntropUser_i \cdot (1-EntropUser_i)}{N}
 }
 
 where:
 
 \enumerate{
-  \item `ecnu`: relative change of entropy given a category on map.
-  \item `H(A)`: the entropy of the map.
-  \item `x_j.`: sum of all elements in rows j.
-  \item `x_.j`: sum of all elements in column j.
-  \item `H(A|b_i)`: Entropy of map A knowing that the location corresponding to map B is in class b_i.
+  \item EntropUser_i: relative change of entropy given a category on map.
+  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
+  \item x_j+: sum of all elements in rows j.
+  \item x_+j: sum of all elements in column j.
+  \item Entrop_i(A|b_i): Entropy of map A knowing that the location corresponding to map B is in class b_i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ecnu(i, v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$EntropUser_i(i, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1298,13 +1307,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Relative change of entropy given a category on map and its variance.
+A list with the relative change of entropy given a category on map, its variance, map entropy, and entropy of map A knowing that the location corresponding to map B is in class b_i.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$ecnu(2)
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$EntropUser_i(1)
 
 }
 \if{html}{\out{</div>}}
@@ -1313,33 +1322,36 @@ p$ecnu(2)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-ecnp"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-ecnp}{}}}
-\subsection{Method \code{ecnp()}}{
-Relative entropy is a quantity that measures the difference between two ground truthing. See reference [8].
+\if{html}{\out{<a id="method-MatCon-EntropProd_i"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-EntropProd_i}{}}}
+\subsection{Method \code{EntropProd_i()}}{
+Public method that calculates relative change of entropy given a category on ground truthing. That is, the degree of uncertainty of the category. The method also offers variance. The reference [8 o 9?] is followed for the calculations.
 
 
 \deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-H(B|a_j)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{i=1} x_{i \cdot} }) \cdot \log (\frac{x_{ij}}{\sum^n_{i=1} x_{i \cdot}}) )
+Entrop_i(B|a_j)=-\sum^n_{j=1}( (\frac{ x_{ij}}{\sum^n_{i=1} x_{i +} }) \cdot \log (\frac{x_{ij}}{\sum^n_{i=1} x_{i +}}) )
 }
 \deqn{
-ecnp= \frac{H(B)-H(B|a_j)}{H(B)}
+EntropProd_i= \frac{EntropMap(B)-EntropMap(B|a_j)}{EntropMap(B)}
 }
-
+\deqn{
+\sigma^2_{EntropProd_i}= \frac{EntropProd_i \cdot (1-EntropProd_i)}{N}
+}
 where:
 
 \enumerate{
-  \item `ecnp`: relative change of entropy given a category on ground truthing.
-  \item `H(B)`: the entropy of the map.
-  \item x_j.: sum of all elements in rows j.
-  \item x_.j: sum of all elements in column j.
-  \item `H(B|a_j)`: Entropy of map B knowing that the location corresponding to map A is in class a_j.
+  \item EntropProd_i: relative change of entropy given a category on ground truthing.
+  \item Entrop_i(B): Entropy of the map with respect to the category on ground truthing.
+  \item x_j+: sum of all elements in rows j.
+  \item x_+j: sum of all elements in column j.
+  \item Entrop_i(B|a_j): Entropy of map B knowing that the location corresponding to map A is in class a_j.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ecnp(i, v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$EntropProd_i(i, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1352,13 +1364,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Relative change of entropy given a category on ground truthing and its variance.
+A list of the relative change of entropy given a category on ground truthing, its variance, map entropy, and entropy of map B knowing that the location corresponding to map A is in class a_j.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$ecnp(4)
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$EntropProd_i(2)
 
 }
 \if{html}{\out{</div>}}
@@ -1383,8 +1395,8 @@ where:
 
 \enumerate{
   \item AvUserAcc: average accuracy from user's perspective.
-  \item `x_j.`: sum of all elements in rows j.
-  \item `x_ii`: diagonal element of the matrix.
+  \item x_j.: sum of all elements in rows j.
+  \item x_ii: diagonal element of the matrix.
   \item M: number of elements of the matrix.
   \item N: number of cases involved in the calculation of the index.
 }
@@ -1423,9 +1435,9 @@ AvProdAcc=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{+j}}
 where:
 
 \enumerate{
-  \item `AvProdAcc: average accuracy from producer's perspective.
-  \item `x_.j`: sum of all elements in column j.
-  \item `x_ii`: diagonal element of the matrix.
+  \item AvProdAcc: average accuracy from producer's perspective.
+  \item x_+j: sum of all elements in column j.
+  \item x_ii: diagonal element of the matrix.
   \item M: number of elements of the matrix.
   \item N: number of cases involved in the calculation of the index.
 }
@@ -1449,35 +1461,39 @@ p$AvProdAcc()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-daup"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-daup}{}}}
-\subsection{Method \code{daup()}}{
-It is the average of the average accuracy from user's and producer's perspective. See reference [2].
+\if{html}{\out{<a id="method-MatCon-AvUserProdAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-AvUserProdAcc}{}}}
+\subsection{Method \code{AvUserProdAcc()}}{
+Public method that offers the average of the average precision from the perspective of the user and the producer. The method also offers variance. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
-daup=\frac{AvUserAcc+AvProdAcc}{2}
+AvUserProdAcc=\frac{AvUserAcc+AvProdAcc}{2}
+}
+ \deqn{
+\sigma^2_{AvUserProdAcc}=\frac{AvUserProdAcc \cdot (1-AvUserProdAcc}{N}
 }
 
 where:
 
 \enumerate{
-  \item `daup`: double average of user's and producer's perspective.
+  \item AvUserProdAcc: average of average of user's and producer's perspective.
   \item AvUserAcc: average accuracy from user's perspective.
   \item AvProdAcc: average accuracy from producer's perspective.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$daup()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserProdAcc()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-Double average of user's and producer's perspective and its variance.
+A list with the values of the average of the average precision from the perspective of the user and the producer the user and producer perspective and their variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$daup()
+p$AvUserProdAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -1486,36 +1502,41 @@ p$daup()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-amah"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-amah}{}}}
-\subsection{Method \code{amah()}}{
-This function provides the average value of the Hellden mean precision index. See reference [2].
+\if{html}{\out{<a id="method-MatCon-AvHelldenAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-AvHelldenAcc}{}}}
+\subsection{Method \code{AvHelldenAcc()}}{
+Public method that provides the average value of the Hellden mean precision index. The method also offers variance. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
-amah=\frac{1}{\sqrt{N}}\sum^n_{i=1} \frac{2}{\frac{1}{ua_i}+\frac{1}{pa_i}}
+AvHelldenAcc=\frac{1}{\sqrt{M}}\sum^n_{i=1} \frac{2 x_{ii}}{ x_{+i} + x_{i+}}
+}
+ \deqn{
+\sigma^2_{AvHelldenAcc}=\frac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N}
 }
 
 where:
 
 \enumerate{
-  \item `amah`: average of Hellden's mean accuracy index.
-  \item `ua_i`: user accuracy.
-  \item `pa_i`: producer accuracy.
-  \item N: number of elements of the matrix, cardinal of the matrix.
+  \item AvHelldenAcc: average of Hellden's mean accuracy index.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item x_ii: diagonal element of the matrix.
+  \item M: number of elements of the matrix.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$amah()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvHelldenAcc()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-Average of Hellden's mean accuracy index and its variance.
+A list with average of Hellden's mean accuracy index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$amah()
+p$AvHelldenAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -1524,37 +1545,38 @@ p$amah()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-amas"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-amas}{}}}
-\subsection{Method \code{amas()}}{
-This function provides the average of Short's mapping accuracy index. See reference [2].
+\if{html}{\out{<a id="method-MatCon-AvShortAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-AvShortAcc}{}}}
+\subsection{Method \code{AvShortAcc()}}{
+Public method that provides the average of Short's mapping accuracy index. The method also offers variance. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
-amas=\frac{1}{\sqrt{N}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{\cdot j}+\sum^n_{i=1} x_{i \cdot }-x_{ii}}
+AvShortAcc=\frac{1}{\sqrt{M}}\frac{\frac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}-x_{ii}}
 }
-
+\deqn{
+\sigma^2_{AvShortAcc}=\frac{AvShortAcc \cdot (1-AvShortAcc)}{N}
+}
 where:
 
 \enumerate{
-  \item `amas`: average of Short's mapping accuracy index.
-  \item `x_ii`: diagonal element of the matrix.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
-  \item N: number of elements of the matrix, cardinal of the matrix.
-}
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item x_ii: diagonal element of the matrix.
+  \item M: number of elements of the matrix.
+  \item N: number of cases involved in the calculation of the index.#' }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$amas()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvShortAcc()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-Average of Short's mapping accuracy index and its variance.
+A list with average of Short's mapping accuracy index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$amas()
+p$AvShortAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -1563,35 +1585,43 @@ p$amas()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-cau"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-cau}{}}}
-\subsection{Method \code{cau()}}{
-The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
+\if{html}{\out{<a id="method-MatCon-CombUserAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-CombUserAcc}{}}}
+\subsection{Method \code{CombUserAcc()}}{
+Public method that provides the combined user accuracy that is the average of the overall accuracy and the average user accuracy. The method also offers variance. The reference [10] is followed for the calculations.
 
 
 \deqn{
-cau=\frac{OverallAcc+AvUserAcc}{2}
+CombUserAcc=\frac{OverallAcc+AvUserAcc}{2}
+}
+\deqn{
+\sigma^2_{CombUserAcc}=\frac{CombUserAcc \cdot (1-CombUserAcc)}{N}
 }
 
 where:
 
 \enumerate{
-  \item cau: combined accuracy from user's perspective.
+  \item CombUserAcc: combined accuracy from user's perspective.
   \item OverallAcc: overall accuracy.
   \item AvUserAcc: average accuracy from user's perspective.
-}
+  \item N: number of cases involved in the calculation of the index.
+  }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$cau()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombUserAcc()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
 }
 
 \subsection{Returns}{
-Combined accuracy from user's perspective and its variance.
+A list of the combined accuracy from the user's perspective and its variation.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+\preformatted{A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
 p<-MatCon$new(A)
-p$cau()
+p$CombUserAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -1600,35 +1630,42 @@ p$cau()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-cap"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-cap}{}}}
-\subsection{Method \code{cap()}}{
-The combined accuracy is the average of the overall accuracy and average accuracy. See reference [10].
+\if{html}{\out{<a id="method-MatCon-CombProdAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-CombProdAcc}{}}}
+\subsection{Method \code{CombProdAcc()}}{
+Public method that provides the combined producer accuracy that is the average of the overall accuracy and the average producer accuracy. The method also offers variance. The reference [10] is followed for the calculations.
 
 
 \deqn{
-cap=\frac{OverallAcc+AvProdAcc}{2}
+CombProdAcc=\frac{OverallAcc+AvProdAcc}{2}
 }
-
+\deqn{
+\sigma^2_{CombProdAcc}=\frac{CombProdAcc \cdot (1-CombProdAcc)}{N}
+}
 where:
 
 \enumerate{
-  \item cap: combined accuracy from producer's perspective.
+  \item CombProdAcc: combined accuracy from producer's perspective.
   \item OverallAcc: overall accuracy.
   \item AvProdAcc: average accuracy from producer's perspective.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$cap()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombProdAcc()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
 }
 
 \subsection{Returns}{
-Combined accuracy from producer's perspective and its variance.
+A list of the combined accuracy from producer's perspective and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+\preformatted{A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
 p<-MatCon$new(A)
-p$cap()
+p$CombProdAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -1637,35 +1674,38 @@ p$cap()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-caup"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-caup}{}}}
-\subsection{Method \code{caup()}}{
-The combined accuracy is the average of the overall accuracy and average accuracy. See reference [2].
+\if{html}{\out{<a id="method-MatCon-CombUserProdAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-CombUserProdAcc}{}}}
+\subsection{Method \code{CombUserProdAcc()}}{
+Public method that provides the combined accuracy which is the average of the overall accuracy and the Hellden average accuracy, which refers to the average user and producer accuracies. The method also offers variation. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
-caup=\frac{OverallAcc+amah}{2}
+CombUserProdAcc=\frac{OverallAcc+AvHelldenAcc}{2}
 }
-
+ \deqn{
+\sigma^2_{CombUserProdAcc}=\frac{CombUserProdAcc \cdot (1-CombUserProdAcc)}{N}
+}
 where:
 
 \enumerate{
-  \item caup: combined accuracy from both user's and producer's perspectives.
+  \item CombUserProdAcc: combined accuracy from both user's and producer's perspectives.
   \item OverallAcc: overall accuracy.
-  \item amah: average of Hellden's mean accuracy index.
+  \item AvHelldenAcc: average of Hellden's mean accuracy index.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$caup()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombUserProdAcc()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-Combined accuracy from both user's and producer's perspectives and its variance.
+A list of the combined accuracy from both user's and producer's perspectives and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$caup()
+p$CombUserProdAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -1674,36 +1714,50 @@ p$caup()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-KappaValue"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-KappaValue}{}}}
-\subsection{Method \code{KappaValue()}}{
-It measures the relationship of beyond chance agreement to expected disagreement. See reference [11].
+\if{html}{\out{<a id="method-MatCon-Kappa"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-Kappa}{}}}
+\subsection{Method \code{Kappa()}}{
+Public method that provides kappa coefficient, which measures the relationship between agreement beyond chance and expected disagreement. The method also offers variation. The reference [11] is followed for the calculations.
 
 
 \deqn{
- ea=\sum^n_{i=1} (\frac{x _{\cdot i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i \cdot}}{\sum_{j=1}^n x_{ij}}) \\
-KappaValue=\frac{OverallAcc-ea}{1-ea}
+ExpAcc=\sum^n_{i=1} (\frac{x _{+ i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i +}}{\sum_{j=1}^n x_{ij}})
 }
+\deqn{
+Kappa=\frac{OverallAcc-ExpAcc}{1-ExpAcc}
+}
+#' \deqn{
+\sigma^2_{Kappa}=\frac{OverallAcc-ExpAcc}{(1-ExpAcc) \cdot N}
+}
+
+
 
 where:
 
 \enumerate{
-  \item KappaValue: Kappa coefficient.
+  \item Kappa: Kappa coefficient.
   \item OverallAcc: overall accuracy.
-  \item ea: expected accuracy of agreement if agreement were purely random.
+  \item ExpAcc: expected accuracy of agreement if agreement were purely random.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$KappaValue()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Kappa()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
 }
 
 \subsection{Returns}{
-Kappa coefficient and its variance.
+A list with kappa coefficient and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$KappaValue()
+p$Kappa()
 
 }
 \if{html}{\out{</div>}}
@@ -1712,25 +1766,28 @@ p$KappaValue()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-ami"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-ami}{}}}
-\subsection{Method \code{ami()}}{
-Average mutual information (AMI), is applied to the comparison of thematic maps. See reference [9].
+\if{html}{\out{<a id="method-MatCon-Entrop"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-Entrop}{}}}
+\subsection{Method \code{Entrop()}}{
+Public method for calculating map entropy. Which refers to the degree of uncertainty that the map presents. The method also offers variation. The reference [9] is followed for the calculations.
 
 
 \deqn{
-ami=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i \cdot} \cdot \sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij}}}))
+Entrop=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i +} \cdot \sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij}}}))
 }
-
+\deqn{
+\sigma^2_{Entrop}=\frac{Entrop \cdot (1-Entrop)}{N}
+}
 where:
 
 \enumerate{
-  \item `ami`: average mutual information.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
+  \item Entrop: map entropy.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ami(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Entrop(v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1741,13 +1798,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Average mutual information and its variance.
+A list with map entropy and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$ami()
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al.,2007")
+p$Entrop()
 
 }
 \if{html}{\out{</div>}}
@@ -1756,30 +1813,33 @@ p$ami()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-nmiu"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-nmiu}{}}}
-\subsection{Method \code{nmiu()}}{
-See reference [9].
+\if{html}{\out{<a id="method-MatCon-NormEntropUser"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-NormEntropUser}{}}}
+\subsection{Method \code{NormEntropUser()}}{
+Public method that calculates normalized entropy using the map. The method also offers variation. The reference [9] is followed for the calculations.
 
 
 \deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-nmiu=\frac{ami}{H(B)}
+NormEntropUser=\frac{Entrop}{Entrop_i(B)}
 }
-
+\deqn{
+\sigma^2_{NormEntropUser}=\frac{NormEntropUser \cdot (1-NormEntropUser)}{N}
+}
 where:
 
 \enumerate{
-  \item `nmiu`: normalized mutual information using the entropy on map.
-  \item `H(B)`: the entropy of the map.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: average mutual information.
+  \item NormEntropUser: normalized entropy using map.
+  \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
+  \item Entrop: map entropy.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiu(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$NormEntropUser(v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1790,13 +1850,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Normalized mutual information using the entropy on map and its variance.
+A list with normalized entropy using map and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$nmiu()
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$NormEntropUser()
 
 }
 \if{html}{\out{</div>}}
@@ -1805,30 +1865,33 @@ p$nmiu()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-nmip"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-nmip}{}}}
-\subsection{Method \code{nmip()}}{
-See reference [9].
+\if{html}{\out{<a id="method-MatCon-NormEntropProd"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-NormEntropProd}{}}}
+\subsection{Method \code{NormEntropProd()}}{
+Public method that calculates normalized entropy using on ground truthing. The method also offers variation. The reference [9] is followed for the calculations.
 
 
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-nmip=\frac{ami}{H(A)}
+NormEntropProd=\frac{Entrop}{Entrop_i(A)}
 }
-
+\deqn{
+\sigma^2_{NormEntropProd}=\frac{NormEntropProd \cdot (1-NormEntropProd)}{N}
+}
 where:
 
 \enumerate{
-  \item `nmip`: normalized mutual information using the entropy on ground truthing.
-  \item `H(A)`: the entropy of the map.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: average mutual information.
+  \item NormEntropProd: normalized mutual information using the entropy on ground truthing.
+  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
+  \item Entrop: map entropy.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmip(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$NormEntropProd(v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1839,13 +1902,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Normalized mutual information using the entropy on ground truthing and its variance.
+A list with normalized entropy using on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$nmip()
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Liu et al., 2007")
+p$NormEntropProd()
 
 }
 \if{html}{\out{</div>}}
@@ -1854,34 +1917,38 @@ p$nmip()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-nmiam"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-nmiam}{}}}
-\subsection{Method \code{nmiam()}}{
-See reference [12].
+\if{html}{\out{<a id="method-MatCon-AvNormEntrop"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-AvNormEntrop}{}}}
+\subsection{Method \code{AvNormEntrop()}}{
+Public method that calculates normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing. The method also offers variation. The reference [12] is followed for the calculations.
 
 
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-nmiam=\frac{2ami}{HA+HB}
+AvNormEntrop=\frac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
+}
+\deqn{
+\sigma^2_{AvNormEntrop}=\frac{AvNormEntrop \cdot (1-AvNormEntrop)}{N}
 }
 
 where:
 
 \enumerate{
-  \item `nmiam`: normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing.
-  \item `H(A)`: the entropy of the map.
-  \item `H(B)`: the entropy of the map.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: average mutual information.
+  \item AvNormEntrop: normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing.
+  \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
+  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
+  \item Entrop: map entropy.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmiam(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvNormEntrop(v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1892,13 +1959,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Normalized mutual information using the arithmetic mean of the entropies on map and on ground truthing and its variance.
+normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$nmiam()
+p$AvNormEntrop()
 
 }
 \if{html}{\out{</div>}}
@@ -1907,34 +1974,37 @@ p$nmiam()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-nmigm"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-nmigm}{}}}
-\subsection{Method \code{nmigm()}}{
-See reference [13].
+\if{html}{\out{<a id="method-MatCon-GeomAvNormEntrop"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-GeomAvNormEntrop}{}}}
+\subsection{Method \code{GeomAvNormEntrop()}}{
+Public method that calculates normalized entropy using the geometric mean of the entropies on the map and on ground truthing. The method also offers variation. The reference [13] is followed for the calculations.
 
 
 \deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
+Entrop_i(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) )
 }
 \deqn{
-nmigm=\frac{ami}{\sqrt{H(A) \cdot H(B)}}
+GeomAvNormEntrop=\frac{Entrop}{\sqrt{Entrop_i(A) \cdot Entrop_i(B)}}
 }
-
+\deqn{
+\sigma^2_{GeomAvNormEntrop}=\frac{GeomAvNormEntrop \cdot (1-GeomAvNormEntrop)}{N}
+}
 where:
 
 \enumerate{
-  \item `nmigm`: normalized mutual information using the geometric mean of the entropies on map and on ground truthing.
-  \item `H(A)`: the entropy of the map.
-  \item `H(B)`: the entropy of the map.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: average mutual information.
+  \item GeomAvNormEntrop: normalized entropy using the geometric mean of the entropies on map and on ground truthing.
+  \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
+  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
+  \item Entrop: map entropy.
+  \item x_+i: sum of all elements in column i.
+  \item x_i+: sum of all elements in row i.
+  \item N: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmigm(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$GeomAvNormEntrop(v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1945,13 +2015,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Normalized mutual information using the geometric mean of the entropies on map and on ground truthing and its variance.
+A list with normalized entropy using the geometric mean of the entropies on map and on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$nmigm()
+p$GeomAvNormEntrop()
 
 }
 \if{html}{\out{</div>}}
@@ -1960,34 +2030,15 @@ p$nmigm()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-nmimx"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-nmimx}{}}}
-\subsection{Method \code{nmimx()}}{
-See reference [14].
+\if{html}{\out{<a id="method-MatCon-AvMaxNormEntrop"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-AvMaxNormEntrop}{}}}
+\subsection{Method \code{AvMaxNormEntrop()}}{
+Public mathod that provides normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing.The method also offers variation. The reference [14] is followed for the calculations.
 
 
-\deqn{
-H(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i \cdot}}{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-H(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{\cdot j}}{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-nmimx=\frac{2 ami}{max(H(A))+max(H(B))}=\frac{ami}{\log \sqrt{N}}
-}
 
-where:
-
-\enumerate{
-  \item `nmimx`: normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing
-  \item `H(A)`: the entropy of the map.
-  \item `H(B)`: the entropy of the map.
-  \item `x_.j`: sum with respect to j (rows).
-  \item `x_i.`: sum with respect to i (columns).
-  \item `ami`: average mutual information.
-}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$nmimx(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvMaxNormEntrop(v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1998,13 +2049,13 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Normalized mutual information using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
+A list with normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$nmimx()
+p$AvMaxNormEntrop()
 
 }
 \if{html}{\out{</div>}}
@@ -2016,16 +2067,16 @@ p$nmimx()
 \if{html}{\out{<a id="method-MatCon-Tau"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-Tau}{}}}
 \subsection{Method \code{Tau()}}{
-Calculate the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. See reference [15].
+Public method that calculates the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. The method also offers the variance. The reference [15] is followed for the computations.
 
 
 The mathematical expression is:
 
 \deqn{
-CoefAccPr=\frac{1}{M}
+PrAgCoef=\frac{1}{M}
 }
 \deqn{
-Tau = \frac{OverallAcc-CoefAccPr}{1-CoefAccPr}
+Tau = \frac{OverallAcc-CoefAccPr}{1-PrAgCoef}
 }
 
 \deqn{
@@ -2035,7 +2086,7 @@ Tau = \frac{OverallAcc-CoefAccPr}{1-CoefAccPr}
 Where:
 \enumerate{
   \item OverallAcc: overall accuracy.
-  \item CoefAccPr: a priori random agreement coefficient.
+  \item PrAgCoef: a priori random agreement coefficient.
   \item M: number of classes.
   \item N: number of elements of the matrix, cardinal of the matrix.
 }
@@ -2043,12 +2094,16 @@ Where:
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$Tau()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+Example matrix taken from Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+}
+
 \subsection{Returns}{
-Tau index and its variance.
+A list with Tau index and its variance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+\preformatted{A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-MatCon$new(A)
 p$Tau()
 
@@ -2059,22 +2114,26 @@ p$Tau()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-CAccuracies"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-CAccuracies}{}}}
-\subsection{Method \code{CAccuracies()}}{
-User's and producer's accuracies and standard deviations are computed. See reference [1].
+\if{html}{\out{<a id="method-MatCon-UserProdAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-UserProdAcc}{}}}
+\subsection{Method \code{UserProdAcc()}}{
+Public method that calculates the pressures of the user and the producer jointly. The method also offers the standard desviations. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuracies()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserProdAcc()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
 }
 
 \subsection{Returns}{
-A list with the producer's accuracy, its standard deviation, the user's accuracy, and its standard deviation
+A list containing the producer's and user's accuracies and their standard deviations, respectively.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$CAccuracies()
+p<-MatCon$new(A,Source="Congalton&Green,2008")
+p$UserProdAcc()
 
 }
 \if{html}{\out{</div>}}
@@ -2086,18 +2145,22 @@ p$CAccuracies()
 \if{html}{\out{<a id="method-MatCon-DetailedKappa"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-DetailedKappa}{}}}
 \subsection{Method \code{DetailedKappa()}}{
-Overall Kappa agreement index and variance elements are computed
+Public method that calculates the general Kappa agreement index, its standard deviation and the test statistic to test its significance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedKappa()}\if{html}{\out{</div>}}
 }
 
+\subsection{Details}{
+Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
+}
+
 \subsection{Returns}{
-Overall accuracy, Expected accuracy of agreement if agreement were purely random,,, coefficient kappa, standar desviation kappa,
+A list of the kappa coefficient, its standard deviation, and the value of its test statistic.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
+p<-MatCon$new(A,Source="Congalton&Green,2008")
 p$DetailedKappa()
 
 }
@@ -2107,22 +2170,26 @@ p$DetailedKappa()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-DetailedCKappa"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-DetailedCKappa}{}}}
-\subsection{Method \code{DetailedCKappa()}}{
-Class Kappa agreement index (conditional Kappa) and its variance are computed
+\if{html}{\out{<a id="method-MatCon-DetailedCondKappa"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-DetailedCondKappa}{}}}
+\subsection{Method \code{DetailedCondKappa()}}{
+Public method that calculates the Kappa class agreement index (conditional Kappa) from the perspective of user (i) and producer (j) and its standard desviations. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedCKappa()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedCondKappa()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
 }
 
 \subsection{Returns}{
-Kappa index and its standard deviation.
+A list with conditional Kappa index of the user and the producer, and its corresponding standard deviation.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-p<-MatCon$new(A)
-p$DetailedCKappa ()
+p<-MatCon$new(A,Source="Congalton&Green,2008")
+p$DetailedCondKappa ()
 
 }
 \if{html}{\out{</div>}}
@@ -2134,9 +2201,9 @@ p$DetailedCKappa ()
 \if{html}{\out{<a id="method-MatCon-QES"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-QES}{}}}
 \subsection{Method \code{QES()}}{
-Quantity, Exchange and Shift values are computed. See reference [16].
+Public method that calculates the values of quantity, change and shift. The reference [16] is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$QES(TI = 1, SF = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$QES(TI = NULL, SF = 1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -2149,7 +2216,7 @@ Quantity, Exchange and Shift values are computed. See reference [16].
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-NO VEO MUY CLARO QUE HACE
+A list of general values for the interval t of difference, quantity, shift, and shift.In addition to the differences for categories, number of components, change of categories and turn of the components.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2164,22 +2231,68 @@ p$QES(TI=1, SF=6)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-MAllParameters"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-MAllParameters}{}}}
-\subsection{Method \code{MAllParameters()}}{
-Several parameters are calculated for the given Confusion Matrix. See references [1,11,16].
+\if{html}{\out{<a id="method-MatCon-MTypify"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MTypify}{}}}
+\subsection{Method \code{MTypify()}}{
+Public method that types the values of each cell. The total sum of the original matrix is used for typing. The resulting values can be presented as real (parameter RaR=1) or as a percentage (parameter RaR !=1)
+
+
+\deqn{
+MTypify=\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
+}
+
+where:
+
+\enumerate{
+  \item MTyipify: typified matrix.
+  \item x_ij: matrix element.
+}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$MAllParameters()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MTypify(RaR = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{RaR}}{"1" indicates result as real, other values mean percentage as integer. By default RaR=1.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list with original matrix and typified matrix
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
+p<-MatCon$new(A)
+p$MTypify(RaR=5)
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-AllParameters"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-AllParameters}{}}}
+\subsection{Method \code{AllParameters()}}{
+Public method in which multiple parameters are calculated for the given confusion matrix. The reference [1,11,16,19] is followed for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AllParameters()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
 }
 
 \subsection{Returns}{
-Confusion Matrix, Dimension, Total sum of cell values, Overall Accuracy, Variance overall accuracy, Kappa index of global accuracy, Simplified variance of the global Kappa, per-clas producer's accuracy, per-class user's accuracy, k value for the calculation of pseudozeroes, Pseudozeroes Matrix, L matrix for the calculation of pseudozeroes.
+A list containing Confusion Matrix, Dimension, Total Sum of Cell Values, Overall Precision, Overall Variance Precision, Global Precision Kappa Index, Global Kappa Simplified Variance, Producer Precision by Class, User Precision by Class, k value for the calculation of pseudozeroes, Pseudoceros Matrix, L Matrix for the calculation of pseudozeroes.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$MAllParameters()
+p$AllParameters()
 
 }
 \if{html}{\out{</div>}}
@@ -2188,12 +2301,12 @@ p$MAllParameters()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-BootStrap"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-BootStrap}{}}}
-\subsection{Method \code{BootStrap()}}{
-N resamples of the confusion matrix are performed. See reference [17].
+\if{html}{\out{<a id="method-MatCon-MBootStrap"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MBootStrap}{}}}
+\subsection{Method \code{MBootStrap()}}{
+Public method that provides N resamples of the confusion matrix from a MatCon object. The reference [17] is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$BootStrap(n)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MBootStrap(n)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -2203,14 +2316,18 @@ N resamples of the confusion matrix are performed. See reference [17].
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+Example matrix taken from Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
+}
+
 \subsection{Returns}{
-n simulated matrices, from the confusion matrix, applying the multinomial distribution
+A list formed by the original confusion matrix and simulated matrices, from the confusion matrix. The multinomial distribution is applied.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-MatCon$new(A)
-p$BootStrap(2)
+p$MBootStrap(2)
 
 }
 \if{html}{\out{</div>}}
@@ -2219,29 +2336,33 @@ p$BootStrap(2)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-Normalize"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-Normalize}{}}}
-\subsection{Method \code{Normalize()}}{
-An iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. See reference [18,19].
+\if{html}{\out{<a id="method-MatCon-MNormalize"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MNormalize}{}}}
+\subsection{Method \code{MNormalize()}}{
+Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The reference [18,19] is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Normalize(n = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MNormalize(n = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n}}{Iteration. By default n=100.}
+\item{\code{n}}{Number of iteration. By default n=100.}
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+Example matrix taken from Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+}
+
 \subsection{Returns}{
-Normalized matrix (Class MatCon) and its variance.
+A list formed by the original confusion matrix and the normalized matrix.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+\preformatted{A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-MatCon$new(A)
-p$Normalize()$values
+p$MNormalize()$values
 
 }
 \if{html}{\out{</div>}}
@@ -2250,22 +2371,26 @@ p$Normalize()$values
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-MPseudozeroes"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-MPseudozeroes}{}}}
-\subsection{Method \code{MPseudozeroes()}}{
-Small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. See reference [19].
+\if{html}{\out{<a id="method-MatCon-MPseudoZeroes"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-MPseudoZeroes}{}}}
+\subsection{Method \code{MPseudoZeroes()}}{
+Public method that small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. The reference [19] is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$MPseudozeroes()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$MPseudoZeroes()}\if{html}{\out{</div>}}
+}
+
+\subsection{Details}{
+Example matrix taken from Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
 }
 
 \subsection{Returns}{
-An object of class MatCon with the matrix of Pseudoceros.
+A list formed by the original confusion matrix and the Pseudozeroes matrix.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+\preformatted{A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-MatCon$new(A)
-p$MPseudozeroes()$values
+p$MPseudoZeroes()$values
 
 }
 \if{html}{\out{</div>}}
@@ -2274,12 +2399,12 @@ p$MPseudozeroes()$values
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-DetailedTau"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-DetailedTau}{}}}
-\subsection{Method \code{DetailedTau()}}{
-Overall Tau agreement index and variance elements  are computed.
+\if{html}{\out{<a id="method-MatCon-DetailedWTau"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-DetailedWTau}{}}}
+\subsection{Method \code{DetailedWTau()}}{
+Public method that calculates the general Tau concordance index and its standard deviation.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedTau(WV)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedWTau(WV)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -2290,14 +2415,14 @@ Overall Tau agreement index and variance elements  are computed.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-NO LO VEO CLARO. Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
+Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 WV <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
 p<-MatCon$new(A)
-p$DetailedTau(WV)
+p$DetailedWTau(WV)
 
 }
 \if{html}{\out{</div>}}
@@ -2309,7 +2434,7 @@ p$DetailedTau(WV)
 \if{html}{\out{<a id="method-MatCon-DetailedWKappa"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-DetailedWKappa}{}}}
 \subsection{Method \code{DetailedWKappa()}}{
-Overall Kappa agreement index (Weighted) and its variance are computed
+Public method that calculates the general Kappa agreement index (weighted) and its standard deviation. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$DetailedWKappa(WM)}\if{html}{\out{</div>}}
 }
@@ -2322,7 +2447,7 @@ Overall Kappa agreement index (Weighted) and its variance are computed
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Weight matrix, kappa index obtained from the original matrix and the weight matrix, and its variance.
+A list with the weight matrix, kappa index obtained from the original matrix and the weight matrix, its standard desviations and the value of its test statistic.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2338,12 +2463,12 @@ p$DetailedWKappa(WM)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-MatCon-CAccuraciesW"></a>}}
-\if{latex}{\out{\hypertarget{method-MatCon-CAccuraciesW}{}}}
-\subsection{Method \code{CAccuraciesW()}}{
-User's and producer's weighted accuracies and standard deviations are computed. See reference [1].
+\if{html}{\out{<a id="method-MatCon-UserProdAcc_W"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-UserProdAcc_W}{}}}
+\subsection{Method \code{UserProdAcc_W()}}{
+Public method that calculates the weighted accuracies and standard deviations of the user and the producer. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$CAccuraciesW(WM)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserProdAcc_W(WM)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -2354,14 +2479,14 @@ User's and producer's weighted accuracies and standard deviations are computed. 
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Weight matrix, Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
+A list with weight matrix, Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
 p<-MatCon$new(A)
 WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
-p$CAccuraciesW(WM)
+p$UserProdAcc_W(WM)
 
 }
 \if{html}{\out{</div>}}

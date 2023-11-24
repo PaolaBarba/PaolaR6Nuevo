@@ -3,4 +3,5 @@
 export(MatCon)
 export(QCCS)
 importFrom(R6,R6Class)
+importFrom(Rdpack,reprompt)
 importFrom(stats,dmultinom)

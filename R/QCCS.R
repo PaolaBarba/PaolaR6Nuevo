@@ -7,9 +7,11 @@
 #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
 #' @return Object of class QCCS
 #' @export QCCS
-#' @references [1] Ariza-López, F. J., Rodríguez-Avi, J., Alba-Fernández, M. V., & García-Balboa, J. L. (2019). Thematic accuracy quality control by means of a set of multinomials. Applied Sciences, 9(20), 4240.
+#' @references
+#' \insertRef{QCCS}{PaolaR6Nuevo}
 #' @importFrom R6 R6Class
 #' @importFrom stats dmultinom
+#' @importFrom Rdpack reprompt
 #'
 #'
 #' @aliases
@@ -52,8 +54,6 @@ QCCS <- R6Class("QCCS",
     }else{
       self$ID<-ID
     }
-    #Si no se añade fecha (Date=2710, Date="27-10", Date="27/10")
-    #En ese caso se tomara la fecha del sistema
     if(!is.null(Date)){
       self$Date<-Date
     }else{self$Date <- Sys.Date()}
@@ -71,7 +71,7 @@ QCCS <- R6Class("QCCS",
     n <- length(self$vectors)
     m <- length(self$prob)
       if (n != m) {
-        print("Debe haber el mismo n\xFAmero de columnas de datos que de probabilidades")
+        print("There must be the same number of data columns as probability columns")
       }
       for (i in 1:n) {
         vi <- self$vectors[[i]]
@@ -79,25 +79,25 @@ QCCS <- R6Class("QCCS",
         ni <- length(vi)
         mi <- length(pi)
 
-      # Comprobacion
+      # check
         if ((ni != mi) == TRUE) {
-            print("Deben tener el mismo tama\xF1o los vectores y sus correspondientes probabilidades")
+            print("The vectors and their corresponding probabilities must have the same size")
         }
       }
 
   },
 
 
-# QCCS public function. To calculate p-value, use test-*tol ---------------
+# QCCS public function. To calculate p-value, use test-ntol ---------------
 
 
 
-      #' @description Using a list of vectors and their corresponding probabilities, through a multinomial distribution, the p value is calculated using each of the vectors. See reference [1].
+      #' @description Public method that, using a list of vectors and their corresponding probabilities, through a multinomial distribution, calculates the p value using each of the vectors. The reference \insertCite{QCCS}{PaolaR6Nuevo} is followed for the computations.
       #' @return The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
       #' @examples
       #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
       #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-      #' A <- QCCS$new(vectors,prob)
+      #' A <- QCCS$new(vectors,prob,Source="Ariza et al.,2019")
       #' A$QCCS()
       #'
       #' @aliases
@@ -130,12 +130,18 @@ QCCS <- R6Class("QCCS",
 
   ),
 
+
+
+# Private functions -------------------------------------------------------
+
+
+
   private = list(
 
     combina = function(n, N) {
       result <- NULL
       stack <- list(list(comb = NULL, remaining = N, index = 1))
-      #
+      #define progress bar
       pb <- txtProgressBar(min = 0,      # Minimum value of progress bar
                            max = choose(N+1+n-1,n),    # Maximum value of progress bar
                            style = 3,    # Style
@@ -169,7 +175,7 @@ QCCS <- R6Class("QCCS",
       n<-length(M)
       N <- sum(M)
 
-      # Calcular el espacio muestral
+      # Calculate the sample space
       Sucesos1<-NULL
       Sucesos<-private$combina(n,N)
       Sucesos1<- matrix(ncol = n,nrow=0)
@@ -180,7 +186,7 @@ QCCS <- R6Class("QCCS",
           }
         }
 
-      #Se calculan las probabilidades del espacion muestral
+      #probabilities
       Q <- matrix(ncol = n+2, nrow = dim(Sucesos1)[1])
 
       for (i in 1:dim(Sucesos1)[1]) {
@@ -193,7 +199,7 @@ QCCS <- R6Class("QCCS",
       }
       A <- matrix(nrow = 0, ncol = n+2)
 
-      #Cadena de caracteres con las condiciones a evaluar
+      #Character string with the conditions to evaluate
       cond<-"Q[j,1]==M[1]"
       cond1<-paste(" Q[j,", 2:n, "] == M[", 2:n, "]", sep = "")
       cond<-c(cond,cond1)
@@ -205,7 +211,7 @@ QCCS <- R6Class("QCCS",
         }
 
         for(ni in 1:n-1){
-        #condiciones de igualdad a evaluar en cada caso
+        #conditions of equality to be evaluated in each case
         condicion1<-paste(cond[1:ni], collapse = " & ")
 
           if(( eval(parse(text=condicion1)))){
