@@ -30,9 +30,37 @@
 #' \insertRef{turk2002}{PaolaR6Nuevo}
 #'
 #' \insertRef{hellden1980}{PaolaR6Nuevo}
+#'
+#' \insertRef{rosenfield1986}{PaolaR6Nuevo}
+#'
+#' \insertRef{short1982}{PaolaR6Nuevo}
+#'
+#' \insertRef{finn1993}{PaolaR6Nuevo}
+#'
+#' \insertRef{tung1988}{PaolaR6Nuevo}
+#'
+#' \insertRef{cohen1960}{PaolaR6Nuevo}
+#'
+#' \insertRef{strehl2002}{PaolaR6Nuevo}
+#'
+#' \insertRef{ghosh2002}{PaolaR6Nuevo}
+#'
+#' \insertRef{strehl2002relationship}{PaolaR6Nuevo}
+#'
+#' \insertRef{book}{PaolaR6Nuevo}
+#'
+#' \insertRef{pontius2014}{PaolaR6Nuevo}
+#'
+#' \insertRef{ariza2011}{PaolaR6Nuevo}
+#'
+#' \insertRef{fienberg1970}{PaolaR6Nuevo}
+#'
+#' \insertRef{munoz2016}{PaolaR6Nuevo}
+#'
+#' \insertRef{foody1992}{PaolaR6Nuevo}
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-#' mc <- MatCon$new (A,ID=5,Date="27-10-2023")
+#' mc <- MatCon$new (A,ID=5,Date="27-10-2023",Source="Congalton&Green, 2008")
 #'
 #' @aliases
 
@@ -65,7 +93,7 @@ MatCon <- R6Class("MatCon",
     #' @return Object of class MatCon or an error if a matrix isn't entered.
     #' @examples
     #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-    #' mc <- MatCon$new (A,ID=5,Date="27-10-2023",Source="Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press")
+    #' mc <- MatCon$new (A,ID=5,Date="27-10-2023",Source="Congalton&Green, 2008")
     #'
     #' @aliases
 
@@ -224,7 +252,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with a vector of values for the user's accuracy index of all classes and another vector with their variances.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$UserAcc()
       #'
       #' @aliases
@@ -266,7 +294,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list of the user's accuracy index values for class i and its variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$UserAcc_i(2)
       #'
       #' @aliases
@@ -299,7 +327,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with a vector of values for the producer's accuracy index of all classes and another vector with their variances.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$ProdAcc()
       #'
       #' @aliases
@@ -339,7 +367,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list of the producer's accuracy index values for class i and its variance
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$ProdAcc_i(1)
       #'
       #' @aliases
@@ -373,7 +401,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @param i Class to evaluate.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AvUserProdAcc_i(2)
       #'
       #' @aliases
@@ -407,7 +435,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with the classification success index and its variance.
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),nrow=3,ncol=3)
-      #' p<-MatCon$new(A,Source="Labatut, V., & Cherifi, H. (2011). Evaluation of performance measures for classifiers comparison. arXiv preprint arXiv:1112.4133.")
+      #' p<-MatCon$new(A,Source="Labatut&Cherifi, 2011")
       #' p$Sucess()
       #'
       #' @aliases
@@ -445,7 +473,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @param i Class to evaluate.
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),nrow=3,ncol=3)
-      #' p<-MatCon$new(A,Source="Labatut, V., & Cherifi, H. (2011). Evaluation of performance measures for classifiers comparison. arXiv preprint arXiv:1112.4133.")
+      #' p<-MatCon$new(A,Source="Labatut&Cherifi, 2011")
       #' p$Sucess_i(2)
       #'
       #' @aliases
@@ -460,7 +488,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference [6] \insertCite{hellden1980}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description  Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference \insertCite{hellden1980,rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' AvHelldenAcc_i=\frac{2}{\frac{1}{UserAcc_i}+\frac{1}{ProdAcc_i}}
@@ -477,11 +505,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @param i Class to evaluate.
-      #' @references [6] Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.
       #' @return A list with Hellden's mean accuracy and its variance.
       #' @examples
-      #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.")
+      #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),
+      #' nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Rosenfield&Fitzpatrick, 1986")
       #' p$AvHelldenAcc_i(2)
       #'
       #' @aliases
@@ -503,7 +531,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The reference [6,7] is followed for the calculations.
+      #' @description Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The reference \insertCite{rosenfield1986,short1982}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ShortAcc_i=\frac{x_{ii}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}-x_{ii}}
@@ -520,12 +548,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item x_+j: sum of all elements in column j.
       #'   \item N: number of cases involved in the calculation of the index.
       #' }
-      #' @references [7] Short, N. M. (1982). The Landsat tutorial workbook: Basics of satellite remote sensing (Vol. 1078). National Aeronautics and Space Administration, Scientific and Technical Information Branch.
       #' @param i Class to evaluate.
       #' @return A list with Short's mapping accuracy and its variance.
       #' @examples
-      #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Rosenfield, G. H., & Fitzpatrick-Lins, K. (1986). A coefficient of agreement as a measure of thematic classification accuracy. Photogrammetric engineering and remote sensing, 52(2), 223-227.")
+      #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),
+      #' nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Rosenfield&Fitzpatrick-Lins, 1986")
       #' p$ShortAcc_i(2)
       #'
       #' @aliases
@@ -545,7 +573,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method that evaluates the kappa coefficient from the user's perspective, for a specific class i. The method also offers variance. The reference [6] is followed for the calculations.
+      #' @description Public method that evaluates the kappa coefficient from the user's perspective, for a specific class i. The method also offers variance. The reference \insertCite{rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' UserKappa_i=\frac{UserAcc_i-\frac{\sum^n_{i=1} x_{i + }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{i=1} x_{i + }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
@@ -566,8 +594,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with coefficient kappa (user's) and its variance.
       #' @param i Class to evaluate.
       #' @examples
-      #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Næsset, E. (1996). Conditional tau coefficient for assessment of producer's accuracy of classified remotely sensed data. ISPRS Journal of Photogrammetry and Remote sensing, 51(2), 91-98.")
+      #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),
+      #' nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Næsset, 1996")
       #' p$UserKappa_i(2)
       #'
       #' @aliases
@@ -586,7 +615,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method that evaluates the kappa coefficient from the producer's perspective, for a specific class i. The method also offers variance. The reference [6] is followed for the calculations.
+      #' @description Public method that evaluates the kappa coefficient from the producer's perspective, for a specific class i. The method also offers variance. The reference \insertCite{rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ProdKappa_i=\frac{ProdAcc_i-\frac{\sum^n_{j=1} x_{ + j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\frac{\sum^n_{j=1} x_{+ j }}{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
@@ -607,8 +636,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with coefficient kappa (producer's) and its variance.
       #' @param i Class to evaluate.
       #' @examples
-      #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Næsset, E. (1996). Conditional tau coefficient for assessment of producer's accuracy of classified remotely sensed data. ISPRS Journal of Photogrammetry and Remote sensing, 51(2), 91-98.")
+      #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),
+      #' nrow=5,ncol=5)
+      #' p<-MatCon$new(A,Source="Næsset, 1996")
       #' p$ProdKappa_i(2)
       #'
       #' @aliases
@@ -624,7 +654,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description Public method that provides the overall modified kappa coefficient. The method also offers variance. The reference [8,20] is followed for the calculations.
+      #' @description Public method that provides the overall modified kappa coefficient. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ModKappa=\frac{OverallAcc-\frac{1}{\sqrt{M}}}{1-\frac{1}{\sqrt{M}}}
@@ -642,10 +672,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return A list with modified coefficient kappa and its variance.
       #' @param i Class to evaluate.
-      #' @references [20] Foody, G. M. (1992). On the compensation for chance agreement in image classification accuracy assessment. Photogrammetric engineering and remote sensing, 58(10), 1459-1460.
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Foody, G. M. (1992). On the compensation for chance agreement in image classification accuracy assessment. Photogrammetric engineering and remote sensing, 58(10), 1459-1460.")
+      #' p<-MatCon$new(A,Source="Foody, 1992")
       #' p$ModKappa()
       #'
       #' @aliases
@@ -659,7 +688,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The reference [8,20] is followed for the calculations.
+      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ModKappaUser_i=\frac{UserAcc_i-\frac{1}{\sqrt{M}}}{1-\frac{1}{\sqrt{M}}}
@@ -677,7 +706,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return A list with modified coefficient kappa (user's) and its variance.
       #' @param i Class to evaluate.
-      #' @references [8] Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Liu et al., 2007")
@@ -695,7 +723,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The reference [8,20] is followed for the calculations.
+      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ModKappaProd_i=\frac{ProdAcc_i-\frac{1}{\sqrt{M}}}{1-\frac{1}{\sqrt{M}}}
@@ -713,7 +741,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return A list with modified coefficient kappa (producer's) and its variance.
       #' @param i Class to evaluate.
-      #' @references [8] Stehman, S. V. (1997). Selecting and interpreting measures of thematic classification accuracy. Remote sensing of Environment, 62(1), 77-89.
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Liu et al., 2007")
@@ -727,8 +754,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(ModKappaProd_i=ModKappaProd_i,VarModKappaProd_i=VarModKappaProd_i))
      },
 
-     #' @description Public method that calculates relative change of entropy given a category on map. That is, the degree of uncertainty of the category. The method also offers variance. The reference [9] is followed for the calculations.
-     #' @references [9] Finn, J. T. (1993). Use of the average mutual information index in evaluating classification error and consistency. International Journal of Geographical Information Science, 7(4), 349-366.
+     #' @description Public method that calculates relative change of entropy given a category on map. That is, the degree of uncertainty of the category. The method also offers variance. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
      #' @description
      #'  \deqn{
      #' Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -790,7 +816,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
     return(list(EntropUser_i=EntropUser_i,VarEntropUser_i=VarEntropUser_i,Entrop_iA=Entrop_iA,Entrop_iAbi=Entrop_iAbi))
     },
 
-     #' @description Public method that calculates relative change of entropy given a category on ground truthing. That is, the degree of uncertainty of the category. The method also offers variance. The reference [8 o 9?] is followed for the calculations.
+     #' @description Public method that calculates relative change of entropy given a category on ground truthing. That is, the degree of uncertainty of the category. The method also offers variance. The reference \insertCite{stehman1997}{PaolaR6Nuevo} is followed for the calculations.
      #' @param i Class to evaluate
      #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
      #' @description
@@ -843,8 +869,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method that provides the user's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the user's perspective. The method also offers variance. The reference [10] is followed for the calculations.
-      #' @references [10] Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
+      #' @description Public method that provides the user's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the user's perspective. The method also offers variance. The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' AvUserAcc=\frac{1}{\sqrt{M}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{j+}}
@@ -864,7 +889,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with the average accuracy from user's perspective and its variance.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A,Source="Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.")
+      #' p<-MatCon$new(A,Source="Tung&LeDrew, 1988")
       #' p$AvUserAcc()
       #'
       #' @aliases
@@ -880,7 +905,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return (list(AvUserAcc=AvUserAcc,VarAvUserAcc=VarAvUserAcc))
      },
 
-      #' @description Public method that provides the producer's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the producer's perspective. The method also offers variance. The reference [10] is followed for the calculations.
+      #' @description Public method that provides the producer's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the producer's perspective. The method also offers variance. The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' AvProdAcc=\frac{1}{\sqrt{N}} \sum^n_{i=1} \frac{x_{ii}}{\sum_{j=1}^n x_{+j}}
@@ -900,7 +925,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with the average accuracy from producer's perspective and its variance.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A,Source="Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.")
+      #' p<-MatCon$new(A,Source="Tung&LeDrew, 1988")
       #' p$AvProdAcc()
       #'
       #' @aliases
@@ -931,7 +956,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with the values of the average of the average precision from the perspective of the user and the producer the user and producer perspective and their variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AvUserProdAcc()
       #'
       #' @aliases
@@ -965,7 +990,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with average of Hellden's mean accuracy index and its variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AvHelldenAcc()
       #'
       #' @aliases
@@ -996,7 +1021,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list with average of Short's mapping accuracy index and its variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AvShortAcc()
       #'
       #' @aliases
@@ -1014,7 +1039,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description Public method that provides the combined user accuracy that is the average of the overall accuracy and the average user accuracy. The method also offers variance. The reference [10] is followed for the calculations.
+      #' @description Public method that provides the combined user accuracy that is the average of the overall accuracy and the average user accuracy. The method also offers variance. The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombUserAcc=\frac{OverallAcc+AvUserAcc}{2}
@@ -1036,7 +1061,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' Example matrix taken from Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Tung&LeDrew, 1988")
       #' p$CombUserAcc()
       #'
       #' @aliases
@@ -1047,7 +1072,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(CombUserAcc=CombUserAcc,VarCombUserAcc=VarCombUserAcc))
      },
 
-      #' @description Public method that provides the combined producer accuracy that is the average of the overall accuracy and the average producer accuracy. The method also offers variance. The reference [10] is followed for the calculations.
+      #' @description Public method that provides the combined producer accuracy that is the average of the overall accuracy and the average producer accuracy. The method also offers variance. The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombProdAcc=\frac{OverallAcc+AvProdAcc}{2}
@@ -1068,7 +1093,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' Example matrix taken from Tung, F., & LeDrew, E. (1988). The determination of optimal threshold levels for change detection using various accuracy indexes. Photogrammetric Engineering and Remote Sensing, 54(10), 1449-1454.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Tung&LeDrew, 1988")
       #' p$CombProdAcc()
       #'
       #' @aliases
@@ -1098,7 +1123,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @return A list of the combined accuracy from both user's and producer's perspectives and its variance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$CombUserProdAcc()
       #'
       #' @aliases
@@ -1109,7 +1134,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(CombUserProdAcc=CombUserProdAcc,VarCombUserProdAcc=VarCombUserProdAcc))
      },
 
-      #' @description Public method that provides kappa coefficient, which measures the relationship between agreement beyond chance and expected disagreement. The method also offers variation. The reference [11] is followed for the calculations.
+      #' @description Public method that provides kappa coefficient, which measures the relationship between agreement beyond chance and expected disagreement. The method also offers variation. The reference \insertCite{cohen1960}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ExpAcc=\sum^n_{i=1} (\frac{x _{+ i}}{\sum_{j=1}^n x_{ij}} \cdot \frac{x _{i +}}{\sum_{j=1}^n x_{ij}})
@@ -1134,12 +1159,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @return A list with kappa coefficient and its variance.
-      #' @references [11] Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and psychological measurement, 20(1), 37-46.
       #' @details
       #' Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$Kappa()
       #'
       #' @aliases
@@ -1158,7 +1182,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method for calculating map entropy. Which refers to the degree of uncertainty that the map presents. The method also offers variation. The reference [9] is followed for the calculations.
+      #' @description  Public method for calculating map entropy. Which refers to the degree of uncertainty that the map presents. The method also offers variation. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop=\sum^n_{i,j=1} (\frac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\frac{x_{ij}}{\frac{\sum^n_{i=1} x_{i +} \cdot \sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij}}}))
@@ -1194,7 +1218,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description Public method that calculates normalized entropy using the map. The method also offers variation. The reference [9] is followed for the calculations.
+      #' @description Public method that calculates normalized entropy using the map. The method also offers variation. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(B)=-\sum^n_{i=1}( (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\frac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1240,7 +1264,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(NormEntropUser=NormEntropUser,VarNormEntropUser=VarNormEntropUser))
      },
 
-      #' @description Public method that calculates normalized entropy using on ground truthing. The method also offers variation. The reference [9] is followed for the calculations.
+      #' @description Public method that calculates normalized entropy using on ground truthing. The method also offers variation. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1285,7 +1309,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(NormEntropProd=NormEntropProd,VarNormEntropProd=VarNormEntropProd))
      },
 
-      #' @description Public method that calculates normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing. The method also offers variation. The reference [12] is followed for the calculations.
+      #' @description Public method that calculates normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing. The method also offers variation. The reference \insertCite{strehl2002}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1313,10 +1337,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' @return normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing and its variance.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @references [12] Strehl, A., & Ghosh, J. (2002). Cluster ensembles---a knowledge reuse framework for combining multiple partitions. Journal of machine learning research, 3(Dec), 583-617.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AvNormEntrop()
       #'
       #' @aliases
@@ -1338,7 +1361,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(AvNormEntrop=AvNormEntrop,VarAvNormEntrop=VarAvNormEntrop))
      },
 
-      #' @description Public method that calculates normalized entropy using the geometric mean of the entropies on the map and on ground truthing. The method also offers variation. The reference [13] is followed for the calculations.
+      #' @description Public method that calculates normalized entropy using the geometric mean of the entropies on the map and on ground truthing. The method also offers variation. The reference \insertCite{ghosh2002}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -1364,11 +1387,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @return A list with normalized entropy using the geometric mean of the entropies on map and on ground truthing and its variance.
-      #' @references [13] Ghosh, J., Strehl, A., & Merugu, S. (2002, November). A consensus framework for integrating distributed clusterings under limited knowledge sharing. In Proc. NSF Workshop on Next Generation Data Mining (pp. 99-108).
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$GeomAvNormEntrop()
       #'
       #' @aliases
@@ -1388,7 +1410,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(GeomAvNormEntrop=GeomAvNormEntrop,VarGeoAvNormEntrop=VarGeomAvNormEntrop))
      },
 
-      #' @description Public mathod that provides normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing.The method also offers variation. The reference [14] is followed for the calculations.
+      #' @description Public mathod that provides normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing.The method also offers variation. The reference \insertCite{strehl2002relationship}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #' Entrop_i(A)=-\sum^n_{j=1}( (\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\frac{\sum^n_{i=1} x_{i +}}{\sum^n_{i,j=1} x_{ij} }) )
       #' }
@@ -1412,11 +1434,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item N: number of cases involved in the calculation of the index.
       #' }
       #' @return A list with normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
-      #' @references [14] Strehl, A. (2002). Relationship-based clustering and cluster ensembles for high-dimensional data mining. The University of Texas at Austin.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AvMaxNormEntrop()
       #'
       #' @aliases
@@ -1434,7 +1455,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method that calculates the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. The method also offers the variance. The reference [15] is followed for the computations.
+      #' @description Public method that calculates the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. The method also offers the variance. The reference \insertCite{book}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list with Tau index and its variance.
       #' @description
       #' The mathematical expression is:
@@ -1457,11 +1478,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'   \item M: number of classes.
       #'   \item N: number of elements of the matrix, cardinal of the matrix.
       #' }
-      #' @references [15] Ariza-López, F. J. (2013). Fundamentos de evaluación de la calidad de la información geográfica. Universidad de Jaén. Servicio de Publicaciones.
       #' @details Example matrix taken from Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
       #' @examples
-      #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
-      #' p<-MatCon$new(A)
+      #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
+      #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
+      #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
+      #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
+      #' p<-MatCon$new(A,Source="Muñoz, 2016")
       #' p$Tau()
       #'
       #' @aliases
@@ -1509,8 +1532,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
       #' @description  Public method that calculates the general Kappa agreement index, its standard deviation and the test statistic to test its significance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list of the kappa coefficient, its standard deviation, and the value of its test statistic.
-      #' @details
-      #' Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton&Green,2008")
@@ -1545,8 +1566,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
       #' @description Public method that calculates the Kappa class agreement index (conditional Kappa) from the perspective of user (i) and producer (j) and its standard desviations. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list with conditional Kappa index of the user and the producer, and its corresponding standard deviation.
-      #' @details
-      #' Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton&Green,2008")
@@ -1587,14 +1606,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description  Public method that calculates the values of quantity, change and shift. The reference [16] is followed for the computations.
+      #' @description  Public method that calculates the values of quantity, change and shift. The reference \insertCite{pontius2014}{PaolaR6Nuevo} is followed for the computations.
       #' @param TI Time interval (default value = 1)
-      #' @references [16] Pontius Jr, R. G., & Santacruz, A. (2014). Quantity, exchange, and shift components of difference in a square contingency table. International Journal of Remote Sensing, 35(21), 7543-7554.
       #' @param SF Scale factor for results (default value = 1)
       #' @return A list of general values for the interval t of difference, quantity, shift, and shift.In addition to the differences for categories, number of components, change of categories and turn of the components.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$QES(TI=1, SF=6)
       #'
       #' @aliases
@@ -1667,8 +1685,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @param RaR "1" indicates result as real, other values mean percentage as integer. By default RaR=1.
       #' @return A list with original matrix and typified matrix
       #' @examples
-      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-      #' p<-MatCon$new(A)
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A, Source="Congalton&Green, 2008")
       #' p$MTypify(RaR=5)
 
       #Cell Values of a matrix are typified
@@ -1696,11 +1714,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
       #' @description  Public method in which multiple parameters are calculated for the given confusion matrix. The reference [1,11,16,19] is followed for the computations.
       #' @return A list containing Confusion Matrix, Dimension, Total Sum of Cell Values, Overall Precision, Overall Variance Precision, Global Precision Kappa Index, Global Kappa Simplified Variance, Producer Precision by Class, User Precision by Class, k value for the calculation of pseudozeroes, Pseudoceros Matrix, L Matrix for the calculation of pseudozeroes.
-      #' @details
-      #' Example matrix taken from Congalton, R.G., & Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' p$AllParameters()
       #'
       #' @aliases
@@ -1731,14 +1747,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description Public method that provides N resamples of the confusion matrix from a MatCon object. The reference [17] is followed for the computations.
+      #' @description Public method that provides N resamples of the confusion matrix from a MatCon object. The reference \insertCite{ariza2011}{PaolaR6Nuevo} is followed for the computations.
       #' @param n Number of resamples.
       #' @return A list formed by the original confusion matrix and simulated matrices, from the confusion matrix. The multinomial distribution is applied.
-      #' @references [17] Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
-      #' @details Example matrix taken from Ariza, F. J., Pinilla, C., & Garcia, J. L. (2011). Comparación de matrices de confusión celda a celda mediante bootstraping.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A, Source="Congalton&Green, 2008")
       #' p$MBootStrap(2)
       #'
       #' @aliases
@@ -1763,15 +1777,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @references [18] Fienberg, S. E. (1970). An iterative procedure for estimation in contingency tables. The Annals of Mathematical Statistics, 41(3), 907-917.
-      #' @references [19] Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+
       #' @param n Number of iteration. By default n=100.
       #' @return A list formed by the original confusion matrix and the normalized matrix.
-      #' @description Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The reference [18,19] is followed for the computations.
-      #' @details Example matrix taken from Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
+      #' @description Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The reference \insertCite{fienberg1970,munoz2016}{PaolaR6Nuevo} is followed for the computations.
       #' @examples
-      #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
-      #' p<-MatCon$new(A)
+      #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
+      #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
+      #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
+      #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
+      #' p<-MatCon$new(A,Source="Muñoz, 2016")
       #' p$MNormalize()$values
       #'
       #' @aliases
@@ -1800,12 +1815,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method that small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. The reference [19] is followed for the computations.
+      #' @description  Public method that small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. The reference \insertCite{munoz2016}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list formed by the original confusion matrix and the Pseudozeroes matrix.
-      #' @details Example matrix taken from Muñoz, J. M. S. (2016). Análisis de Calidad Cartográfica mediante el estudio de la Matriz de Confusión. Pensamiento matemático, 6(2), 9-26.
       #' @examples
-      #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
-      #' p<-MatCon$new(A)
+      #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
+      #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
+      #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
+      #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
+      #' p<-MatCon$new(A,Source="Muñoz, 2016")
       #' p$MPseudoZeroes()$values
       #'
       #' @aliases
@@ -1847,7 +1864,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' WV <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-MatCon$new(A,Source="Congalton&Green,2008")
       #' p$DetailedWTau(WV)
       #'
       #' @aliases
@@ -1923,8 +1940,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' @param WM Weight matrix
       #' @return A list with weight matrix, Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
       #' @examples
-      #' A <- t(matrix(c(35, 14,11,1,4,11,3,0,12,9,38,4,2,5,12,2), nrow = 4, ncol=4))
-      #' p<-MatCon$new(A)
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Congalton&Green, 2008")
       #' WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
       #' p$UserProdAcc_W(WM)
       #'
