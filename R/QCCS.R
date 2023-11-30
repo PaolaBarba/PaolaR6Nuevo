@@ -119,7 +119,7 @@ QCCS <- R6Class("QCCS",
             p_value1<-private$test.2tol(vi,pi)[1]
           } else
           if(ni!=2){
-            p_value1<-private$test.ntol(vi,pi)$p.valor
+            p_value1<-private$test.ntol(vi,pi)#$p.valor
           }
           p_value<-c(p_value,p_value1)
         }
@@ -215,17 +215,18 @@ QCCS <- R6Class("QCCS",
         condicion1<-paste(cond[1:ni], collapse = " & ")
 
           if(( eval(parse(text=condicion1)))){
-            if(Q[j, ni+1] > M[ni+1]){
+            if(Q[j, ni+1] <= M[ni+1]){
               A<-rbind(A,Q[j,])
             }
           }
         }
       }
 
-      p_valor <- max(A[, n+2])+dmultinom(M,prob=p)
-      p_valor1<-c(sum(A[,n+1])+dmultinom(M,prob=p))
+    #  p_valor <- max(A[, n+2])+dmultinom(M,prob=p)
+    #  p_valor1<-c(sum(A[,n+1]))+dmultinom(M,prob=p) #así creo que es para QCCS 2019
+      p_valor<-sum(A[,n+1])
 
-      resultados <- list(A = A, p.valor = p_valor1)
+      resultados <- list(A = A, p.valor = p_valor)
     return(resultados)
     },
 

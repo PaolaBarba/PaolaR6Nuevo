@@ -1577,29 +1577,29 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      DetailedCondKappa = function(){
        SumaMatriz <-sum(self$values)
         # In %
-        MERROR<- self$values/sum(self$values)
+        ConfM<- self$values/sum(self$values)
 
        # UnWeighted marginals (quantities)
-        pcol <- apply(MERROR,2,sum)
-        prow<- apply(MERROR,1,sum)
+        pcol <- apply(ConfM,2,sum)
+        prow<- apply(ConfM,1,sum)
        # Initialization of vectors
-        nc  <- nrow(MERROR)
+        nc  <- nrow(ConfM)
         Ki_ <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         K_j <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         Ki_sd <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         K_jsd <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
           for (i in 1:nc){
-            Ki_[i] <- ((MERROR[i,i]/prow[i])-pcol[i])/(1-pcol[i])
-            K_j[i] <- ((MERROR[i,i]/pcol[i])-prow[i])/(1-prow[i])
-            ti1 <- prow[i]-MERROR[i,i]
+            Ki_[i] <- ((ConfM[i,i]/prow[i])-pcol[i])/(1-pcol[i])
+            K_j[i] <- ((ConfM[i,i]/pcol[i])-prow[i])/(1-prow[i])
+            ti1 <- prow[i]-ConfM[i,i]
             ti2<-  ti1/((prow[i]^3)*(1-pcol[i])^3)
-            ti3<-  ti1*(pcol[i]*prow[i]-MERROR[i,i])
-            ti4<-  MERROR[i,i]*(1-pcol[i]-prow[i]+MERROR[i,i])
+            ti3<-  ti1*(pcol[i]*prow[i]-ConfM[i,i])
+            ti4<-  ConfM[i,i]*(1-pcol[i]-prow[i]+ConfM[i,i])
             Ki_sd[i] <- sqrt((1/SumaMatriz)*ti2*(ti3+ti4))
-            tj1 <- pcol[i]-MERROR[i,i]
+            tj1 <- pcol[i]-ConfM[i,i]
             tj2<-  tj1/((pcol[i]^3)*(1-prow[i])^3)
-            tj3<-  tj1*(pcol[i]*prow[i]-MERROR[i,i])
-            tj4<-  MERROR[i,i]*(1-pcol[i]-prow[i]+MERROR[i,i])
+            tj3<-  tj1*(pcol[i]*prow[i]-ConfM[i,i])
+            tj4<-  ConfM[i,i]*(1-pcol[i]-prow[i]+ConfM[i,i])
             K_jsd[i] <- sqrt((1/SumaMatriz)*tj2*(tj3+tj4))
           }
      return(list(UserCondKappa=Ki_, SD_UserCondKappa=Ki_sd, ProdCondKappa=K_j, SD_ProdCondKappa=K_jsd))
@@ -1697,16 +1697,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
         }else{R<-1}
       # Create a matrix in which all elements are proportions
       # such that the sum of all the elements is 1
-      MERROR=self$values
+      ConfM=self$values
 
-      MatrizSalida <- MERROR/(sum(MERROR))
+      M <- ConfM/(sum(ConfM))
         if (RaR==1){
-        MatrizSalida <- MERROR/(sum(MERROR))
-        return(MatrizSalida)
+        M <- ConfM/(sum(ConfM))
+        return(M)
         } else {
-      MatrizSalida <- MERROR/(sum(MERROR))
-      MatrizSalida[] <- as.integer(100*MatrizSalida)
-      return(list(OriginalMatrix=self$values,TypifyMatrix=MatrizSalida))
+      M <- ConfM/(sum(ConfM))
+      M[] <- as.integer(100*M)
+      return(list(OriginalMatrix=self$values,TypifyMatrix=M))
       }
      },
 
@@ -1842,11 +1842,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
         }
        }
 
-       MERROR=self$values
-       SumaMatriz <-sum(MERROR)
+       ConfM=self$values
+       SumaMatriz <-sum(ConfM)
        MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
-       K <- (SumaMatriz*SumaMatriz - sum(MERROR*MERROR))/sum((SumaMatriz*MLandas - MERROR )^2)
-       MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(MERROR + K*MLandas)
+       K <- (SumaMatriz*SumaMatriz - sum(ConfM*ConfM))/sum((SumaMatriz*MLandas - ConfM )^2)
+       MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(ConfM + K*MLandas)
 
      return(list(OriginalMatrix=self$values,PseudoZeroesMatrix=MPseudoceros))
      },
@@ -1873,17 +1873,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
        nc <- nrow(self$values)
        SumaMatriz <-sum(self$values)
       # In %
-       MERROR<- self$values/SumaMatriz
+       ConfM<- self$values/SumaMatriz
       # UnWeighted marginals (prob)
-       pcol <- apply(MERROR,2,sum)
-       prow<- apply(MERROR,1,sum)
-       O1 <- sum(diag(MERROR)  )
+       pcol <- apply(ConfM,2,sum)
+       prow<- apply(ConfM,1,sum)
+       O1 <- sum(diag(ConfM)  )
        O2 <- sum(WV*pcol)
-       O3 <- sum(diag(MERROR)*(WV+pcol))
+       O3 <- sum(diag(ConfM)*(WV+pcol))
        mintermedia1<- matrix(rep(pcol, nc), nrow =nc, ncol=nc, byrow=FALSE)
        mintermedia2<- matrix(rep(WV, nc), nrow =nc, ncol=nc, byrow=TRUE)
        mintermedia3 <-(mintermedia1+mintermedia2)^2
-       O4 <- sum(MERROR*mintermedia3)
+       O4 <- sum(ConfM*mintermedia3)
        t1<- (1-O1) #probabilidad error general porporcional
        t2<- (1-O2) #probabilidad error productor proporcional
        t3<- O1*t1/(t2^2)
@@ -1910,15 +1910,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
        nc <- nrow(self$values)
        SumaMatriz <-sum(self$values)
       # In %
-       MERROR<- self$values/SumaMatriz
+       ConfM<- self$values/SumaMatriz
       # UnWeighted marginals (prob)
-       pcol <- apply(MERROR,2,sum)
-       prow<- apply(MERROR,1,sum)
+       pcol <- apply(ConfM,2,sum)
+       prow<- apply(ConfM,1,sum)
       # Weighted matrix
-       WMERROR<-MERROR*WM
+       WConfM<-ConfM*WM
 
       # The 4 coefficients
-       Ow1 <- sum(WM*MERROR)
+       Ow1 <- sum(WM*ConfM)
        Ow2 <- sum(t(WM*prow)*pcol)
        c1<- (1-Ow1)
        c2<- (1-Ow2)
@@ -1928,7 +1928,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
        mintermedia2<- matrix(rep(w_j, nc), nrow =nc, ncol=nc, byrow=TRUE)
        mintermedia3 <-(mintermedia1+mintermedia2)*c1
        mintermedia4 <- (WM*c2-mintermedia3)^2
-       Ow4 <- sum(MERROR*mintermedia4)
+       Ow4 <- sum(ConfM*mintermedia4)
        K <- (Ow1-Ow2)/c2
        SdK <- sqrt((Ow4-(Ow1*Ow2-2*Ow2+Ow1)^2)/(SumaMatriz*(c2^4)))
        CV <- K/SdK
@@ -1959,38 +1959,38 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
         nrow<- self$sumfil
 
         # In %
-        MV<- self$values/sum(self$values)
+        ConfM<- self$values/sum(self$values)
         # Weighted matrix
-        WMERROR<-MV*WM
+        WConfM<-ConfM*WM
 
         # Weighted OA
-        WOverallAcc <- sum(diag(WMERROR))/sum(WMERROR)
+        WOverallAcc <- sum(diag(WConfM))/sum(WConfM)
         # Weighted marginals
-        mcol<- apply(WMERROR,2,sum)
-        mrow<- apply(WMERROR,1,sum)
+        mcol<- apply(WConfM,2,sum)
+        mrow<- apply(WConfM,1,sum)
         # UnWeighted marginals (proportions)
-        p_j <- apply(MV,2,sum)
-        pi_ <- apply(MV,1,sum)
+        pj <- apply(ConfM,2,sum)
+        pi <- apply(ConfM,1,sum)
 
         # Initialization of vectors
-        nc <- nrow(MV)
-        wi_<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        w_j<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+        nc <- nrow(ConfM)
+        wi<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
+        wj<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         # Weighted per class user's and producer's accuracies
         wpcua<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         wpcpa<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         pcpasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class producer's accuracy standard deviation
         pcuasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE) # Per class user's accuracy standard deviation
             for (i in 1:nc){
-                wi_[i]    <- sum(p_j*WM[i,])
-                w_j[i]    <- sum(pi_*WM[,i])
-                wpcua[i]  <- sum(WMERROR[i,])/sum(MV[i,])
-                wpcpa[i]  <- sum(WMERROR[,i])/sum(MV[,i])
+                wi[i]    <- sum(pj*WM[i,])
+                wj[i]    <- sum(pi*WM[,i])
+                wpcua[i]  <- sum(WConfM[i,])/sum(ConfM[i,])
+                wpcpa[i]  <- sum(WConfM[,i])/sum(ConfM[,i])
                 pcpasd[i] <- sqrt(wpcpa[i]*(1-wpcpa[i])/ncol[i])
                 pcuasd[i] <- sqrt(wpcua[i]*(1-wpcua[i])/nrow[i])
             }
 
-     return(list(WeightMatrix=WM,WMERROR=WMERROR, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUserAcc= wpcua, WUserAccSDeviation=pcuasd))
+     return(list(OriginalWeightMatrix=WM,WMatrix=WConfM, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUserAcc= wpcua, WUserAccSDeviation=pcuasd))
      }
 
 
