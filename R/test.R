@@ -10,6 +10,11 @@
 #' @export test
 #' @references
 #' \insertRef{garcia2018}{PaolaR6Nuevo}
+#'
+#' \insertRef{ma1995Tau}{PaolaR6Nuevo}
+#'
+#' \insertRef{alba2020}{PaolaR6Nuevo}
+#'
 #' @importFrom R6 R6Class
 #' @importFrom Rdpack reprompt
 #'
@@ -76,6 +81,8 @@ test <- R6Class("test",
     },
 
 
+
+
       #' @description Public method that provides the Hellinger distance. The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
       #' The mathematical expression is:
       #'
@@ -90,7 +97,7 @@ test <- R6Class("test",
       #'   \item \code{p_i}: element i of the probability vector of matrix A.
       #'   \item \code{q_i}: element i of the probability vector of matrix B.
       #' }
-      #' @return The statistical value of the statistical test based on the Hellinger distance.
+      #' @return The statistic value of the statistical test based on the Hellinger distance.
       #' @param A matrix. By default, the defined matrix is taken to create the object of the test class.
       #' @param B matrix. By default, the defined matrix is taken to create the object of the test class.
       #' @param p matrix probability vector. By default, the probability of success for each cell is taken.
@@ -126,17 +133,22 @@ test <- R6Class("test",
     }
     },
 
-      #' @description Public method that tests whether two independent confusion matrices are significantly different. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+
+# test public function. ---------------------------------------------------
+
+
+
+      #' @description Public method that tests whether two independent confusion matrices are significantly different using their kappa index. For the calculations, the reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed.
       #' The mathematical expression to calculate its statistic is:
       #'
       #' \deqn{
-      #' Z = \dfrac{\abs{K1-K2}}{\sqrt(var(K1)+var(K2))}
+      #' Z = \dfrac{|K1-K2|}{\sqrt(var(K1)+var(K2))}
       #' }
       #'
       #' Where:
       #' \enumerate{
-      #'   \item K1: Kappa index of matrix A
-      #'   \item K2: Kappa index of matrix B
+      #'   \item K1: kappa index of matrix A
+      #'   \item K2: kappa index of matrix B
       #'   \item var(K1): variance of K1.
       #'   \item var(K2): variance of K2.
       #' }
@@ -161,17 +173,111 @@ test <- R6Class("test",
       v2<-MatCon$new(self$B)$Kappa()[[2]]
 
       Z<-abs(k1-k2)/(sqrt(v1+v2))
-      cl<-qnorm(alpha/2)
+      cl<-qnorm(1-alpha/2)
 
-      if(Z>=cl){
-        cat(sprintf("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))
-      }else{cat(sprint("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))}
+      if(Z>-cl & Z<cl){
+        cat(sprintf("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))
+      }else{cat(sprint("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))}
 
     return(list(St=Z,Z=cl))
     },
 
-# test public function. ---------------------------------------------------
 
+
+
+      #' @description Public method that tests whether two independent confusion matrices are significantly different using their overall accuracy index. For the calculations, the references \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed.
+      #' The mathematical expression to calculate its statistic is:
+      #'
+      #' \deqn{
+      #' Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item k1: overall index of matrix A
+      #'   \item k2: overall index of matrix B
+      #'   \item var(K1): variance of K1.
+      #'   \item var(K2): variance of K2.
+      #' }
+      #' @return A list of the statistic's value between the overall accuracies and its z-score for a given alpha significance level.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f <- test$new(A,B,Source="Congalton and Green 2008")
+      #' f$OverallAcc.test()
+      #'
+      #' @aliases
+
+    OverallAcc.test=function(alpha=NULL){
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
+      k1<-MatCon$new(self$A)$OverallAcc()[[1]]
+      k2<-MatCon$new(self$B)$OverallAcc()[[1]]
+      v1<-MatCon$new(self$A)$OverallAcc()[[2]]
+      v2<-MatCon$new(self$B)$OverallAcc()[[2]]
+
+      #Ma-Tau
+      Z<-abs(k1-k2)/sqrt(v1+v2)
+
+      cl<-qnorm(1-alpha/2)
+
+      if(Z>-cl & Z<cl){
+        cat(sprintf("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))
+      }else{cat(sprint("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))}
+
+    return(list(St=Z,Z=cl))
+    },
+
+
+
+      #' @description Public method that tests whether two independent confusion matrices are significantly different using their Tau index. For the calculations, the references \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed.
+      #' The mathematical expression to calculate its statistic is:
+      #'
+      #' \deqn{
+      #' Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item k1: Tau index of matrix A
+      #'   \item k2: Tau index of matrix B
+      #'   \item var(K1): variance of K1.
+      #'   \item var(K2): variance of K2.
+      #' }
+      #' @return A list of the statistic's value between the Tau index and its z-score for a given alpha significance level.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f <- test$new(A,B,Source="Congalton and Green 2008")
+      #' f$Tau.test()
+      #'
+      #' @aliases
+
+    Tau.test=function(alpha=NULL){
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
+      k1<-MatCon$new(self$A)$Tau()[[1]]
+      k2<-MatCon$new(self$B)$Tau()[[1]]
+      v1<-MatCon$new(self$A)$Tau()[[2]]
+      v2<-MatCon$new(self$B)$Tau()[[2]]
+
+      #Ma-Tau
+      Z<-abs(k1-k2)/sqrt(v1+v2)
+
+      cl<-qnorm(1-alpha/2)
+
+      if(Z>-cl & Z<cl){
+        cat(sprintf("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))
+      }else{cat(sprint("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))}
+
+    return(list(St=Z,Z=cl))
+    },
 
       #' @description Public method that performs a homogeneity test between two matrices based on the Hellinger distance. The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
       #' @return p value and decision to make.
@@ -232,7 +338,7 @@ test <- R6Class("test",
      }else{
        cat(sprintf("The hypothesis that both distributions are is still rejected and the confusion matrices, therefore, are not similar.\n"))
      }
-    return(pvalue)
+    return(pvalue=pvalue)
     }
 
 ),

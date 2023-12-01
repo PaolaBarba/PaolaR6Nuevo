@@ -88,6 +88,46 @@ QCCS <- R6Class("QCCS",
   },
 
 
+
+    #   #' @description Public method that applies the Bonferroni method to make decisions in contrasting hypotheses. The reference \insertCite{alba2020}{PaolaR6Nuevo} is followed for the computations.
+    #   #' The mathematical expression is:
+    #   #'
+    #   #' \deqn{
+    #   #' BonfMeth = \left\{ \begin{array}{lcc} H_0 \text{is rejected}   &  if & p value \geq \dfrac{\alpha}{4} \\ \\ H_0 \text{is rejected}   &  if & p value<\dfrac{\alpha}{4} \end{array} \right.
+    #   #' }
+    #   #'
+    #   #' Where:
+    #   #' \enumerate{
+    #   #'   \item BonfMeth: Bonferroni method.
+    #   #'   \item alpha: significance level.
+    #   #' }
+    #   #' @return The statistic value of the statistical test based on the Hellinger distance.
+    #   #' @param pvalue vector with the p values obtained.
+    #   #' @param alpha significance level. By default alpha=0.05.
+    #   #' @examples
+    #   #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
+    #   #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
+    #   #' p <- QCCS$new(vectors,prob,Source="")
+    #   #' pval<-p$QCCS()[[2]]
+    #   #' p$MethBonf(pval)
+    #   #'
+    #   #' @aliases
+    #
+    # MethBonf = function(pvalue,alpha=NULL){
+    #   if(is.null(alpha)){
+    #     alpha<-0.05
+    #   }else{alpha<-alpha}
+    #   n<-length(pvalue)
+    #
+    #   for (i in 1:n) {
+    #     if(pvalue[i]>alpha/n){
+    #       cat(sprintf("The null hypothesis is not rejected.\n",p[i],">=",alpha/n))
+    #     }else{cat(sprintf("The null hypothesis is rejected.\n",p[i],"<",alpha/n))}
+    #   }
+    #   return(list(p_value=pvalue,BF=alpha/4))
+    # },
+
+
 # QCCS public function. To calculate p-value, use test-ntol ---------------
 
 
@@ -119,13 +159,13 @@ QCCS <- R6Class("QCCS",
             p_value1<-private$test.2tol(vi,pi)[1]
           } else
           if(ni!=2){
-            p_value1<-private$test.ntol(vi,pi)#$p.valor
+            p_value1<-private$test.ntol(vi,pi)$p.valor
           }
           p_value<-c(p_value,p_value1)
         }
 
       sol <- c(sol, p_value)
-    return(list(p_value=sol))
+    return(p_value=sol)
     }
 
   ),
@@ -137,6 +177,22 @@ QCCS <- R6Class("QCCS",
 
 
   private = list(
+
+     MethBonf = function(pvalue,alpha=NULL){
+       if(is.null(alpha)){
+         alpha<-0.05
+       }else{alpha<-alpha}
+       n<-length(pvalue)
+
+       for (i in 1:n) {
+         if(pvalue[i]>alpha/n){
+           cat(sprintf("The null hypothesis is not rejected.\n",p[i],">=",alpha/n))
+         }else{cat(sprintf("The null hypothesis is rejected.\n",p[i],"<",alpha/n))}
+       }
+       return(list(p_value=pvalue,BF=alpha/4))
+     },
+
+
 
     combina = function(n, N) {
       result <- NULL
@@ -205,7 +261,7 @@ QCCS <- R6Class("QCCS",
       cond<-c(cond,cond1)
       condicion<-noquote(cond)
 
-      for(j in dim(Q)[1]:1) {
+      for(j in 1:dim(Q)[1]) {
         if ( (Q[j, 1] < M[1])){
           A <- rbind(A, Q[j, ])
         }
@@ -215,10 +271,13 @@ QCCS <- R6Class("QCCS",
         condicion1<-paste(cond[1:ni], collapse = " & ")
 
           if(( eval(parse(text=condicion1)))){
-            if(Q[j, ni+1] <= M[ni+1]){
+            if(Q[j, ni+1] < M[ni+1]){
               A<-rbind(A,Q[j,])
             }
           }
+        }
+        if(Q[j,1]==M[1] & Q[j,2]==M[2] & Q[j,3]==M[3] ){
+              A<-rbind(A,Q[j,])
         }
       }
 

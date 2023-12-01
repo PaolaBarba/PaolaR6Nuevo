@@ -41,6 +41,26 @@ f$kappa.test()
 
 
 ## ------------------------------------------------
+## Method `test$OverallAcc.test`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- test$new(A,B,Source="Congalton and Green 2008")
+f$OverallAcc.test()
+
+
+## ------------------------------------------------
+## Method `test$Tau.test`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- test$new(A,B,Source="Congalton and Green 2008")
+f$Tau.test()
+
+
+## ------------------------------------------------
 ## Method `test$TSCM.test`
 ## ------------------------------------------------
 
@@ -52,6 +72,10 @@ f$TSCM.test()
 }
 \references{
 \insertRef{garcia2018}{PaolaR6Nuevo}
+
+\insertRef{ma1995Tau}{PaolaR6Nuevo}
+
+\insertRef{alba2020}{PaolaR6Nuevo}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -59,6 +83,8 @@ f$TSCM.test()
 \item \href{#method-test-new}{\code{test$new()}}
 \item \href{#method-test-StHell}{\code{test$StHell()}}
 \item \href{#method-test-kappa.test}{\code{test$kappa.test()}}
+\item \href{#method-test-OverallAcc.test}{\code{test$OverallAcc.test()}}
+\item \href{#method-test-Tau.test}{\code{test$Tau.test()}}
 \item \href{#method-test-TSCM.test}{\code{test$TSCM.test()}}
 \item \href{#method-test-clone}{\code{test$clone()}}
 }
@@ -135,7 +161,7 @@ Where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The statistical value of the statistical test based on the Hellinger distance.
+The statistic value of the statistical test based on the Hellinger distance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -154,17 +180,17 @@ f$StHell()
 \if{html}{\out{<a id="method-test-kappa.test"></a>}}
 \if{latex}{\out{\hypertarget{method-test-kappa.test}{}}}
 \subsection{Method \code{kappa.test()}}{
-Public method that tests whether two independent confusion matrices are significantly different. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+Public method that tests whether two independent confusion matrices are significantly different using their kappa index. For the calculations, the reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed.
 The mathematical expression to calculate its statistic is:
 
 \deqn{
-Z = \dfrac{\abs{K1-K2}}{\sqrt(var(K1)+var(K2))}
+Z = \dfrac{|K1-K2|}{\sqrt(var(K1)+var(K2))}
 }
 
 Where:
 \enumerate{
-  \item K1: Kappa index of matrix A
-  \item K2: Kappa index of matrix B
+  \item K1: kappa index of matrix A
+  \item K2: kappa index of matrix B
   \item var(K1): variance of K1.
   \item var(K2): variance of K2.
 }
@@ -188,6 +214,96 @@ A list with the value of the statistic between kappa values and its z score for 
 B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
 f <- test$new(A,B,Source="Congalton and Green 2008")
 f$kappa.test()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-test-OverallAcc.test"></a>}}
+\if{latex}{\out{\hypertarget{method-test-OverallAcc.test}{}}}
+\subsection{Method \code{OverallAcc.test()}}{
+Public method that tests whether two independent confusion matrices are significantly different using their overall accuracy index. For the calculations, the references \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed.
+The mathematical expression to calculate its statistic is:
+
+\deqn{
+Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+}
+
+Where:
+\enumerate{
+  \item k1: overall index of matrix A
+  \item k2: overall index of matrix B
+  \item var(K1): variance of K1.
+  \item var(K2): variance of K2.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{test$OverallAcc.test(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list of the statistic's value between the overall accuracies and its z-score for a given alpha significance level.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- test$new(A,B,Source="Congalton and Green 2008")
+f$OverallAcc.test()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-test-Tau.test"></a>}}
+\if{latex}{\out{\hypertarget{method-test-Tau.test}{}}}
+\subsection{Method \code{Tau.test()}}{
+Public method that tests whether two independent confusion matrices are significantly different using their Tau index. For the calculations, the references \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed.
+The mathematical expression to calculate its statistic is:
+
+\deqn{
+Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+}
+
+Where:
+\enumerate{
+  \item k1: Tau index of matrix A
+  \item k2: Tau index of matrix B
+  \item var(K1): variance of K1.
+  \item var(K2): variance of K2.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{test$Tau.test(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list of the statistic's value between the Tau index and its z-score for a given alpha significance level.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- test$new(A,B,Source="Congalton and Green 2008")
+f$Tau.test()
 
 }
 \if{html}{\out{</div>}}
