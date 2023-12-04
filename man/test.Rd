@@ -4,10 +4,10 @@
 \alias{test}
 \title{test}
 \value{
-Object of class test
+Object of class test.
 }
 \description{
-Creates a new instance of this [R6][R6::R6Class] class.
+Through various tests, it is proven whether two matrices are similar or not.
 }
 \examples{
 
@@ -31,13 +31,13 @@ f$StHell()
 
 
 ## ------------------------------------------------
-## Method `test$kappa.test`
+## Method `test$Kappa.test`
 ## ------------------------------------------------
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
 f <- test$new(A,B,Source="Congalton and Green 2008")
-f$kappa.test()
+f$Kappa.test()
 
 
 ## ------------------------------------------------
@@ -82,7 +82,7 @@ f$TSCM.test()
 \itemize{
 \item \href{#method-test-new}{\code{test$new()}}
 \item \href{#method-test-StHell}{\code{test$StHell()}}
-\item \href{#method-test-kappa.test}{\code{test$kappa.test()}}
+\item \href{#method-test-Kappa.test}{\code{test$Kappa.test()}}
 \item \href{#method-test-OverallAcc.test}{\code{test$OverallAcc.test()}}
 \item \href{#method-test-Tau.test}{\code{test$Tau.test()}}
 \item \href{#method-test-TSCM.test}{\code{test$TSCM.test()}}
@@ -93,7 +93,8 @@ f$TSCM.test()
 \if{html}{\out{<a id="method-test-new"></a>}}
 \if{latex}{\out{\hypertarget{method-test-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a new instance of this [R6][R6::R6Class] class.
+Public method to create an instance of the test class. At the time of creation, the values of two matrices of the same range must be provided, otherwise an error will be displayed. The optional possibility of adding metadata to the matrix is offered.
+The values of the matrix must be organized in such a way that the columns represent the categories in the reference and the rows represent the categories in the product being evaluated.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{test$new(A = NULL, B = NULL, ID = NULL, Date = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
@@ -138,10 +139,10 @@ HD = \dfrac{4nm}{n+m} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
 
 Where:
 \enumerate{
-  \item HD: Hellinger Distance
-  \item n: number of elements in the matrix A.
-  \item \code{p_i}: element i of the probability vector of matrix A.
-  \item \code{q_i}: element i of the probability vector of matrix B.
+  \item \eqn{HD}: Hellinger Distance
+  \item \eqn{n}: number of elements in the matrix A.
+  \item \eqn{p_i}: element i of the probability vector of matrix A.
+  \item \eqn{q_i}: element i of the probability vector of matrix B.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{test$StHell(A = NULL, B = NULL, p = NULL, q = NULL)}\if{html}{\out{</div>}}
@@ -177,25 +178,25 @@ f$StHell()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-test-kappa.test"></a>}}
-\if{latex}{\out{\hypertarget{method-test-kappa.test}{}}}
-\subsection{Method \code{kappa.test()}}{
+\if{html}{\out{<a id="method-test-Kappa.test"></a>}}
+\if{latex}{\out{\hypertarget{method-test-Kappa.test}{}}}
+\subsection{Method \code{Kappa.test()}}{
 Public method that tests whether two independent confusion matrices are significantly different using their kappa index. For the calculations, the reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed.
 The mathematical expression to calculate its statistic is:
 
 \deqn{
-Z = \dfrac{|K1-K2|}{\sqrt(var(K1)+var(K2))}
+Z = \dfrac{|k1-k2|}{\sqrt(var(K1)+var(K2))}
 }
 
 Where:
 \enumerate{
-  \item K1: kappa index of matrix A
-  \item K2: kappa index of matrix B
-  \item var(K1): variance of K1.
-  \item var(K2): variance of K2.
+  \item \eqn{k1}: kappa index of matrix A
+  \item \eqn{k2}: kappa index of matrix B
+  \item \eqn{var(k1)}: variance of k1.
+  \item \eqn{var(k2)}: variance of k2.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{test$kappa.test(alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{test$Kappa.test(alpha = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -213,7 +214,7 @@ A list with the value of the statistic between kappa values and its z score for 
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
 f <- test$new(A,B,Source="Congalton and Green 2008")
-f$kappa.test()
+f$Kappa.test()
 
 }
 \if{html}{\out{</div>}}
@@ -229,15 +230,15 @@ Public method that tests whether two independent confusion matrices are signific
 The mathematical expression to calculate its statistic is:
 
 \deqn{
-Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
 }
 
 Where:
 \enumerate{
-  \item k1: overall index of matrix A
-  \item k2: overall index of matrix B
-  \item var(K1): variance of K1.
-  \item var(K2): variance of K2.
+  \item \eqn{k1}: overall index of matrix A
+  \item \eqn{k2}: overall index of matrix B
+  \item \eqn{var(K1)}: variance of k1.
+  \item \eqn{var(K2)}: variance of k2.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{test$OverallAcc.test(alpha = NULL)}\if{html}{\out{</div>}}
@@ -274,15 +275,15 @@ Public method that tests whether two independent confusion matrices are signific
 The mathematical expression to calculate its statistic is:
 
 \deqn{
-Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
 }
 
 Where:
 \enumerate{
-  \item k1: Tau index of matrix A
-  \item k2: Tau index of matrix B
-  \item var(K1): variance of K1.
-  \item var(K2): variance of K2.
+  \item \eqn{k1}: Tau index of matrix A
+  \item \eqn{k2}: Tau index of matrix B
+  \item \eqn{var(k1)}: variance of k1.
+  \item \eqn{var(k2)}: variance of k2.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{test$Tau.test(alpha = NULL)}\if{html}{\out{</div>}}
@@ -315,7 +316,7 @@ f$Tau.test()
 \if{html}{\out{<a id="method-test-TSCM.test"></a>}}
 \if{latex}{\out{\hypertarget{method-test-TSCM.test}{}}}
 \subsection{Method \code{TSCM.test()}}{
-Public method that performs a homogeneity test between two matrices based on the Hellinger distance. The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
+Public method that performs a homogeneity test between two matrices based on the Hellinger distance. The test considers the individual cell values in the matrices. The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{test$TSCM.test(n1 = NULL, alpha = NULL)}\if{html}{\out{</div>}}
 }

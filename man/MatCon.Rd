@@ -4,7 +4,7 @@
 \alias{MatCon}
 \title{Confusion matrix}
 \value{
-Object of class MatCon or an error if a matrix is not entered.
+Object of class MatCon.
 }
 \description{
 Using the confusion matrix, various indices are calculated.
@@ -602,17 +602,24 @@ OverallAcc = \dfrac{\sum_{i=1}^{n} x_{ii}}{\sum_{i, j=1}^{n} x_{ij}}
 }
 Where:
 \enumerate{
-  \item OverallAcc: overall accuracy.
-  \item x_ii: diagonal element of the matrix.
-  \item x_ij: element of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{ij}}: element of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$OverallAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$OverallAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-Overall accuracy and variance as a list.
+A list of the overall accuracy, its variance, and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -643,17 +650,24 @@ UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^n x_{ij}}
 where:
 
 \enumerate{
-  \item UserAcc: user accuracy.
-  \item x_ii: diagonal element of the matrix.
-  \item x_ij: element of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{UserAcc}: user accuracy.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{ij}}: element of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with a vector of values for the user's accuracy index of all classes and another vector with their variances.
+A list with a vector of values for the user's accuracy rate for all classes, another vector with their variances and confidence intervals for each class.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -685,24 +699,26 @@ UserAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^n x_{ij}}
 where:
 
 \enumerate{
-  \item UserAcc_i: user accuracy index for class i.
-  \item x_ii: diagonal element of the matrix.
-  \item x_ij: element of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{UserAcc_i}: user accuracy index for class i.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{ij}}: element of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserAcc_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserAcc_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{User class to evaluate}
+\item{\code{i}}{User class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the user's accuracy index values for class i and its variance.
+A list of the user's accuracy index values for class i, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -732,17 +748,24 @@ ProdAcc=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
 where:
 
 \enumerate{
-  \item ProdAcc: producer accuracy.
-  \item x_jj: diagonal element of the matrix.
-  \item x_ij: element of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ProdAcc}: producer accuracy.
+  \item \eqn{x_{jj}}: diagonal element of the matrix.
+  \item \eqn{x_{ij}}: element of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ProdAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ProdAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with a vector of values for the producer's accuracy index of all classes and another vector with their variances.
+A list with a vector of values for the producer's accuracy index of all classes, another vector with their variances and confidence intervals for each class.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -773,24 +796,26 @@ ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
 where:
 
 \enumerate{
-  \item ProdAcc_i: producer accuracy index for class i.
-  \item x_jj: diagonal element of the matrix.
-  \item x_ij: element of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+  \item \eqn{x_{jj}}: diagonal element of the matrix.
+  \item \eqn{x_{ij}}: element of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ProdAcc_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ProdAcc_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Producer class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the producer's accuracy index values for class i and its variance
+A list of the producer's accuracy index values for class i, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -821,24 +846,26 @@ AvUserProdAcc_i=\dfrac{UserAcc_i+ProdAcc_i}{2}
 where:
 
 \enumerate{
-  \item AvUserProdAcc_i: average of user's and producer's accuracy.
-  \item UserAcc_i: user accuracy index for class i.
-  \item ProdAcc_i: producer accuracy index for class i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvUserProdAcc_i}: average of user's and producer's accuracy.
+  \item \eqn{UserAcc_i}: user accuracy index for class i.
+  \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserProdAcc_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserProdAcc_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with average of user's and producer's accuracy and its variance for class i.
+A list with average of user's and producer's accuracy, its variance for class i and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -856,7 +883,7 @@ p$AvUserProdAcc_i(2)
 \if{html}{\out{<a id="method-MatCon-Sucess"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-Sucess}{}}}
 \subsection{Method \code{Sucess()}}{
-Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The reference \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
+Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The references \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
 
 
 The mathematical expression is:
@@ -870,17 +897,24 @@ VarSucess=\dfrac{Sucess \cdot (1-Sucess)}{N}
 where:
 
 \enumerate{
-  \item Sucess: classification succes index.
-  \item AvUserAcc: average accuracy from user's perspective.
-  \item AvProdAcc: average accuracy from producer's perspective.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{Sucess}: classification succes index.
+  \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+  \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Sucess()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Sucess(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with the classification success index and its variance.
+A list with the classification success index, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -898,7 +932,7 @@ p$Sucess()
 \if{html}{\out{<a id="method-MatCon-Sucess_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-Sucess_i}{}}}
 \subsection{Method \code{Sucess_i()}}{
-Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The reference \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
+Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The references \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
 
 
 The mathematical expression is:
@@ -913,24 +947,26 @@ Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
 where:
 
 \enumerate{
-  \item Sucess_i: individual classification success index.
-  \item UserAcc_i: user accuracy index for class i.
-  \item ProdAcc_i: producer accuracy index for class i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{Sucess_i}: individual classification success index.
+  \item \eqn{UserAcc_i}: user accuracy index for class i.
+  \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Sucess_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Sucess_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the individual classification success index and its variance.
+A list with the individual classification success index, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -948,7 +984,7 @@ p$Sucess_i(2)
 \if{html}{\out{<a id="method-MatCon-AvHelldenAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-AvHelldenAcc_i}{}}}
 \subsection{Method \code{AvHelldenAcc_i()}}{
-Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference \insertCite{hellden1980,rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
+Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The references \insertCite{hellden1980,rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -960,24 +996,26 @@ AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}
 where:
 
 \enumerate{
-  \item AvHelldenAcc_i: Hellden's mean accuracy.
-  \item UserAcc_i: user accuracy index for class i.
-  \item ProdAcc_i: producer accuracy index for class i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvHelldenAcc_i}: Hellden's mean accuracy.
+  \item \eqn{UserAcc_i}: user accuracy index for class i.
+  \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvHelldenAcc_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvHelldenAcc_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with Hellden's mean accuracy and its variance.
+A list with Hellden's mean accuracy, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -996,7 +1034,7 @@ p$AvHelldenAcc_i(2)
 \if{html}{\out{<a id="method-MatCon-ShortAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ShortAcc_i}{}}}
 \subsection{Method \code{ShortAcc_i()}}{
-Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The reference \insertCite{rosenfield1986,short1982}{PaolaR6Nuevo} is followed for the calculations.
+Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The references \insertCite{rosenfield1986,short1982}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -1008,25 +1046,27 @@ ShortAcc_i=\dfrac{x_{ii}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}-x_{ii}}
 where:
 
 \enumerate{
-  \item ShortAcc_i: Short's mapping accuracy
-  \item x_ii: diagonal element of the matrix.
-  \item x_j+: sum of all elements in rows j.
-  \item x_+j: sum of all elements in column j.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ShortAcc_i}: Short's mapping accuracy
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ShortAcc_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ShortAcc_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with Short's mapping accuracy and its variance.
+A list with Short's mapping accuracy, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1057,26 +1097,28 @@ UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^n_{i=1} x_{i + }}{\sum^n_{i=1}\sum^n_{j
 where:
 
 \enumerate{
-  \item UserKappa_i: coefficient kappa (user's).
-  \item UserAcc_i: user accuracy index for class i.
-  \item x_ii: diagonal element of the matrix.
-  \item x_j+: sum of all elements in rows j.
-  \item x_+j: sum of all elements in column j.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{UserKappa_i}: coefficient kappa (user's).
+  \item \eqn{UserAcc_i}: user accuracy index for class i.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserKappa_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$UserKappa_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with coefficient kappa (user's) and its variance.
+A list with coefficient kappa (user's), its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1107,26 +1149,28 @@ ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^n_{j=1} x_{ + j }}{\sum^n_{i=1}\sum^n_{
 where:
 
 \enumerate{
-  \item ProdKappa_i: coefficient kappa (producer's).
-  \item ProdAcc_i: producer accuracy index for class i.
-  \item x_ii: diagonal element of the matrix.
-  \item x_j+: sum of all elements in rows j.
-  \item x_+j: sum of all elements in column j.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ProdKappa_i}: coefficient kappa (producer's).
+  \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ProdKappa_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ProdKappa_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with coefficient kappa (producer's) and its variance.
+A list with coefficient kappa (producer's), its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1145,7 +1189,7 @@ p$ProdKappa_i(2)
 \if{html}{\out{<a id="method-MatCon-ModKappa"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ModKappa}{}}}
 \subsection{Method \code{ModKappa()}}{
-Public method that provides the overall modified kappa coefficient. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
+Public method that provides the overall modified kappa coefficient. The method also offers variance. The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -1157,24 +1201,26 @@ ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
 where:
 
 \enumerate{
-  \item ModKappa: modified coefficient kappa.
-  \item OverallAcc: overall accuracy.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ModKappa}: modified coefficient kappa.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ModKappa(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ModKappa(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with modified coefficient kappa and its variance.
+A list with modified coefficient kappa, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1192,7 +1238,7 @@ p$ModKappa()
 \if{html}{\out{<a id="method-MatCon-ModKappaUser_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ModKappaUser_i}{}}}
 \subsection{Method \code{ModKappaUser_i()}}{
-Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
+Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -1204,24 +1250,26 @@ ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
 where:
 
 \enumerate{
-  \item ModKappaUser_i: modified coefficient kappa (user's).
-  \item UserAcc_i: user accuracy index for class i.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ModKappaUser_i}: modified coefficient kappa (user's).
+  \item \eqn{UserAcc_i}: user accuracy index for class i.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ModKappaUser_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ModKappaUser_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with modified coefficient kappa (user's) and its variance.
+A list with modified coefficient kappa (user's), its variance and confidence interval
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1239,7 +1287,7 @@ p$ModKappaUser_i(2)
 \if{html}{\out{<a id="method-MatCon-ModKappaProd_i"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-ModKappaProd_i}{}}}
 \subsection{Method \code{ModKappaProd_i()}}{
-Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
+Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
 
 
 \deqn{
@@ -1251,24 +1299,26 @@ ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
 where:
 
 \enumerate{
-  \item ModKappaUser_i: modified coefficient kappa (producer's).
-  \item ProdAcc_i: producer accuracy index for class i.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{ModKappaUser_i}: modified coefficient kappa (producer's).
+  \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$ModKappaProd_i(i)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$ModKappaProd_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{Class to evaluate.}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with modified coefficient kappa (producer's) and its variance.
+A list with modified coefficient kappa (producer's), its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1305,15 +1355,15 @@ EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
 where:
 
 \enumerate{
-  \item EntropUser_i: relative change of entropy given a category on map.
-  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-  \item x_j+: sum of all elements in rows j.
-  \item x_+j: sum of all elements in column j.
-  \item Entrop_i(A|b_i): Entropy of map A knowing that the location corresponding to map B is in class b_i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{EntropUser_i}: relative change of entropy given a category on map.
+  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{Entrop_i(A|b_i)}: Entropy of map A knowing that the location corresponding to map B is in class b_i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$EntropUser_i(i, v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$EntropUser_i(i, v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1322,11 +1372,13 @@ where:
 \item{\code{i}}{Class to evaluate (row).}
 
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the relative change of entropy given a category on map, its variance, map entropy, and entropy of map A knowing that the location corresponding to map B is in class b_i.
+A list with the relative change of entropy given a category on map, its variance, its confidence interval, map entropy, and entropy of map A knowing that the location corresponding to map B is in class b_i.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1362,15 +1414,15 @@ EntropProd_i= \dfrac{EntropMap(B)-EntropMap(B|a_j)}{EntropMap(B)}
 where:
 
 \enumerate{
-  \item EntropProd_i: relative change of entropy given a category on ground truthing.
-  \item Entrop_i(B): Entropy of the map with respect to the category on ground truthing.
-  \item x_j+: sum of all elements in rows j.
-  \item x_+j: sum of all elements in column j.
-  \item Entrop_i(B|a_j): Entropy of map B knowing that the location corresponding to map A is in class a_j.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{EntropProd_i}: relative change of entropy given a category on ground truthing.
+  \item \eqn{Entrop_i(B)}: Entropy of the map with respect to the category on ground truthing.
+  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{Entrop_i(B|a_j)}: Entropy of map B knowing that the location corresponding to map A is in class a_j.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$EntropProd_i(i, v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$EntropProd_i(i, v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -1379,11 +1431,13 @@ where:
 \item{\code{i}}{Class to evaluate}
 
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the relative change of entropy given a category on ground truthing, its variance, map entropy, and entropy of map B knowing that the location corresponding to map A is in class a_j.
+A list of the relative change of entropy given a category on ground truthing, its variance,its confidence interval, map entropy, and entropy of map B knowing that the location corresponding to map A is in class a_j.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1413,18 +1467,25 @@ AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^n_{i=1} \dfrac{x_{ii}}{\sum_{j=1}^n x_{j+}}
 where:
 
 \enumerate{
-  \item AvUserAcc: average accuracy from user's perspective.
-  \item x_j.: sum of all elements in rows j.
-  \item x_ii: diagonal element of the matrix.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with the average accuracy from user's perspective and its variance.
+A list with the average accuracy from user's perspective, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1454,18 +1515,25 @@ AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^n_{i=1} \dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
 where:
 
 \enumerate{
-  \item AvProdAcc: average accuracy from producer's perspective.
-  \item x_+j: sum of all elements in column j.
-  \item x_ii: diagonal element of the matrix.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvProdAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvProdAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with the average accuracy from producer's perspective and its variance.
+A list with the average accuracy from producer's perspective, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1490,23 +1558,30 @@ Public method that offers the average of the average precision from the perspect
 AvUserProdAcc=\dfrac{AvUserAcc+AvProdAcc}{2}
 }
  \deqn{
-\sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc}{N}
+\sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc)}{N}
 }
 
 where:
 
 \enumerate{
-  \item AvUserProdAcc: average of average of user's and producer's perspective.
-  \item AvUserAcc: average accuracy from user's perspective.
-  \item AvProdAcc: average accuracy from producer's perspective.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvUserProdAcc}: average of average of user's and producer's perspective.
+  \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+  \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserProdAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvUserProdAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with the values of the average of the average precision from the perspective of the user and the producer the user and producer perspective and their variance.
+A list of the average mean precision values from the user and producer perspective, their variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1537,19 +1612,26 @@ AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^n_{i=1} \dfrac{2 x_{ii}}{ x_{+i} + x_{i+}}
 where:
 
 \enumerate{
-  \item AvHelldenAcc: average of Hellden's mean accuracy index.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item x_ii: diagonal element of the matrix.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvHelldenAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvHelldenAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with average of Hellden's mean accuracy index and its variance.
+A list with average of Hellden's mean accuracy index, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1579,18 +1661,25 @@ AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^n_{i=1} x_{ii}}{\sum^n_{i,j=1}x
 where:
 
 \enumerate{
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item x_ii: diagonal element of the matrix.
-  \item M: number of elements of the matrix.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
    }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvShortAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvShortAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with average of Short's mapping accuracy index and its variance.
+A list with average of Short's mapping accuracy index, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1621,17 +1710,24 @@ CombUserAcc=\dfrac{OverallAcc+AvUserAcc}{2}
 where:
 
 \enumerate{
-  \item CombUserAcc: combined accuracy from user's perspective.
-  \item OverallAcc: overall accuracy.
-  \item AvUserAcc: average accuracy from user's perspective.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{CombUserAcc}: combined accuracy from user's perspective.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
   }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombUserAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombUserAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list of the combined accuracy from the user's perspective and its variation.
+A list of the combined accuracy from the user's perspective, its variation and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1661,17 +1757,24 @@ CombProdAcc=\dfrac{OverallAcc+AvProdAcc}{2}
 where:
 
 \enumerate{
-  \item CombProdAcc: combined accuracy from producer's perspective.
-  \item OverallAcc: overall accuracy.
-  \item AvProdAcc: average accuracy from producer's perspective.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{CombProdAcc}: combined accuracy from producer's perspective.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombProdAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombProdAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list of the combined accuracy from producer's perspective and its variance.
+A list of the combined accuracy from producer's perspective, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1701,17 +1804,24 @@ CombUserProdAcc=\dfrac{OverallAcc+AvHelldenAcc}{2}
 where:
 
 \enumerate{
-  \item CombUserProdAcc: combined accuracy from both user's and producer's perspectives.
-  \item OverallAcc: overall accuracy.
-  \item AvHelldenAcc: average of Hellden's mean accuracy index.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{CombUserProdAcc}: combined accuracy from both user's and producer's perspectives.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombUserProdAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$CombUserProdAcc(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list of the combined accuracy from both user's and producer's perspectives and its variance.
+A list of the combined accuracy from both user's and producer's perspectives, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1747,23 +1857,26 @@ Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 where:
 
 \enumerate{
-  \item Kappa: Kappa coefficient.
-  \item OverallAcc: overall accuracy.
-  \item ExpAcc: expected accuracy of agreement if agreement were purely random.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{Kappa}: Kappa coefficient.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{ExpAcc}: expected accuracy of agreement if agreement were purely random.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Kappa()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Kappa(a = NULL)}\if{html}{\out{</div>}}
 }
 
-\subsection{Details}{
-Example matrix taken from Congalton, R.G.,  and  Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
 }
-
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with kappa coefficient and its variance.
+A list with kappa coefficient, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1793,24 +1906,26 @@ Entrop=\sum^n_{i,j=1} (\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\dfrac{
 where:
 
 \enumerate{
-  \item Entrop: map entropy.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{Entrop}: map entropy.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Entrop(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Entrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with map entropy and its variance.
+A list with map entropy, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1843,26 +1958,28 @@ NormEntropUser=\dfrac{Entrop}{Entrop_i(B)}
 where:
 
 \enumerate{
-  \item NormEntropUser: normalized entropy using map.
-  \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-  \item Entrop: map entropy.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{NormEntropUser}: normalized entropy using map.
+  \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+  \item \eqn{Entrop}: map entropy.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$NormEntropUser(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$NormEntropUser(v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using map and its variance.
+A list with normalized entropy using map, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1895,26 +2012,28 @@ NormEntropProd=\dfrac{Entrop}{Entrop_i(A)}
 where:
 
 \enumerate{
-  \item NormEntropProd: normalized mutual information using the entropy on ground truthing.
-  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-  \item Entrop: map entropy.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{NormEntropProd}: normalized mutual information using the entropy on ground truthing.
+  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+  \item \eqn{Entrop}: map entropy.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$NormEntropProd(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$NormEntropProd(v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using on ground truthing and its variance.
+A list with normalized entropy using on ground truthing, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1951,27 +2070,29 @@ AvNormEntrop=\dfrac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
 where:
 
 \enumerate{
-  \item AvNormEntrop: normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing.
-  \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-  \item Entrop: map entropy.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{AvNormEntrop}: normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing.
+  \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+  \item \eqn{Entrop}: map entropy.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvNormEntrop(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing and its variance.
+normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2007,27 +2128,29 @@ GeomAvNormEntrop=\dfrac{Entrop}{\sqrt{Entrop_i(A) \cdot Entrop_i(B)}}
 where:
 
 \enumerate{
-  \item GeomAvNormEntrop: normalized entropy using the geometric mean of the entropies on map and on ground truthing.
-  \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-  \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-  \item Entrop: map entropy.
-  \item x_+i: sum of all elements in column i.
-  \item x_i+: sum of all elements in row i.
-  \item N: number of cases involved in the calculation of the index.
+  \item \eqn{GeomAvNormEntrop}: normalized entropy using the geometric mean of the entropies on map and on ground truthing.
+  \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+  \item \eqn{Entrop}: map entropy.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{N}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$GeomAvNormEntrop(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$GeomAvNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using the geometric mean of the entropies on map and on ground truthing and its variance.
+A list with normalized entropy using the geometric mean of the entropies on map and on ground truthing, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2050,18 +2173,20 @@ Public mathod that provides normalized entropy using the arithmetic mean of the 
 
 
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvMaxNormEntrop(v = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$AvMaxNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{v}}{Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
+A list with normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2097,17 +2222,24 @@ Tau = \dfrac{OverallAcc-CoefAccPr}{1-PrAgCoef}
 
 Where:
 \enumerate{
-  \item OverallAcc: overall accuracy.
-  \item PrAgCoef: a priori random agreement coefficient.
-  \item M: number of classes.
-  \item N: number of elements of the matrix, cardinal of the matrix.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{PrAgCoef}: a priori random agreement coefficient.
+  \item \eqn{M}: number of classes.
+  \item \eqn{N}: number of elements of the matrix, cardinal of the matrix.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{MatCon$Tau()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Tau(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A list with Tau index and its variance.
+A list with Tau index, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2244,7 +2376,7 @@ where:
 
 \enumerate{
   \item MTyipify: typified matrix.
-  \item x_ij: matrix element.
+  \item \eqn{x_{ij}}: matrix element.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$MTypify(RaR = NULL)}\if{html}{\out{</div>}}
@@ -2332,7 +2464,7 @@ p$MBootStrap(2)
 \if{html}{\out{<a id="method-MatCon-MNormalize"></a>}}
 \if{latex}{\out{\hypertarget{method-MatCon-MNormalize}{}}}
 \subsection{Method \code{MNormalize()}}{
-Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The reference \insertCite{fienberg1970,munoz2016}{PaolaR6Nuevo} is followed for the computations.
+Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The references \insertCite{fienberg1970,munoz2016}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MatCon$MNormalize(n = NULL)}\if{html}{\out{</div>}}
 }
@@ -2406,7 +2538,7 @@ Public method that calculates the general Tau concordance index and its standard
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
+A list with the weight matrix, the Tau index, its standard deviation and its statistics.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

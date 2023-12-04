@@ -4,7 +4,7 @@
 #' @param ID Identifier. By default ID is a date in YYYYMMDD format
 #' @param Date Date provided by the user. By default the date provided by the system will be taken.
 #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
-#' @return Object of class MatCon or an error if a matrix is not entered.
+#' @return Object of class MatCon.
 #' @note  Error Messages
 #'
 #' List of possible errors:
@@ -82,10 +82,8 @@ MatCon <- R6Class("MatCon",
     #initialize sumcol
     sumcol=NULL,
 
-    #' @description
-    #' Public method to create an instance of the MatCon class. When creating it, values must be given to the matrix. The optional possibility of adding metadata to the matrix is offered.
+    #' @description Public method to create an instance of the MatCon class. When creating it, values must be given to the matrix. The optional possibility of adding metadata to the matrix is offered.
     #' The creation includes a series of checks on the data that, if not met, give coded error messages. The values of the matrix must be organized in such a way that the columns represent the categories in the reference and the rows represent the categories in the product being evaluated.
-    #'
     #' @param values Confusion matrix
     #' @param ID Identifier. By default, the date in YYYYMMDD format will be taken as the ID.
     #' @param Date Date provided by the user. By default the date provided by the system will be taken.
@@ -209,13 +207,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' }
       #' Where:
       #' \enumerate{
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item x_ij: element of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{ij}}: element of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
       #'
-      #' @return Overall accuracy and variance as a list.
+      #' @return A list of the overall accuracy, its variance, and its confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A)
@@ -223,10 +222,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     OverallAcc = function() {
-     indice <- sum(diag(self$values))/sum(self$values)
-     VarIndic<-abs((indice*(1-indice))/sum(self$values))
-     return(list(OverallAcc=indice,VarOverallAcc=VarIndic))
+     OverallAcc = function(a=NULL) {
+     index <- sum(diag(self$values))/sum(self$values)
+     VarIndex<-abs((index*(1-index))/sum(self$values))
+     ConfInt<-private$ConfInt(index,VarIndex,a)
+     return(list(OverallAcc=index,VarOverallAcc=VarIndex,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -244,12 +244,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item UserAcc: user accuracy.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item x_ij: element of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{UserAcc}: user accuracy.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{ij}}: element of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with a vector of values for the user's accuracy index of all classes and another vector with their variances.
+      #' @return A list with a vector of values for the user's accuracy rate for all classes, another vector with their variances and confidence intervals for each class.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -257,16 +258,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     UserAcc = function(){
+     UserAcc = function(a=NULL){
      #matrix range
      n <- sqrt(length(self$values))
      UserAcc <- rep(0,n)
      VarUserAcc<-rep(0,n)
+     ConfInt<-list()
        for (i in 1:n){
          UserAcc[i] <- self$values[i,i] / self$sumfil[i]
          VarUserAcc[i]<-abs((UserAcc[i]*(1-UserAcc[i]))/self$sumfil[i])
+         ConfInt[[i]]<-c(private$ConfInt(UserAcc[i],VarUserAcc[i],a)$ConfInt_inf,private$ConfInt(UserAcc[i],VarUserAcc[i])$ConfInt_sup,a)
        }
-     return(list(UserAcc=UserAcc,VarUserAcc=VarUserAcc))
+     return(list(UserAcc=UserAcc,VarUserAcc=VarUserAcc,Conf_Int=ConfInt))
      },
 
 
@@ -285,13 +288,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item UserAcc_i: user accuracy index for class i.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item x_ij: element of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{ij}}: element of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @param i User class to evaluate
-      #' @return A list of the user's accuracy index values for class i and its variance.
+      #' @param i User class to evaluate.
+      #' @param a Significance level. By default 0.05.
+      #' @return A list of the user's accuracy index values for class i, its variance and its confidence interval.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -299,16 +303,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     UserAcc_i=function(i){
-      UserAcc_i = self$values[i,i] / self$sumfil[i]
-      VarUserAcc_i=abs((UserAcc_i*(1-UserAcc_i))/self$sumfil[i])
-     return(list(UserAcc_i=UserAcc_i,VarUserAcc_i=VarUserAcc_i))
+     UserAcc_i=function(i,a=NULL){
+      UserAcc_i <- self$values[i,i] / self$sumfil[i]
+      VarUserAcc_i <- abs((UserAcc_i*(1-UserAcc_i))/self$sumfil[i])
+      ConfInt <- private$ConfInt(UserAcc_i,VarUserAcc_i,a)
+     return(list(UserAcc_i=UserAcc_i,VarUserAcc_i=VarUserAcc_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
-      #' @description  Public method for deriving a class index called producer's accuracy. The producer's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the column of the class i. The method also offers the variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} if followed for the computations.
+      #' @description Public method for deriving a class index called producer's accuracy. The producer's accuracy for the class i of thematic map is calculated by dividing the value in the diagonal of class i by the sum of all values in the column of the class i. The method also offers the variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} if followed for the computations.
       #' @description
       #'  \deqn{
       #' ProdAcc=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
@@ -319,12 +324,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ProdAcc: producer accuracy.
-      #'   \item x_jj: diagonal element of the matrix.
-      #'   \item x_ij: element of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ProdAcc}: producer accuracy.
+      #'   \item \eqn{x_{jj}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{ij}}: element of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with a vector of values for the producer's accuracy index of all classes and another vector with their variances.
+      #' @return A list with a vector of values for the producer's accuracy index of all classes, another vector with their variances and confidence intervals for each class.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -332,21 +338,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     ProdAcc = function (){
+     ProdAcc = function (a=NULL){
       n <- sqrt(length(self$values))
       ProdAcc <- rep(0,n)
       VarProdAcc<-rep(0,n)
+      ConfInt<-list()
         for(i in 1:n){
           ProdAcc[i] <- self$values[i,i] / self$sumcol[i]
           VarProdAcc[i]<-abs((ProdAcc[i]*(1-ProdAcc[i]))/self$sumcol[i])
+          ConfInt[[i]]<-c(private$ConfInt(ProdAcc[i],VarProdAcc[i],a)$ConfInt_inf,private$ConfInt(ProdAcc[i],VarProdAcc[i])$ConfInt_sup,a)
         }
-     return(list(ProdAcc=ProdAcc,VarProdAcc=VarProdAcc))
+     return(list(ProdAcc=ProdAcc,VarProdAcc=VarProdAcc,Conf_Int=ConfInt))
      },
 
 
 
 
-      #' @description  Public method where the producer's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the column of class i. The method also offers variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method where the producer's accuracy index is defined for a specific class i. The user precision for class i of the thematic map is calculated by dividing the value on the diagonal of class i by the sum of all values in the column of class i. The method also offers variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
@@ -358,13 +366,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ProdAcc_i: producer accuracy index for class i.
-      #'   \item x_jj: diagonal element of the matrix.
-      #'   \item x_ij: element of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+      #'   \item \eqn{x_{jj}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{ij}}: element of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
       #' @param i Producer class to evaluate.
-      #' @return A list of the producer's accuracy index values for class i and its variance
+      #' @param a Significance level. By default 0.05.
+      #' @return A list of the producer's accuracy index values for class i, its variance and its confidence interval.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -372,10 +381,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     ProdAcc_i = function(i){
-      ProdAcc_i = self$values[i,i] / self$sumcol[i]
-      VarProdAcc_i=abs((ProdAcc_i*(1-ProdAcc_i))/self$sumcol[i])
-     return(list(ProdAcc_i=ProdAcc_i,VarProdAcc_i=VarProdAcc_i))
+     ProdAcc_i = function(i,a=NULL){
+      ProdAcc_i <- self$values[i,i] / self$sumcol[i]
+      VarProdAcc_i <- abs((ProdAcc_i*(1-ProdAcc_i))/self$sumcol[i])
+      ConfInt <- private$ConfInt(ProdAcc_i,VarProdAcc_i,a)
+     return(list(ProdAcc_i=ProdAcc_i,VarProdAcc_i=VarProdAcc_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -392,13 +402,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvUserProdAcc_i: average of user's and producer's accuracy.
-      #'   \item UserAcc_i: user accuracy index for class i.
-      #'   \item ProdAcc_i: producer accuracy index for class i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvUserProdAcc_i}: average of user's and producer's accuracy.
+      #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
+      #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with average of user's and producer's accuracy and its variance for class i.
+      #' @return A list with average of user's and producer's accuracy, its variance for class i and its confidence interval.
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -406,16 +417,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvUserProdAcc_i = function(i){
-      AvUserProdAcc_i = (self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]])/2
-      VarAvUserProdAcc_i=abs((AvUserProdAcc_i*(1-AvUserProdAcc_i))/(self$sumcol[i]+self$sumfil[i]))
-     return(list(AvUserProdAcc_i=AvUserProdAcc_i,VarAvUserProdAcc_i=VarAvUserProdAcc_i))
+     AvUserProdAcc_i = function(i,a=NULL){
+      AvUserProdAcc_i <- (self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]])/2
+      VarAvUserProdAcc_i <- abs((AvUserProdAcc_i*(1-AvUserProdAcc_i))/(self$sumcol[i]+self$sumfil[i]))
+      ConfInt <- private$ConfInt(AvUserProdAcc_i,VarAvUserProdAcc_i,a)
+     return(list(AvUserProdAcc_i=AvUserProdAcc_i,VarAvUserProdAcc_i=VarAvUserProdAcc_i,ConfInt=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
-      #' @description Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The reference \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method that provides the Classification Success Index (CSI) applies to all class and gives an overall estimation of classification effectiveness. The references \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
       #' @description The mathematical expression is:
       #'  \deqn{
       #' Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
@@ -427,12 +439,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item Sucess: classification succes index.
-      #'   \item AvUserAcc: average accuracy from user's perspective.
-      #'   \item AvProdAcc: average accuracy from producer's perspective.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{Sucess}: classification succes index.
+      #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+      #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with the classification success index and its variance.
+      #' @return A list with the classification success index, its variance and its confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),nrow=3,ncol=3)
       #' p<-MatCon$new(A,Source="Labatut and Cherifi 2011")
@@ -440,17 +453,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     Sucess = function(){
-      Sucess = self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]] - 1
-       #NO ESTOY SEGURA DE ESE 2*
-       VarSucess=abs((Sucess*(1-Sucess))/2*sum(self$values))
-     return(list(Sucess=Sucess,VarSucess=VarSucess))
+     Sucess = function(a=NULL){
+      Sucess <- self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]] - 1
+       VarSucess <- abs((Sucess*(1-Sucess))/sum(self$values))
+       ConfInt <- private$ConfInt(Sucess,VarSucess,a)
+     return(list(Sucess=Sucess,VarSucess=VarSucess,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
-      #' @description  Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The reference \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method that provides the Individual Classification Success Index (ICSI) applies to the classification effectiveness for one particular class of interest. The references \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #' The mathematical expression is:
       #'  \deqn{
@@ -464,13 +477,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item Sucess_i: individual classification success index.
-      #'   \item UserAcc_i: user accuracy index for class i.
-      #'   \item ProdAcc_i: producer accuracy index for class i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{Sucess_i}: individual classification success index.
+      #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
+      #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with the individual classification success index and its variance.
+      #' @return A list with the individual classification success index, its variance and its confidence interval.
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),nrow=3,ncol=3)
       #' p<-MatCon$new(A,Source="Labatut and Cherifi 2011")
@@ -478,17 +492,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     Sucess_i = function(i){
-      Sucess_i = self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]] - 1
-      VarSucess_i=abs((Sucess_i*(1-Sucess_i))/(self$sumcol[i]+self$sumfil[i]))
-     return (list(Sucess_i=Sucess_i,VarSucess_i=VarSucess_i))
+     Sucess_i = function(i,a=NULL){
+      Sucess_i <- self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]] - 1
+      VarSucess_i <- abs((Sucess_i*(1-Sucess_i))/(self$sumcol[i]+self$sumfil[i]))
+      ConfInt <- private$ConfInt(Sucess_i,VarSucess_i,a)
+     return (list(Sucess_i=Sucess_i,VarSucess_i=VarSucess_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
 
-      #' @description  Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The reference \insertCite{hellden1980,rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method that provides the Hellden' average accuracy, denotes for the probability that a randomly chosen point of a specific class on the map has a correspondence of the same class in the same position in the field and that a randomly chosen point in the field of the same class has a correspondence of the same class in the same position on the map.The method also offers variance. The references \insertCite{hellden1980,rosenfield1986}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}
@@ -499,13 +514,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvHelldenAcc_i: Hellden's mean accuracy.
-      #'   \item UserAcc_i: user accuracy index for class i.
-      #'   \item ProdAcc_i: producer accuracy index for class i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvHelldenAcc_i}: Hellden's mean accuracy.
+      #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
+      #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
       #' @param i Class to evaluate.
-      #' @return A list with Hellden's mean accuracy and its variance.
+      #' @return A list with Hellden's mean accuracy, its variance and its confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),
       #' nrow=5,ncol=5)
@@ -514,24 +530,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvHelldenAcc_i = function(i){
+     AvHelldenAcc_i = function(i,a=NULL){
 
-       #esta condicion se daria cuando el elemento de la diagonal
-       #sea 0, ¿poco probable? se puede eliminar esta condicion?
        if (self$UserAcc_i(i)[[1]] == 0 || self$ProdAcc_i(i)[[1]] == 0) {
         stop ("/ by 0")
        }else{
-          AvHelldenAcc_i= 2 / (1/self$UserAcc_i(i)[[1]] + 1/self$ProdAcc_i(i)[[1]])
-         VarAvHelldenAcc_i=abs((AvHelldenAcc_i*(1-AvHelldenAcc_i))/(self$sumcol[i]+self$sumfil[i]))
+          AvHelldenAcc_i <- 2 / (1/self$UserAcc_i(i)[[1]] + 1/self$ProdAcc_i(i)[[1]])
+         VarAvHelldenAcc_i <- abs((AvHelldenAcc_i*(1-AvHelldenAcc_i))/(self$sumcol[i]+self$sumfil[i]))
+         ConfInt <- private$ConfInt(AvHelldenAcc_i,VarAvHelldenAcc_i,a)
          }
 
-     return(list(AvHelldenAcc_i=AvHelldenAcc_i,VarAvHelldenAcc_i=VarAvHelldenAcc_i))
+     return(list(AvHelldenAcc_i=AvHelldenAcc_i,VarAvHelldenAcc_i=VarAvHelldenAcc_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
-      #' @description Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The reference \insertCite{rosenfield1986,short1982}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method that provides Short's mapping accuracy for each class is stated as the number of correctly classified pixels (equal to the total in the correctly classified area) in terms of all pixels affected by its classification (equal to this total in the displayed area as well as the pixels involved in errors of commission and omission). The method also offers variance. The references \insertCite{rosenfield1986,short1982}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ShortAcc_i=\dfrac{x_{ii}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}-x_{ii}}
@@ -542,14 +557,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ShortAcc_i: Short's mapping accuracy
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item x_j+: sum of all elements in rows j.
-      #'   \item x_+j: sum of all elements in column j.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ShortAcc_i}: Short's mapping accuracy
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
       #' @param i Class to evaluate.
-      #' @return A list with Short's mapping accuracy and its variance.
+      #' @return A list with Short's mapping accuracy, its variance and its confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),
       #' nrow=5,ncol=5)
@@ -558,15 +574,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     ShortAcc_i = function(i){
+     ShortAcc_i = function(i,a=NULL){
       if (self$sumfil[i] + self$sumcol[i] - self$values[i,i] == 0) {
       stop ("/ by 0")
       }else{
         ShortAcc_i = self$values[i,i] / (self$sumfil[i] + self$sumcol[i] - self$values[i,i])
         VarShortAcc_i=abs((ShortAcc_i*(1-ShortAcc_i))/(self$sumcol[i]+self$sumfil[i]))
+        ConfInt <- private$ConfInt(ShortAcc_i,VarShortAcc_i,a)
         }
 
-     return(list(ShortAcc_i=ShortAcc_i,VarShortAcc_i=VarShortAcc_i))
+     return(list(ShortAcc_i=ShortAcc_i,VarShortAcc_i=VarShortAcc_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -584,15 +601,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item UserKappa_i: coefficient kappa (user's).
-      #'   \item UserAcc_i: user accuracy index for class i.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item x_j+: sum of all elements in rows j.
-      #'   \item x_+j: sum of all elements in column j.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{UserKappa_i}: coefficient kappa (user's).
+      #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with coefficient kappa (user's) and its variance.
+      #' @return A list with coefficient kappa (user's), its variance and its confidence interval.
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),
       #' nrow=5,ncol=5)
@@ -601,15 +619,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     UserKappa_i = function(i){
+     UserKappa_i = function(i,a=NULL){
       if (1 - self$sumcol[i]/sum(self$values) == 0) {
        stop ("/ by 0")
       }else{
-        UserKappa_i = (self$UserAcc_i(i)[[1]] - self$sumcol[i]/sum(self$values)) / (1 - self$sumcol[i]/sum(self$values))
-        VarUserKappa_i=abs((UserKappa_i*(1-UserKappa_i))/self$sumfil[i])
+        UserKappa_i <- (self$UserAcc_i(i)[[1]] - self$sumcol[i]/sum(self$values)) / (1 - self$sumcol[i]/sum(self$values))
+        VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/self$sumfil[i])
+        ConfInt <- private$ConfInt(UserKappa_i,VarUserKappa_i,a)
         }
 
-     return(list(UserKappa_i=UserKappa_i,VarUserKappa_i=VarUserKappa_i))
+     return(list(UserKappa_i=UserKappa_i,VarUserKappa_i=VarUserKappa_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -626,15 +645,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ProdKappa_i: coefficient kappa (producer's).
-      #'   \item ProdAcc_i: producer accuracy index for class i.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item x_j+: sum of all elements in rows j.
-      #'   \item x_+j: sum of all elements in column j.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ProdKappa_i}: coefficient kappa (producer's).
+      #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with coefficient kappa (producer's) and its variance.
+      #' @return A list with coefficient kappa (producer's), its variance and its confidence interval.
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,29,13,3,5,7,28,48,1,0,2,3,17),
       #' nrow=5,ncol=5)
@@ -643,18 +663,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-      ProdKappa_i = function(i){
+      ProdKappa_i = function(i,a=NULL){
       if (1 - self$sumfil[i]/sum(self$values) == 0) {
        stop ("/ by 0")
       }else{
-        ProdKappa_i = (self$ProdAcc_i(i)[[1]] - self$sumfil[i]/sum(self$values)) / (1 - self$sumfil[i]/sum(self$values))
-        VarProdKappa_i=abs((ProdKappa_i*(1-ProdKappa_i))/self$sumcol[i])
+        ProdKappa_i <- (self$ProdAcc_i(i)[[1]] - self$sumfil[i]/sum(self$values)) / (1 - self$sumfil[i]/sum(self$values))
+        VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/self$sumcol[i])
+        ConfInt <- private$ConfInt(ProdKappa_i,VarProdKappa_i,a)
         }
-     return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i))
+     return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
-      #' @description Public method that provides the overall modified kappa coefficient. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method that provides the overall modified kappa coefficient. The method also offers variance. The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
@@ -665,13 +686,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ModKappa: modified coefficient kappa.
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ModKappa}: modified coefficient kappa.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with modified coefficient kappa and its variance.
+      #' @return A list with modified coefficient kappa, its variance and its confidence interval.
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Foody 1992")
@@ -679,16 +701,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     ModKappa = function(i){
-       ModKappa= (self$OverallAcc()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-       VarModKappa=abs((ModKappa*(1-ModKappa))/self$values)
-     return(list(ModKappa=ModKappa,VarModKappa=VarModKappa))
+     ModKappa = function(i,a=NULL){
+       ModKappa <- (self$OverallAcc()[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+       VarModKappa <- abs((ModKappa*(1-ModKappa))/self$values)
+       ConfInt <- private$ConfInt(ModKappa,VarModKappa,a)
+     return(list(ModKappa=ModKappa,VarModKappa=VarModKappa,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
-      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the user. The method also offers variance. The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
@@ -699,13 +722,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ModKappaUser_i: modified coefficient kappa (user's).
-      #'   \item UserAcc_i: user accuracy index for class i.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ModKappaUser_i}: modified coefficient kappa (user's).
+      #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with modified coefficient kappa (user's) and its variance.
+      #' @return A list with modified coefficient kappa (user's), its variance and confidence interval
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Liu et al. 2007")
@@ -713,17 +737,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     ModKappaUser_i = function(i){
-       ModKappaUser_i = (self$UserAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-       VarModKappaUser_i=abs((ModKappaUser_i*(1-ModKappaUser_i))/self$sumfil[i])
-     return(list(ModKappaUser_i=ModKappaUser_i,VarModKappaUser_i=VarModKappaUser_i))
+     ModKappaUser_i = function(i,a=NULL){
+       ModKappaUser_i <- (self$UserAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+       VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/self$sumfil[i])
+       ConfInt <- private$ConfInt(ModKappaUser_i,VarModKappaUser_i,a)
+     return(list(ModKappaUser_i=ModKappaUser_i,VarModKappaUser_i=VarModKappaUser_i, Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
 
-      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The reference \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method, derived from the general modified kappa coefficient, which provides the modified coefficient kappa for the producer. The method also offers variance. The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
@@ -734,13 +759,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item ModKappaUser_i: modified coefficient kappa (producer's).
-      #'   \item ProdAcc_i: producer accuracy index for class i.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{ModKappaUser_i}: modified coefficient kappa (producer's).
+      #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with modified coefficient kappa (producer's) and its variance.
+      #' @return A list with modified coefficient kappa (producer's), its variance and confidence interval.
       #' @param i Class to evaluate.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Liu et al. 2007")
@@ -748,10 +774,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     ModKappaProd_i = function(i){
-      ModKappaProd_i = (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-      VarModKappaProd_i=abs((ModKappaProd_i*(1-ModKappaProd_i))/self$sumcol[i])
-     return(list(ModKappaProd_i=ModKappaProd_i,VarModKappaProd_i=VarModKappaProd_i))
+     ModKappaProd_i = function(i,a=NULL){
+      ModKappaProd_i <- (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
+      VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/self$sumcol[i])
+      ConfInt <- private$ConfInt(ModKappaProd_i,VarModKappaProd_i,a)
+     return(list(ModKappaProd_i=ModKappaProd_i,VarModKappaProd_i=VarModKappaProd_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
      #' @description Public method that calculates relative change of entropy given a category on map. That is, the degree of uncertainty of the category. The method also offers variance. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
@@ -772,16 +799,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #' where:
      #'
      #' \enumerate{
-     #'   \item EntropUser_i: relative change of entropy given a category on map.
-     #'   \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-     #'   \item x_j+: sum of all elements in rows j.
-     #'   \item x_+j: sum of all elements in column j.
-     #'   \item Entrop_i(A|b_i): Entropy of map A knowing that the location corresponding to map B is in class b_i.
-     #'   \item N: number of cases involved in the calculation of the index.
+     #'   \item \eqn{EntropUser_i}: relative change of entropy given a category on map.
+     #'   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+     #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+     #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+     #'   \item \eqn{Entrop_i(A|b_i)}: Entropy of map A knowing that the location corresponding to map B is in class b_i.
+     #'   \item \eqn{N}: number of cases involved in the calculation of the index.
      #' }
-     #' @return A list with the relative change of entropy given a category on map, its variance, map entropy, and entropy of map A knowing that the location corresponding to map B is in class b_i.
+     #' @return A list with the relative change of entropy given a category on map, its variance, its confidence interval, map entropy, and entropy of map A knowing that the location corresponding to map B is in class b_i.
      #' @param i Class to evaluate (row).
      #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+     #' @param a Significance level. By default 0.05.
      #' @examples
      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
      #' p<-MatCon$new(A,Source="Liu et al. 2007")
@@ -794,7 +822,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
         #Classes by rows. If any element is 0 in the row you get an error,
         #due to log
 
-    EntropUser_i = function(i,v=NULL){
+    EntropUser_i = function(i,v=NULL,a=NULL){
       if(!is.null(v)){
        v<-v
       }else{v<-10}
@@ -804,21 +832,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
        #LN->nats
 
      #na.rm=TRUE. In this way it does the sum with the values it has and ignores NA
-    Entrop_iA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
-    Entrop_iAbi = - sum ((self$values[i,] / self$sumfil[i]) * log(self$values[i,] / self$sumfil[i],base=v),na.rm=TRUE)
+    Entrop_iA <- - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+    Entrop_iAbi <- - sum ((self$values[i,] / self$sumfil[i]) * log(self$values[i,] / self$sumfil[i],base=v),na.rm=TRUE)
 
     if (Entrop_iA == 0){
      stop("/by 0")
     }else {
-      EntropUser_i = (Entrop_iA - Entrop_iAbi) / Entrop_iA
-      VarEntropUser_i=abs((EntropUser_i*(1-EntropUser_i))/sum(self$values)) #I'm not very sure, but all the values in the matrix are involved.
+      EntropUser_i <- (Entrop_iA - Entrop_iAbi) / Entrop_iA
+      VarEntropUser_i <- abs((EntropUser_i*(1-EntropUser_i))/sum(self$values))
+      ConfInt <- private$ConfInt(EntropUser_i,VarEntropUser_i,a)
       }
-    return(list(EntropUser_i=EntropUser_i,VarEntropUser_i=VarEntropUser_i,Entrop_iA=Entrop_iA,Entrop_iAbi=Entrop_iAbi))
+    return(list(EntropUser_i=EntropUser_i,VarEntropUser_i=VarEntropUser_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup),Entrop_iA=Entrop_iA,Entrop_iAbi=Entrop_iAbi))
     },
 
      #' @description Public method that calculates relative change of entropy given a category on ground truthing. That is, the degree of uncertainty of the category. The method also offers variance. The reference \insertCite{stehman1997}{PaolaR6Nuevo} is followed for the calculations.
      #' @param i Class to evaluate
      #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+     #' @param a Significance level. By default 0.05.
      #' @description
      #'  \deqn{
      #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij} }) )
@@ -835,14 +865,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #' where:
      #'
      #' \enumerate{
-     #'   \item EntropProd_i: relative change of entropy given a category on ground truthing.
-     #'   \item Entrop_i(B): Entropy of the map with respect to the category on ground truthing.
-     #'   \item x_j+: sum of all elements in rows j.
-     #'   \item x_+j: sum of all elements in column j.
-     #'   \item Entrop_i(B|a_j): Entropy of map B knowing that the location corresponding to map A is in class a_j.
-     #'   \item N: number of cases involved in the calculation of the index.
+     #'   \item \eqn{EntropProd_i}: relative change of entropy given a category on ground truthing.
+     #'   \item \eqn{Entrop_i(B)}: Entropy of the map with respect to the category on ground truthing.
+     #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+     #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+     #'   \item \eqn{Entrop_i(B|a_j)}: Entropy of map B knowing that the location corresponding to map A is in class a_j.
+     #'   \item \eqn{N}: number of cases involved in the calculation of the index.
      #' }
-     #' @return A list of the relative change of entropy given a category on ground truthing, its variance, map entropy, and entropy of map B knowing that the location corresponding to map A is in class a_j.
+     #' @return A list of the relative change of entropy given a category on ground truthing, its variance,its confidence interval, map entropy, and entropy of map B knowing that the location corresponding to map A is in class a_j.
      #' @examples
      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
      #' p<-MatCon$new(A,Source="Liu et al. 2007")
@@ -850,20 +880,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      #'
      #' @aliases
 
-    EntropProd_i = function(i,v=NULL){
+    EntropProd_i = function(i,v=NULL,a=NULL){
      if(!is.null(v)){
       v<-v
      }else{v<-10}
-    Entrop_iB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base = v)),na.rm=TRUE)
-    Entrop_iBaj = - sum ((self$values[,i] / self$sumcol[i]) * log(self$values[,i] / self$sumcol[i],base=v),na.rm=TRUE)
+    Entrop_iB <- - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base = v)),na.rm=TRUE)
+    Entrop_iBaj <- - sum ((self$values[,i] / self$sumcol[i]) * log(self$values[,i] / self$sumcol[i],base=v),na.rm=TRUE)
 
       if (Entrop_iB == 0){
         stop("/by 0")
       }else {
-        EntropProd_i = (Entrop_iB - Entrop_iBaj) / Entrop_iB
-        VarEntropProd_i=abs((EntropProd_i*(1-EntropProd_i))/sum(self$values))
+        EntropProd_i <- (Entrop_iB - Entrop_iBaj) / Entrop_iB
+        VarEntropProd_i <- abs((EntropProd_i*(1-EntropProd_i))/sum(self$values))
+        ConfInt <- private$ConfInt(EntropProd_i,VarEntropProd_i,a)
         }
-    return(list(EntropProd_i=EntropProd_i,VarEntropProd_i=VarEntropProd_i,Entrop_iB=Entrop_iB,Entrop_iBaj=Entrop_iBaj))
+    return(list(EntropProd_i=EntropProd_i,VarEntropProd_i=VarEntropProd_i,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup),Entrop_iB=Entrop_iB,Entrop_iBaj=Entrop_iBaj))
     },
 
 
@@ -880,13 +911,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvUserAcc: average accuracy from user's perspective.
-      #'   \item x_j.: sum of all elements in rows j.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with the average accuracy from user's perspective and its variance.
+      #' @return A list with the average accuracy from user's perspective, its variance and its confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
@@ -894,15 +926,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvUserAcc = function(){
+     AvUserAcc = function(a=NULL){
        for (i in 1:length(self$sumfil)) {
           if (self$sumfil[i] == 0) {
             stop ("/ by 0")
           }
        }
-      AvUserAcc = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumfil)
-      VarAvUserAcc=abs((AvUserAcc*(1-AvUserAcc))/sum(self$values)) #sum de todos los sumfil..self$values intervienen
-     return (list(AvUserAcc=AvUserAcc,VarAvUserAcc=VarAvUserAcc))
+      AvUserAcc <- 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumfil)
+      VarAvUserAcc <- abs((AvUserAcc*(1-AvUserAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(AvUserAcc,VarAvUserAcc,a)
+     return(list(AvUserAcc=AvUserAcc,VarAvUserAcc=VarAvUserAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that provides the producer's average accuracy, which is an average of the accuracy of individual categories, in this case the categories will be taken from the producer's perspective. The method also offers variance. The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
@@ -916,13 +949,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvProdAcc: average accuracy from producer's perspective.
-      #'   \item x_+j: sum of all elements in column j.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with the average accuracy from producer's perspective and its variance.
+      #' @return A list with the average accuracy from producer's perspective, its variance and its confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
@@ -930,10 +964,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvProdAcc = function(){
-      AvProdAcc = 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumcol)
-      VarAvProdAcc=abs((AvProdAcc*(1-AvProdAcc))/sum(self$values))
-     return(list(AvProdAcc=AvProdAcc,VarAvProdAcc=VarAvProdAcc))
+     AvProdAcc = function(a=NULL){
+      AvProdAcc <- 1/sqrt(length(self$values)) * sum (diag(self$values)/self$sumcol)
+      VarAvProdAcc <- abs((AvProdAcc*(1-AvProdAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(AvProdAcc,VarAvProdAcc,a)
+     return(list(AvProdAcc=AvProdAcc,VarAvProdAcc=VarAvProdAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that offers the average of the average precision from the perspective of the user and the producer. The method also offers variance. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
@@ -942,18 +977,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' AvUserProdAcc=\dfrac{AvUserAcc+AvProdAcc}{2}
       #' }
       #'  \deqn{
-      #' \sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc}{N}
+      #' \sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc)}{N}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvUserProdAcc: average of average of user's and producer's perspective.
-      #'   \item AvUserAcc: average accuracy from user's perspective.
-      #'   \item AvProdAcc: average accuracy from producer's perspective.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvUserProdAcc}: average of average of user's and producer's perspective.
+      #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+      #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with the values of the average of the average precision from the perspective of the user and the producer the user and producer perspective and their variance.
+      #' @return A list of the average mean precision values from the user and producer perspective, their variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -961,10 +997,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvUserProdAcc = function(){
-      AvUserProdAcc = (self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
-      VarAvUserProdAcc=abs((AvUserProdAcc*(1-AvUserProdAcc))/sum(self$values))
-     return(list(AvUserProdAcc=AvUserProdAcc,VarAvUserProdAcc=VarAvUserProdAcc))
+     AvUserProdAcc = function(a=NULL){
+      AvUserProdAcc <- (self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
+      VarAvUserProdAcc <- abs((AvUserProdAcc*(1-AvUserProdAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(AvUserProdAcc,VarAvUserProdAcc,a)
+     return(list(AvUserProdAcc=AvUserProdAcc,VarAvUserProdAcc=VarAvUserProdAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -980,14 +1017,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvHelldenAcc: average of Hellden's mean accuracy index.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with average of Hellden's mean accuracy index and its variance.
+      #' @return A list with average of Hellden's mean accuracy index, its variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -995,10 +1033,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvHelldenAcc = function(){
-      AvHelldenAcc = 1/sqrt(length(self$values)) * sum ((2*diag(self$values)) / (self$sumfil + self$sumcol))
-      VarAvHelldenAcc=abs((AvHelldenAcc*(1-AvHelldenAcc))/sum(self$values))
-     return(list(AvHelldenAcc=AvHelldenAcc,VarAvHelldenAcc=VarAvHelldenAcc))
+     AvHelldenAcc = function(a=NULL){
+      AvHelldenAcc <- 1/sqrt(length(self$values)) * sum ((2*diag(self$values)) / (self$sumfil + self$sumcol))
+      VarAvHelldenAcc <- abs((AvHelldenAcc*(1-AvHelldenAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(AvHelldenAcc,VarAvHelldenAcc,a)
+     return(list(AvHelldenAcc=AvHelldenAcc,VarAvHelldenAcc=VarAvHelldenAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -1013,13 +1052,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item x_ii: diagonal element of the matrix.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #'    }
-      #' @return A list with average of Short's mapping accuracy index and its variance.
+      #' @return A list with average of Short's mapping accuracy index, its variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -1027,16 +1067,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvShortAcc = function(){
-      AvShortAcc = 1/sqrt(length(self$values)) * sum (diag(self$values) / (self$sumfil + self$sumcol - diag(self$values)))
-      sum1=self$sumfil+self$sumcol- diag(self$values)
-      VarAvShortAcc=abs((AvShortAcc*(1-AvShortAcc))/sum(self$values))
+     AvShortAcc = function(a=NULL){
+      sum1 <- self$sumfil+self$sumcol- diag(self$values)
        for (i in 1:length(sum1)) {
           if (sum1[i] == 0) {
            stop ("/ by 0")
           }
        }
-     return(list(AvShortAcc=AvShortAcc,VarAvShortAcc=VarAvShortAcc))
+      AvShortAcc = 1/sqrt(length(self$values)) * sum (diag(self$values) / (self$sumfil + self$sumcol - diag(self$values)))
+      VarAvShortAcc=abs((AvShortAcc*(1-AvShortAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(AvShortAcc,VarAvShortAcc,a)
+
+     return(list(AvShortAcc=AvShortAcc,VarAvShortAcc=VarAvShortAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -1052,12 +1094,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item CombUserAcc: combined accuracy from user's perspective.
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item AvUserAcc: average accuracy from user's perspective.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{CombUserAcc}: combined accuracy from user's perspective.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #'   }
-      #' @return A list of the combined accuracy from the user's perspective and its variation.
+      #' @return A list of the combined accuracy from the user's perspective, its variation and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
@@ -1065,10 +1108,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     CombUserAcc = function(){
-      CombUserAcc = (self$OverallAcc()[[1]] + self$AvUserAcc()[[1]]) / 2
-      VarCombUserAcc=abs((CombUserAcc*(1-CombUserAcc))/sum(self$values))
-     return(list(CombUserAcc=CombUserAcc,VarCombUserAcc=VarCombUserAcc))
+     CombUserAcc = function(a=NULL){
+      CombUserAcc <- (self$OverallAcc()[[1]] + self$AvUserAcc()[[1]]) / 2
+      VarCombUserAcc <- abs((CombUserAcc*(1-CombUserAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(CombUserAcc,VarCombUserAcc,a)
+     return(list(CombUserAcc=CombUserAcc,VarCombUserAcc=VarCombUserAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that provides the combined producer accuracy that is the average of the overall accuracy and the average producer accuracy. The method also offers variance. The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
@@ -1082,12 +1126,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item CombProdAcc: combined accuracy from producer's perspective.
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item AvProdAcc: average accuracy from producer's perspective.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{CombProdAcc}: combined accuracy from producer's perspective.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list of the combined accuracy from producer's perspective and its variance.
+      #' @return A list of the combined accuracy from producer's perspective, its variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
@@ -1095,10 +1140,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     CombProdAcc = function(){
-      CombProdAcc = (self$OverallAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
-      VarCombProdAcc=abs((CombProdAcc*(1-CombProdAcc))/sum(self$values))
-     return(list(CombProdAcc=CombProdAcc,VarCombProdAcc=VarCombProdAcc))
+     CombProdAcc = function(a=NULL){
+      CombProdAcc <- (self$OverallAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
+      VarCombProdAcc <- abs((CombProdAcc*(1-CombProdAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(CombProdAcc,VarCombProdAcc,a)
+     return(list(CombProdAcc=CombProdAcc,VarCombProdAcc=VarCombProdAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that provides the combined accuracy which is the average of the overall accuracy and the Hellden average accuracy, which refers to the average user and producer accuracies. The method also offers variation. The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
@@ -1112,12 +1158,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item CombUserProdAcc: combined accuracy from both user's and producer's perspectives.
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item AvHelldenAcc: average of Hellden's mean accuracy index.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{CombUserProdAcc}: combined accuracy from both user's and producer's perspectives.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list of the combined accuracy from both user's and producer's perspectives and its variance.
+      #' @return A list of the combined accuracy from both user's and producer's perspectives, its variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -1125,10 +1172,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     CombUserProdAcc = function(){
-      CombUserProdAcc= ( self$OverallAcc()[[1]] + self$AvHelldenAcc()[[1]] ) / 2
-      VarCombUserProdAcc=abs((CombUserProdAcc*(1-CombUserProdAcc))/sum(self$values))
-     return(list(CombUserProdAcc=CombUserProdAcc,VarCombUserProdAcc=VarCombUserProdAcc))
+     CombUserProdAcc = function(a=NULL){
+      CombUserProdAcc <- ( self$OverallAcc()[[1]] + self$AvHelldenAcc()[[1]] ) / 2
+      VarCombUserProdAcc <- abs((CombUserProdAcc*(1-CombUserProdAcc))/sum(self$values))
+      ConfInt <- private$ConfInt(CombUserProdAcc,VarCombUserProdAcc,a)
+     return(list(CombUserProdAcc=CombUserProdAcc,VarCombUserProdAcc=VarCombUserProdAcc,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that provides kappa coefficient, which measures the relationship between agreement beyond chance and expected disagreement. The method also offers variation. The reference \insertCite{cohen1960}{PaolaR6Nuevo} is followed for the calculations.
@@ -1148,16 +1196,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item Kappa: Kappa coefficient.
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item ExpAcc: expected accuracy of agreement if agreement were purely random.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{Kappa}: Kappa coefficient.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{ExpAcc}: expected accuracy of agreement if agreement were purely random.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with kappa coefficient and its variance.
-      #' @details
-      #' Example matrix taken from Congalton, R.G.,  and  Green, K. (2008). Assessing the Accuracy of Remotely Sensed Data: Principles and Practices, Second Edition (2nd ed.). CRC press
+      #' @return A list with kappa coefficient, its variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -1165,21 +1212,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     Kappa = function(){
-      ExpAcc = (sum (self$sumfil * self$sumcol))/sum(self$values)^2
+     Kappa = function(a=NULL){
+      ExpAcc <- (sum (self$sumfil * self$sumcol))/sum(self$values)^2
       if (1-ExpAcc == 0){
        stop ("/ by 0")
       }else{
-        kappa = (self$OverallAcc()[[1]]- ExpAcc) / (1 - ExpAcc)
-        VarKappa=abs((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-ExpAcc)^2))
+        kappa <- (self$OverallAcc()[[1]]- ExpAcc) / (1 - ExpAcc)
+        VarKappa <- abs((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-ExpAcc)^2))
+        ConfInt <- private$ConfInt(kappa,VarKappa,a)
       }
-     return(list(Kappa=kappa,VarKappa=VarKappa))
+     return(list(Kappa=kappa,VarKappa=VarKappa,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
 
-      #' @description  Public method for calculating map entropy. Which refers to the degree of uncertainty that the map presents. The method also offers variation. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
+      #' @description Public method for calculating map entropy. Which refers to the degree of uncertainty that the map presents. The method also offers variation. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop=\sum^n_{i,j=1} (\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}} \cdot \log (\dfrac{x_{ij}}{\dfrac{\sum^n_{i=1} x_{i +} \cdot \sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij}}}))
@@ -1190,12 +1238,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item Entrop: map entropy.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{Entrop}: map entropy.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with map entropy and its variance.
+      #' @return A list with map entropy, its variance and confidence interval.
+      #' @param a Significance level. By default 0.05.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
@@ -1204,14 +1253,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     Entrop = function(v=NULL){
+     Entrop = function(v=NULL,a=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-       Entrop = sum ((self$values/sum(self$values)) * log(self$values / ((self$sumfil * self$sumcol)/sum(self$values)),base=v),na.rm=TRUE)
-       VarEntrop=abs((Entrop*(1-Entrop))/sum(self$values))
-     return(list(Entrop=Entrop,VarEntrop=VarEntrop))
+       Entrop <- sum ((self$values/sum(self$values)) * log(self$values / ((self$sumfil * self$sumcol)/sum(self$values)),base=v),na.rm=TRUE)
+       VarEntrop <- abs((Entrop*(1-Entrop))/sum(self$values))
+       ConfInt <- private$ConfInt(Entrop,VarEntrop,a)
+     return(list(Entrop=Entrop,VarEntrop=VarEntrop,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -1229,15 +1279,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item NormEntropUser: normalized entropy using map.
-      #'   \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-      #'   \item Entrop: map entropy.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{NormEntropUser}: normalized entropy using map.
+      #'   \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+      #'   \item \eqn{Entrop}: map entropy.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with normalized entropy using map and its variance.
+      #' @return A list with normalized entropy using map, its variance and confidence interval.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Liu et al. 2007")
@@ -1245,20 +1296,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     NormEntropUser = function(v=NULL){
+     NormEntropUser = function(v=NULL,a=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-       Entrop_iB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
+       Entrop_iB <- - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
 
        if(Entrop_iB == 0){
         stop("/ by 0")
        }
 
-       NormEntropUser = self$Entrop(v)[[1]]/Entrop_iB
-       VarNormEntropUser=abs((NormEntropUser*(1-NormEntropUser))/sum(self$values))
-     return(list(NormEntropUser=NormEntropUser,VarNormEntropUser=VarNormEntropUser))
+       NormEntropUser <- self$Entrop(v)[[1]]/Entrop_iB
+       VarNormEntropUser <- abs((NormEntropUser*(1-NormEntropUser))/sum(self$values))
+       ConfInt <- private$ConfInt(NormEntropUser,VarNormEntropUser,a)
+     return(list(NormEntropUser=NormEntropUser,VarNormEntropUser=VarNormEntropUser,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that calculates normalized entropy using on ground truthing. The method also offers variation. The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
@@ -1275,15 +1327,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item NormEntropProd: normalized mutual information using the entropy on ground truthing.
-      #'   \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-      #'   \item Entrop: map entropy.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{NormEntropProd}: normalized mutual information using the entropy on ground truthing.
+      #'   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+      #'   \item \eqn{Entrop}: map entropy.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with normalized entropy using on ground truthing and its variance.
+      #' @return A list with normalized entropy using on ground truthing, its variance and confidence interval.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Liu et al. 2007")
@@ -1291,19 +1344,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     NormEntropProd = function(v=NULL){
+     NormEntropProd = function(v=NULL,a=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-      Entrop_iA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
        if (Entrop_iA == 0){
         stop ("/ by 0")
        }else{
-         NormEntropProd = self$Entrop()[[1]]/Entrop_iA
-         VarNormEntropProd=abs((NormEntropProd*(1-NormEntropProd))/sum(self$values))
+         NormEntropProd <- self$Entrop()[[1]]/Entrop_iA
+         VarNormEntropProd <- abs((NormEntropProd*(1-NormEntropProd))/sum(self$values))
+         ConfInt <- private$ConfInt(NormEntropProd,VarNormEntropProd,a)
          }
-     return(list(NormEntropProd=NormEntropProd,VarNormEntropProd=VarNormEntropProd))
+     return(list(NormEntropProd=NormEntropProd,VarNormEntropProd=VarNormEntropProd,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that calculates normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing. The method also offers variation. The reference \insertCite{strehl2002}{PaolaR6Nuevo} is followed for the calculations.
@@ -1324,16 +1378,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvNormEntrop: normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing.
-      #'   \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-      #'   \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-      #'   \item Entrop: map entropy.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvNormEntrop}: normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing.
+      #'   \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+      #'   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+      #'   \item \eqn{Entrop}: map entropy.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing and its variance.
+      #' @return normalized entropy using the arithmetic mean of the entropies on the map and on ground truthing, its variance and confidence interval.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -1341,21 +1396,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvNormEntrop = function(v=NULL){
+     AvNormEntrop = function(v=NULL,a=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-      Entrop_iB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
-      Entrop_iA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iB <- - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
         if (Entrop_iA + Entrop_iB == 0) {
           stop ("/ by 0")
         }else{
-          AvNormEntrop = 2 * self$Entrop(v)[[1]] / (Entrop_iA + Entrop_iB)
-          VarAvNormEntrop= abs((AvNormEntrop*(1-AvNormEntrop))/sum(self$values))
+          AvNormEntrop <- 2 * self$Entrop(v)[[1]] / (Entrop_iA + Entrop_iB)
+          VarAvNormEntrop <- abs((AvNormEntrop*(1-AvNormEntrop))/sum(self$values))
+          ConfInt <- private$ConfInt(AvNormEntrop,VarAvNormEntrop,a)
         }
 
-     return(list(AvNormEntrop=AvNormEntrop,VarAvNormEntrop=VarAvNormEntrop))
+     return(list(AvNormEntrop=AvNormEntrop,VarAvNormEntrop=VarAvNormEntrop,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public method that calculates normalized entropy using the geometric mean of the entropies on the map and on ground truthing. The method also offers variation. The reference \insertCite{ghosh2002}{PaolaR6Nuevo} is followed for the calculations.
@@ -1375,16 +1431,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item GeomAvNormEntrop: normalized entropy using the geometric mean of the entropies on map and on ground truthing.
-      #'   \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-      #'   \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-      #'   \item Entrop: map entropy.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{GeomAvNormEntrop}: normalized entropy using the geometric mean of the entropies on map and on ground truthing.
+      #'   \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+      #'   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+      #'   \item \eqn{Entrop}: map entropy.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with normalized entropy using the geometric mean of the entropies on map and on ground truthing and its variance.
+      #' @return A list with normalized entropy using the geometric mean of the entropies on map and on ground truthing, its variance and confidence interval.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -1392,19 +1449,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     GeomAvNormEntrop = function(v=NULL){
+     GeomAvNormEntrop = function(v=NULL,a=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
-      Entrop_iB = - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
-      Entrop_iA = - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iB <- - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
        if (Entrop_iA * Entrop_iB == 0) {
         stop ("/ by 0")
        }else{
-         GeomAvNormEntrop = self$Entrop(v)[[1]] / sqrt(Entrop_iA * Entrop_iB)
-         VarGeomAvNormEntrop=abs((GeomAvNormEntrop*(1-GeomAvNormEntrop)))
+         GeomAvNormEntrop <- self$Entrop(v)[[1]] / sqrt(Entrop_iA * Entrop_iB)
+         VarGeomAvNormEntrop <- abs((GeomAvNormEntrop*(1-GeomAvNormEntrop)))
+         ConfInt<-private$ConfInt(GeomAvNormEntrop,VarGeomAvNormEntrop,a)
          }
-     return(list(GeomAvNormEntrop=GeomAvNormEntrop,VarGeoAvNormEntrop=VarGeomAvNormEntrop))
+     return(list(GeomAvNormEntrop=GeomAvNormEntrop,VarGeoAvNormEntrop=VarGeomAvNormEntrop,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
       #' @description Public mathod that provides normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing.The method also offers variation. The reference \insertCite{strehl2002relationship}{PaolaR6Nuevo} is followed for the calculations.
@@ -1421,17 +1479,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #' where:
       #'
       #' \enumerate{
-      #'   \item AvMaxNormEntrop: normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing.
-      #'   \item Entrop_i(B): entropy of the map with respect to the category on ground truthing.
-      #'   \item Entrop_i(A): Entropy of the map with respect to the category of the map.
-      #'   \item Entrop: map entropy.
-      #'   \item x_+i: sum of all elements in column i.
-      #'   \item x_i+: sum of all elements in row i.
-      #'   \item M: number of elements of the matrix.
-      #'   \item N: number of cases involved in the calculation of the index.
+      #'   \item \eqn{AvMaxNormEntrop}: normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing.
+      #'   \item \eqn{Entrop_i(B)}: entropy of the map with respect to the category on ground truthing.
+      #'   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the category of the map.
+      #'   \item \eqn{Entrop}: map entropy.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #' }
-      #' @return A list with normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing and its variance.
+      #' @return A list with normalized entropy using the arithmetic mean of the maximum entropies on map and on ground truthing, its variance and confidence interval.
       #' @param v Base of the logarithm. By default v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-MatCon$new(A,Source="Congalton and Green 2008")
@@ -1439,21 +1498,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     AvMaxNormEntrop = function(v=NULL){
+     AvMaxNormEntrop = function(v=NULL,a=NULL){
        if(!is.null(v)){
          v<-v
        }else{v<-10}
 
-        AvMaxNormEntrop = self$Entrop(v)[[1]] / log(sqrt(length(self$values)),base=v)
-        VarAvMaxNormEntrop=abs((AvMaxNormEntrop*(1-AvMaxNormEntrop))/sum(self$values))
+        AvMaxNormEntrop <- self$Entrop(v)[[1]] / log(sqrt(length(self$values)),base=v)
+        VarAvMaxNormEntrop <- abs((AvMaxNormEntrop*(1-AvMaxNormEntrop))/sum(self$values))
+        ConfInt <- private$ConfInt(AvMaxNormEntrop,VarAvMaxNormEntrop,a)
 
-     return (list(AvMaxNormEntrop=AvMaxNormEntrop,Var=VarAvMaxNormEntrop))
+     return (list(AvMaxNormEntrop=AvMaxNormEntrop,Var=VarAvMaxNormEntrop,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
 
       #' @description Public method that calculates the tau index and its variance. Its value indicates how much the classification has improved compared to a random classification of the N elements into M groups. The method also offers the variance. The reference \insertCite{book}{PaolaR6Nuevo} is followed for the computations.
-      #' @return A list with Tau index and its variance.
+      #' @return A list with Tau index, its variance and confidence interval.
       #' @description
       #' The mathematical expression is:
       #'
@@ -1470,11 +1530,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' Where:
       #' \enumerate{
-      #'   \item OverallAcc: overall accuracy.
-      #'   \item PrAgCoef: a priori random agreement coefficient.
-      #'   \item M: number of classes.
-      #'   \item N: number of elements of the matrix, cardinal of the matrix.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{PrAgCoef}: a priori random agreement coefficient.
+      #'   \item \eqn{M}: number of classes.
+      #'   \item \eqn{N}: number of elements of the matrix, cardinal of the matrix.
       #' }
+      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
@@ -1485,11 +1546,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' @aliases
 
-     Tau = function(){
+     Tau = function(a=NULL){
         Ca<-1/nrow(self$values)
-        Tau<-((self$OverallAcc()[[1]]-Ca)/(1-Ca))
-        VarTau=((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-Ca)))
-     return(list(Tau=Tau,VarTau=VarTau))
+        Tau <- ((self$OverallAcc()[[1]]-Ca)/(1-Ca))
+        VarTau <- ((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-Ca)))
+        ConfInt <- private$ConfInt(Tau,VarTau,a)
+     return(list(Tau=Tau,VarTau=VarTau,Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
 
 
@@ -1502,7 +1564,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method that calculates the pressures of the user and the producer jointly. The method also offers the standard desviations. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that calculates the pressures of the user and the producer jointly. The method also offers the standard desviations. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list containing the producer's and user's accuracies and their standard deviations, respectively.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -1600,7 +1662,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description  Public method that calculates the values of quantity, change and shift. The reference \insertCite{pontius2014}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that calculates the values of quantity, change and shift. The reference \insertCite{pontius2014}{PaolaR6Nuevo} is followed for the computations.
       #' @param TI Time interval (default value = 1)
       #' @param SF Scale factor for results (default value = 1)
       #' @return A list of general values for the interval t of difference, quantity, shift, and shift.In addition to the differences for categories, number of components, change of categories and turn of the components.
@@ -1664,7 +1726,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 # Functions that return matrices ------------------------------------------
 
-      #' @description  Public method that types the values of each cell. The total sum of the original matrix is used for typing. The resulting values can be presented as real (parameter RaR=1) or as a percentage (parameter RaR !=1)
+      #' @description Public method that types the values of each cell. The total sum of the original matrix is used for typing. The resulting values can be presented as real (parameter RaR=1) or as a percentage (parameter RaR !=1)
       #' @description
       #'  \deqn{
       #' MTypify=\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
@@ -1674,7 +1736,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
       #'
       #' \enumerate{
       #'   \item MTyipify: typified matrix.
-      #'   \item x_ij: matrix element.
+      #'   \item \eqn{x_{ij}}: matrix element.
       #' }
       #' @param RaR "1" indicates result as real, other values mean percentage as integer. By default RaR=1.
       #' @return A list with original matrix and typified matrix
@@ -1706,7 +1768,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method in which multiple parameters are calculated for the given confusion matrix. The references \insertCite{congalton2008,cohen1960,munoz2016}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method in which multiple parameters are calculated for the given confusion matrix. The references \insertCite{congalton2008,cohen1960,munoz2016}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list containing confusion matrix, dimension, total sum of cell values, overall precision, overall variance precision, global precision kappa index, global kappa simplified variance, producer precision by class, user precision by class, pseudoceros matrix.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -1780,7 +1842,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
       #' @param n Number of iteration. By default n=100.
       #' @return A list formed by the original confusion matrix and the normalized matrix.
-      #' @description Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The reference \insertCite{fienberg1970,munoz2016}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that carries out an iterative process is carried out where each element is divided by the total of the sum of its row, thus obtaining new values. In the next iteration, all the elements are added by columns and each element is divided by the total of its column and they obtain new values, and so on. The references \insertCite{fienberg1970,munoz2016}{PaolaR6Nuevo} is followed for the computations.
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
@@ -1815,7 +1877,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method that small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. The reference \insertCite{munoz2016}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that small values are calculated for empty cells of the matrix. All non-empty cells of the matrix change their values. This function will not be applied if all the elements of the matrix are different from 0. The reference \insertCite{munoz2016}{PaolaR6Nuevo} is followed for the computations.
       #' @return A list formed by the original confusion matrix and the Pseudozeroes matrix.
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
@@ -1858,9 +1920,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
 
 
 
-      #' @description  Public method that calculates the general Tau concordance index and its standard deviation.
+      #' @description Public method that calculates the general Tau concordance index and its standard deviation.
       #' @param WV Weights vector (as matrix)
-      #' @return  Overall accuracy index, producer accurancy index, O3,O4, Tau index?(mirar definicion en funcion) y its standard desviation.
+      #' @return  A list with the weight matrix, the Tau index, its standard deviation and its statistics.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' WV <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
@@ -1892,10 +1954,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
        Tau <- (O1-O2)/t2
        SdT <- sqrt((t3+t4+t5)/SumaMatriz)
        CV<- Tau/SdT
-     return(list(WeightsVector=WV, O1=O1, O2=O2, O3=O3,O4=O4, Tau=Tau, SdT=SdT, CV=CV))
+     return(list(WeightsVector=WV, Tau=Tau, SdT=SdT, CV=CV))
      },
 
-      #' @description  Public method that calculates the general Kappa agreement index (weighted) and its standard deviation. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that calculates the general Kappa agreement index (weighted) and its standard deviation. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
       #' @param WM  Weight matrix
       #' @return A list with the weight matrix, kappa index obtained from the original matrix and the weight matrix, its standard desviations and the value of its test statistic.
       #' @examples
@@ -1936,7 +1998,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      },
 
 
-      #' @description  Public method that calculates the weighted accuracies and standard deviations of the user and the producer. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that calculates the weighted accuracies and standard deviations of the user and the producer. The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
       #' @param WM Weight matrix
       #' @return A list with weight matrix, Matrix formed with its original elements and their corresponding weights, general accuracy of the weight matrix obtained, accuracy of the producer and user and their standard deviations,
       #' @examples
@@ -1993,11 +2055,26 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
      return(list(OriginalWeightMatrix=WM,WMatrix=WConfM, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUserAcc= wpcua, WUserAccSDeviation=pcuasd))
      }
 
-
-
    ),
    private = list(
-     nUsos = NULL
+
+     #' @description Private method to calculate the confidence interval from the value of a given index.
+     #' @param a Significance level. By default 0.05
+     #' @param p Index value
+     #' @param var Index variance
+     #' @return Confidence interval
+
+     ConfInt=function(p,var,a=NULL){
+
+       if(is.null(a)){
+         a<-0.05
+       }else{a<-a}
+
+       z<-qnorm(1-a/2)
+       ConfInt_inf<-p-z*sqrt(var)
+       ConfInt_sup<-p+z*sqrt(var)
+       return(list(ConfInt_inf=ConfInt_inf,ConfInt_sup=ConfInt_sup))
+     }
    ),
    active = list(
    )

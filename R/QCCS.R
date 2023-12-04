@@ -1,16 +1,18 @@
 #' @title Quality Control Columns Set
-#' @description The p value is calculated using the multinomial distribution from vectors and their corresponding probabilities.
+#' @description The p value of the probability vector data is calculated, which follow a multinomial or binomial distribution. Hypothesis contrasts are applied and it is decided whether the classification of elements is optimal or not.
 #' @param vectors vector list
 #' @param prob probabilities list
 #' @param ID Identifier. By default ID is a random number between 1 and 1000.
 #' @param Date Date provided by the user. By default the date provided by the system will be taken.
 #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
-#' @return Object of class QCCS
+#' @return Object of class QCCS.
 #' @export QCCS
 #' @references
 #' \insertRef{QCCS}{PaolaR6Nuevo}
+#'
+#' \insertRef{alba2020}{PaolaR6Nuevo}
 #' @importFrom R6 R6Class
-#' @importFrom stats dmultinom
+#' @importFrom stats dmultinom pchisq
 #' @importFrom Rdpack reprompt
 #'
 #'
@@ -19,8 +21,8 @@
 
 QCCS <- R6Class("QCCS",
   public = list(
-    #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #' @description Public method to create an instance of the QCCS class. At the time of creation, a list of vectors with data and a list of probability vectors that correspond to the data must be defined. The same number of data vectors as probability vectors must be entered, the pairs of data-probability vectors must have the same size, otherwise an error will be displayed.
+    #' The optional possibility of adding metadata to the matrix is offered. The values of the data vectors represent the reference categories that will be taken into account.
     #'
     #' @param vectors vector list.
     #' @param prob probabilities list.
@@ -28,9 +30,9 @@ QCCS <- R6Class("QCCS",
     #' @param Date Date provided by the user. By default the date provided by the system will be taken.
     #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
     #' @examples
-    #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-    #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-    #' A <- QCCS$new(vectors,prob)
+    #' vectors<-list(c(18,0,3,0),c(27,19))
+    #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+    #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
     #'
     #' @aliases
 
@@ -129,20 +131,25 @@ QCCS <- R6Class("QCCS",
 
 
 # QCCS public function. To calculate p-value, use test-ntol ---------------
+# Multinomial Exact Tests -------------------------------------------------
 
 
-
-      #' @description Public method that, using a list of vectors and their corresponding probabilities, through a multinomial distribution, calculates the p value using each of the vectors. The reference \insertCite{QCCS}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that, using a list of vectors and their corresponding probabilities, through a multinomial or binomial distribution depending on the size of the vector, calculates the p value using each pair of vector-probability data. The null hypothesis shows that for each category the data set is either well classified or not. The Bonferroni method is used. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
       #' @return The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+      #' @param alpha significance level. By default alpha=0.05.
       #' @examples
-      #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-      #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-      #' A <- QCCS$new(vectors,prob,Source="Ariza et al.,2019")
-      #' A$QCCS()
+      #' vectors<-list(c(18,0,3,0),c(27,19))
+      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+      #' A$ExactTest()
       #'
       #' @aliases
 
-    QCCS = function() {
+    ExactTest = function(alpha=NULL) {
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
       n <- length(self$vectors)
       m <- length(self$prob)
       sol <- c()
@@ -165,8 +172,114 @@ QCCS <- R6Class("QCCS",
         }
 
       sol <- c(sol, p_value)
-    return(p_value=sol)
+
+      a<-private$MethBonf(sol,alpha)
+
+    return(a)
+    },
+
+
+
+# ji global multinomial test ----------------------------------------------
+
+      #' @description Public method that, using a list of vectors and their corresponding probabilities that follow a binomial or multinomial distribution, calculates the p-value for compliance with all defined specifications. The chi square test is used. The null hypothesis verifies that the probabilities are met and therefore that the set of elements are well defined. If one of the defined probabilities is not met, the null hypothesis would be rejected. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
+      #' @return The p value of the entire data set is obtained, through the chi-square, and it is decided whether the elements are well classified or not.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @examples
+      #' vectors<-list(c(18,0,3,0),c(27,19))
+      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+      #' A$JiGlobalTest()
+      #'
+      #' @aliases
+
+    JiGlobalTest=function(alpha=NULL){
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
+    #number of vectors and prob vectors
+    n <- length(self$vectors)
+    m <- length(self$prob)
+    p_value<-c()
+    Suma<-0
+    S<-list()
+    k<-0
+    #for each vector
+      for (j in 1:n) {
+      #elements of each vector
+      vi <- self$vectors[[j]]
+      pi <- self$prob[[j]]
+      ni <- length(vi)
+      mi <- length(pi)
+      k<-k+(ni-1)
+      pj<-c()
+        for (i in 1:ni){
+          pj<-c(pj,(vi[i]-sum(vi)*pi[i])/sqrt(sum(vi)*pi[i]))
+        }
+      S[[j]]<-pj
+
+      ST<-pj^2
+
+      Suma<-Suma+sum(ST)
+      }
+
+
+    p_value<-pchisq(Suma, k, lower.tail=FALSE)
+
+    if(p_value>alpha){
+      cat("The null hypothesis is not rejected.\n",p_value,">=",alpha)
+    }else{cat("The null hypothesis is rejected.\n",p_value,"<",alpha)}
+
+    return(p_value)
+    },
+
+
+# ji multinomial test ----------------------------------------------
+
+      #' @description Public method that, using a list of vectors and their corresponding probabilities that follow a multinomial or binomial distribution, calculates the p value using each vector-probability data pair. The chi square test is used. The null hypothesis shows that for each category the data set is either well classified or not. The Bonferroni method is used. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
+      #' @return The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @examples
+      #' vectors<-list(c(18,0,3,0),c(27,19))
+      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+      #' A$JiTest()
+      #'
+      #' @aliases
+
+    JiTest=function(alpha=NULL){
+      if(is.null(alpha)){
+      alpha<-0.05
+      }else{alpha<-alpha}
+
+      #number of vectors and prob vectors
+      n <- length(self$vectors)
+      m <- length(self$prob)
+      p_value<-c()
+      k<-0
+      #for each vector
+        for (j in 1:n) {
+        #elements of each vector
+        vi <- self$vectors[[j]]
+        pi <- self$prob[[j]]
+        ni <- length(vi)
+        mi <- length(pi)
+        k<-ni-1
+        pj<-c()
+        for (i in 1:ni){
+          pj<-c(pj,(vi[i]-sum(vi)*pi[i])/sqrt(sum(vi)*pi[i]))
+        }
+        ST<-sum(pj^2)
+        }
+
+        p_value<-pchisq(ST, k, lower.tail=FALSE)
+
+        a<-private$MethBonf(p_value,alpha)
+
+    return(a)
     }
+
 
   ),
 
@@ -183,11 +296,11 @@ QCCS <- R6Class("QCCS",
          alpha<-0.05
        }else{alpha<-alpha}
        n<-length(pvalue)
-
+        v<-alpha/n
        for (i in 1:n) {
-         if(pvalue[i]>alpha/n){
-           cat(sprintf("The null hypothesis is not rejected.\n",p[i],">=",alpha/n))
-         }else{cat(sprintf("The null hypothesis is rejected.\n",p[i],"<",alpha/n))}
+         if(pvalue[i]>v){
+           cat(" The null hypothesis is not rejected. ",pvalue[i],">=",v,"\n")
+         }else{cat(" The null hypothesis is rejected. ",pvalue[i],"<",v,"\n")}
        }
        return(list(p_value=pvalue,BF=alpha/4))
      },

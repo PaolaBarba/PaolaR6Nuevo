@@ -4,10 +4,10 @@
 \alias{QCCS}
 \title{Quality Control Columns Set}
 \value{
-Object of class QCCS
+Object of class QCCS.
 }
 \description{
-The p value is calculated using the multinomial distribution from vectors and their corresponding probabilities.
+The p value of the probability vector data is calculated, which follow a multinomial or binomial distribution. Hypothesis contrasts are applied and it is decided whether the classification of elements is optimal or not.
 }
 \examples{
 
@@ -15,29 +15,53 @@ The p value is calculated using the multinomial distribution from vectors and th
 ## Method `QCCS$new`
 ## ------------------------------------------------
 
-vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-A <- QCCS$new(vectors,prob)
+vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
 
 
 ## ------------------------------------------------
-## Method `QCCS$QCCS`
+## Method `QCCS$ExactTest`
 ## ------------------------------------------------
 
-vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-A <- QCCS$new(vectors,prob,Source="Ariza et al.,2019")
-A$QCCS()
+vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A$ExactTest()
+
+
+## ------------------------------------------------
+## Method `QCCS$JiGlobalTest`
+## ------------------------------------------------
+
+vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A$JiGlobalTest()
+
+
+## ------------------------------------------------
+## Method `QCCS$JiTest`
+## ------------------------------------------------
+
+vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A$JiTest()
 
 }
 \references{
 \insertRef{QCCS}{PaolaR6Nuevo}
+
+\insertRef{alba2020}{PaolaR6Nuevo}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
-\item \href{#method-QCCS-QCCS}{\code{QCCS$QCCS()}}
+\item \href{#method-QCCS-ExactTest}{\code{QCCS$ExactTest()}}
+\item \href{#method-QCCS-JiGlobalTest}{\code{QCCS$JiGlobalTest()}}
+\item \href{#method-QCCS-JiTest}{\code{QCCS$JiTest()}}
 \item \href{#method-QCCS-clone}{\code{QCCS$clone()}}
 }
 }
@@ -45,7 +69,8 @@ A$QCCS()
 \if{html}{\out{<a id="method-QCCS-new"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-new}{}}}
 \subsection{Method \code{new()}}{
-Creates a new instance of this [R6][R6::R6Class] class.
+Public method to create an instance of the QCCS class. At the time of creation, a list of vectors with data and a list of probability vectors that correspond to the data must be defined. The same number of data vectors as probability vectors must be entered, the pairs of data-probability vectors must have the same size, otherwise an error will be displayed.
+The optional possibility of adding metadata to the matrix is offered. The values of the data vectors represent the reference categories that will be taken into account.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$new(vectors, prob, ID = NULL, Date = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
@@ -67,9 +92,9 @@ Creates a new instance of this [R6][R6::R6Class] class.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-A <- QCCS$new(vectors,prob)
+\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
 
 }
 \if{html}{\out{</div>}}
@@ -78,23 +103,94 @@ A <- QCCS$new(vectors,prob)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-QCCS"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-QCCS}{}}}
-\subsection{Method \code{QCCS()}}{
-Public method that, using a list of vectors and their corresponding probabilities, through a multinomial distribution, calculates the p value using each of the vectors. The reference \insertCite{QCCS}{PaolaR6Nuevo} is followed for the computations.
+\if{html}{\out{<a id="method-QCCS-ExactTest"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-ExactTest}{}}}
+\subsection{Method \code{ExactTest()}}{
+Public method that, using a list of vectors and their corresponding probabilities, through a multinomial or binomial distribution depending on the size of the vector, calculates the p value using each pair of vector-probability data. The null hypothesis shows that for each category the data set is either well classified or not. The Bonferroni method is used. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$QCCS()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$ExactTest(alpha = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
 The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
-A <- QCCS$new(vectors,prob,Source="Ariza et al.,2019")
-A$QCCS()
+\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A$ExactTest()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-JiGlobalTest"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-JiGlobalTest}{}}}
+\subsection{Method \code{JiGlobalTest()}}{
+Public method that, using a list of vectors and their corresponding probabilities that follow a binomial or multinomial distribution, calculates the p-value for compliance with all defined specifications. The chi square test is used. The null hypothesis verifies that the probabilities are met and therefore that the set of elements are well defined. If one of the defined probabilities is not met, the null hypothesis would be rejected. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobalTest(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The p value of the entire data set is obtained, through the chi-square, and it is decided whether the elements are well classified or not.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A$JiGlobalTest()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-JiTest"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-JiTest}{}}}
+\subsection{Method \code{JiTest()}}{
+Public method that, using a list of vectors and their corresponding probabilities that follow a multinomial or binomial distribution, calculates the p value using each vector-probability data pair. The chi square test is used. The null hypothesis shows that for each category the data set is either well classified or not. The Bonferroni method is used. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiTest(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A$JiTest()
 
 }
 \if{html}{\out{</div>}}

@@ -1,12 +1,11 @@
 #' @title test
-#' @description
-#' Creates a new instance of this [R6][R6::R6Class] class.
+#' @description Through various tests, it is proven whether two matrices are similar or not.
 #' @param A Matrix
 #' @param B Matrix
 #' @param ID Identifier. By default ID is a random number between 1 and 1000.
 #' @param Date Date provided by the user. By default the date provided by the system will be taken.
 #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
-#' @return Object of class test
+#' @return Object of class test.
 #' @export test
 #' @references
 #' \insertRef{garcia2018}{PaolaR6Nuevo}
@@ -25,8 +24,8 @@
 test <- R6Class("test",
   #inherit=MatCon,
   public = list(
-    #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #' @description Public method to create an instance of the test class. At the time of creation, the values of two matrices of the same range must be provided, otherwise an error will be displayed. The optional possibility of adding metadata to the matrix is offered.
+    #' The values of the matrix must be organized in such a way that the columns represent the categories in the reference and the rows represent the categories in the product being evaluated.
     #' @param A Matrix
     #' @param B Matrix
     #' @param ID Identifier. By default ID is a date in YYYYMMDD format
@@ -92,10 +91,10 @@ test <- R6Class("test",
       #'
       #' Where:
       #' \enumerate{
-      #'   \item HD: Hellinger Distance
-      #'   \item n: number of elements in the matrix A.
-      #'   \item \code{p_i}: element i of the probability vector of matrix A.
-      #'   \item \code{q_i}: element i of the probability vector of matrix B.
+      #'   \item \eqn{HD}: Hellinger Distance
+      #'   \item \eqn{n}: number of elements in the matrix A.
+      #'   \item \eqn{p_i}: element i of the probability vector of matrix A.
+      #'   \item \eqn{q_i}: element i of the probability vector of matrix B.
       #' }
       #' @return The statistic value of the statistical test based on the Hellinger distance.
       #' @param A matrix. By default, the defined matrix is taken to create the object of the test class.
@@ -142,15 +141,15 @@ test <- R6Class("test",
       #' The mathematical expression to calculate its statistic is:
       #'
       #' \deqn{
-      #' Z = \dfrac{|K1-K2|}{\sqrt(var(K1)+var(K2))}
+      #' Z = \dfrac{|k1-k2|}{\sqrt(var(K1)+var(K2))}
       #' }
       #'
       #' Where:
       #' \enumerate{
-      #'   \item K1: kappa index of matrix A
-      #'   \item K2: kappa index of matrix B
-      #'   \item var(K1): variance of K1.
-      #'   \item var(K2): variance of K2.
+      #'   \item \eqn{k1}: kappa index of matrix A
+      #'   \item \eqn{k2}: kappa index of matrix B
+      #'   \item \eqn{var(k1)}: variance of k1.
+      #'   \item \eqn{var(k2)}: variance of k2.
       #' }
       #' @return A list with the value of the statistic between kappa values and its z score for a given alpha significance level.
       #' @param alpha significance level. By default alpha=0.05.
@@ -158,11 +157,11 @@ test <- R6Class("test",
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
       #' f <- test$new(A,B,Source="Congalton and Green 2008")
-      #' f$kappa.test()
+      #' f$Kappa.test()
       #'
       #' @aliases
 
-    kappa.test=function(alpha=NULL){
+    Kappa.test=function(alpha=NULL){
       if(is.null(alpha)){
         alpha<-0.05
       }else{alpha<-alpha}
@@ -176,8 +175,8 @@ test <- R6Class("test",
       cl<-qnorm(1-alpha/2)
 
       if(Z>-cl & Z<cl){
-        cat(sprintf("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))
-      }else{cat(sprint("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))}
+        cat("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n")
+      }else{cat("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n")}
 
     return(list(St=Z,Z=cl))
     },
@@ -189,15 +188,15 @@ test <- R6Class("test",
       #' The mathematical expression to calculate its statistic is:
       #'
       #' \deqn{
-      #' Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+      #' Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
       #' }
       #'
       #' Where:
       #' \enumerate{
-      #'   \item k1: overall index of matrix A
-      #'   \item k2: overall index of matrix B
-      #'   \item var(K1): variance of K1.
-      #'   \item var(K2): variance of K2.
+      #'   \item \eqn{k1}: overall index of matrix A
+      #'   \item \eqn{k2}: overall index of matrix B
+      #'   \item \eqn{var(K1)}: variance of k1.
+      #'   \item \eqn{var(K2)}: variance of k2.
       #' }
       #' @return A list of the statistic's value between the overall accuracies and its z-score for a given alpha significance level.
       #' @param alpha significance level. By default alpha=0.05.
@@ -225,8 +224,8 @@ test <- R6Class("test",
       cl<-qnorm(1-alpha/2)
 
       if(Z>-cl & Z<cl){
-        cat(sprintf("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))
-      }else{cat(sprint("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))}
+        cat("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n")
+      }else{cat("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n")}
 
     return(list(St=Z,Z=cl))
     },
@@ -237,15 +236,15 @@ test <- R6Class("test",
       #' The mathematical expression to calculate its statistic is:
       #'
       #' \deqn{
-      #' Z = \dfrac{k1-k2}{\sqrt{var(k1)+var(k2)}}
+      #' Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
       #' }
       #'
       #' Where:
       #' \enumerate{
-      #'   \item k1: Tau index of matrix A
-      #'   \item k2: Tau index of matrix B
-      #'   \item var(K1): variance of K1.
-      #'   \item var(K2): variance of K2.
+      #'   \item \eqn{k1}: Tau index of matrix A
+      #'   \item \eqn{k2}: Tau index of matrix B
+      #'   \item \eqn{var(k1)}: variance of k1.
+      #'   \item \eqn{var(k2)}: variance of k2.
       #' }
       #' @return A list of the statistic's value between the Tau index and its z-score for a given alpha significance level.
       #' @param alpha significance level. By default alpha=0.05.
@@ -273,13 +272,13 @@ test <- R6Class("test",
       cl<-qnorm(1-alpha/2)
 
       if(Z>-cl & Z<cl){
-        cat(sprintf("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n"))
-      }else{cat(sprint("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n"))}
+        cat("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n")
+      }else{cat("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n")}
 
     return(list(St=Z,Z=cl))
     },
 
-      #' @description Public method that performs a homogeneity test between two matrices based on the Hellinger distance. The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
+      #' @description Public method that performs a homogeneity test between two matrices based on the Hellinger distance. The test considers the individual cell values in the matrices. The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
       #' @return p value and decision to make.
       #' @param n1 Number of bootstraps that you want to generate. By default n=10000.
       #' @param alpha significance level. By default alpha=0.05.
@@ -334,12 +333,13 @@ test <- R6Class("test",
       pvalue<-length(Tn_boot)/length(Tn)
 
      if(pvalue>alpha){
-       cat(sprintf("The null hypothesis is not rejected, both confusion matrices exhibit a similar level of accuracy.\n"))
+       cat("The null hypothesis is not rejected, both confusion matrices exhibit a similar level of accuracy.\n")
      }else{
-       cat(sprintf("The hypothesis that both distributions are is still rejected and the confusion matrices, therefore, are not similar.\n"))
+       cat("The hypothesis that both distributions are is still rejected and the confusion matrices, therefore, are not similar.\n")
      }
     return(pvalue=pvalue)
     }
+
 
 ),
 
