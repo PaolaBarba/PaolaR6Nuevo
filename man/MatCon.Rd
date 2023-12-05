@@ -455,6 +455,61 @@ p<-MatCon$new(A,Source="Congalton and Green 2008")
 WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p$UserProdAcc_W(WM)
 
+
+## ------------------------------------------------
+## Method `MatCon$StHell`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+r<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- MatCon$new(B,Source="Congalton and Green 2008")
+p$StHell(f)
+
+
+## ------------------------------------------------
+## Method `MatCon$Kappa.test`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- MatCon$new(B,Source="Congalton and Green 2008")
+p$Kappa.test(f)
+
+
+## ------------------------------------------------
+## Method `MatCon$OverallAcc.test`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-MatCon$new(B,Source="Congalton and Green 2008")
+p$OverallAcc.test(f)
+
+
+## ------------------------------------------------
+## Method `MatCon$Tau.test`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-MatCon$new(B,Source="Congalton and Green 2008")
+p$Tau.test(f)
+
+
+## ------------------------------------------------
+## Method `MatCon$TSCM.test`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-MatCon$new(B,Source="Congalton and Green 2008")
+p$TSCM.test(f)
+
 }
 \references{
 \insertRef{congalton2008}{PaolaR6Nuevo}
@@ -494,6 +549,12 @@ p$UserProdAcc_W(WM)
 \insertRef{munoz2016}{PaolaR6Nuevo}
 
 \insertRef{foody1992}{PaolaR6Nuevo}
+
+\insertRef{garcia2018}{PaolaR6Nuevo}
+
+\insertRef{ma1995Tau}{PaolaR6Nuevo}
+
+\insertRef{alba2020}{PaolaR6Nuevo}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -544,6 +605,11 @@ p$UserProdAcc_W(WM)
 \item \href{#method-MatCon-DetailedWTau}{\code{MatCon$DetailedWTau()}}
 \item \href{#method-MatCon-DetailedWKappa}{\code{MatCon$DetailedWKappa()}}
 \item \href{#method-MatCon-UserProdAcc_W}{\code{MatCon$UserProdAcc_W()}}
+\item \href{#method-MatCon-StHell}{\code{MatCon$StHell()}}
+\item \href{#method-MatCon-Kappa.test}{\code{MatCon$Kappa.test()}}
+\item \href{#method-MatCon-OverallAcc.test}{\code{MatCon$OverallAcc.test()}}
+\item \href{#method-MatCon-Tau.test}{\code{MatCon$Tau.test()}}
+\item \href{#method-MatCon-TSCM.test}{\code{MatCon$TSCM.test()}}
 \item \href{#method-MatCon-clone}{\code{MatCon$clone()}}
 }
 }
@@ -2610,6 +2676,243 @@ A list with weight matrix, Matrix formed with its original elements and their co
 p<-MatCon$new(A,Source="Congalton and Green 2008")
 WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1), nrow = 4, ncol=4))
 p$UserProdAcc_W(WM)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-StHell"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-StHell}{}}}
+\subsection{Method \code{StHell()}}{
+Public method that provides the Hellinger distance between two elements of the MatCon class.
+The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
+The mathematical expression is:
+
+\deqn{
+HD = \dfrac{4nm}{n+m} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
+}
+
+Where:
+\enumerate{
+  \item \eqn{HD}: Hellinger Distance
+  \item \eqn{n}: number of elements in the matrix A.
+  \item \eqn{p_i}: element i of the probability vector of matrix A.
+  \item \eqn{q_i}: element i of the probability vector of matrix B.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$StHell(f, p = NULL, q = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{f}}{f Element of the MatCon.}
+
+\item{\code{p}}{matrix probability vector. By default, the probability of success for each cell is taken.}
+
+\item{\code{q}}{matrix probability vector. By default, the probability of success for each cell is taken.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The statistic value of the statistical test based on the Hellinger distance.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+r<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- MatCon$new(B,Source="Congalton and Green 2008")
+p$StHell(f)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-Kappa.test"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-Kappa.test}{}}}
+\subsection{Method \code{Kappa.test()}}{
+Public method that tests whether two independent confusion matrices of the MatCon class are significantly different using their kappa index.
+The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+The mathematical expression to calculate its statistic is:
+
+\deqn{
+Z = \dfrac{|k1-k2|}{\sqrt(var(K1)+var(K2))}
+}
+
+Where:
+\enumerate{
+  \item \eqn{k1}: kappa index of matrix A
+  \item \eqn{k2}: kappa index of matrix B
+  \item \eqn{var(k1)}: variance of k1.
+  \item \eqn{var(k2)}: variance of k2.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Kappa.test(f, alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{f}}{Element of the MatCon class.}
+
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list with the value of the statistic between kappa values and its z score for a given alpha significance level.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f <- MatCon$new(B,Source="Congalton and Green 2008")
+p$Kappa.test(f)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-OverallAcc.test"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-OverallAcc.test}{}}}
+\subsection{Method \code{OverallAcc.test()}}{
+Public method that tests whether two independent confusion matrices of the MatCon class are significantly different using their overall accuracy index.
+The reference \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed for the computations.
+The mathematical expression to calculate its statistic is:
+
+\deqn{
+Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
+}
+
+Where:
+\enumerate{
+  \item \eqn{k1}: overall index of matrix A
+  \item \eqn{k2}: overall index of matrix B
+  \item \eqn{var(K1)}: variance of k1.
+  \item \eqn{var(K2)}: variance of k2.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$OverallAcc.test(f, alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{f}}{Element of the MatCon class.}
+
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list of the statistic's value between the overall accuracies and its z-score for a given alpha significance level.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-MatCon$new(B,Source="Congalton and Green 2008")
+p$OverallAcc.test(f)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-Tau.test"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-Tau.test}{}}}
+\subsection{Method \code{Tau.test()}}{
+Public method that tests whether two independent confusion matrices of the MatCon class are significantly different using their Tau index.
+The reference \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed for the computations.
+The mathematical expression to calculate its statistic is:
+
+\deqn{
+Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
+}
+
+Where:
+\enumerate{
+  \item \eqn{k1}: Tau index of matrix A
+  \item \eqn{k2}: Tau index of matrix B
+  \item \eqn{var(k1)}: variance of k1.
+  \item \eqn{var(k2)}: variance of k2.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$Tau.test(f, alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{f}}{Element of the MatCon class.}
+
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list of the statistic's value between the Tau index and its z-score for a given alpha significance level.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-MatCon$new(B,Source="Congalton and Green 2008")
+p$Tau.test(f)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-MatCon-TSCM.test"></a>}}
+\if{latex}{\out{\hypertarget{method-MatCon-TSCM.test}{}}}
+\subsection{Method \code{TSCM.test()}}{
+Public method that performs a homogeneity test between two matrices of the MatCon class based on the Hellinger distance.
+The test considers the individual cell values in the matrices.
+The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{MatCon$TSCM.test(f, n1 = NULL, alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{f}}{Element of the MatCon class.}
+
+\item{\code{n1}}{Number of bootstraps that you want to generate. By default n=10000.}
+
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+p value and decision to make.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+p<-MatCon$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-MatCon$new(B,Source="Congalton and Green 2008")
+p$TSCM.test(f)
 
 }
 \if{html}{\out{</div>}}

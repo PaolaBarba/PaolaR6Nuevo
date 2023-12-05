@@ -58,6 +58,12 @@
 #' \insertRef{munoz2016}{PaolaR6Nuevo}
 #'
 #' \insertRef{foody1992}{PaolaR6Nuevo}
+#'
+#' \insertRef{garcia2018}{PaolaR6Nuevo}
+#'
+#' \insertRef{ma1995Tau}{PaolaR6Nuevo}
+#'
+#' \insertRef{alba2020}{PaolaR6Nuevo}
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 #' mc <- MatCon$new (A,ID=5,Date="27-10-2023",Source="Congalton and Green, 2008")
@@ -2053,7 +2059,306 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) |
             }
 
      return(list(OriginalWeightMatrix=WM,WMatrix=WConfM, WOverallAcc=WOverallAcc, WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUserAcc= wpcua, WUserAccSDeviation=pcuasd))
+     },
+
+
+
+# test function -----------------------------------------------------------
+
+
+      #' @description Public method that provides the Hellinger distance between two elements of the MatCon class.
+      #' The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
+      #' The mathematical expression is:
+      #'
+      #' \deqn{
+      #' HD = \dfrac{4nm}{n+m} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{HD}: Hellinger Distance
+      #'   \item \eqn{n}: number of elements in the matrix A.
+      #'   \item \eqn{p_i}: element i of the probability vector of matrix A.
+      #'   \item \eqn{q_i}: element i of the probability vector of matrix B.
+      #' }
+      #' @return The statistic value of the statistical test based on the Hellinger distance.
+      #' @param f f Element of the MatCon.
+      #' @param p matrix probability vector. By default, the probability of success for each cell is taken.
+      #' @param q matrix probability vector. By default, the probability of success for each cell is taken.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' r<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f <- MatCon$new(B,Source="Congalton and Green 2008")
+      #' p$StHell(f)
+      #'
+      #' @aliases
+
+    StHell = function(f,p=NULL,q=NULL){
+
+      if(class(f)[1]!="MatCon"){
+       warning("A MatCon element is not being introduced")
+        stop(" ")
+      }
+      A<-self$values
+      B<-f$values
+      if(is.null(p)){
+      p<-A/sum(A)
+      }else{p<-p}
+      if(is.null(q)){
+        q<-B/sum(B)
+      }else{q<-q}
+
+      if(length(q)!=length(p)){
+        stop("Probabilities with different sizes.")
+      }else{
+        p_orig <- 4*((sum(self$values)*sum(B)/(sum(self$values)+sum(B))) * sum((sqrt(p) - sqrt(q))^2))
+
+      return(StHell=p_orig)
+      }
+    },
+
+
+
+      #' @description Public method that tests whether two independent confusion matrices of the MatCon class are significantly different using their kappa index.
+      #' The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+      #' The mathematical expression to calculate its statistic is:
+      #'
+      #' \deqn{
+      #' Z = \dfrac{|k1-k2|}{\sqrt(var(K1)+var(K2))}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{k1}: kappa index of matrix A
+      #'   \item \eqn{k2}: kappa index of matrix B
+      #'   \item \eqn{var(k1)}: variance of k1.
+      #'   \item \eqn{var(k2)}: variance of k2.
+      #' }
+      #' @return A list with the value of the statistic between kappa values and its z score for a given alpha significance level.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @param f Element of the MatCon class.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f <- MatCon$new(B,Source="Congalton and Green 2008")
+      #' p$Kappa.test(f)
+      #'
+      #' @aliases
+
+      Kappa.test=function(f,alpha=NULL){
+        if(class(f)[1]!="MatCon"){
+          warning("A MatCon element is not being introduced")
+          stop(" ")
+        }
+        if(is.null(alpha)){
+          alpha<-0.05
+        }else{alpha<-alpha}
+
+        k1<-self$Kappa()[[1]]
+        k2<-f$Kappa()[[1]]
+        v1<-self$Kappa()[[2]]
+        v2<-f$Kappa()[[2]]
+
+        Z<-abs(k1-k2)/(sqrt(v1+v2))
+        cl<-qnorm(1-alpha/2)
+
+        if(Z>-cl & Z<cl){
+          cat("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n")
+        }else{cat("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n")}
+
+        return(list(St=Z,Z=cl))
+      },
+
+
+
+      #' @description Public method that tests whether two independent confusion matrices of the MatCon class are significantly different using their overall accuracy index.
+      #' The reference \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed for the computations.
+      #' The mathematical expression to calculate its statistic is:
+      #'
+      #' \deqn{
+      #' Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{k1}: overall index of matrix A
+      #'   \item \eqn{k2}: overall index of matrix B
+      #'   \item \eqn{var(K1)}: variance of k1.
+      #'   \item \eqn{var(K2)}: variance of k2.
+      #' }
+      #' @return A list of the statistic's value between the overall accuracies and its z-score for a given alpha significance level.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @param f Element of the MatCon class.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' p$OverallAcc.test(f)
+      #'
+      #' @aliases
+
+    OverallAcc.test=function(f,alpha=NULL){
+      if(class(f)[1]!="MatCon"){
+        warning("A MatCon element is not being introduced")
+        stop(" ")
+      }
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
+      k1<-self$OverallAcc()[[1]]
+      k2<-f$OverallAcc()[[1]]
+      v1<-self$OverallAcc()[[2]]
+      v2<-f$OverallAcc()[[2]]
+
+      #Ma-Tau
+      Z<-abs(k1-k2)/sqrt(v1+v2)
+
+      cl<-qnorm(1-alpha/2)
+
+      if(Z>-cl & Z<cl){
+        cat("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n")
+      }else{cat("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n")}
+
+    return(list(St=Z,Z=cl))
+    },
+
+
+      #' @description Public method that tests whether two independent confusion matrices of the MatCon class are significantly different using their Tau index.
+      #' The reference \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed for the computations.
+      #' The mathematical expression to calculate its statistic is:
+      #'
+      #' \deqn{
+      #' Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{k1}: Tau index of matrix A
+      #'   \item \eqn{k2}: Tau index of matrix B
+      #'   \item \eqn{var(k1)}: variance of k1.
+      #'   \item \eqn{var(k2)}: variance of k2.
+      #' }
+      #' @return A list of the statistic's value between the Tau index and its z-score for a given alpha significance level.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @param f Element of the MatCon class.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' p$Tau.test(f)
+      #'
+      #' @aliases
+
+    Tau.test=function(f,alpha=NULL){
+      if(class(f)[1]!="MatCon"){
+        warning("A MatCon element is not being introduced")
+        stop(" ")
+      }
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
+      k1<-self$Tau()[[1]]
+      k2<-f$Tau()[[1]]
+      v1<-self$Tau()[[2]]
+      v2<-f$Tau()[[2]]
+
+
+      #Ma-Tau
+      Z<-abs(k1-k2)/sqrt(v1+v2)
+
+      cl<-qnorm(1-alpha/2)
+
+      if(Z>-cl & Z<cl){
+        cat("The null hypothesis is not rejected. Therefore, the kappa values and the confusion matrices do not present significant differences.\n")
+      }else{cat("The null hypothesis is rejected. Therefore, their kappa values and confusion matrices are significantly different.\n")}
+
+    return(list(St=Z,Z=cl))
+    },
+
+      #' @description Public method that performs a homogeneity test between two matrices of the MatCon class based on the Hellinger distance.
+      #' The test considers the individual cell values in the matrices.
+      #' The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for the computations.
+      #' @return p value and decision to make.
+      #' @param n1 Number of bootstraps that you want to generate. By default n=10000.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @param f Element of the MatCon class.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' p$TSCM.test(f)
+      #'
+      #' @aliases
+
+    TSCM.test=function(f,n1=NULL,alpha=NULL){
+      if(class(f)[1]!="MatCon"){
+        warning("A MatCon element is not being introduced")
+        stop(" ")
+      }
+      if(is.null(n1)){
+        n1<-10000
+      }else{n1<-n1}
+
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+
+      A<-self$values
+      B<-f$values
+      n<-length(A)
+      m<-length(B)
+      p2<-A/sum(A)
+      q2<-B/sum(B)
+
+      p_orig<-self$StHell(f)
+
+      #Probability defined between p and q
+      p_0<-c()
+      for(i in 1:length(p2)){
+        p_01<-(n*p2[i]+m*q2[i])/(n+m)
+        p_0<-c(p_0,p_01)
+      }
+      #bootstrap
+      q1<-list()
+      p1<-list()
+      p1<-self$MBootStrap(n1,p_0)[[2]]
+      q1<-f$MBootStrap(n1,p_0)[[2]]
+      #calculation of hellinger statistics by pairs
+
+      Tn<-c()
+
+      for (i in 1:length(p1)) {
+        Tn1<-self$StHell(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))
+        Tn<-c(Tn,Tn1)
+      }
+      #Those that meet the condition of being greater than the original statistic are saved.
+      Tn_boot<-c()
+      for (i in 1:length(Tn)) {
+        if((Tn[i]>=p_orig)==TRUE){
+          Tn_boot<-c(Tn_boot,Tn[i])
+        }
+      }
+
+      #mean p
+      pvalue<-length(Tn_boot)/length(Tn)
+
+     if(pvalue>alpha){
+       cat("The null hypothesis is not rejected, both confusion matrices exhibit a similar level of accuracy.\n")
+     }else{
+       cat("The hypothesis that both distributions are is still rejected and the confusion matrices, therefore, are not similar.\n")
      }
+    return(pvalue=pvalue)
+    }
+
+
+
 
    ),
    private = list(
