@@ -17,9 +17,11 @@
 #' List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Different number of data vectors and probability.
-#'  \item \code{Error type 2}: Different number of elements in the pair of data vectors and probabilities.
+#'  \item \code{Error type 2}: Different number of elements in the pair of data
+#'  vectors and probabilities.
 #'  \item \code{Error type 3}: The sum of the elements of the data vectors is 0.
-#'  \item \code{Error type 4}: The sum of the elements of the probability vectors is 0.
+#'  \item \code{Error type 4}: The sum of the elements of the probability
+#'  vectors is 0.
 #'  \item \code{Error type 5}: Some element of the data vector is negative.
 #'  \item \code{Error type 6}: Some element of the probability vector is negative.
 #'}
@@ -38,22 +40,27 @@
 QCCS <- R6Class("QCCS",
   public = list(
     #' @description Public method to create an instance of the QCCS class.
-    #' At the time of creation, a list of vectors with data and a list of probability
-    #' vectors that correspond to the data must be defined. The same number of data
-    #' vectors as probability vectors must be entered, the pairs of data-probability
-    #' vectors must have the same size, otherwise an error will be displayed.
+    #' At the time of creation, a list of vectors with data and a list
+    #' of probability vectors that correspond to the data must be
+    #' defined. The same number of data vectors as probability vectors
+    #' must be entered, the pairs of data-probability vectors must have
+    #' the same size, otherwise an error will be displayed.
     #' The optional possibility of adding metadata to the matrix is offered.
-    #' The values of the data vectors represent the reference categories that will be taken into account.
+    #' The values of the data vectors represent the reference categories that
+    #' will be taken into account.
     #'
     #' @param vectors vector list.
     #' @param prob probabilities list.
     #' @param ID Identifier. By default ID is a date in YYYYMMDD format
-    #' @param Date Date provided by the user. By default the date provided by the system will be taken.
-    #' @param Source Indicates where the matrix comes from (article, project, etc.). By default is NULL.
+    #' @param Date Date provided by the user. By default the date provided
+    #' by the system will be taken.
+    #' @param Source Indicates where the matrix comes from
+    #' (article, project, etc.). By default is NULL.
     #' @examples
     #' vectors<-list(c(18,0,3,0),c(27,19))
     #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-    #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+    #' A<-QCCS$new(vectors,prob,
+    #' Source="Alba-Fernández et al. 2020")
     #'
     #' @aliases
 
@@ -100,7 +107,7 @@ QCCS <- R6Class("QCCS",
     m <- length(self$prob)
       if (n != m) {
         error1<-TRUE
-        cat("Error type 1: There must be the same number of data columns as probability columns")
+        cat("Error type 1: There must be the same number of\ndata columns as probability columns")
       }
 
       for (i in 1:n) {
@@ -112,51 +119,57 @@ QCCS <- R6Class("QCCS",
       # check
         if ((ni != mi) == TRUE) {
           error2<-TRUE
-          cat("Error type 2: The vectors and their corresponding probabilities must have the same size")
+          cat("Error type 2: The vectors and their corresponding\nprobabilities must have the same size")
         }
         if(sum(vi)==0){
           error3<-TRUE
-          cat("Error type 3: The sum of the elements of the data vectors is 0")
+          cat("Error type 3: The sum of the elements of the\ndata vectors is 0")
         }
         if(sum(pi)==0){
           error4<-TRUE
-          cat("Error type 4: The sum of the elements of the probability vectors is 0")
+          cat("Error type 4: The sum of the elements of the\nprobability vectors is 0")
         }
         for (i in 1:ni) {
 
         if(vi[i]<0){
           error5<-TRUE
-          cat("Error type 5: Some element of the data vector is negative")
+          cat("Error type 5: Some element of the data\nvector is negative")
         }
         if(pi[i]<0){
           error6<-TRUE
-          cat("Error type 6: Some element of the probability vector is negative.")
+          cat("Error type 6: Some element of the probability\nvector is negative.")
         }
         }
       }
-    if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE) || (error5==TRUE) || (error6==TRUE)) {
+    if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE)
+        || (error4 == TRUE) || (error5==TRUE) || (error6==TRUE)) {
       warning("Type errors 1, 2, 3, 4, 5 or 6")
       stop()
     }
   },
 
 
-# QCCS public function. To calculate p-value, use test-ntol ---------------
+# To calculate p-value, use test-ntol -------------------------------------
 # Multinomial Exact Tests -------------------------------------------------
 
 
       #' @description Public method that, using a list of vectors and their
-      #' corresponding probabilities, through a multinomial or binomial distribution
-      #' depending on the size of the vector, calculates the p value using each pair
-      #' of vector-probability data. The null hypothesis shows that for each category
-      #' the data set is either well classified or not. The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
-      #' @return The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+      #' corresponding probabilities, through a multinomial or binomial
+      #' distribution depending on the size of the vector, calculates the
+      #' p value using each pair of vector-probability data. The null
+      #' hypothesis shows that for each category the data set is either
+      #' well classified or not. The Bonferroni method is used.
+      #' The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed
+      #' for the computations.
+      #' @return The p value is obtained for each vector, and using
+      #' the Bonferroni criterion it is decided whether the elements
+      #' are well classified or not.
       #' @param alpha significance level. By default alpha=0.05.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
       #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+      #' A<-QCCS$new(vectors,prob,
+      #' Source="Alba-Fernández et al. 2020")
       #' A$Exact.test()
       #'
       #' @aliases
@@ -198,19 +211,24 @@ QCCS <- R6Class("QCCS",
 
 # ji global multinomial test ----------------------------------------------
 
-      #' @description Public method that, using a list of vectors and their corresponding
-      #' probabilities that follow a binomial or multinomial distribution, calculates
-      #' the p-value for compliance with all defined specifications.
-      #' The chi square test is used. The null hypothesis verifies that the probabilities
-      #' are met and therefore that the set of elements are well defined.
-      #' If one of the defined probabilities is not met, the null hypothesis would be rejected.
-      #' The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
-      #' @return The p value of the entire data set is obtained, through the chi-square, and it is decided whether the elements are well classified or not.
+      #' @description Public method that, using a list of vectors and their
+      #' corresponding probabilities that follow a binomial or multinomial
+      #' distribution, calculates the p-value for compliance with all
+      #' defined specifications. The chi square test is used.
+      #' The null hypothesis verifies that the probabilities are met and
+      #' therefore that the set of elements are well defined. If one of
+      #' the defined probabilities is not met, the null hypothesis would
+      #' be rejected. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo}
+      #' is followed for the computations.
+      #' @return The p value of the entire data set is obtained, through
+      #' the chi-square, and it is decided whether the elements are well
+      #' classified or not.
       #' @param alpha significance level. By default alpha=0.05.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
       #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+      #' A <- QCCS$new(vectors,prob,
+      #' Source="Alba-Fernández et al. 2020")
       #' A$JiGlobal.test()
       #'
       #' @aliases
@@ -259,18 +277,23 @@ QCCS <- R6Class("QCCS",
 
 # ji multinomial test ----------------------------------------------
 
-      #' @description Public method that, using a list of vectors and their corresponding probabilities
-      #'  that follow a multinomial or binomial distribution, calculates the p value
-      #'  using each vector-probability data pair. The chi square test is used.
-      #'  The null hypothesis shows that for each category the data set is either well classified or not.
-      #'  The Bonferroni method is used. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is
-      #'  followed for the computations.
-      #' @return The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+      #' @description Public method that, using a list of vectors and
+      #' their corresponding probabilities that follow a multinomial
+      #' or binomial distribution, calculates the p value using each
+      #' vector-probability data pair. The chi square test is used. The
+      #' null hypothesis shows that for each category the data set is either
+      #' well classified or not. The Bonferroni method is used.
+      #' The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is
+      #' followed for the computations.
+      #' @return The p value is obtained for each vector, and using
+      #' the Bonferroni criterion it is decided whether the elements are
+      #' well classified or not.
       #' @param alpha significance level. By default alpha=0.05.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
       #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+      #' A <- QCCS$new(vectors,prob,
+      #' Source="Alba-Fernández et al. 2020")
       #' A$Ji.test()
       #'
       #' @aliases
@@ -319,11 +342,19 @@ QCCS <- R6Class("QCCS",
 
   private = list(
 
-       #' @description Public method that applies the Bonferroni method to make decisions in contrasting hypotheses. The reference \insertCite{alba2020}{PaolaR6Nuevo} is followed for the computations.
+       #' @description Public method that applies the Bonferroni method
+       #' to make decisions in contrasting hypotheses. The reference
+       #' \insertCite{alba2020}{PaolaR6Nuevo} is followed for the
+       #' computations.
        #' The mathematical expression is:
        #'
        #' \deqn{
-       #' BonfMeth = \left\{ \begin{array}{lcc} H_0 \text{is rejected}   &  if & p value \geq \dfrac{\alpha}{4} \\ \\ H_0 \text{is rejected}   &  if & p value<\dfrac{\alpha}{4} \end{array} \right.
+       #' BonfMeth = \left\{
+       #' \begin{array}{lcc} H_0 \text{is rejected}
+       #' &  if & p value \geq \dfrac{\alpha}{4} \\
+       #' \\ H_0 \text{is rejected}   &  if & p value<\dfrac{\alpha}{4}
+       #' \end{array}
+       #' \right.
        #' }
        #'
        #' Where:
@@ -331,12 +362,14 @@ QCCS <- R6Class("QCCS",
        #'   \item BonfMeth: Bonferroni method.
        #'   \item alpha: significance level.
        #' }
-       #' @return The statistic value of the statistical test based on the Hellinger distance.
+       #' @return The statistic value of the statistical test based
+       #' on the Hellinger distance.
        #' @param pvalue vector with the p values obtained.
        #' @param alpha significance level. By default alpha=0.05.
        #' @examples
        #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-       #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),c(0.9,0.08,0.02),c(0.99,0.01))
+       #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),
+       #' c(0.9,0.08,0.02),c(0.99,0.01))
        #' p <- QCCS$new(vectors,prob,Source="")
        #' pval<-p$QCCS()[[2]]
        #' p$MethBonf(pval)
@@ -363,11 +396,11 @@ QCCS <- R6Class("QCCS",
       result <- NULL
       stack <- list(list(comb = NULL, remaining = N, index = 1))
       #define progress bar
-      pb <- txtProgressBar(min = 0,      # Minimum value of progress bar
-                           max = choose(N+1+n-1,n),    # Maximum value of progress bar
-                           style = 3,    # Style
-                           width = 50,   # Broad
-                           char = "=")   # Character used to create the bar
+      pb <- txtProgressBar(min = 0,# Minimum value of progress bar
+                           max = choose(N+1+n-1,n),# Maximum value of progress bar
+                           style = 3,# Style
+                           width = 50,# Broad
+                           char = "=")# Character used to create the bar
       k<-0
       while (length(stack) > 0) {
         current <- stack[[length(stack)]]
@@ -382,7 +415,8 @@ QCCS <- R6Class("QCCS",
             result <- rbind(result, comb)
           } else {
             for (i in 0:remaining) {
-            stack <- c(stack, list(list(comb = c(comb, i), remaining = remaining - i, index = index + 1)))
+            stack <- c(stack, list(list(comb = c(comb, i),
+                     remaining = remaining - i, index = index + 1)))
           }
         }
       }
@@ -446,8 +480,7 @@ QCCS <- R6Class("QCCS",
         }
       }
 
-    #  p_valor <- max(A[, n+2])+dmultinom(M,prob=p)
-    #  p_valor1<-c(sum(A[,n+1]))+dmultinom(M,prob=p) #así creo que es para QCCS 2019
+
       p_valor<-sum(A[,n+1])
 
       resultados <- list(A = A, p.valor = p_valor)

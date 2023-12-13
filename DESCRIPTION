@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Paola
 Maintainer: Paola Barba Ceballos <pbarba@ujaen.es>
 Description: This package provides useful functions for the analysis of confusion matrices in classification problems. Includes methods to calculate overall accuracy, user accuracy, and map creator accuracy. 
-Imports: R6, Rdpack
+Imports: R6, Rdpack, ggplot2, gridExtra
 RdMacros: Rdpack
 License: GPL
 Encoding: UTF-8

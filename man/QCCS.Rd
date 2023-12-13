@@ -18,9 +18,11 @@ Error Messages
 List of possible errors:
 \itemize{
  \item \code{Error type 1}: Different number of data vectors and probability.
- \item \code{Error type 2}: Different number of elements in the pair of data vectors and probabilities.
+ \item \code{Error type 2}: Different number of elements in the pair of data
+ vectors and probabilities.
  \item \code{Error type 3}: The sum of the elements of the data vectors is 0.
- \item \code{Error type 4}: The sum of the elements of the probability vectors is 0.
+ \item \code{Error type 4}: The sum of the elements of the probability
+ vectors is 0.
  \item \code{Error type 5}: Some element of the data vector is negative.
  \item \code{Error type 6}: Some element of the probability vector is negative.
 }
@@ -33,7 +35,8 @@ List of possible errors:
 
 vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 
 
 ## ------------------------------------------------
@@ -42,7 +45,8 @@ A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
 
 vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 A$Exact.test()
 
 
@@ -52,7 +56,8 @@ A$Exact.test()
 
 vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A <- QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 A$JiGlobal.test()
 
 
@@ -62,7 +67,8 @@ A$JiGlobal.test()
 
 vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A <- QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 A$Ji.test()
 
 }
@@ -86,12 +92,14 @@ A$Ji.test()
 \if{latex}{\out{\hypertarget{method-QCCS-new}{}}}
 \subsection{Method \code{new()}}{
 Public method to create an instance of the QCCS class.
-At the time of creation, a list of vectors with data and a list of probability
-vectors that correspond to the data must be defined. The same number of data
-vectors as probability vectors must be entered, the pairs of data-probability
-vectors must have the same size, otherwise an error will be displayed.
+At the time of creation, a list of vectors with data and a list
+of probability vectors that correspond to the data must be
+defined. The same number of data vectors as probability vectors
+must be entered, the pairs of data-probability vectors must have
+the same size, otherwise an error will be displayed.
 The optional possibility of adding metadata to the matrix is offered.
-The values of the data vectors represent the reference categories that will be taken into account.
+The values of the data vectors represent the reference categories that
+will be taken into account.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$new(vectors, prob, ID = NULL, Date = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
@@ -105,9 +113,11 @@ The values of the data vectors represent the reference categories that will be t
 
 \item{\code{ID}}{Identifier. By default ID is a date in YYYYMMDD format}
 
-\item{\code{Date}}{Date provided by the user. By default the date provided by the system will be taken.}
+\item{\code{Date}}{Date provided by the user. By default the date provided
+by the system will be taken.}
 
-\item{\code{Source}}{Indicates where the matrix comes from (article, project, etc.). By default is NULL.}
+\item{\code{Source}}{Indicates where the matrix comes from
+(article, project, etc.). By default is NULL.}
 }
 \if{html}{\out{</div>}}
 }
@@ -115,7 +125,8 @@ The values of the data vectors represent the reference categories that will be t
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 
 }
 \if{html}{\out{</div>}}
@@ -128,11 +139,13 @@ A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
 \if{latex}{\out{\hypertarget{method-QCCS-Exact.test}{}}}
 \subsection{Method \code{Exact.test()}}{
 Public method that, using a list of vectors and their
-corresponding probabilities, through a multinomial or binomial distribution
-depending on the size of the vector, calculates the p value using each pair
-of vector-probability data. The null hypothesis shows that for each category
-the data set is either well classified or not. The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
+corresponding probabilities, through a multinomial or binomial
+distribution depending on the size of the vector, calculates the
+p value using each pair of vector-probability data. The null
+hypothesis shows that for each category the data set is either
+well classified or not. The Bonferroni method is used.
+The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed
+for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(alpha = NULL)}\if{html}{\out{</div>}}
 }
@@ -145,13 +158,16 @@ The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the comp
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+The p value is obtained for each vector, and using
+the Bonferroni criterion it is decided whether the elements
+are well classified or not.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 A$Exact.test()
 
 }
@@ -164,13 +180,15 @@ A$Exact.test()
 \if{html}{\out{<a id="method-QCCS-JiGlobal.test"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-JiGlobal.test}{}}}
 \subsection{Method \code{JiGlobal.test()}}{
-Public method that, using a list of vectors and their corresponding
-probabilities that follow a binomial or multinomial distribution, calculates
-the p-value for compliance with all defined specifications.
-The chi square test is used. The null hypothesis verifies that the probabilities
-are met and therefore that the set of elements are well defined.
-If one of the defined probabilities is not met, the null hypothesis would be rejected.
-The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the computations.
+Public method that, using a list of vectors and their
+corresponding probabilities that follow a binomial or multinomial
+distribution, calculates the p-value for compliance with all
+defined specifications. The chi square test is used.
+The null hypothesis verifies that the probabilities are met and
+therefore that the set of elements are well defined. If one of
+the defined probabilities is not met, the null hypothesis would
+be rejected. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo}
+is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(alpha = NULL)}\if{html}{\out{</div>}}
 }
@@ -183,13 +201,16 @@ The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed for the comp
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The p value of the entire data set is obtained, through the chi-square, and it is decided whether the elements are well classified or not.
+The p value of the entire data set is obtained, through
+the chi-square, and it is decided whether the elements are well
+classified or not.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A <- QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 A$JiGlobal.test()
 
 }
@@ -202,12 +223,14 @@ A$JiGlobal.test()
 \if{html}{\out{<a id="method-QCCS-Ji.test"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-Ji.test}{}}}
 \subsection{Method \code{Ji.test()}}{
-Public method that, using a list of vectors and their corresponding probabilities
- that follow a multinomial or binomial distribution, calculates the p value
- using each vector-probability data pair. The chi square test is used.
- The null hypothesis shows that for each category the data set is either well classified or not.
- The Bonferroni method is used. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is
- followed for the computations.
+Public method that, using a list of vectors and
+their corresponding probabilities that follow a multinomial
+or binomial distribution, calculates the p value using each
+vector-probability data pair. The chi square test is used. The
+null hypothesis shows that for each category the data set is either
+well classified or not. The Bonferroni method is used.
+The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is
+followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(alpha = NULL)}\if{html}{\out{</div>}}
 }
@@ -220,13 +243,16 @@ Public method that, using a list of vectors and their corresponding probabilitie
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The p value is obtained for each vector, and using the Bonferroni criterion it is decided whether the elements are well classified or not.
+The p value is obtained for each vector, and using
+the Bonferroni criterion it is decided whether the elements are
+well classified or not.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,Source="Alba-Fernández et al. 2020")
+A <- QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
 A$Ji.test()
 
 }
