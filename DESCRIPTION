@@ -4,7 +4,7 @@ Title: Confusion Matrix
 Version: 0.1.0
 Author: Paola Barba Ceballos
 Maintainer: Paola Barba Ceballos <pbarba@ujaen.es>
-Description: This package provides useful functions for the analysis of confusion matrices in classification problems. Includes methods to calculate overall accuracy, user accuracy, and map creator accuracy. 
+Description: This package is made using object-oriented programming, it provides several indices applicable to the confusion matrix to obtain information on the quality of the classification carried out. In addition, quality control of the classification can be carried out taking into account the reference data. It contains the 'ConfMatrix' and 'QCCS' classes created with R6.
 Imports: R6, Rdpack, ggplot2, gridExtra
 RdMacros: Rdpack
 License: GPL
