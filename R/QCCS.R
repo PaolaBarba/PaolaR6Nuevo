@@ -1,8 +1,11 @@
 #' @title Quality Control Columns Set
-#' @description The p-value is calculated from,the given data and probability
-#' vectors, which follow a multinomial or binomial distribution. Hypothesis
-#' contrasts are applied and it is decided whether the classification of
-#' elements is optimal or not.
+#' @description In the QCCS class, the confusion matrices will be given by
+#' vectors with their corresponding probabilities. In this way,
+#' the confusion matrices will be analyzed by columns, which will
+#' represent the given reference data. The p-value is calculated from
+#' the given data and the probability vectors, which follow a multinomial
+#' or binomial distribution. Hypothesis contrasts are applied and it is
+#' decided whether the classification of elements is optimal or not.
 #' @param vectors vector list
 #' @param prob probabilities list
 #' @param ID Identifier. By default ID is a random number between 1 and 1000.
@@ -26,9 +29,9 @@
 #'  \item \code{Error type 6}: Some element of the probability vector is negative.
 #'}
 #' @references
-#' \insertRef{QCCS}{PaolaR6Nuevo}
+#' \insertRef{QCCS}{ConfMatrix}
 #'
-#' \insertRef{alba2020}{PaolaR6Nuevo}
+#' \insertRef{alba2020}{ConfMatrix}
 #' @importFrom R6 R6Class
 #' @importFrom stats dmultinom pchisq
 #' @importFrom Rdpack reprompt
@@ -100,7 +103,6 @@ QCCS <- R6Class("QCCS",
     error5<- FALSE
     error6<- FALSE
 
-
     self$vectors <- vectors
     self$prob <- prob
     n <- length(self$vectors)
@@ -125,10 +127,11 @@ QCCS <- R6Class("QCCS",
           error3<-TRUE
           cat("Error type 3: The sum of the elements of the\ndata vectors is 0")
         }
-        if(sum(pi)==0){
+        if(sum(pi)!=1){
           error4<-TRUE
-          cat("Error type 4: The sum of the elements of the\nprobability vectors is 0")
+          cat("Error type 4: The sum of each probability\nvectors must be 1")
         }
+
         for (i in 1:ni) {
 
         if(vi[i]<0){
@@ -159,7 +162,7 @@ QCCS <- R6Class("QCCS",
       #' p value using each pair of vector-probability data. The null
       #' hypothesis shows that for each category the data set is either
       #' well classified or not. The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed
+      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} is followed
       #' for the computations.
       #' @return The p value is obtained for each vector, and using
       #' the Bonferroni criterion it is decided whether the elements
@@ -204,7 +207,7 @@ QCCS <- R6Class("QCCS",
 
       a<-private$MethBonf(sol,alpha)
 
-    return(a)
+    return(list(a,OriginalVectors=self$vectors,OriginalProb=self$prob))
     },
 
 
@@ -218,7 +221,7 @@ QCCS <- R6Class("QCCS",
       #' The null hypothesis verifies that the probabilities are met and
       #' therefore that the set of elements are well defined. If one of
       #' the defined probabilities is not met, the null hypothesis would
-      #' be rejected. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo}
+      #' be rejected. The references \insertCite{QCCS,alba2020}{ConfMatrix}
       #' is followed for the computations.
       #' @return The p value of the entire data set is obtained, through
       #' the chi-square, and it is decided whether the elements are well
@@ -269,7 +272,12 @@ QCCS <- R6Class("QCCS",
 
     if(p_value>alpha){
       cat("The null hypothesis is not rejected.\n",p_value,">=",alpha)
-    }else{cat("The null hypothesis is rejected.\n",p_value,"<",alpha)}
+      cat("\nThe set of elements are well defined")
+    }else{
+      cat("The null hypothesis is rejected.\n",p_value,"<",alpha)
+      cat("\nThe set of elements are not well defined")
+
+    }
 
     return(p_value)
     },
@@ -283,7 +291,7 @@ QCCS <- R6Class("QCCS",
       #' vector-probability data pair. The chi square test is used. The
       #' null hypothesis shows that for each category the data set is either
       #' well classified or not. The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is
+      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} is
       #' followed for the computations.
       #' @return The p value is obtained for each vector, and using
       #' the Bonferroni criterion it is decided whether the elements are
@@ -328,7 +336,7 @@ QCCS <- R6Class("QCCS",
 
         a<-private$MethBonf(p_value,alpha)
 
-    return(a)
+    return(list(a,OriginalVectors=self$vectors,OriginalProb=self$prob))
     }
 
 
@@ -344,7 +352,7 @@ QCCS <- R6Class("QCCS",
 
        #' @description Public method that applies the Bonferroni method
        #' to make decisions in contrasting hypotheses. The reference
-       #' \insertCite{alba2020}{PaolaR6Nuevo} is followed for the
+       #' \insertCite{alba2020}{ConfMatrix} is followed for the
        #' computations.
        #' The mathematical expression is:
        #'
@@ -384,8 +392,8 @@ QCCS <- R6Class("QCCS",
         v<-alpha/n
        for (i in 1:n) {
          if(pvalue[i]>v){
-           cat(" The null hypothesis is not rejected. ",pvalue[i],">=",v,"\n")
-         }else{cat(" The null hypothesis is rejected. ",pvalue[i],"<",v,"\n")}
+           cat(" The null hypothesis is not rejected.\n ",pvalue[i],">=",v,"\n")
+         }else{cat(" The null hypothesis is rejected.\n ",pvalue[i],"<",v,"\n")}
        }
        return(list(p_value=pvalue,Bonferroni=v))
      },

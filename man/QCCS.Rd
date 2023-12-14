@@ -7,10 +7,13 @@
 Object of class QCCS.
 }
 \description{
-The p-value is calculated from,the given data and probability
-vectors, which follow a multinomial or binomial distribution. Hypothesis
-contrasts are applied and it is decided whether the classification of
-elements is optimal or not.
+In the QCCS class, the confusion matrices will be given by
+vectors with their corresponding probabilities. In this way,
+the confusion matrices will be analyzed by columns, which will
+represent the given reference data. The p-value is calculated from
+the given data and the probability vectors, which follow a multinomial
+or binomial distribution. Hypothesis contrasts are applied and it is
+decided whether the classification of elements is optimal or not.
 }
 \note{
 Error Messages
@@ -73,9 +76,9 @@ A$Ji.test()
 
 }
 \references{
-\insertRef{QCCS}{PaolaR6Nuevo}
+\insertRef{QCCS}{ConfMatrix}
 
-\insertRef{alba2020}{PaolaR6Nuevo}
+\insertRef{alba2020}{ConfMatrix}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -144,7 +147,7 @@ distribution depending on the size of the vector, calculates the
 p value using each pair of vector-probability data. The null
 hypothesis shows that for each category the data set is either
 well classified or not. The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is followed
+The references \insertCite{QCCS,alba2020}{ConfMatrix} is followed
 for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(alpha = NULL)}\if{html}{\out{</div>}}
@@ -187,7 +190,7 @@ defined specifications. The chi square test is used.
 The null hypothesis verifies that the probabilities are met and
 therefore that the set of elements are well defined. If one of
 the defined probabilities is not met, the null hypothesis would
-be rejected. The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo}
+be rejected. The references \insertCite{QCCS,alba2020}{ConfMatrix}
 is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(alpha = NULL)}\if{html}{\out{</div>}}
@@ -229,7 +232,7 @@ or binomial distribution, calculates the p value using each
 vector-probability data pair. The chi square test is used. The
 null hypothesis shows that for each category the data set is either
 well classified or not. The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{PaolaR6Nuevo} is
+The references \insertCite{QCCS,alba2020}{ConfMatrix} is
 followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(alpha = NULL)}\if{html}{\out{</div>}}

@@ -1,5 +1,9 @@
 #' @title Confusion matrix
-#' @description Using the confusion matrix, various indices are calculated.
+#' @description In the ConfMatrix class works with confusion matrices,
+#' thus providing the possibility of calculating various indices to obtain
+#' information on the given matrices, their variances and their
+#' confidence intervals. The most important global indices are presented
+#' graphically, in addition to the user and producer accuracies.
 #' @param values Confusion matrix
 #' @param ID Identifier. By default ID is a date in YYYYMMDD format
 #' @param Date Date provided by the user. By default the date provided
@@ -7,7 +11,7 @@
 #' @param Source Indicates where the matrix comes from
 #' (article, project, etc.).
 #' By default is NULL.
-#' @return Object of class MatCon.
+#' @return Object of class ConfMatrix.
 #' @note  Error Messages
 #'
 #' List of possible errors:
@@ -20,65 +24,69 @@
 #'  \item \code{Error type 6}: Sum of columns 0.
 #'  \item \code{Error type 7}: It is not a matrix.
 #'}
-#' @export MatCon
+#' @export ConfMatrix
 #' @importFrom R6 R6Class
 #' @importFrom Rdpack reprompt
 #' @importFrom gridExtra grid.arrange
 #' @importFrom ggplot2 ggplot aes xlab ylab theme geom_point geom_errorbar
 #' @references
-#' \insertRef{congalton2008}{PaolaR6Nuevo}
+#' \insertRef{congalton2008}{ConfMatrix}
 #'
-#' \insertRef{liu2007}{PaolaR6Nuevo}
+#' \insertRef{liu2007}{ConfMatrix}
 #'
-#' \insertRef{koukoulas2001}{PaolaR6Nuevo}
+#' \insertRef{koukoulas2001}{ConfMatrix}
 #'
-#' \insertRef{turk2002}{PaolaR6Nuevo}
+#' \insertRef{turk2002}{ConfMatrix}
 #'
-#' \insertRef{hellden1980}{PaolaR6Nuevo}
+#' \insertRef{hellden1980}{ConfMatrix}
 #'
-#' \insertRef{rosenfield1986}{PaolaR6Nuevo}
+#' \insertRef{rosenfield1986}{ConfMatrix}
 #'
-#' \insertRef{short1982}{PaolaR6Nuevo}
+#' \insertRef{short1982}{ConfMatrix}
 #'
-#' \insertRef{finn1993}{PaolaR6Nuevo}
+#' \insertRef{finn1993}{ConfMatrix}
 #'
-#' \insertRef{tung1988}{PaolaR6Nuevo}
+#' \insertRef{tung1988}{ConfMatrix}
 #'
-#' \insertRef{cohen1960}{PaolaR6Nuevo}
+#' \insertRef{cohen1960}{ConfMatrix}
 #'
-#' \insertRef{strehl2002}{PaolaR6Nuevo}
+#' \insertRef{strehl2002}{ConfMatrix}
 #'
-#' \insertRef{ghosh2002}{PaolaR6Nuevo}
+#' \insertRef{ghosh2002}{ConfMatrix}
 #'
-#' \insertRef{strehl2002relationship}{PaolaR6Nuevo}
+#' \insertRef{strehl2002relationship}{ConfMatrix}
 #'
-#' \insertRef{book}{PaolaR6Nuevo}
+#' \insertRef{book}{ConfMatrix}
 #'
-#' \insertRef{pontius2014}{PaolaR6Nuevo}
+#' \insertRef{pontius2014}{ConfMatrix}
 #'
-#' \insertRef{ariza2011}{PaolaR6Nuevo}
+#' \insertRef{ariza2011}{ConfMatrix}
 #'
-#' \insertRef{fienberg1970}{PaolaR6Nuevo}
+#' \insertRef{fienberg1970}{ConfMatrix}
 #'
-#' \insertRef{munoz2016}{PaolaR6Nuevo}
+#' \insertRef{munoz2016}{ConfMatrix}
 #'
-#' \insertRef{foody1992}{PaolaR6Nuevo}
+#' \insertRef{foody1992}{ConfMatrix}
 #'
-#' \insertRef{garcia2018}{PaolaR6Nuevo}
+#' \insertRef{garcia2018}{ConfMatrix}
 #'
-#' \insertRef{ma1995Tau}{PaolaR6Nuevo}
+#' \insertRef{ma1995Tau}{ConfMatrix}
 #'
-#' \insertRef{alba2020}{PaolaR6Nuevo}
+#' \insertRef{alba2020}{ConfMatrix}
+#'
+#' \insertRef{turk1979gt}{ConfMatrix}
+#'
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 #' nrow=4,ncol=4)
-#' mc<-MatCon$new (A,ID=5,Date="27-10-2023",
+#' cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
 #' Source="Congalton and Green, 2008")
 #'
 #' @aliases
 
 
-MatCon <- R6Class("MatCon",
+
+ConfMatrix <- R6Class("ConfMatrix",
   public = list(
     #initialize the confusion matrix. An array must be added
     values = NULL,
@@ -95,7 +103,7 @@ MatCon <- R6Class("MatCon",
     #initialize sumcol
     sumcol=NULL,
 
-    #' @description Public method to create an instance of the MatCon class.
+    #' @description Public method to create an instance of the ConfMatrix class.
     #' When creating it, values must be given to the matrix. The optional
     #' possibility of adding metadata to the matrix is offered.
     #' The creation includes a series of checks on the data that, if not met,
@@ -109,11 +117,11 @@ MatCon <- R6Class("MatCon",
     #' the system will be taken.
     #' @param Source Indicates where the matrix comes from (article, project,
     #' etc.). By default is NULL.
-    #' @return Object of class MatCon or an error if a matrix isn't entered.
+    #' @return Object of class ConfMatrix or an error if a matrix isn't entered.
     #' @examples
     #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
     #' nrow=4,ncol=4)
-    #' mc<-MatCon$new (A,ID=5,Date="27-10-2023",
+    #' cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
     #' Source="Congalton and Green, 2008")
     #'
     #' @aliases
@@ -223,7 +231,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' image/map is then calculated by dividing the sum of the entries that
       #' form the major diagonal (i.e., the number of correct classifications)
       #' by the total number of samples taken. The method also offers the
-      #' variance. The reference \insertCite{congalton2008}{PaolaR6Nuevo}
+      #' variance. The reference \insertCite{congalton2008}{ConfMatrix}
       #' is followed for the computations.
       #' @description
       #' The mathematical expression is:
@@ -250,7 +258,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A)
+      #' p<-ConfMatrix$new(A)
       #' p$OverallAcc()
       #'
       #' @aliases
@@ -271,7 +279,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' map is calculated by dividing the value in the diagonal of class i
       #' by the sum of all values in the row of the class i. The method also
       #' offers the variance. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} is followed
+      #' \insertCite{congalton2008}{ConfMatrix} is followed
       #' for the computations.
       #' @description
       #' The mathematical expression is:
@@ -297,7 +305,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$UserAcc()
       #'
       #' @aliases
@@ -325,7 +333,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' of the thematic map is calculated by dividing the value on the
       #' diagonal of class i by the sum of all values in the row of class i.
       #' The method also offers variance. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} is followed for
+      #' \insertCite{congalton2008}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -352,7 +360,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$UserAcc_i(2)
       #'
       #' @aliases
@@ -373,7 +381,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' thematic map is calculated by dividing the value in the diagonal
       #' of class i by the sum of all values in the column of the class i.
       #' The method also offers the variance. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} if followed for the
+      #' \insertCite{congalton2008}{ConfMatrix} if followed for the
       #' computations.
       #' @description
       #'  \deqn{
@@ -398,7 +406,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$ProdAcc()
       #'
       #' @aliases
@@ -425,7 +433,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the thematic map is calculated by dividing the value on the diagonal
       #' of class i by the sum of all values in the column of class i. The
       #' method also offers variance. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the
+      #' \insertCite{congalton2008}{ConfMatrix} is followed for the
       #' calculations.
       #' @description
       #'  \deqn{
@@ -451,7 +459,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$ProdAcc_i(1)
       #'
       #' @aliases
@@ -469,7 +477,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the average of the
       #' accuracy rates of the user and producer of a specific class.
       #' The method also offers variance. The reference
-      #' \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
       #' @description
       #' The mathematical expression is:
       #'  \deqn{
@@ -496,7 +504,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvUserProdAcc_i(2)
       #'
       #' @aliases
@@ -517,7 +525,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the Classification
       #' Success Index (CSI) applies to all class and gives an overall
       #' estimation of classification effectiveness. The references
-      #' \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo} is followed
+      #' \insertCite{koukoulas2001,turk2002}{ConfMatrix} is followed
       #' for the calculations.
       #' @description The mathematical expression is:
       #'  \deqn{
@@ -542,7 +550,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),
       #' nrow=3,ncol=3)
-      #' p<-MatCon$new(A,Source="Labatut and Cherifi 2011")
+      #' p<-ConfMatrix$new(A,Source="Labatut and Cherifi 2011")
       #' p$Sucess()
       #'
       #' @aliases
@@ -561,7 +569,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the Individual
       #' Classification Success Index (ICSI) applies to the classification
       #' effectiveness for one particular class of interest.
-      #' The references \insertCite{koukoulas2001,turk2002}{PaolaR6Nuevo}
+      #' The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
       #' is followed for the calculations.
       #' @description
       #' The mathematical expression is:
@@ -589,7 +597,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),
       #' nrow=3,ncol=3)
-      #' p<-MatCon$new(A,Source="Labatut and Cherifi 2011")
+      #' p<-ConfMatrix$new(A,Source="Labatut and Cherifi 2011")
       #' p$Sucess_i(2)
       #'
       #' @aliases
@@ -613,7 +621,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' point in the field of the same class has a correspondence of the
       #' same class in the same position on the map.The method also offers
       #' variance. The references
-      #' \insertCite{hellden1980,rosenfield1986}{PaolaR6Nuevo} is
+      #' \insertCite{hellden1980,rosenfield1986}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
       #'  \deqn{
@@ -638,7 +646,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
       #' 7,1,1,0,6,25,1,1,0,0,1,6), nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Rosenfield and Fitzpatrick 1986")
+      #' p<-ConfMatrix$new(A,Source="Rosenfield and Fitzpatrick 1986")
       #' p$AvHelldenAcc_i(2)
       #'
       #' @aliases
@@ -669,7 +677,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' terms of all pixels affected by its classification (equal to this
       #' total in the displayed area as well as the pixels involved in errors
       #' of commission and omission). The method also offers variance.
-      #' The references \insertCite{rosenfield1986,short1982}{PaolaR6Nuevo}
+      #' The references \insertCite{rosenfield1986,short1982}{ConfMatrix}
       #' is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -696,7 +704,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,
       #' 39,7,1,1,0,6,25,1,1,0,0,1,6), nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Rosenfield and Fitzpatrick-Lins 1986")
+      #' p<-ConfMatrix$new(A,Source="Rosenfield and Fitzpatrick-Lins 1986")
       #' p$ShortAcc_i(2)
       #'
       #' @aliases
@@ -723,7 +731,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that evaluates the kappa coefficient
       #' from the user's perspective, for a specific class i. The method
       #' also offers variance. The reference
-      #' \insertCite{rosenfield1986}{PaolaR6Nuevo} is followed
+      #' \insertCite{rosenfield1986}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'  \deqn{
@@ -752,7 +760,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,
       #' 29,13,3,5,7,28,48,1,0,2,3,17), nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Næsset 1996")
+      #' p<-ConfMatrix$new(A,Source="Næsset 1996")
       #' p$UserKappa_i(2)
       #'
       #' @aliases
@@ -778,7 +786,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that evaluates the kappa coefficient from
       #' the producer's perspective, for a specific class i. The method also
       #' offers variance. The reference
-      #' \insertCite{rosenfield1986}{PaolaR6Nuevo} is followed
+      #' \insertCite{rosenfield1986}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'  \deqn{
@@ -807,7 +815,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,
       #' 29,13,3,5,7,28,48,1,0,2,3,17), nrow=5,ncol=5)
-      #' p<-MatCon$new(A,Source="Næsset 1996")
+      #' p<-ConfMatrix$new(A,Source="Næsset 1996")
       #' p$ProdKappa_i(2)
       #'
       #' @aliases
@@ -827,7 +835,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the overall modified
       #' kappa coefficient. The method also offers variance. The references
-      #' \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed for
+      #' \insertCite{stehman1997,foody1992}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -851,7 +859,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Foody 1992")
+      #' p<-ConfMatrix$new(A,Source="Foody 1992")
       #' p$ModKappa()
       #'
       #' @aliases
@@ -872,7 +880,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method, derived from the general modified
       #' kappa coefficient, which provides the modified coefficient kappa
       #' for the user. The method also offers variance. The references
-      #' \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is followed
+      #' \insertCite{stehman1997,foody1992}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'  \deqn{
@@ -899,7 +907,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$ModKappaUser_i(2)
       #'
       #' @aliases
@@ -922,7 +930,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method, derived from the general modified
       #' kappa coefficient, which provides the modified coefficient kappa
       #' for the producer. The method also offers variance.
-      #' The references \insertCite{stehman1997,foody1992}{PaolaR6Nuevo} is
+      #' The references \insertCite{stehman1997,foody1992}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
       #'  \deqn{
@@ -949,7 +957,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$ModKappaProd_i(2)
       #'
       #' @aliases
@@ -966,7 +974,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' @description Public method that calculates relative change of
      #' entropy given a category on map. That is, the degree of
      #' uncertainty of the category. The method also offers variance.
-     #' The reference \insertCite{finn1993}{PaolaR6Nuevo} is followed for
+     #' The reference \insertCite{finn1993}{ConfMatrix} is followed for
      #' the calculations.
      #' @description
      #'  \deqn{
@@ -1012,7 +1020,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' @examples
      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
      #' nrow=4,ncol=4)
-     #' p<-MatCon$new(A,Source="Liu et al. 2007")
+     #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
      #' p$EntropUser_i(1)
      #'
      #' @aliases
@@ -1053,7 +1061,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' @description Public method that calculates relative change of
      #' entropy given a category on ground truthing. That is, the degree
      #' of uncertainty of the category. The method also offers variance.
-     #' The reference \insertCite{stehman1997}{PaolaR6Nuevo} is followed for
+     #' The reference \insertCite{stehman1997}{ConfMatrix} is followed for
      #' the calculations.
      #' @param i Class to evaluate
      #' @param v Base of the logarithm. By default v=10.
@@ -1098,7 +1106,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' @examples
      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
      #' nrow=4,ncol=4)
-     #' p<-MatCon$new(A,Source="Liu et al. 2007")
+     #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
      #' p$EntropProd_i(2)
      #'
      #' @aliases
@@ -1131,7 +1139,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' accuracy, which is an average of the accuracy of individual
       #' categories, in this case the categories will be taken from
       #' the user's perspective. The method also offers variance. The
-      #' reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for the
+      #' reference \insertCite{tung1988}{ConfMatrix} is followed for the
       #' calculations.
       #' @description
       #'  \deqn{
@@ -1156,7 +1164,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
+      #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$AvUserAcc()
       #'
       #' @aliases
@@ -1179,7 +1187,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' accuracy, which is an average of the accuracy of individual
       #' categories, in this case the categories will be taken from the
       #' producer's perspective. The method also offers variance.
-      #' The reference \insertCite{tung1988}{PaolaR6Nuevo} is followed for
+      #' The reference \insertCite{tung1988}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -1204,7 +1212,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
+      #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$AvProdAcc()
       #'
       #' @aliases
@@ -1221,7 +1229,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that offers the average of the average
       #' precision from the perspective of the user and the producer. The
       #' method also offers variance. The reference
-      #' \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' AvUserProdAcc=\dfrac{AvUserAcc+AvProdAcc}{2}
@@ -1246,7 +1254,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvUserProdAcc()
       #'
       #' @aliases
@@ -1262,7 +1270,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the average value of the
       #' Hellden mean precision index. The method also offers variance.
-      #' The reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for
+      #' The reference \insertCite{liu2007}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -1290,7 +1298,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvHelldenAcc()
       #'
       #' @aliases
@@ -1307,7 +1315,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the average of Short's
       #' mapping accuracy index. The method also offers variance. The
-      #' reference \insertCite{liu2007}{PaolaR6Nuevo} is followed for
+      #' reference \insertCite{liu2007}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -1332,7 +1340,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvShortAcc()
       #'
       #' @aliases
@@ -1357,7 +1365,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the combined user accuracy
       #' that is the average of the overall accuracy and the average user
       #' accuracy. The method also offers variance. The reference
-      #' \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombUserAcc=\dfrac{OverallAcc+AvUserAcc}{2}
@@ -1380,7 +1388,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
+      #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$CombUserAcc()
       #'
       #' @aliases
@@ -1396,7 +1404,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the combined producer
       #' accuracy that is the average of the overall accuracy and the average
       #' producer accuracy. The method also offers variance. The reference
-      #' \insertCite{tung1988}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombProdAcc=\dfrac{OverallAcc+AvProdAcc}{2}
@@ -1419,7 +1427,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
-      #' p<-MatCon$new(A,Source="Tung and LeDrew 1988")
+      #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$CombProdAcc()
       #'
       #' @aliases
@@ -1436,7 +1444,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' which is the average of the overall accuracy and the Hellden
       #' average accuracy, which refers to the average user and producer
       #' accuracies. The method also offers variation. The reference
-      #' \insertCite{liu2007}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombUserProdAcc=\dfrac{OverallAcc+AvHelldenAcc}{2}
@@ -1461,7 +1469,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$CombUserProdAcc()
       #'
       #' @aliases
@@ -1479,7 +1487,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides kappa coefficient,
       #' which measures the relationship between agreement beyond chance
       #' and expected disagreement. The method also offers variation.
-      #' The reference \insertCite{cohen1960}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{cohen1960}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'  \deqn{
@@ -1513,7 +1521,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$Kappa()
       #'
       #' @aliases
@@ -1538,7 +1546,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method for calculating map entropy.
       #' Which refers to the degree of uncertainty that the map presents.
       #' The method also offers variation. The reference
-      #' \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop=\sum^n_{i,j=1} (\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
@@ -1564,7 +1572,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$Entrop()
       #'
       #' @aliases
@@ -1586,7 +1594,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates normalized entropy
       #' using the map. The method also offers variation. The reference
-      #' \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
@@ -1619,7 +1627,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$NormEntropUser()
       #'
       #' @aliases
@@ -1646,7 +1654,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates normalized entropy using
       #' on ground truthing. The method also offers variation. The reference
-      #' \insertCite{finn1993}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
@@ -1680,7 +1688,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$NormEntropProd()
       #'
       #' @aliases
@@ -1707,7 +1715,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates normalized entropy using
       #' the arithmetic mean of the entropies on the map and on ground
       #' truthing. The method also offers variation. The reference
-      #' \insertCite{strehl2002}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
@@ -1750,7 +1758,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvNormEntrop()
       #'
       #' @aliases
@@ -1779,7 +1787,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates normalized entropy using
       #' the geometric mean of the entropies on the map and on ground truthing.
       #' The method also offers variation. The reference
-      #' \insertCite{ghosh2002}{PaolaR6Nuevo} is followed for the calculations.
+      #' \insertCite{ghosh2002}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
@@ -1820,8 +1828,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' v=e(nats).
       #' @param a Significance level. By default 0.05.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$GeomAvNormEntrop()
       #'
       #' @aliases
@@ -1847,7 +1856,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public mathod that provides normalized entropy using
       #' the arithmetic mean of the maximum entropies on map and on ground
       #' truthing.The method also offers variation.
-      #' The reference \insertCite{strehl2002relationship}{PaolaR6Nuevo} is
+      #' The reference \insertCite{strehl2002relationship}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
       #' \deqn{
@@ -1888,8 +1897,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).
       #' @param a Significance level. By default 0.05.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvMaxNormEntrop()
       #'
       #' @aliases
@@ -1913,7 +1923,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' its variance. Its value indicates how much the classification has
       #' improved compared to a random classification of the N elements into
       #' M groups. The method also offers the variance.
-      #' The reference \insertCite{book}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{book}{ConfMatrix} is followed
       #' for the computations.
       #' @return A list with Tau index, its variance and confidence interval.
       #' @description
@@ -1945,7 +1955,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
       #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
       #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
-      #' p<-MatCon$new(A,Source="Muñoz 2016")
+      #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
       #' p$Tau()
       #'
       #' @aliases
@@ -1960,25 +1970,118 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      },
 
 
+      #' @description Public method that calculates the Ground Truth index
+      #' and its variance.The reference \insertCite{turk1979gt}{ConfMatrix}
+      #' is followed for the computations.
+      #' @return A list with Ground Truth index, its variance, confidence
+      #' interval and the matrix with the expected frequencies.
+      #' @description
+      #' The mathematical expression is:
+      #'
+      #' \deqn{
+      #' A_i=\dfrac{x_{ii}}{\sum_{j=1}^n(x_{+j})}
+      #' }
+      #' \deqn{
+      #' GroundTruth = \dfrac{ProdAcc-R_i}{1-R_i}
+      #' }
+      #'
+      #' \deqn{
+      #' \sigma^2_{Tau}=\dfrac{GroundTruth \cdot (1-GroundTruth)}
+      #' {N}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{GroundTruth}: index ground truth.
+      #'   \item \eqn{R_i}: casual lucky guess.
+      #'   (See \insertCite{turk1979gt}{ConfMatrix})
+      #'   \item \eqn{N}: number of elements of the matrix, cardinal of
+      #'   the matrix.
+      #' }
+      #' @param a Significance level. By default 0.05.
+      #' @examples
+      #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
+      #' 6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+      #' p<-ConfMatrix$new(A,Source="Turk 1979")
+      #' p$GroundTruth()
+      #'
+      #' @aliases
 
+
+    GroundTruth=function(a=NULL){
+      M<-self$values
+      #Matrix without diagonal
+      M_0<-M-diag(diag(M),nrow(M),nrow(M))
+      #Marginals of rows and columns of the matrix without diagonal
+      fi<-apply(M_0,1,sum)/sum(M_0)
+      fj<-apply(M_0,2,sum)/sum(M_0)
+
+      #calculation of U and V according to Turk 1979
+      V<-list()
+      U<-list()
+      vi<-c()
+      uj<-c()
+      vi<-fi
+      uj<-fj
+      V[[1]]<-vi
+      U[[1]]<-uj
+      tol<-1
+      i=1
+      while (tol>=0.0001) {
+        if((i)%%2==0){
+          U[[i+1]]<-U[[1]]/(sum(V[[i]])-V[[i]])
+        }else{
+          V[[i+1]]<-V[[1]]/(sum(U[[i]])-U[[i]])
+        }
+        if(i>=3){
+          if(!is.null(V[[i-1]])){
+            tol<-abs(sum(V[[i+1]])-sum(V[[i-1]]))
+          }else{
+            tol<-abs(sum(U[[i+1]])-sum(U[[i-1]]))
+          }
+        }
+        i=i+1
+      }
+      #expected frequency matrix
+      fij<-U[[length(U)]]%*%t(V[[length(V)]])
+      #matrix of expected frequencies without diagonal
+      fij_0<-fij-diag(diag(fij))
+      #Ri
+      Ri<-c()
+      for (i in 1:length(V[[length(V)]])) {
+        Ri<-c(Ri,V[[length(V)]][i]/sum(V[[length(V)]]))
+
+      }
+      Ai<-self$ProdAcc()[[1]]
+      #index ground truth
+      GroundTruth<-(Ai-Ri)/(1-Ri)
+      VarGroundTruth<-(GroundTruth*(1-GroundTruth))/sum(self$values)
+      ConfInt<-list()
+      for (i in 1:length(GroundTruth)) {
+        ConfInt[[i]]<-c(private$ConfInt(GroundTruth[i],VarGroundTruth[i],
+        a)$ConfInt_inf,private$ConfInt(GroundTruth[i],VarGroundTruth[i],
+        a)$ConfInt_sup)
+      }
+
+    return(list(GroundTruth=GroundTruth,VarGroundTruth=VarGroundTruth,
+                Conf_Int=ConfInt,ExpFrec=fij))
+    },
 
 # Functions that return multiple indices ----------------------------------
 
 
 
 
-
-
       #' @description Public method that calculates the pressures of the
       #' user and the producer jointly. The method also offers the standard
-      #' desviations. The reference \insertCite{congalton2008}{PaolaR6Nuevo}
+      #' desviations. The reference \insertCite{congalton2008}{ConfMatrix}
       #' is followed for the computations.
       #' @return A list containing the producer's and user's accuracies and
       #' their standard deviations, respectively.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$UserProdAcc()
       #'
       #' @aliases
@@ -2000,13 +2103,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description  Public method that calculates the general Kappa
       #' agreement index, its standard deviation and the test statistic
       #' to test its significance. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+      #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
       #' @return A list of the kappa coefficient, its standard deviation,
       #' and the value of its test statistic.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$DetailedKappa()
       #'
       #' @aliases
@@ -2039,13 +2142,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates the Kappa class agreement
       #' index (conditional Kappa) from the perspective of user (i) and
       #' producer (j) and its standard desviations. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the computations.
+      #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
       #' @return A list with conditional Kappa index of the user and the
       #' producer, and its corresponding standard deviation.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$DetailedCondKappa ()
       #'
       #' @aliases
@@ -2085,7 +2188,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that calculates the values of quantity,
-      #' change and shift. The reference \insertCite{pontius2014}{PaolaR6Nuevo}
+      #' change and shift. The reference \insertCite{pontius2014}{ConfMatrix}
       #' is followed for the computations.
       #' @param TI Time interval (default value = 1)
       #' @param SF Scale factor for results (default value = 1)
@@ -2096,7 +2199,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$QES(TI=1, SF=6)
       #'
       #' @aliases
@@ -2176,7 +2279,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A, Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A, Source="Congalton and Green 2008")
       #' p$MTypify(RaR=5)
 
       #Cell Values of a matrix are typified
@@ -2204,7 +2307,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method in which multiple parameters are
       #' calculated for the given confusion matrix. The references
-      #' \insertCite{congalton2008,cohen1960,munoz2016}{PaolaR6Nuevo} is
+      #' \insertCite{congalton2008,cohen1960,munoz2016}{ConfMatrix} is
       #' followed for the computations.
       #' @return A list containing confusion matrix, dimension, total sum of
       #' cell values, overall precision, overall variance precision,
@@ -2213,7 +2316,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AllParameters()
       #'
       #' @aliases
@@ -2246,8 +2349,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides N resamples of the confusion
-      #' matrix from a MatCon object. The reference
-      #' \insertCite{ariza2011}{PaolaR6Nuevo} is followed for the computations.
+      #' matrix from a ConfMatrix object. The reference
+      #' \insertCite{ariza2011}{ConfMatrix} is followed for the computations.
       #' @param n Number of resamples.
       #' @param pr Probability for resampling. By default, the probability of
       #' success for each cell will be taken.
@@ -2257,7 +2360,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A, Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A, Source="Congalton and Green 2008")
       #' p$MBootStrap(2)
       #'
       #' @aliases
@@ -2298,14 +2401,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' sum of its row, thus obtaining new values. In the next iteration,
       #' all the elements are added by columns and each element is divided
       #' by the total of its column and they obtain new values, and so on.
-      #' The references \insertCite{fienberg1970,munoz2016}{PaolaR6Nuevo}
+      #' The references \insertCite{fienberg1970,munoz2016}{ConfMatrix}
       #' is followed for the computations.
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
       #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
       #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
-      #' p<-MatCon$new(A,Source="Muñoz 2016")
+      #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
       #' p$MNormalize()$values
       #'
       #' @aliases
@@ -2338,7 +2441,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' cells of the matrix. All non-empty cells of the matrix change their
       #' values. This function will not be applied if all the elements of the
       #' matrix are different from 0.
-      #' The reference \insertCite{munoz2016}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{munoz2016}{ConfMatrix} is followed
       #' for the computations.
       #' @return A list formed by the original confusion matrix and the
       #' Pseudozeroes matrix.
@@ -2347,7 +2450,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
       #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
       #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
-      #' p<-MatCon$new(A,Source="Muñoz 2016")
+      #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
       #' p$MPseudoZeroes()
       #'
       #' @aliases
@@ -2394,7 +2497,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
       #' WV <-matrix(c(0.4, 0.1, 0.4, 0.1), ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$DetailedWTau(WV)
       #'
       #' @aliases
@@ -2427,7 +2530,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the general Kappa agreement
       #' index (weighted) and its standard deviation. The reference
-      #' \insertCite{congalton2008}{PaolaR6Nuevo} is followed for the
+      #' \insertCite{congalton2008}{ConfMatrix} is followed for the
       #' computations.
       #' @param WM  Weight matrix
       #' @return A list with the weight matrix, kappa index obtained from
@@ -2438,7 +2541,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' nrow=4,ncol=4)
       #' WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1),
       #' nrow = 4, ncol=4))
-      #' p<-MatCon$new(A)
+      #' p<-ConfMatrix$new(A)
       #' p$DetailedWKappa(WM)
       #'
       #' @aliases
@@ -2475,7 +2578,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the weighted accuracies
       #' and standard deviations of the user and the producer.
-      #' The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
       #' for the computations.
       #' @param WM Weight matrix
       #' @return A list with weight matrix, Matrix formed with its original
@@ -2485,7 +2588,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1),
       #' nrow = 4, ncol=4))
       #' p$UserProdAcc_W(WM)
@@ -2550,8 +2653,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides the Hellinger distance
-      #' between two elements of the MatCon class.
-      #' The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed
+      #' between two elements of the ConfMatrix class.
+      #' The reference \insertCite{garcia2018}{ConfMatrix} is followed
       #' for the computations.
       #' The mathematical expression is:
       #'
@@ -2568,7 +2671,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' @return The statistic value of the statistical test based on the
       #' Hellinger distance.
-      #' @param f f Element of the MatCon.
+      #' @param f f Element of the ConfMatrix.
       #' @param p matrix probability vector. By default, the probability of
       #' success for each cell is taken.
       #' @param q matrix probability vector. By default, the probability of
@@ -2576,18 +2679,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' r<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),
       #' nrow=4,ncol=4)
-      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$StHell(f)
       #'
       #' @aliases
 
     StHell = function(f,p=NULL,q=NULL){
 
-      if(class(f)[1]!="MatCon"){
-       warning("A MatCon element is not being introduced")
+      if(class(f)[1]!="ConfMatrix"){
+       warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
       A<-self$values
@@ -2612,9 +2715,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that tests whether two independent
-      #' confusion matrices of the MatCon class are significantly different
+      #' confusion matrices of the ConfMatrix class are significantly different
       #' using their kappa index.
-      #' The reference \insertCite{congalton2008}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
       #' for the computations.
       #' The mathematical expression to calculate its statistic is:
       #'
@@ -2632,19 +2735,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @return A list with the value of the statistic between kappa values
       #' and its z score for a given alpha significance level.
       #' @param alpha significance level. By default alpha=0.05.
-      #' @param f Element of the MatCon class.
+      #' @param f Element of the ConfMatrix class.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$Kappa.test(f)
       #'
       #' @aliases
 
       Kappa.test=function(f,alpha=NULL){
-        if(class(f)[1]!="MatCon"){
-          warning("A MatCon element is not being introduced")
+        if(class(f)[1]!="ConfMatrix"){
+          warning("A ConfMatrix element is not being introduced")
           stop(" ")
         }
         if(is.null(alpha)){
@@ -2669,9 +2772,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that tests whether two independent
-      #' confusion matrices of the MatCon class are significantly different
+      #' confusion matrices of the ConfMatrix class are significantly different
       #' using their overall accuracy index.
-      #' The reference \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{book,ma1995Tau}{ConfMatrix} is followed
       #' for the computations.
       #' The mathematical expression to calculate its statistic is:
       #'
@@ -2689,19 +2792,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @return A list of the statistic's value between the overall
       #' accuracies and its z-score for a given alpha significance level.
       #' @param alpha significance level. By default alpha=0.05.
-      #' @param f Element of the MatCon class.
+      #' @param f Element of the ConfMatrix class.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$OverallAcc.test(f)
       #'
       #' @aliases
 
     OverallAcc.test=function(f,alpha=NULL){
-      if(class(f)[1]!="MatCon"){
-        warning("A MatCon element is not being introduced")
+      if(class(f)[1]!="ConfMatrix"){
+        warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
       if(is.null(alpha)){
@@ -2727,9 +2830,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that tests whether two independent
-      #' confusion matrices of the MatCon class are significantly different
+      #' confusion matrices of the ConfMatrix class are significantly different
       #' using their Tau index.
-      #' The reference \insertCite{book,ma1995Tau}{PaolaR6Nuevo} is followed
+      #' The reference \insertCite{book,ma1995Tau}{ConfMatrix} is followed
       #' for the computations.
       #' The mathematical expression to calculate its statistic is:
       #'
@@ -2747,21 +2850,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @return A list of the statistic's value between the Tau index and
       #' its z-score for a given alpha significance level.
       #' @param alpha significance level. By default alpha=0.05.
-      #' @param f Element of the MatCon class.
+      #' @param f Element of the ConfMatrix class.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),
       #' nrow=4,ncol=4)
-      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$Tau.test(f)
       #'
       #' @aliases
 
     Tau.test=function(f,alpha=NULL){
-      if(class(f)[1]!="MatCon"){
-        warning("A MatCon element is not being introduced")
+      if(class(f)[1]!="ConfMatrix"){
+        warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
       if(is.null(alpha)){
@@ -2787,29 +2890,29 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     },
 
       #' @description Public method that performs a homogeneity test between
-      #' two matrices of the MatCon class based on the Hellinger distance.
+      #' two matrices of the ConfMatrix class based on the Hellinger distance.
       #' The test considers the individual cell values in the matrices.
-      #' The reference \insertCite{garcia2018}{PaolaR6Nuevo} is followed for
+      #' The reference \insertCite{garcia2018}{ConfMatrix} is followed for
       #' the computations.
       #' @return p value, alpha and decision to make.
       #' @param n1 Number of bootstraps that you want to generate.
       #' By default n=10000.
       #' @param alpha significance level. By default alpha=0.05.
-      #' @param f Element of the MatCon class.
+      #' @param f Element of the ConfMatrix class.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),
       #' nrow=4,ncol=4)
-      #' f<-MatCon$new(B,Source="Congalton and Green 2008")
+      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$TSCM.test(f)
       #'
       #' @aliases
 
     TSCM.test=function(f,n1=NULL,alpha=NULL){
-      if(class(f)[1]!="MatCon"){
-        warning("A MatCon element is not being introduced")
+      if(class(f)[1]!="ConfMatrix"){
+        warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
       if(is.null(n1)){
@@ -2873,14 +2976,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides the graph of the indices of
-      #' the functions OverallAcc, Kappa, Tau, GroundTruth, AvHelldenAcc,
+      #' the functions OverallAcc, Kappa, Tau, AvHelldenAcc,
       #' AvShortAcc with their corresponding standard desviation.
       #' @return the graph of the indices of the functions OverallAcc, Kappa,
-      #' Tau, GroundTruth, AvHelldenAcc, AvShortAcc with their corresponding
+      #' Tau, AvHelldenAcc, AvShortAcc with their corresponding
       #' standard desviation.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$plot.global()
       #'
       #' @aliases
@@ -2889,29 +2993,24 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     #OverallAcc
     #Tau
     #Kappa
-    #Ground Thuth
     #AvShortAcc
     #AvHelldenAcc
 
-      #index1<-c(self$OverallAcc()[[1]],self$Tau()[[1]],self$Kappa()[[1]],
-            #   self$GroundTruth()[[1]],self$AvHelldenAcc()[[1]],self$AvShortAcc()[[1]])
       index1<-c(self$OverallAcc()[[1]],self$Tau()[[1]],self$Kappa()[[1]],
       self$AvHelldenAcc()[[1]],self$AvShortAcc()[[1]])
-      #var<-c(self$OverallAcc()[[2]],self$Tau()[[2]],self$Kappa()[[2]],
-       #      self$GroundTruth()[[2]],self$AvHelldenAcc()[[2]],self$AvShortAcc()[[2]])
+
       var<-c(self$OverallAcc()[[2]],self$Tau()[[2]],self$Kappa()[[2]],
              self$AvHelldenAcc()[[2]],self$AvShortAcc()[[2]])
+
       desv<-sqrt(var)
 
-      #index<-c("OverallAcc","Tau","Kappa","GroundThuth","AvHelldenAcc",
-      #     "AvShortAcc")
-      index<-c("OverallAcc","Tau","Kappa","AvHelldenAcc",
-               "AvShortAcc")
+      index<-c("OverallAcc","Tau","Kappa","AvHelldenAcc","AvShortAcc")
       datos<-data.frame(index1,desv,index)
 
       graf<-ggplot(datos,aes(x=index,y=index1,colour=index))
       graf<-graf+geom_point(size=3)+ylab("values")+xlab("Global Indices")
-      graf<-graf+geom_errorbar(aes(ymin=index1-desv, ymax=index1+desv), width = 0.5)
+      graf<-graf+geom_errorbar(aes(ymin=index1-desv, ymax=index1+desv),
+            width = 0.5)
     return(graf)
     },
 
@@ -2923,32 +3022,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' with their corresponding standard desviation.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' p<-MatCon$new(A,Source="Congalton and Green 2008")
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$plot.class()
       #'
       #' @aliases
 
     plot.class=function(){
-    #OverallAcc
-    #Tau
-    #Kappa
-    #Ground Thuth
-    #AvShortAcc
-    #AvHelldenAcc
 
-      #index1<-c(self$OverallAcc()[[1]],self$Tau()[[1]],self$Kappa()[[1]],
-            #   self$GroundTruth()[[1]],self$AvHelldenAcc()[[1]],self$AvShortAcc()[[1]])
       index1<-c(self$UserAcc()[[1]])
       index2<-c(self$ProdAcc()[[1]])
-      #var<-c(self$OverallAcc()[[2]],self$Tau()[[2]],self$Kappa()[[2]],
-       #      self$GroundTruth()[[2]],self$AvHelldenAcc()[[2]],self$AvShortAcc()[[2]])
       var<-c(self$UserAcc()[[2]])
       var2<-c(self$ProdAcc()[[2]])
       desv<-sqrt(var)
       desv2<-sqrt(var2)
 
-      #index<-c("OverallAcc","Tau","Kappa","GroundThuth","AvHelldenAcc",
-      #     "AvShortAcc")
       index<-c()
       for (i in 1:length(self$UserAcc()[[1]])) {
         index<-c(index,sprintf("Class %d",i))
