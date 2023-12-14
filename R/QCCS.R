@@ -23,8 +23,7 @@
 #'  \item \code{Error type 2}: Different number of elements in the pair of data
 #'  vectors and probabilities.
 #'  \item \code{Error type 3}: The sum of the elements of the data vectors is 0.
-#'  \item \code{Error type 4}: The sum of the elements of the probability
-#'  vectors is 0.
+#'  \item \code{Error type 4}: The sum of each probability vectors must be 1.
 #'  \item \code{Error type 5}: Some element of the data vector is negative.
 #'  \item \code{Error type 6}: Some element of the probability vector is negative.
 #'}
@@ -121,32 +120,32 @@ QCCS <- R6Class("QCCS",
       # check
         if ((ni != mi) == TRUE) {
           error2<-TRUE
-          cat("Error type 2: The vectors and their corresponding\nprobabilities must have the same size")
+          cat("Error type 2: The vectors and their corresponding\nprobabilities must have the same size\n")
         }
         if(sum(vi)==0){
           error3<-TRUE
-          cat("Error type 3: The sum of the elements of the\ndata vectors is 0")
+          cat("Error type 3: The sum of the elements of the\ndata vectors is 0\n")
         }
         if(sum(pi)!=1){
           error4<-TRUE
-          cat("Error type 4: The sum of each probability\nvectors must be 1")
+          cat("Error type 4: The sum of each probability\nvectors must be 1\n")
         }
 
         for (i in 1:ni) {
 
         if(vi[i]<0){
           error5<-TRUE
-          cat("Error type 5: Some element of the data\nvector is negative")
+          cat("Error type 5: Some element of the data\nvector is negative\n")
         }
         if(pi[i]<0){
           error6<-TRUE
-          cat("Error type 6: Some element of the probability\nvector is negative.")
+          cat("Error type 6: Some element of the probability\nvector is negative.\n")
         }
         }
       }
     if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE)
         || (error4 == TRUE) || (error5==TRUE) || (error6==TRUE)) {
-      warning("Type errors 1, 2, 3, 4, 5 or 6")
+      warning("Type errors 1, 2, 3, 4, 5 or 6\n")
       stop()
     }
   },

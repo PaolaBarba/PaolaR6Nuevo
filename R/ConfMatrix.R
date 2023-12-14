@@ -181,33 +181,33 @@ initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
   error7<- FALSE
    if((nfilas != ncolumnas)) {
      error1<- TRUE
-     print("Error type 1: Non-square matrix")
+     print("Error type 1: Non-square matrix\n")
    }
 
    if((nk==1)){
      error2<-TRUE
-     print("Error type 2: Single element matrix")
+     print("Error type 2: Single element matrix\n")
    }
 
    for (i in 1:nfilas){
     for (j in 1:ncolumnas){
       if(self$values[i,j]<0){
      error3<-TRUE
-     print("Error type 3: negative values")
+     print("Error type 3: negative values\n")
       }
      }
     }
    if(sum(self$values)==0 ){
      error4<-TRUE
-     print("Error type 4: Sum of elements 0")
+     print("Error type 4: Sum of elements 0\n")
    }
    if(sum(apply(self$values,1,sum))==0 ){
      error5<-TRUE
-     print("Error type 5: Sum of rows 0")
+     print("Error type 5: Sum of rows 0\n")
    }
    if(sum(apply(self$values,2,sum))==0 ){
      error6<-TRUE
-     print("Error type 6: Sum of columns 0")
+     print("Error type 6: Sum of columns 0\n")
    }
    if(is.matrix(self$values) == FALSE){
      error7<-TRUE
@@ -215,7 +215,7 @@ initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
    }
 if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
-   warning("Type errors 1, 2, 3, 4, 5, 6 or 7")
+   warning("Type errors 1, 2, 3, 4, 5, 6 or 7\n")
    stop()
    }
   },
@@ -849,7 +849,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{ModKappa}: modified coefficient kappa.
       #'   \item \eqn{OverallAcc}: overall accuracy.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation of
       #'   the index.
       #' }
@@ -896,7 +896,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{ModKappaUser_i}: modified coefficient kappa (user's).
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation of
       #'   the index.
       #' }
@@ -946,7 +946,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{ModKappaUser_i}: modified coefficient kappa (producer's).
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation
       #'   of the index.
       #' }
@@ -1155,7 +1155,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
       #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation of
       #'   the index.
       #' }
@@ -1203,7 +1203,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
       #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation of
       #'   the index.
       #' }
@@ -1288,7 +1288,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation of
       #'   the index.
       #' }
@@ -1332,7 +1332,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N}: number of cases involved in the calculation of the index.
       #'    }
       #' @return A list with average of Short's mapping accuracy index, its variance and confidence interval.
@@ -1873,7 +1873,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' AvMaxNormEntrop=\dfrac{2 Entrop}{max(Entrop_i(A))+max(Entrop_i(B))}=
       #' \dfrac{Entrop}{\log \sqrt{M}}
       #' }
-      #'
+      #' \deqn{
+      #' \sigma^2_{AvMaxNormEntrop}=
+      #' \dfrac{AvMaxNormEntrop \cdot (1-AvMaxNormEntrop)}{N}
+      #' }
       #' where:
       #'
       #' \enumerate{
@@ -1979,14 +1982,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' A_i=\dfrac{x_{ii}}{\sum_{j=1}^n(x_{+j})}
+      #' A_i=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
       #' }
       #' \deqn{
       #' GroundTruth = \dfrac{ProdAcc-R_i}{1-R_i}
       #' }
       #'
       #' \deqn{
-      #' \sigma^2_{Tau}=\dfrac{GroundTruth \cdot (1-GroundTruth)}
+      #' \sigma^2_{GroundTruth}=\dfrac{GroundTruth \cdot (1-GroundTruth)}
       #' {N}
       #' }
       #'
@@ -1995,6 +1998,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{GroundTruth}: index ground truth.
       #'   \item \eqn{R_i}: casual lucky guess.
       #'   (See \insertCite{turk1979gt}{ConfMatrix})
+      #'   \item \eqn{ProdAcc}: producer accuracy.
       #'   \item \eqn{N}: number of elements of the matrix, cardinal of
       #'   the matrix.
       #' }
@@ -2002,7 +2006,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
       #' 6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-      #' p<-ConfMatrix$new(A,Source="Turk 1979")
+      #' p<-ConfMatrix$new(A,Source="Türk 1979")
       #' p$GroundTruth()
       #'
       #' @aliases
@@ -2722,7 +2726,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression to calculate its statistic is:
       #'
       #' \deqn{
-      #' Z = \dfrac{|k1-k2|}{\sqrt(var(K1)+var(K2))}
+      #' Z = \dfrac{|k1-k2|}{\sqrt{(var(K1)+var(K2))}}
       #' }
       #'
       #' Where:

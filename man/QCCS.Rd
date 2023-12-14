@@ -24,8 +24,7 @@ List of possible errors:
  \item \code{Error type 2}: Different number of elements in the pair of data
  vectors and probabilities.
  \item \code{Error type 3}: The sum of the elements of the data vectors is 0.
- \item \code{Error type 4}: The sum of the elements of the probability
- vectors is 0.
+ \item \code{Error type 4}: The sum of each probability vectors must be 1.
  \item \code{Error type 5}: Some element of the data vector is negative.
  \item \code{Error type 6}: Some element of the probability vector is negative.
 }
