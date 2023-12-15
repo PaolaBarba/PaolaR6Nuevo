@@ -572,6 +572,16 @@ p$TSCM.test(f)
 
 
 ## ------------------------------------------------
+## Method `ConfMatrix$QIndep.test`
+## ------------------------------------------------
+
+A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
+7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source= "Türk 1979")
+p$QIndep.test()
+
+
+## ------------------------------------------------
 ## Method `ConfMatrix$plot.global`
 ## ------------------------------------------------
 
@@ -635,7 +645,9 @@ p$plot.class()
 
 \insertRef{alba2020}{ConfMatrix}
 
-\insertRef{turk1979gt}{ConfMatrix}
+\insertRef{turk1979gt}{ConfMatrix}goodman1968analysis
+
+\insertRef{goodman1968analysis}{ConfMatrix}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -692,6 +704,7 @@ p$plot.class()
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
 \item \href{#method-ConfMatrix-TSCM.test}{\code{ConfMatrix$TSCM.test()}}
+\item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
 \item \href{#method-ConfMatrix-plot.global}{\code{ConfMatrix$plot.global()}}
 \item \href{#method-ConfMatrix-plot.class}{\code{ConfMatrix$plot.class()}}
 \item \href{#method-ConfMatrix-clone}{\code{ConfMatrix$clone()}}
@@ -3497,6 +3510,53 @@ B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),
 nrow=4,ncol=4)
 f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
 p$TSCM.test(f)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ConfMatrix-QIndep.test"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-QIndep.test}{}}}
+\subsection{Method \code{QIndep.test()}}{
+Public method that performs the
+ quasi-independence test. The reference
+\insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} is followed for the computations.
+The mathematical expression to calculate its statistic is:
+
+\deqn{
+G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
+}
+
+Where:
+\enumerate{
+  \item \eqn{G^2}: statistic.
+  \item \eqn{x_{ij}}: observed frequency.
+  \item \eqn{E_{ij}}: expected frequency.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QIndep.test(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list of the statistic's value and its z-score for a given
+alpha significance level.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
+7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source= "Türk 1979")
+p$QIndep.test()
 
 }
 \if{html}{\out{</div>}}

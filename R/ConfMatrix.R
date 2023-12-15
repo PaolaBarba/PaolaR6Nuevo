@@ -74,7 +74,9 @@
 #'
 #' \insertRef{alba2020}{ConfMatrix}
 #'
-#' \insertRef{turk1979gt}{ConfMatrix}
+#' \insertRef{turk1979gt}{ConfMatrix}goodman1968analysis
+#'
+#' \insertRef{goodman1968analysis}{ConfMatrix}
 #'
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
@@ -2046,10 +2048,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         }
         i=i+1
       }
-      #expected frequency matrix
+      #fij* turk
       fij<-U[[length(U)]]%*%t(V[[length(V)]])
-      #matrix of expected frequencies without diagonal
+      #matrix fij* without diagonal
       fij_0<-fij-diag(diag(fij))
+      #expected frequency matrix
+      Expfij<-fij_0*sum(M_0)
       #Ri
       Ri<-c()
       for (i in 1:length(V[[length(V)]])) {
@@ -2068,7 +2072,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       }
 
     return(list(GroundTruth=GroundTruth,VarGroundTruth=VarGroundTruth,
-                Conf_Int=ConfInt,ExpFrec=fij))
+                Conf_Int=ConfInt,ExpFrec=Expfij))
     },
 
 # Functions that return multiple indices ----------------------------------
@@ -2694,7 +2698,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     StHell = function(f,p=NULL,q=NULL){
 
       if(class(f)[1]!="ConfMatrix"){
-       warning("A ConfMatrix element is not being introduced")
+       warning("A ConfMatrix element is not being introduced\n")
         stop(" ")
       }
       A<-self$values
@@ -2826,8 +2830,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       cl<-qnorm(1-alpha/2)
 
       if(Z>-cl & Z<cl){
-        cat("The null hypothesis is not rejected.\nTherefore, the kappa values and the\nconfusion matrices do not present\nsignificant differences.\n")
-      }else{cat("The null hypothesis is rejected.\nTherefore, their kappa values and confusion\nmatrices are significantly different.\n")}
+        cat("The null hypothesis is not rejected.\nTherefore, the overall values and the\nconfusion matrices do not present\nsignificant differences.\n")
+      }else{cat("The null hypothesis is rejected.\nTherefore, their overall values and confusion\nmatrices are significantly different.\n")}
 
     return(list(Statistic=Z,Z=cl))
     },
@@ -2887,8 +2891,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       cl<-qnorm(1-alpha/2)
 
       if(Z>-cl & Z<cl){
-          cat("The null hypothesis is not rejected.\nTherefore, the kappa values and the\nconfusion matrices do not present\nsignificant differences.\n")
-      }else{cat("The null hypothesis is rejected.\nTherefore, their kappa values and confusion\nmatrices are significantly different.\n")}
+          cat("The null hypothesis is not rejected.\nTherefore, the tau values and the\nconfusion matrices do not present\nsignificant differences.\n")
+      }else{cat("The null hypothesis is rejected.\nTherefore, their tau values and confusion\nmatrices are significantly different.\n")}
 
     return(list(Statistic=Z,Z=cl))
     },
@@ -2975,6 +2979,65 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     return(list(pvalue=pvalue, alpha=alpha))
     },
 
+
+
+      #' @description Public method that performs the
+      #'  quasi-independence test. The reference
+      #' \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} is followed for the computations.
+      #' The mathematical expression to calculate its statistic is:
+      #'
+      #' \deqn{
+      #' G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{G^2}: statistic.
+      #'   \item \eqn{x_{ij}}: observed frequency.
+      #'   \item \eqn{E_{ij}}: expected frequency.
+      #' }
+      #' @return A list of the statistic's value and its z-score for a given
+      #' alpha significance level.
+      #' @param alpha significance level. By default alpha=0.05.
+      #' @examples
+      #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
+      #' 7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+      #' p<-ConfMatrix$new(A,Source= "Türk 1979")
+      #' p$QIndep.test()
+      #'
+      #' @aliases
+
+
+    QIndep.test=function(alpha=NULL){
+      if(is.null(alpha)){
+        alpha<-0.05
+      }else{alpha<-alpha}
+      A_0<-self$values-diag(diag(self$values),nrow(self$values),
+          nrow(self$values))
+      Expfij<-self$GroundTruth()[[4]]
+      k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
+      matr2<-A_0/Expfij
+      matr2[is.nan(matr2)] <- 0
+
+      for (i in 1:nrow(A_0)) {
+        for (j in 1:nrow(A_0)) {
+          if(matr2[i,j]==0){
+            matr2[i,j]<-0
+          }else{
+            matr2[i,j]<-log(matr2[i,j])
+          }
+        }
+      }
+
+      Z<-2*sum(matr2)
+      ji_critico<-qchisq(1-alpha/2,k)
+
+      if(Z<ji_critico){
+        cat("The null hypothesis is not rejected.\nTherefore, the quasi-independence between observed frequencies\nand expected is not rejected.\n")
+      }else{cat("The null hypothesis is rejected.\nTherefore, the quasi-independence between observedfrequencies\nand expected is rejected.\n")}
+
+      return(list(Statistic=Z,Z=ji_critico))
+    },
 
 # graphics ----------------------------------------------------------------
 
