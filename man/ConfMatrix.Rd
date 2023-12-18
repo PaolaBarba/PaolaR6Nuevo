@@ -15,7 +15,6 @@ graphically, in addition to the user and producer accuracies.
 }
 \note{
 Error Messages
-
 List of possible errors:
 \itemize{
  \item \code{Error type 1}: Non-square matrix.
@@ -766,7 +765,7 @@ Overall accuracy. The Overall accuracy for a particular classified
 image/map is then calculated by dividing the sum of the entries that
 form the major diagonal (i.e., the number of correct classifications)
 by the total number of samples taken. The method also offers the
-variance. The reference \insertCite{congalton2008}{ConfMatrix}
+variance and confidence interval. The reference \insertCite{congalton2008}{ConfMatrix}
 is followed for the computations.
 
 
@@ -823,7 +822,7 @@ Public method for deriving a class index called
 user's accuracy. The user's accuracy for the class i of thematic
 map is calculated by dividing the value in the diagonal of class i
 by the sum of all values in the row of the class i. The method also
-offers the variance. The reference
+offers the variance and confidence interval. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed
 for the computations.
 
@@ -881,7 +880,8 @@ Public method where the user's accuracy index is
 defined for a specific class i. The user precision for class i
 of the thematic map is calculated by dividing the value on the
 diagonal of class i by the sum of all values in the row of class i.
-The method also offers variance. The reference
+The method also offers the
+variance and confidence interval. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for
 the calculations.
 
@@ -941,7 +941,8 @@ Public method for deriving a class index called
 producer's accuracy. The producer's accuracy for the class i of
 thematic map is calculated by dividing the value in the diagonal
 of class i by the sum of all values in the column of the class i.
-The method also offers the variance. The reference
+The method also offers the
+variance and confidence interval. The reference
 \insertCite{congalton2008}{ConfMatrix} if followed for the
 computations.
 
@@ -997,7 +998,9 @@ p$ProdAcc()
 Public method where the producer's accuracy index is
 defined for a specific class i. The user precision for class i of
 the thematic map is calculated by dividing the value on the diagonal
-of class i by the sum of all values in the column of class i. The
+of class i by the sum of all values in the column of class i.
+The method also offers the
+variance and confidence interval.
 method also offers variance. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the
 calculations.
@@ -1055,7 +1058,8 @@ p$ProdAcc_i(1)
 \subsection{Method \code{AvUserProdAcc_i()}}{
 Public method that provides the average of the
 accuracy rates of the user and producer of a specific class.
-The method also offers variance. The reference
+The method also offers the
+variance and confidence interval. The reference
 \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
 
 
@@ -1113,9 +1117,10 @@ p$AvUserProdAcc_i(2)
 \subsection{Method \code{Sucess()}}{
 Public method that provides the Classification
 Success Index (CSI) applies to all class and gives an overall
-estimation of classification effectiveness. The references
-\insertCite{koukoulas2001,turk2002}{ConfMatrix} is followed
-for the calculations.
+estimation of classification effectiveness.
+The method also offers the variance and confidence interval.
+The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
+is followed for the calculations.
 
 
 The mathematical expression is:
@@ -1170,6 +1175,7 @@ p$Sucess()
 Public method that provides the Individual
 Classification Success Index (ICSI) applies to the classification
 effectiveness for one particular class of interest.
+The method also offers the variance and confidence interval.
 The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
 is followed for the calculations.
 
@@ -1231,8 +1237,8 @@ accuracy, denotes for the probability that a randomly chosen point
 of a specific class on the map has a correspondence of the same
 class in the same position in the field and that a randomly chosen
 point in the field of the same class has a correspondence of the
-same class in the same position on the map.The method also offers
-variance. The references
+same class in the same position on the map. The method also offers the
+variance and confidence interval. The references
 \insertCite{hellden1980,rosenfield1986}{ConfMatrix} is
 followed for the calculations.
 
@@ -1291,7 +1297,8 @@ for each class is stated as the number of correctly classified
 pixels (equal to the total in the correctly classified area) in
 terms of all pixels affected by its classification (equal to this
 total in the displayed area as well as the pixels involved in errors
-of commission and omission). The method also offers variance.
+of commission and omission). The method also offers the
+variance and confidence interval.
 The references \insertCite{rosenfield1986,short1982}{ConfMatrix}
 is followed for the calculations.
 
@@ -1349,7 +1356,7 @@ p$ShortAcc_i(2)
 \subsection{Method \code{UserKappa_i()}}{
 Public method that evaluates the kappa coefficient
 from the user's perspective, for a specific class i. The method
-also offers variance. The reference
+also offers the variance and confidence interval. The reference
 \insertCite{rosenfield1986}{ConfMatrix} is followed
 for the calculations.
 
@@ -1408,8 +1415,8 @@ p$UserKappa_i(2)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-ProdKappa_i}{}}}
 \subsection{Method \code{ProdKappa_i()}}{
 Public method that evaluates the kappa coefficient from
-the producer's perspective, for a specific class i. The method also
-offers variance. The reference
+the producer's perspective, for a specific class i. The method
+also offers the variance and confidence interval. The reference
 \insertCite{rosenfield1986}{ConfMatrix} is followed
 for the calculations.
 
@@ -1468,7 +1475,8 @@ p$ProdKappa_i(2)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-ModKappa}{}}}
 \subsection{Method \code{ModKappa()}}{
 Public method that provides the overall modified
-kappa coefficient. The method also offers variance. The references
+kappa coefficient. The method also offers the
+variance and confidence interval. The references
 \insertCite{stehman1997,foody1992}{ConfMatrix} is followed for
 the calculations.
 
@@ -1522,7 +1530,8 @@ p$ModKappa()
 \subsection{Method \code{ModKappaUser_i()}}{
 Public method, derived from the general modified
 kappa coefficient, which provides the modified coefficient kappa
-for the user. The method also offers variance. The references
+for the user. The method also offers the
+variance and confidence interval. The references
 \insertCite{stehman1997,foody1992}{ConfMatrix} is followed
 for the calculations.
 
@@ -1580,7 +1589,8 @@ p$ModKappaUser_i(2)
 \subsection{Method \code{ModKappaProd_i()}}{
 Public method, derived from the general modified
 kappa coefficient, which provides the modified coefficient kappa
-for the producer. The method also offers variance.
+for the producer. The method also offers the
+variance and confidence interval.
 The references \insertCite{stehman1997,foody1992}{ConfMatrix} is
 followed for the calculations.
 
@@ -1638,7 +1648,8 @@ p$ModKappaProd_i(2)
 \subsection{Method \code{EntropUser_i()}}{
 Public method that calculates relative change of
 entropy given a category on map. That is, the degree of
-uncertainty of the category. The method also offers variance.
+uncertainty of the category. The method also offers the
+variance and confidence interval.
 The reference \insertCite{finn1993}{ConfMatrix} is followed for
 the calculations.
 
@@ -1716,7 +1727,8 @@ p$EntropUser_i(1)
 \subsection{Method \code{EntropProd_i()}}{
 Public method that calculates relative change of
 entropy given a category on ground truthing. That is, the degree
-of uncertainty of the category. The method also offers variance.
+of uncertainty of the category. The method also offers the
+variance and confidence interval.
 The reference \insertCite{stehman1997}{ConfMatrix} is followed for
 the calculations.
 
@@ -1794,7 +1806,8 @@ p$EntropProd_i(2)
 Public method that provides the user's average
 accuracy, which is an average of the accuracy of individual
 categories, in this case the categories will be taken from
-the user's perspective. The method also offers variance. The
+the user's perspective. The method also offers the
+variance and confidence interval. The
 reference \insertCite{tung1988}{ConfMatrix} is followed for the
 calculations.
 
@@ -1850,7 +1863,8 @@ p$AvUserAcc()
 Public method that provides the producer's average
 accuracy, which is an average of the accuracy of individual
 categories, in this case the categories will be taken from the
-producer's perspective. The method also offers variance.
+producer's perspective. The method also offers the
+variance and confidence interval.
 The reference \insertCite{tung1988}{ConfMatrix} is followed for
 the calculations.
 
@@ -1904,9 +1918,10 @@ p$AvProdAcc()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvUserProdAcc}{}}}
 \subsection{Method \code{AvUserProdAcc()}}{
 Public method that offers the average of the average
-precision from the perspective of the user and the producer. The
-method also offers variance. The reference
-\insertCite{liu2007}{ConfMatrix} is followed for the calculations.
+precision from the perspective of the user and the producer.
+The method also offers the variance and confidence interval.
+The reference \insertCite{liu2007}{ConfMatrix} is followed
+for the calculations.
 
 
 \deqn{
@@ -1959,7 +1974,8 @@ p$AvUserProdAcc()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvHelldenAcc}{}}}
 \subsection{Method \code{AvHelldenAcc()}}{
 Public method that provides the average value of the
-Hellden mean precision index. The method also offers variance.
+Hellden mean precision index. The method also offers the
+variance and confidence interval.
 The reference \insertCite{liu2007}{ConfMatrix} is followed for
 the calculations.
 
@@ -2016,7 +2032,8 @@ p$AvHelldenAcc()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvShortAcc}{}}}
 \subsection{Method \code{AvShortAcc()}}{
 Public method that provides the average of Short's
-mapping accuracy index. The method also offers variance. The
+mapping accuracy index. The method also offers the
+variance and confidence interval. The
 reference \insertCite{liu2007}{ConfMatrix} is followed for
 the calculations.
 
@@ -2071,7 +2088,8 @@ p$AvShortAcc()
 \subsection{Method \code{CombUserAcc()}}{
 Public method that provides the combined user accuracy
 that is the average of the overall accuracy and the average user
-accuracy. The method also offers variance. The reference
+accuracy. The method also offers the
+variance and confidence interval. The reference
 \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
 
 
@@ -2124,7 +2142,8 @@ p$CombUserAcc()
 \subsection{Method \code{CombProdAcc()}}{
 Public method that provides the combined producer
 accuracy that is the average of the overall accuracy and the average
-producer accuracy. The method also offers variance. The reference
+producer accuracy. The method also offers the
+variance and confidence interval. The reference
 \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
 
 
@@ -2178,7 +2197,8 @@ p$CombProdAcc()
 Public method that provides the combined accuracy
 which is the average of the overall accuracy and the Hellden
 average accuracy, which refers to the average user and producer
-accuracies. The method also offers variation. The reference
+accuracies. The method also offers the
+variance and confidence interval. The reference
 \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
 
 
@@ -2233,7 +2253,8 @@ p$CombUserProdAcc()
 \subsection{Method \code{Kappa()}}{
 Public method that provides kappa coefficient,
 which measures the relationship between agreement beyond chance
-and expected disagreement. The method also offers variation.
+and expected disagreement. The method also offers the
+variance and confidence interval.
 The reference \insertCite{cohen1960}{ConfMatrix} is followed
 for the calculations.
 
@@ -2297,7 +2318,8 @@ p$Kappa()
 \subsection{Method \code{Entrop()}}{
 Public method for calculating map entropy.
 Which refers to the degree of uncertainty that the map presents.
-The method also offers variation. The reference
+The method also offers the
+variance and confidence interval. The reference
 \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
 
 
@@ -2353,7 +2375,8 @@ p$Entrop()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-NormEntropUser}{}}}
 \subsection{Method \code{NormEntropUser()}}{
 Public method that calculates normalized entropy
-using the map. The method also offers variation. The reference
+using the map. The method also offers the
+variance and confidence interval. The reference
 \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
 
 
@@ -2416,7 +2439,8 @@ p$NormEntropUser()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-NormEntropProd}{}}}
 \subsection{Method \code{NormEntropProd()}}{
 Public method that calculates normalized entropy using
-on ground truthing. The method also offers variation. The reference
+on ground truthing. The method also offers the
+variance and confidence interval. The reference
 \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
 
 
@@ -2481,7 +2505,8 @@ p$NormEntropProd()
 \subsection{Method \code{AvNormEntrop()}}{
 Public method that calculates normalized entropy using
 the arithmetic mean of the entropies on the map and on ground
-truthing. The method also offers variation. The reference
+truthing. The method also offers the
+variance and confidence interval. The reference
 \insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
 
 
@@ -2555,8 +2580,9 @@ p$AvNormEntrop()
 \subsection{Method \code{GeomAvNormEntrop()}}{
 Public method that calculates normalized entropy using
 the geometric mean of the entropies on the map and on ground truthing.
-The method also offers variation. The reference
-\insertCite{ghosh2002}{ConfMatrix} is followed for the calculations.
+The method also offers the variance and confidence interval.
+The reference \insertCite{ghosh2002}{ConfMatrix} is followed
+for the calculations.
 
 
 \deqn{
@@ -2629,7 +2655,7 @@ p$GeomAvNormEntrop()
 \subsection{Method \code{AvMaxNormEntrop()}}{
 Public mathod that provides normalized entropy using
 the arithmetic mean of the maximum entropies on map and on ground
-truthing.The method also offers variation.
+truthing. The method also offers the variance and confidence interval.
 The reference \insertCite{strehl2002relationship}{ConfMatrix} is
 followed for the calculations.
 
@@ -2707,7 +2733,8 @@ p$AvMaxNormEntrop()
 Public method that calculates the tau index and
 its variance. Its value indicates how much the classification has
 improved compared to a random classification of the N elements into
-M groups. The method also offers the variance.
+M groups. The method also offers the
+variance and confidence interval.
 The reference \insertCite{book}{ConfMatrix} is followed
 for the computations.
 
@@ -2768,7 +2795,7 @@ p$Tau()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-GroundTruth}{}}}
 \subsection{Method \code{GroundTruth()}}{
 Public method that calculates the Ground Truth index
-and its variance.The reference \insertCite{turk1979gt}{ConfMatrix}
+, its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
 is followed for the computations.
 
 

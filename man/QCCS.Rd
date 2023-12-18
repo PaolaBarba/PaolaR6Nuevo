@@ -17,7 +17,6 @@ decided whether the classification of elements is optimal or not.
 }
 \note{
 Error Messages
-
 List of possible errors:
 \itemize{
  \item \code{Error type 1}: Different number of data vectors and probability.

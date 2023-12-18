@@ -13,7 +13,6 @@
 #' By default is NULL.
 #' @return Object of class ConfMatrix.
 #' @note  Error Messages
-#'
 #' List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Non-square matrix.
@@ -137,8 +136,8 @@ initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
 
 
   self$values<-values
-  #It is optional that you identify your parent.
-  #If you add this value, a custom ID is given to the MC
+  #Source is optional so you can identify the origin of the matrix.
+  #If you add this value, a custom ID is given to the ConfMatrix
   #otherwise you will be given today's date as ID
   #ID="Name" or ID=YYYYMMDD
   if(is.null(ID)){
@@ -158,8 +157,8 @@ initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
     self$Source <- Source
   }else{self$Source<-NULL}
 
-  #Values to check the MC
-  #array rank
+  #Values to check the ConfMatrix
+  #matrix rank
   nk<-nrow(self$values)
   nfilas <- nrow(self$values)
   ncolumnas <- ncol(self$values)
@@ -213,7 +212,7 @@ initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
    }
    if(is.matrix(self$values) == FALSE){
      error7<-TRUE
-     print("Error type 7: It is not a matrix")
+     print("Error type 7: It is not a matrix\n")
    }
 if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
@@ -224,7 +223,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
 
-# Functions that return indices and variances -----------------------------
+# Functions that return indices, variances and confidence interval --------
 
 
 
@@ -233,7 +232,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' image/map is then calculated by dividing the sum of the entries that
       #' form the major diagonal (i.e., the number of correct classifications)
       #' by the total number of samples taken. The method also offers the
-      #' variance. The reference \insertCite{congalton2008}{ConfMatrix}
+      #' variance and confidence interval. The reference \insertCite{congalton2008}{ConfMatrix}
       #' is followed for the computations.
       #' @description
       #' The mathematical expression is:
@@ -280,7 +279,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' user's accuracy. The user's accuracy for the class i of thematic
       #' map is calculated by dividing the value in the diagonal of class i
       #' by the sum of all values in the row of the class i. The method also
-      #' offers the variance. The reference
+      #' offers the variance and confidence interval. The reference
       #' \insertCite{congalton2008}{ConfMatrix} is followed
       #' for the computations.
       #' @description
@@ -334,7 +333,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' defined for a specific class i. The user precision for class i
       #' of the thematic map is calculated by dividing the value on the
       #' diagonal of class i by the sum of all values in the row of class i.
-      #' The method also offers variance. The reference
+      #' The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{congalton2008}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
@@ -382,7 +382,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' producer's accuracy. The producer's accuracy for the class i of
       #' thematic map is calculated by dividing the value in the diagonal
       #' of class i by the sum of all values in the column of the class i.
-      #' The method also offers the variance. The reference
+      #' The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{congalton2008}{ConfMatrix} if followed for the
       #' computations.
       #' @description
@@ -433,7 +434,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method where the producer's accuracy index is
       #' defined for a specific class i. The user precision for class i of
       #' the thematic map is calculated by dividing the value on the diagonal
-      #' of class i by the sum of all values in the column of class i. The
+      #' of class i by the sum of all values in the column of class i.
+      #' The method also offers the
+      #' variance and confidence interval.
       #' method also offers variance. The reference
       #' \insertCite{congalton2008}{ConfMatrix} is followed for the
       #' calculations.
@@ -478,7 +481,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the average of the
       #' accuracy rates of the user and producer of a specific class.
-      #' The method also offers variance. The reference
+      #' The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
       #' @description
       #' The mathematical expression is:
@@ -526,9 +530,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the Classification
       #' Success Index (CSI) applies to all class and gives an overall
-      #' estimation of classification effectiveness. The references
-      #' \insertCite{koukoulas2001,turk2002}{ConfMatrix} is followed
-      #' for the calculations.
+      #' estimation of classification effectiveness.
+      #' The method also offers the variance and confidence interval.
+      #' The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
+      #' is followed for the calculations.
       #' @description The mathematical expression is:
       #'  \deqn{
       #' Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
@@ -571,6 +576,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the Individual
       #' Classification Success Index (ICSI) applies to the classification
       #' effectiveness for one particular class of interest.
+      #' The method also offers the variance and confidence interval.
       #' The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
       #' is followed for the calculations.
       #' @description
@@ -621,8 +627,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' of a specific class on the map has a correspondence of the same
       #' class in the same position in the field and that a randomly chosen
       #' point in the field of the same class has a correspondence of the
-      #' same class in the same position on the map.The method also offers
-      #' variance. The references
+      #' same class in the same position on the map. The method also offers the
+      #' variance and confidence interval. The references
       #' \insertCite{hellden1980,rosenfield1986}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
@@ -678,7 +684,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' pixels (equal to the total in the correctly classified area) in
       #' terms of all pixels affected by its classification (equal to this
       #' total in the displayed area as well as the pixels involved in errors
-      #' of commission and omission). The method also offers variance.
+      #' of commission and omission). The method also offers the
+      #' variance and confidence interval.
       #' The references \insertCite{rosenfield1986,short1982}{ConfMatrix}
       #' is followed for the calculations.
       #' @description
@@ -732,7 +739,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that evaluates the kappa coefficient
       #' from the user's perspective, for a specific class i. The method
-      #' also offers variance. The reference
+      #' also offers the variance and confidence interval. The reference
       #' \insertCite{rosenfield1986}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
@@ -786,8 +793,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that evaluates the kappa coefficient from
-      #' the producer's perspective, for a specific class i. The method also
-      #' offers variance. The reference
+      #' the producer's perspective, for a specific class i. The method
+      #' also offers the variance and confidence interval. The reference
       #' \insertCite{rosenfield1986}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
@@ -836,7 +843,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides the overall modified
-      #' kappa coefficient. The method also offers variance. The references
+      #' kappa coefficient. The method also offers the
+      #' variance and confidence interval. The references
       #' \insertCite{stehman1997,foody1992}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
@@ -881,7 +889,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method, derived from the general modified
       #' kappa coefficient, which provides the modified coefficient kappa
-      #' for the user. The method also offers variance. The references
+      #' for the user. The method also offers the
+      #' variance and confidence interval. The references
       #' \insertCite{stehman1997,foody1992}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
@@ -931,7 +940,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method, derived from the general modified
       #' kappa coefficient, which provides the modified coefficient kappa
-      #' for the producer. The method also offers variance.
+      #' for the producer. The method also offers the
+      #' variance and confidence interval.
       #' The references \insertCite{stehman1997,foody1992}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
@@ -975,7 +985,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      #' @description Public method that calculates relative change of
      #' entropy given a category on map. That is, the degree of
-     #' uncertainty of the category. The method also offers variance.
+     #' uncertainty of the category. The method also offers the
+     #' variance and confidence interval.
      #' The reference \insertCite{finn1993}{ConfMatrix} is followed for
      #' the calculations.
      #' @description
@@ -1062,7 +1073,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      #' @description Public method that calculates relative change of
      #' entropy given a category on ground truthing. That is, the degree
-     #' of uncertainty of the category. The method also offers variance.
+     #' of uncertainty of the category. The method also offers the
+     #' variance and confidence interval.
      #' The reference \insertCite{stehman1997}{ConfMatrix} is followed for
      #' the calculations.
      #' @param i Class to evaluate
@@ -1140,7 +1152,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the user's average
       #' accuracy, which is an average of the accuracy of individual
       #' categories, in this case the categories will be taken from
-      #' the user's perspective. The method also offers variance. The
+      #' the user's perspective. The method also offers the
+      #' variance and confidence interval. The
       #' reference \insertCite{tung1988}{ConfMatrix} is followed for the
       #' calculations.
       #' @description
@@ -1188,7 +1201,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the producer's average
       #' accuracy, which is an average of the accuracy of individual
       #' categories, in this case the categories will be taken from the
-      #' producer's perspective. The method also offers variance.
+      #' producer's perspective. The method also offers the
+      #' variance and confidence interval.
       #' The reference \insertCite{tung1988}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
@@ -1229,9 +1243,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      },
 
       #' @description Public method that offers the average of the average
-      #' precision from the perspective of the user and the producer. The
-      #' method also offers variance. The reference
-      #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
+      #' precision from the perspective of the user and the producer.
+      #' The method also offers the variance and confidence interval.
+      #' The reference \insertCite{liu2007}{ConfMatrix} is followed
+      #' for the calculations.
       #' @description
       #'  \deqn{
       #' AvUserProdAcc=\dfrac{AvUserAcc+AvProdAcc}{2}
@@ -1271,7 +1286,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides the average value of the
-      #' Hellden mean precision index. The method also offers variance.
+      #' Hellden mean precision index. The method also offers the
+      #' variance and confidence interval.
       #' The reference \insertCite{liu2007}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
@@ -1316,7 +1332,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides the average of Short's
-      #' mapping accuracy index. The method also offers variance. The
+      #' mapping accuracy index. The method also offers the
+      #' variance and confidence interval. The
       #' reference \insertCite{liu2007}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
@@ -1366,7 +1383,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the combined user accuracy
       #' that is the average of the overall accuracy and the average user
-      #' accuracy. The method also offers variance. The reference
+      #' accuracy. The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1405,7 +1423,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the combined producer
       #' accuracy that is the average of the overall accuracy and the average
-      #' producer accuracy. The method also offers variance. The reference
+      #' producer accuracy. The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1445,7 +1464,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the combined accuracy
       #' which is the average of the overall accuracy and the Hellden
       #' average accuracy, which refers to the average user and producer
-      #' accuracies. The method also offers variation. The reference
+      #' accuracies. The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1488,7 +1508,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides kappa coefficient,
       #' which measures the relationship between agreement beyond chance
-      #' and expected disagreement. The method also offers variation.
+      #' and expected disagreement. The method also offers the
+      #' variance and confidence interval.
       #' The reference \insertCite{cohen1960}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
@@ -1547,7 +1568,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method for calculating map entropy.
       #' Which refers to the degree of uncertainty that the map presents.
-      #' The method also offers variation. The reference
+      #' The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1595,7 +1617,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that calculates normalized entropy
-      #' using the map. The method also offers variation. The reference
+      #' using the map. The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1655,7 +1678,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      },
 
       #' @description Public method that calculates normalized entropy using
-      #' on ground truthing. The method also offers variation. The reference
+      #' on ground truthing. The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1716,7 +1740,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates normalized entropy using
       #' the arithmetic mean of the entropies on the map and on ground
-      #' truthing. The method also offers variation. The reference
+      #' truthing. The method also offers the
+      #' variance and confidence interval. The reference
       #' \insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1788,8 +1813,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates normalized entropy using
       #' the geometric mean of the entropies on the map and on ground truthing.
-      #' The method also offers variation. The reference
-      #' \insertCite{ghosh2002}{ConfMatrix} is followed for the calculations.
+      #' The method also offers the variance and confidence interval.
+      #' The reference \insertCite{ghosh2002}{ConfMatrix} is followed
+      #' for the calculations.
       #' @description
       #'  \deqn{
       #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
@@ -1857,7 +1883,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public mathod that provides normalized entropy using
       #' the arithmetic mean of the maximum entropies on map and on ground
-      #' truthing.The method also offers variation.
+      #' truthing. The method also offers the variance and confidence interval.
       #' The reference \insertCite{strehl2002relationship}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
@@ -1927,7 +1953,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates the tau index and
       #' its variance. Its value indicates how much the classification has
       #' improved compared to a random classification of the N elements into
-      #' M groups. The method also offers the variance.
+      #' M groups. The method also offers the
+      #' variance and confidence interval.
       #' The reference \insertCite{book}{ConfMatrix} is followed
       #' for the computations.
       #' @return A list with Tau index, its variance and confidence interval.
@@ -1976,7 +2003,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that calculates the Ground Truth index
-      #' and its variance.The reference \insertCite{turk1979gt}{ConfMatrix}
+      #' , its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
       #' is followed for the computations.
       #' @return A list with Ground Truth index, its variance, confidence
       #' interval and the matrix with the expected frequencies.
@@ -3148,5 +3175,3 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
    active = list(
    )
 )
-
-

@@ -8,7 +8,7 @@
 #' decided whether the classification of elements is optimal or not.
 #' @param vectors vector list
 #' @param prob probabilities list
-#' @param ID Identifier. By default ID is a random number between 1 and 1000.
+#' @param ID Identifier. By default ID is a date in YYYYMMDD format.
 #' @param Date Date provided by the user. By default the date provided by the
 #' system will be taken.
 #' @param Source Indicates where the matrix comes from (article, project, etc.).
@@ -16,7 +16,6 @@
 #' @return Object of class QCCS.
 #' @export QCCS
 #' @note  Error Messages
-#'
 #' List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Different number of data vectors and probability.
@@ -50,7 +49,6 @@ QCCS <- R6Class("QCCS",
     #' The optional possibility of adding metadata to the matrix is offered.
     #' The values of the data vectors represent the reference categories that
     #' will be taken into account.
-    #'
     #' @param vectors vector list.
     #' @param prob probabilities list.
     #' @param ID Identifier. By default ID is a date in YYYYMMDD format
@@ -151,7 +149,7 @@ QCCS <- R6Class("QCCS",
   },
 
 
-# To calculate p-value, use test-ntol -------------------------------------
+# To calculate p-value, use test-ntol (method private) --------------------
 # Multinomial Exact Tests -------------------------------------------------
 
 
@@ -505,9 +503,6 @@ QCCS <- R6Class("QCCS",
       p_value<-p[1]
      return(p_value)
     }
-
-
-
 
  )
 )
