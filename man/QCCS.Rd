@@ -16,7 +16,7 @@ or binomial distribution. Hypothesis contrasts are applied and it is
 decided whether the classification of elements is optimal or not.
 }
 \note{
-Error Messages
+Error Messages.
 List of possible errors:
 \itemize{
  \item \code{Error type 1}: Different number of data vectors and probability.
@@ -38,6 +38,17 @@ vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
 A<-QCCS$new(vectors,prob,
 Source="Alba-Fernández et al. 2020")
+
+
+## ------------------------------------------------
+## Method `QCCS$print`
+## ------------------------------------------------
+
+vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
+A$Exact.test()
 
 
 ## ------------------------------------------------
@@ -82,6 +93,7 @@ A$Ji.test()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
+\item \href{#method-QCCS-print}{\code{QCCS$print()}}
 \item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
 \item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}
 \item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
@@ -102,7 +114,14 @@ The optional possibility of adding metadata to the matrix is offered.
 The values of the data vectors represent the reference categories that
 will be taken into account.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$new(vectors, prob, ID = NULL, Date = NULL, Source = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$new(
+  vectors,
+  prob,
+  ID = NULL,
+  Date = NULL,
+  ClassName = NULL,
+  Source = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -117,6 +136,10 @@ will be taken into account.
 \item{\code{Date}}{Date provided by the user. By default the date provided
 by the system will be taken.}
 
+\item{\code{ClassName}}{Name of the classes. By default for the column
+elements they will be Ref_i and for the row elements C_i, with i
+being the row or column number.}
+
 \item{\code{Source}}{Indicates where the matrix comes from
 (article, project, etc.). By default is NULL.}
 }
@@ -128,6 +151,34 @@ by the system will be taken.}
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
 A<-QCCS$new(vectors,prob,
 Source="Alba-Fernández et al. 2020")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-print"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-print}{}}}
+\subsection{Method \code{print()}}{
+Public method that shows all the data entered
+by the user.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+QCCS object identifier, Date, name of classes, source
+of data and data vectors and probability.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
+A$Exact.test()
 
 }
 \if{html}{\out{</div>}}

@@ -14,7 +14,7 @@ confidence intervals. The most important global indices are presented
 graphically, in addition to the user and producer accuracies.
 }
 \note{
-Error Messages
+Error Messages.
 List of possible errors:
 \itemize{
  \item \code{Error type 1}: Non-square matrix.
@@ -29,7 +29,7 @@ List of possible errors:
 \examples{
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
-cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
+cm<-ConfMatrix$new(A,ID=5,Date="27-10-2023",
 Source="Congalton and Green, 2008")
 
 
@@ -594,9 +594,21 @@ p$plot.global()
 ## Method `ConfMatrix$plot.class`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
 p$plot.class()
+
+
+## ------------------------------------------------
+## Method `ConfMatrix$print`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+nrow=4,ncol=4)
+p<-ConfMatrix$new(A,ClassName=c("Deciduous","conifer",
+"agriculture","shrub"),Source="Congalton and Green 2008")
+p$print()
 
 }
 \references{
@@ -706,6 +718,7 @@ p$plot.class()
 \item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
 \item \href{#method-ConfMatrix-plot.global}{\code{ConfMatrix$plot.global()}}
 \item \href{#method-ConfMatrix-plot.class}{\code{ConfMatrix$plot.class()}}
+\item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
 \item \href{#method-ConfMatrix-clone}{\code{ConfMatrix$clone()}}
 }
 }
@@ -721,7 +734,7 @@ give coded error messages. The values of the matrix must be organized in
 such a way that the columns represent the categories in the reference
 and the rows represent the categories in the product being evaluated.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(values, ID = NULL, Date = NULL, Source = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(values, ID = NULL, Date = NULL, ClassName = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -734,6 +747,10 @@ taken as the ID.}
 
 \item{\code{Date}}{Date provided by the user. By default the date provided by
 the system will be taken.}
+
+\item{\code{ClassName}}{Name of the classes. By default for the column
+elements they will be Ref_i and for the row elements C_i, with i
+being the row or column number.}
 
 \item{\code{Source}}{Indicates where the matrix comes from (article, project,
 etc.). By default is NULL.}
@@ -1367,7 +1384,9 @@ UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^n_{i=1} x_{i + }}
 {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
 }
  \deqn{
-\sigma^2_{UserKappa_i}=\dfrac{UserKappa_i \cdot (1-UserKappa_i)}{N}
+\sigma^2_{UserKappa_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}
+{(1-\dfrac{\sum^n_{i=1} x_{i + }}
+{\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
 }
 where:
 
@@ -1427,7 +1446,9 @@ ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^n_{j=1} x_{ + j }}
 {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
 }
  \deqn{
-\sigma^2_{ProdKappa_i}=\dfrac{ProdKappa_i \cdot (1- ProdKappa_i)}{N}
+\sigma^2_{ProdKappa_i}=\dfrac{ProdAcc_i \cdot (1- ProdAcc_i)}
+{(1-\dfrac{\sum^n_{j=1} x_{+ j }}
+{\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
 }
 where:
 
@@ -1485,7 +1506,8 @@ the calculations.
 ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
 }
 \deqn{
-\sigma^2_{ModKappa}=\dfrac{ModKappa \cdot (1- ModKappa)}{N}
+\sigma^2_{ModKappa}=\dfrac{OverallAcc \cdot (1- OverallAcc)}
+{(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
 }
 where:
 
@@ -1541,8 +1563,8 @@ ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{\sqrt{M}}}
 {1-\dfrac{1}{\sqrt{M}}}
 }
 \deqn{
-\sigma^2_{ModKappaUser_i}=\dfrac{ModKappaUser_i
-\cdot (1- ModKappaUser_i)}{N}
+\sigma^2_{ModKappaUser_i}=\dfrac{UserAcc_i
+\cdot (1- UserAcc_i)}{(1- \dfrac{1}{\sqrt{M}})^2 \cdot N}
 }
 where:
 
@@ -1600,8 +1622,8 @@ ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}
 {1-\dfrac{1}{\sqrt{M}}}
 }
 \deqn{
-\sigma^2_{ModKappaProd_i}=\dfrac{ModKappaProd_i
-\cdot (1- ModKappaProd_i)}{N}
+\sigma^2_{ModKappaProd_i}=\dfrac{ProdAcc_i
+\cdot (1- ProdAcc_i)}{(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
 }
 where:
 
@@ -2267,7 +2289,7 @@ ExpAcc=\sum^n_{i=1} (\dfrac{x _{+ i}}{\sum_{j=1}^n x_{ij}}
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 }
  \deqn{
-\sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc) \cdot N}
+\sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N}
 }
 
 
@@ -3625,7 +3647,8 @@ p$plot.global()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.class}{}}}
 \subsection{Method \code{plot.class()}}{
 Public method that provides the graph of the accuracy
-index of users and producers with their corresponding standard desviation.
+index of users and producers with their corresponding
+standard desviation.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.class()}\if{html}{\out{</div>}}
 }
@@ -3636,9 +3659,38 @@ with their corresponding standard desviation.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
 p$plot.class()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ConfMatrix-print"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-print}{}}}
+\subsection{Method \code{print()}}{
+Public method that shows all the data entered
+by the user.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+ConfMatrix object identifier, date, class name, data
+source and confusion matrix.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+nrow=4,ncol=4)
+p<-ConfMatrix$new(A,ClassName=c("Deciduous","conifer",
+"agriculture","shrub"),Source="Congalton and Green 2008")
+p$print()
 
 }
 \if{html}{\out{</div>}}

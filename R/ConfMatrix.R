@@ -11,8 +11,11 @@
 #' @param Source Indicates where the matrix comes from
 #' (article, project, etc.).
 #' By default is NULL.
+#' @param ClassName Name of the classes. By default for the column
+#' elements they will be Ref_i and for the row elements C_i, with i
+#' being the row or column number.
 #' @return Object of class ConfMatrix.
-#' @note  Error Messages
+#' @note  Error Messages.
 #' List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Non-square matrix.
@@ -80,7 +83,7 @@
 #' @examples
 #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 #' nrow=4,ncol=4)
-#' cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
+#' cm<-ConfMatrix$new(A,ID=5,Date="27-10-2023",
 #' Source="Congalton and Green, 2008")
 #'
 #' @aliases
@@ -99,6 +102,8 @@ ConfMatrix <- R6Class("ConfMatrix",
     Date = NULL,
     #Source Matrix
     Source=NULL,
+    #Class name
+    ClassName=NULL,
     #initialize sumfil
     sumfil=NULL,
     #initialize sumcol
@@ -116,6 +121,9 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' taken as the ID.
     #' @param Date Date provided by the user. By default the date provided by
     #' the system will be taken.
+    #' @param ClassName Name of the classes. By default for the column
+    #' elements they will be Ref_i and for the row elements C_i, with i
+    #' being the row or column number.
     #' @param Source Indicates where the matrix comes from (article, project,
     #' etc.). By default is NULL.
     #' @return Object of class ConfMatrix or an error if a matrix isn't entered.
@@ -128,7 +136,7 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' @aliases
 
 #All parameters are entered
-initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
+initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
 
 # Initializing values -----------------------------------------------------
@@ -152,6 +160,27 @@ initialize = function(values,ID=NULL,Date=NULL,Source=NULL) {
   if(!is.null(Date)){
     self$Date<-Date
   }else{self$Date <- Sys.Date()}
+
+  colname<-c()
+  rowname<-c()
+  if(!is.null(ClassName)){
+    self$ClassName<-ClassName
+    for(i in 1:sqrt(length(self$values))){
+      colname<-c(colname,sprintf("Ref_%s",self$ClassName[i]))
+      rowname<-c(rowname,sprintf("C_%s",self$ClassName[i]))
+    }
+    self$ClassName <- ClassName
+    colnames(self$values)<-colname
+    rownames(self$values)<-rowname
+
+  }else{
+    for(i in 1:nrow(self$values)){
+      colname<-c(colname,sprintf("Ref_%d",i))
+      rowname<-c(rowname,sprintf("C_%d",i))
+    }
+    colnames(self$values)<-colname
+    rownames(self$values)<-rowname}
+
 
   if(!is.null(Source)){
     self$Source <- Source
@@ -749,7 +778,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
       #' }
       #'  \deqn{
-      #' \sigma^2_{UserKappa_i}=\dfrac{UserKappa_i \cdot (1-UserKappa_i)}{N}
+      #' \sigma^2_{UserKappa_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}
+      #' {(1-\dfrac{\sum^n_{i=1} x_{i + }}
+      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
       #' }
       #' where:
       #'
@@ -781,7 +812,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         UserKappa_i <- (self$UserAcc_i(i)[[1]] -
                         self$sumcol[i]/sum(self$values)) /
                         (1 - self$sumcol[i]/sum(self$values))
-        VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/self$sumfil[i])
+        #VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/self$sumfil[i])
+        VarUserKappa_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]])) /
+          (((1 - self$sumcol[i]/sum(self$values))^2)*self$sumfil[i])
         ConfInt <- private$ConfInt(UserKappa_i,VarUserKappa_i,a)
         }
 
@@ -804,7 +837,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
       #' }
       #'  \deqn{
-      #' \sigma^2_{ProdKappa_i}=\dfrac{ProdKappa_i \cdot (1- ProdKappa_i)}{N}
+      #' \sigma^2_{ProdKappa_i}=\dfrac{ProdAcc_i \cdot (1- ProdAcc_i)}
+      #' {(1-\dfrac{\sum^n_{j=1} x_{+ j }}
+      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
       #' }
       #' where:
       #'
@@ -834,7 +869,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        stop ("/ by 0")
       }else{
         ProdKappa_i <- (self$ProdAcc_i(i)[[1]] - self$sumfil[i]/sum(self$values)) / (1 - self$sumfil[i]/sum(self$values))
-        VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/self$sumcol[i])
+        #VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/self$sumcol[i])
+        VarProdKappa_i <-(self$ProdAcc_i(i)[[1]]*(1-self$ProdAcc_i(i)[[1]])) /
+          (((1 - self$sumfil[i]/sum(self$values))^2)*self$sumcol[i])
         ConfInt <- private$ConfInt(ProdKappa_i,VarProdKappa_i,a)
         }
      return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i,
@@ -852,7 +889,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
       #' }
       #' \deqn{
-      #' \sigma^2_{ModKappa}=\dfrac{ModKappa \cdot (1- ModKappa)}{N}
+      #' \sigma^2_{ModKappa}=\dfrac{OverallAcc \cdot (1- OverallAcc)}
+      #' {(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
       #' }
       #' where:
       #'
@@ -878,7 +916,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        ModKappa <- (self$OverallAcc()[[1]] -
                    1/sqrt(length(self$values)))/(1 -
                    1/sqrt(length(self$values)))
-       VarModKappa <- abs((ModKappa*(1-ModKappa))/sum(self$values))
+       #VarModKappa <- abs((ModKappa*(1-ModKappa))/sum(self$values))
+       VarModKappa <- (self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/
+         (((1 - 1/sqrt(length(self$values)))^2)*sum(self$values))
        ConfInt <- private$ConfInt(ModKappa,VarModKappa,a)
      return(list(ModKappa=ModKappa,VarModKappa=VarModKappa,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -899,8 +939,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' {1-\dfrac{1}{\sqrt{M}}}
       #' }
       #' \deqn{
-      #' \sigma^2_{ModKappaUser_i}=\dfrac{ModKappaUser_i
-      #' \cdot (1- ModKappaUser_i)}{N}
+      #' \sigma^2_{ModKappaUser_i}=\dfrac{UserAcc_i
+      #' \cdot (1- UserAcc_i)}{(1- \dfrac{1}{\sqrt{M}})^2 \cdot N}
       #' }
       #' where:
       #'
@@ -927,7 +967,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        ModKappaUser_i <- (self$UserAcc_i(i)[[1]] -
                          1/sqrt(length(self$values)))/(1 -
                          1/sqrt(length(self$values)))
-       VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/self$sumfil[i])
+      # VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/self$sumfil[i])
+       VarModKappaUser_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]]))/
+         (((1 - 1/sqrt(length(self$values)))^2)*sum(self$fil[i]))
        ConfInt <- private$ConfInt(ModKappaUser_i,VarModKappaUser_i,a)
      return(list(ModKappaUser_i=ModKappaUser_i,
                  VarModKappaUser_i=VarModKappaUser_i,
@@ -950,8 +992,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' {1-\dfrac{1}{\sqrt{M}}}
       #' }
       #' \deqn{
-      #' \sigma^2_{ModKappaProd_i}=\dfrac{ModKappaProd_i
-      #' \cdot (1- ModKappaProd_i)}{N}
+      #' \sigma^2_{ModKappaProd_i}=\dfrac{ProdAcc_i
+      #' \cdot (1- ProdAcc_i)}{(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
       #' }
       #' where:
       #'
@@ -976,7 +1018,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      ModKappaProd_i = function(i,a=NULL){
       ModKappaProd_i <- (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-      VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/self$sumcol[i])
+      #VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/self$sumcol[i])
+      VarModKappaProd_i <- (self$ProdAcc_i(i)[[1]]*(1-self$ProdAcc_i(i)[[1]]))/
+        (((1 - 1/sqrt(length(self$values)))^2)*sum(self$col[i]))
       ConfInt <- private$ConfInt(ModKappaProd_i,VarModKappaProd_i,a)
      return(list(ModKappaProd_i=ModKappaProd_i,
                  VarModKappaProd_i=VarModKappaProd_i,
@@ -1521,7 +1565,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
       #' }
       #'  \deqn{
-      #' \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc) \cdot N}
+      #' \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N}
       #' }
       #'
       #'
@@ -3111,11 +3155,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides the graph of the accuracy
-      #' index of users and producers with their corresponding standard desviation.
+      #' index of users and producers with their corresponding
+      #' standard desviation.
       #' @return The graph of the accuracy index of users and producers
       #' with their corresponding standard desviation.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$plot.class()
       #'
@@ -3146,6 +3192,35 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       graf1<-graf1+geom_errorbar(aes(ymin=index2-desv2, ymax=index2+desv2), width = 0.5)+theme(legend.position = "none")
 
     return(grid.arrange(graf, graf1, ncol = 2))
+    },
+
+# print function ----------------------------------------------------------
+
+      #' @description Public method that shows all the data entered
+      #' by the user.
+      #' @return ConfMatrix object identifier, date, class name, data
+      #' source and confusion matrix.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
+      #' p<-ConfMatrix$new(A,ClassName=c("Deciduous","conifer",
+      #' "agriculture","shrub"),Source="Congalton and Green 2008")
+      #' p$print()
+      #'
+      #' @aliases
+
+    print=function(){
+      cat("Identifier (ID)\n", self$ID, "\n")
+      cat("-------------------------------------\n")
+      cat(sprintf("Date\n %s \n", self$Date))
+      cat("-------------------------------------\n")
+      cat("ClassName\n", self$ClassName, "\n")
+      cat("-------------------------------------\n")
+      cat("Source\n", self$Source, "\n")
+      cat("-------------------------------------\n")
+      cat("Confusion Matrix\n")
+      print(self$values)
+
     }
 
 

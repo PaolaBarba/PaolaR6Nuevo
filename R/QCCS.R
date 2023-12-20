@@ -11,11 +11,13 @@
 #' @param ID Identifier. By default ID is a date in YYYYMMDD format.
 #' @param Date Date provided by the user. By default the date provided by the
 #' system will be taken.
+#' @param ClassName Name of the classes. By default the elements will be
+#' called Ref_i, with i being the column number.
 #' @param Source Indicates where the matrix comes from (article, project, etc.).
 #'  By default is NULL.
 #' @return Object of class QCCS.
 #' @export QCCS
-#' @note  Error Messages
+#' @note  Error Messages.
 #' List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Different number of data vectors and probability.
@@ -54,6 +56,9 @@ QCCS <- R6Class("QCCS",
     #' @param ID Identifier. By default ID is a date in YYYYMMDD format
     #' @param Date Date provided by the user. By default the date provided
     #' by the system will be taken.
+    #' @param ClassName Name of the classes. By default for the column
+    #' elements they will be Ref_i and for the row elements C_i, with i
+    #' being the row or column number.
     #' @param Source Indicates where the matrix comes from
     #' (article, project, etc.). By default is NULL.
     #' @examples
@@ -69,13 +74,16 @@ QCCS <- R6Class("QCCS",
     prob = NULL,
     ID=NULL,
     Date=NULL,
+    ClassName=NULL,
     Source=NULL,
-  initialize = function(vectors, prob, ID = NULL, Date=NULL, Source=NULL) {
+  initialize = function(vectors, prob, ID = NULL, Date=NULL,ClassName=NULL, Source=NULL) {
 
 
 # Optional values ---------------------------------------------------------
 
 
+    self$vectors <- vectors
+    self$prob <- prob
 
     if(is.null(ID)){
       secuencia <- sprintf("%s-%03d", format(Sys.Date(),"%Y%m%d"), 1:999)
@@ -87,6 +95,25 @@ QCCS <- R6Class("QCCS",
     if(!is.null(Date)){
       self$Date<-Date
     }else{self$Date <- Sys.Date()}
+
+    colname<-c()
+    if (!is.null(ClassName)) {
+      self$ClassName <- ClassName
+      for (i in 1:length(self$vectors)) {
+        colname <- c(colname, sprintf("Ref_%s", self$ClassName[i]))
+      }
+      names(self$vectors) <- colname
+
+    } else {
+      self$ClassName <- ClassName
+      for (i in 1:length(self$vectors)) {
+        colname <- c(colname, sprintf("Ref_%d", i))
+      }
+      names(self$vectors) <- colname
+
+
+    }
+
 
     if(!is.null(Source)){
       self$Source <- Source
@@ -100,8 +127,7 @@ QCCS <- R6Class("QCCS",
     error5<- FALSE
     error6<- FALSE
 
-    self$vectors <- vectors
-    self$prob <- prob
+
     n <- length(self$vectors)
     m <- length(self$prob)
       if (n != m) {
@@ -149,8 +175,45 @@ QCCS <- R6Class("QCCS",
   },
 
 
+
+
+# print function ----------------------------------------------------------
+
+      #' @description Public method that shows all the data entered
+      #' by the user.
+      #' @return QCCS object identifier, Date, name of classes, source
+      #' of data and data vectors and probability.
+      #' @examples
+      #' vectors<-list(c(18,0,3,0),c(27,19))
+      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A<-QCCS$new(vectors,prob,
+      #' Source="Alba-Fernández et al. 2020")
+      #' A$Exact.test()
+      #'
+      #' @aliases
+
+    print=function(){
+      cat("Identifier (ID)\n", self$ID, "\n")
+      cat("-------------------------------------\n")
+      cat(sprintf("Date\n %s \n", self$Date))
+      cat("-------------------------------------\n")
+      cat("Source\n", self$Source, "\n")
+      cat("-------------------------------------\n")
+      for(i in 1:length(self$vectors)){
+        cat("Name of Class|",names(self$vectors)[i], "\n")
+        cat("Vector       |",self$vectors[[i]],"\n")
+        cat("Probability  |",self$prob[[i]],"\n")
+        cat("-------------------------------------\n")
+
+      }
+
+    },
+
+
+
+
 # To calculate p-value, use test-ntol (method private) --------------------
-# Multinomial Exact Tests -------------------------------------------------
+# Multinomial or binomial Exact Tests -------------------------------------
 
 
       #' @description Public method that, using a list of vectors and their
@@ -209,7 +272,7 @@ QCCS <- R6Class("QCCS",
 
 
 
-# ji global multinomial test ----------------------------------------------
+# ji global multinomial or binomial test ----------------------------------------------
 
       #' @description Public method that, using a list of vectors and their
       #' corresponding probabilities that follow a binomial or multinomial
@@ -280,7 +343,7 @@ QCCS <- R6Class("QCCS",
     },
 
 
-# ji multinomial test ----------------------------------------------
+# ji multinomial or binomial test ----------------------------------------------
 
       #' @description Public method that, using a list of vectors and
       #' their corresponding probabilities that follow a multinomial
