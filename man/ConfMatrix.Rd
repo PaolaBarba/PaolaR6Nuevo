@@ -655,21 +655,15 @@ p$print()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{values}}{initialize the confusion matrix. An array must be added}
+\item{\code{values}}{Confusion matrix.}
 
-\item{\code{ID}}{initialize name}
+\item{\code{ID}}{Identifier.}
 
-\item{\code{nk}}{initialize range}
+\item{\code{Date}}{Date.}
 
-\item{\code{Date}}{initialize date}
+\item{\code{Source}}{Source Matrix.}
 
-\item{\code{Source}}{Source Matrix}
-
-\item{\code{ClassName}}{Class name}
-
-\item{\code{sumfil}}{initialize sumfil}
-
-\item{\code{sumcol}}{initialize sumcol}
+\item{\code{ClassName}}{Class name.}
 }
 \if{html}{\out{</div>}}
 }
@@ -753,7 +747,7 @@ and the rows represent the categories in the product being evaluated.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{values}}{Confusion matrix}
+\item{\code{values}}{Confusion matrix. An array must be added.}
 
 \item{\code{ID}}{Identifier. By default, the date in YYYYMMDD format will be
 taken as the ID.}

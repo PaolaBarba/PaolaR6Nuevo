@@ -75,23 +75,16 @@
 
 ConfMatrix <- R6Class("ConfMatrix",
   public = list(
-    #' @field values initialize the confusion matrix. An array must be added
+    #' @field values Confusion matrix.
     values = NULL,
-    #' @field ID initialize name
+    #' @field ID Identifier.
     ID = NULL,
-    #' @field nk initialize range
-    nk = NULL,
-    #' @field Date initialize date
+    #' @field Date Date.
     Date = NULL,
-    #' @field Source Source Matrix
+    #' @field Source Source Matrix.
     Source=NULL,
-    #' @field ClassName Class name
+    #' @field ClassName Class name.
     ClassName=NULL,
-    #' @field sumfil initialize sumfil
-    sumfil=NULL,
-    #' @field sumcol initialize sumcol
-    sumcol=NULL,
-
 
     #' @description Public method to create an instance of the ConfMatrix class.
     #' When creating it, values must be given to the matrix. The optional
@@ -100,7 +93,7 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' give coded error messages. The values of the matrix must be organized in
     #' such a way that the columns represent the categories in the reference
     #' and the rows represent the categories in the product being evaluated.
-    #' @param values Confusion matrix
+    #' @param values Confusion matrix. An array must be added.
     #' @param ID Identifier. By default, the date in YYYYMMDD format will be
     #' taken as the ID.
     #' @param Date Date provided by the user. By default the date provided by
@@ -176,16 +169,8 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
   nk<-nrow(self$values)
   nfilas <- nrow(self$values)
   ncolumnas <- ncol(self$values)
-  #sum of row elements
-  self$sumfil<-apply(self$values,1,sum)
-  #sum of col elements
-  self$sumcol<-apply(self$values,2,sum)
-
-
 
 # Matrix check ------------------------------------------------------------
-
-
 
   error1<- FALSE
   error2<- FALSE
@@ -237,9 +222,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
   },
 
 
-
 # Functions that return indices, variances and confidence interval --------
-
 
 
       #' @description Public method to calculate the global index called
@@ -333,8 +316,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      VarUserAcc<-rep(0,n)
      ConfInt<-list()
        for (i in 1:n){
-         UserAcc[i] <- self$values[i,i] / self$sumfil[i]
-         VarUserAcc[i]<-abs((UserAcc[i]*(1-UserAcc[i]))/self$sumfil[i])
+         UserAcc[i] <- self$values[i,i] / private$sumfil(self$values)[i]
+         VarUserAcc[i]<-abs((UserAcc[i]*(1-UserAcc[i]))/private$sumfil(self$values)[i])
          ConfInt[[i]]<-c(private$ConfInt(UserAcc[i],VarUserAcc[i],a)$ConfInt_inf,
                          private$ConfInt(UserAcc[i],VarUserAcc[i])$ConfInt_sup,a)
        }
@@ -383,8 +366,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      UserAcc_i=function(i,a=NULL){
-      UserAcc_i <- self$values[i,i] / self$sumfil[i]
-      VarUserAcc_i <- abs((UserAcc_i*(1-UserAcc_i))/self$sumfil[i])
+      UserAcc_i <- self$values[i,i] / private$sumfil(self$values)[i]
+      VarUserAcc_i <- abs((UserAcc_i*(1-UserAcc_i))/private$sumfil(self$values)[i])
       ConfInt <- private$ConfInt(UserAcc_i,VarUserAcc_i,a)
      return(list(UserAcc_i=UserAcc_i,VarUserAcc_i=VarUserAcc_i,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -435,8 +418,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       VarProdAcc<-rep(0,n)
       ConfInt<-list()
         for(i in 1:n){
-          ProdAcc[i] <- self$values[i,i] / self$sumcol[i]
-          VarProdAcc[i]<-abs((ProdAcc[i]*(1-ProdAcc[i]))/self$sumcol[i])
+          ProdAcc[i] <- self$values[i,i] / private$sumcol(self$values)[i]
+          VarProdAcc[i]<-abs((ProdAcc[i]*(1-ProdAcc[i]))/private$sumcol(self$values)[i])
           ConfInt[[i]]<-c(private$ConfInt(ProdAcc[i],VarProdAcc[i],a)$ConfInt_inf,
                           private$ConfInt(ProdAcc[i],VarProdAcc[i])$ConfInt_sup,a)
         }
@@ -485,8 +468,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      ProdAcc_i = function(i,a=NULL){
-      ProdAcc_i <- self$values[i,i] / self$sumcol[i]
-      VarProdAcc_i <- abs((ProdAcc_i*(1-ProdAcc_i))/self$sumcol[i])
+      ProdAcc_i <- self$values[i,i] / private$sumcol(self$values)[i]
+      VarProdAcc_i <- abs((ProdAcc_i*(1-ProdAcc_i))/private$sumcol(self$values)[i])
       ConfInt <- private$ConfInt(ProdAcc_i,VarProdAcc_i,a)
      return(list(ProdAcc_i=ProdAcc_i,VarProdAcc_i=VarProdAcc_i,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -533,7 +516,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      AvUserProdAcc_i = function(i,a=NULL){
       AvUserProdAcc_i <- (self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]])/2
       VarAvUserProdAcc_i <- abs((AvUserProdAcc_i*
-                          (1-AvUserProdAcc_i))/(self$sumcol[i]+self$sumfil[i]))
+                          (1-AvUserProdAcc_i))/(private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
       ConfInt <- private$ConfInt(AvUserProdAcc_i,VarAvUserProdAcc_i,a)
      return(list(AvUserProdAcc_i=AvUserProdAcc_i,
                  VarAvUserProdAcc_i=VarAvUserProdAcc_i,
@@ -627,7 +610,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      Sucess_i = function(i,a=NULL){
       Sucess_i <- self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]] - 1
-      VarSucess_i <- abs((Sucess_i*(1-Sucess_i))/(self$sumcol[i]+self$sumfil[i]))
+      VarSucess_i <- abs((Sucess_i*(1-Sucess_i))/(private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
       ConfInt <- private$ConfInt(Sucess_i,VarSucess_i,a)
      return (list(Sucess_i=Sucess_i,VarSucess_i=VarSucess_i,
                   Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -682,7 +665,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
           AvHelldenAcc_i <- 2 / (1/self$UserAcc_i(i)[[1]] +
                                 1/self$ProdAcc_i(i)[[1]])
          VarAvHelldenAcc_i <- abs((AvHelldenAcc_i*(1-AvHelldenAcc_i))/
-                                    (self$sumcol[i]+self$sumfil[i]))
+                                    (private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
          ConfInt <- private$ConfInt(AvHelldenAcc_i,VarAvHelldenAcc_i,a)
          }
 
@@ -734,13 +717,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      ShortAcc_i = function(i,a=NULL){
-      if (self$sumfil[i] + self$sumcol[i] - self$values[i,i] == 0) {
+      if (private$sumfil(self$values)[i] + private$sumcol(self$values)[i] - self$values[i,i] == 0) {
       stop ("/ by 0")
       }else{
-        ShortAcc_i = self$values[i,i] / (self$sumfil[i] + self$sumcol[i]
+        ShortAcc_i = self$values[i,i] / (private$sumfil(self$values)[i] + private$sumcol(self$values)[i]
                      - self$values[i,i])
         VarShortAcc_i=abs((ShortAcc_i*(1-ShortAcc_i))/
-                      (self$sumcol[i]+self$sumfil[i]))
+                      (private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
         ConfInt <- private$ConfInt(ShortAcc_i,VarShortAcc_i,a)
         }
 
@@ -792,15 +775,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      UserKappa_i = function(i,a=NULL){
-      if (1 - self$sumcol[i]/sum(self$values) == 0) {
+      if (1 - private$sumcol(self$values)[i]/sum(self$values) == 0) {
        stop ("/ by 0")
       }else{
         UserKappa_i <- (self$UserAcc_i(i)[[1]] -
-                        self$sumcol[i]/sum(self$values)) /
-                        (1 - self$sumcol[i]/sum(self$values))
-        #VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/self$sumfil[i])
+                        private$sumcol(self$values)[i]/sum(self$values)) /
+                        (1 - private$sumcol(self$values)[i]/sum(self$values))
+        #VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/private$sumfil(self$values)[i])
         VarUserKappa_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]])) /
-          (((1 - self$sumcol[i]/sum(self$values))^2)*self$sumfil[i])
+          (((1 - private$sumcol(self$values)[i]/sum(self$values))^2)*private$sumfil(self$values)[i])
         ConfInt <- private$ConfInt(UserKappa_i,VarUserKappa_i,a)
         }
 
@@ -851,13 +834,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
       ProdKappa_i = function(i,a=NULL){
-      if (1 - self$sumfil[i]/sum(self$values) == 0) {
+      if (1 - private$sumfil(self$values)[i]/sum(self$values) == 0) {
        stop ("/ by 0")
       }else{
-        ProdKappa_i <- (self$ProdAcc_i(i)[[1]] - self$sumfil[i]/sum(self$values)) / (1 - self$sumfil[i]/sum(self$values))
-        #VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/self$sumcol[i])
+        ProdKappa_i <- (self$ProdAcc_i(i)[[1]] - private$sumfil(self$values)[i]/sum(self$values)) / (1 - private$sumfil(self$values)[i]/sum(self$values))
+        #VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/private$sumcol(self$values)[i])
         VarProdKappa_i <-(self$ProdAcc_i(i)[[1]]*(1-self$ProdAcc_i(i)[[1]])) /
-          (((1 - self$sumfil[i]/sum(self$values))^2)*self$sumcol[i])
+          (((1 - private$sumfil(self$values)[i]/sum(self$values))^2)*private$sumcol(self$values)[i])
         ConfInt <- private$ConfInt(ProdKappa_i,VarProdKappa_i,a)
         }
      return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i,
@@ -953,7 +936,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        ModKappaUser_i <- (self$UserAcc_i(i)[[1]] -
                          1/sqrt(length(self$values)))/(1 -
                          1/sqrt(length(self$values)))
-      # VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/self$sumfil[i])
+      # VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/private$sumfil(self$values)[i])
        VarModKappaUser_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]]))/
          (((1 - 1/sqrt(length(self$values)))^2)*sum(self$fil[i]))
        ConfInt <- private$ConfInt(ModKappaUser_i,VarModKappaUser_i,a)
@@ -1004,7 +987,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      ModKappaProd_i = function(i,a=NULL){
       ModKappaProd_i <- (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-      #VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/self$sumcol[i])
+      #VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/private$sumcol(self$values)[i])
       VarModKappaProd_i <- (self$ProdAcc_i(i)[[1]]*(1-self$ProdAcc_i(i)[[1]]))/
         (((1 - 1/sqrt(length(self$values)))^2)*sum(self$col[i]))
       ConfInt <- private$ConfInt(ModKappaProd_i,VarModKappaProd_i,a)
@@ -1084,10 +1067,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      #na.rm=TRUE. In this way it does the sum with the values it has and
      #ignores NA
-    Entrop_iA <- - sum ((self$sumcol/sum(self$values)) *
-                  (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
-    Entrop_iAbi <- - sum ((self$values[i,] / self$sumfil[i]) *
-                    log(self$values[i,] / self$sumfil[i],base=v),na.rm=TRUE)
+    Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) *
+                  (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+    Entrop_iAbi <- - sum ((self$values[i,] / private$sumfil(self$values)[i]) *
+                    log(self$values[i,] / private$sumfil(self$values)[i],base=v),na.rm=TRUE)
 
     if (Entrop_iA == 0){
      stop("/by 0")
@@ -1159,10 +1142,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      if(!is.null(v)){
       v<-v
      }else{v<-10}
-    Entrop_iB <- - sum ((self$sumfil/sum(self$values)) *
-                  (log(self$sumfil/sum(self$values),base = v)),na.rm=TRUE)
-    Entrop_iBaj <- - sum ((self$values[,i] / self$sumcol[i]) *
-                    log(self$values[,i] / self$sumcol[i],base=v),na.rm=TRUE)
+    Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) *
+                  (log(private$sumfil(self$values)/sum(self$values),base = v)),na.rm=TRUE)
+    Entrop_iBaj <- - sum ((self$values[,i] / private$sumcol(self$values)[i]) *
+                    log(self$values[,i] / private$sumcol(self$values)[i],base=v),na.rm=TRUE)
 
       if (Entrop_iB == 0){
         stop("/by 0")
@@ -1215,13 +1198,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      AvUserAcc = function(a=NULL){
-       for (i in 1:length(self$sumfil)) {
-          if (self$sumfil[i] == 0) {
+       for (i in 1:length(private$sumfil(self$values))) {
+          if (private$sumfil(self$values)[i] == 0) {
             stop ("/ by 0")
           }
        }
       AvUserAcc <- 1/sqrt(length(self$values)) *
-        sum (diag(self$values)/self$sumfil)
+        sum (diag(self$values)/private$sumfil(self$values))
       VarAvUserAcc <- abs((AvUserAcc*(1-AvUserAcc))/sum(self$values))
       ConfInt <- private$ConfInt(AvUserAcc,VarAvUserAcc,a)
      return(list(AvUserAcc=AvUserAcc,VarAvUserAcc=VarAvUserAcc,
@@ -1265,7 +1248,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      AvProdAcc = function(a=NULL){
       AvProdAcc <- 1/sqrt(length(self$values)) *
-        sum (diag(self$values)/self$sumcol)
+        sum (diag(self$values)/private$sumcol(self$values))
       VarAvProdAcc <- abs((AvProdAcc*(1-AvProdAcc))/sum(self$values))
       ConfInt <- private$ConfInt(AvProdAcc,VarAvProdAcc,a)
      return(list(AvProdAcc=AvProdAcc,VarAvProdAcc=VarAvProdAcc,
@@ -1353,7 +1336,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      AvHelldenAcc = function(a=NULL){
       AvHelldenAcc <- 1/sqrt(length(self$values)) *
-        sum ((2*diag(self$values)) / (self$sumfil + self$sumcol))
+        sum ((2*diag(self$values)) / (private$sumfil(self$values) + private$sumcol(self$values)))
       VarAvHelldenAcc <- abs((AvHelldenAcc*(1-AvHelldenAcc))/sum(self$values))
       ConfInt <- private$ConfInt(AvHelldenAcc,VarAvHelldenAcc,a)
      return(list(AvHelldenAcc=AvHelldenAcc,VarAvHelldenAcc=VarAvHelldenAcc,
@@ -1395,14 +1378,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      AvShortAcc = function(a=NULL){
-      sum1 <- self$sumfil+self$sumcol- diag(self$values)
+      sum1 <- private$sumfil(self$values)+private$sumcol(self$values)- diag(self$values)
        for (i in 1:length(sum1)) {
           if (sum1[i] == 0) {
            stop ("/ by 0")
           }
        }
       AvShortAcc = 1/sqrt(length(self$values)) *
-        sum (diag(self$values) / (self$sumfil + self$sumcol - diag(self$values)))
+        sum (diag(self$values) / (private$sumfil(self$values) + private$sumcol(self$values) - diag(self$values)))
       VarAvShortAcc=abs((AvShortAcc*(1-AvShortAcc))/sum(self$values))
       ConfInt <- private$ConfInt(AvShortAcc,VarAvShortAcc,a)
 
@@ -1580,7 +1563,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      Kappa = function(a=NULL){
-      ExpAcc <- (sum (self$sumfil * self$sumcol))/sum(self$values)^2
+      ExpAcc <- (sum (private$sumfil(self$values) * private$sumcol(self$values)))/sum(self$values)^2
       if (1-ExpAcc == 0){
        stop ("/ by 0")
       }else{
@@ -1637,7 +1620,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       }else{v<-10}
 
        Entrop <- sum ((self$values/sum(self$values)) *
-                log(self$values / ((self$sumfil * self$sumcol)/sum(self$values))
+                log(self$values / ((private$sumfil(self$values) * private$sumcol(self$values))/sum(self$values))
                 ,base=v),na.rm=TRUE)
        VarEntrop <- abs((Entrop*(1-Entrop))/sum(self$values))
        ConfInt <- private$ConfInt(Entrop,VarEntrop,a)
@@ -1692,8 +1675,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         v<-v
       }else{v<-10}
 
-       Entrop_iB <- - sum ((self$sumfil/sum(self$values)) *
-                      (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
+       Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) *
+                      (log(private$sumfil(self$values)/sum(self$values),base=v)),na.rm=TRUE)
 
        if(Entrop_iB == 0){
         stop("/ by 0")
@@ -1754,8 +1737,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         v<-v
       }else{v<-10}
 
-      Entrop_iA <- - sum ((self$sumcol/sum(self$values)) *
-                     (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) *
+                     (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
        if (Entrop_iA == 0){
         stop ("/ by 0")
        }else{
@@ -1825,10 +1808,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         v<-v
       }else{v<-10}
 
-      Entrop_iB <- - sum ((self$sumfil/sum(self$values)) *
-                     (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
-      Entrop_iA <- - sum ((self$sumcol/sum(self$values)) *
-                     (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) *
+                     (log(private$sumfil(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) *
+                     (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
         if (Entrop_iA + Entrop_iB == 0) {
           stop ("/ by 0")
         }else{
@@ -1897,8 +1880,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       if(!is.null(v)){
         v<-v
       }else{v<-10}
-      Entrop_iB <- - sum ((self$sumfil/sum(self$values)) * (log(self$sumfil/sum(self$values),base=v)),na.rm=TRUE)
-      Entrop_iA <- - sum ((self$sumcol/sum(self$values)) * (log(self$sumcol/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) * (log(private$sumfil(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) * (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
        if (Entrop_iA * Entrop_iB == 0) {
         stop ("/ by 0")
        }else{
@@ -2185,10 +2168,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
        # The 4 coefficients
        O1 <- sum(diag(self$values))/SumaMatriz #OA
-       O2 <- sum((self$sumcol*self$sumfil))/(SumaMatriz*SumaMatriz) #EA
-       O3 <- sum(diag(self$values)*(self$sumcol+self$sumfil))/(SumaMatriz*SumaMatriz)
-       mintermedia1<- matrix(rep(self$sumcol, nc), nrow =nc, ncol=nc, byrow=TRUE)
-       mintermedia2<- matrix(rep(self$sumfil, nc), nrow =nc, ncol=nc, byrow=FALSE)
+       O2 <- sum((private$sumcol(self$values)*private$sumfil(self$values)))/(SumaMatriz*SumaMatriz) #EA
+       O3 <- sum(diag(self$values)*(private$sumcol(self$values)+private$sumfil(self$values)))/(SumaMatriz*SumaMatriz)
+       mintermedia1<- matrix(rep(private$sumcol(self$values), nc), nrow =nc, ncol=nc, byrow=TRUE)
+       mintermedia2<- matrix(rep(private$sumfil(self$values), nc), nrow =nc, ncol=nc, byrow=FALSE)
        mintermedia3 <-(mintermedia1+mintermedia2)^2
        O4 <- sum(self$values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
        t1 <- (1-O1) #no oa
@@ -2399,7 +2382,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       PAcuerdo <- OverallAcc[[1]]
       ExProdu <- self$ProdAcc()[[1]]
       UserAcc <-self$UserAcc()[[1]]
-      PAAzar <- sum((self$sumfil*self$sumcol))/(SumaMatriz*SumaMatriz)
+      PAAzar <- sum((private$sumfil(self$values)*private$sumcol(self$values)))/(SumaMatriz*SumaMatriz)
       Kappa <- self$Kappa()[[1]]
       VarPAcuerdo <- self$OverallAcc()[[2]]
       VarKappa <-  self$Kappa()[[2]]
@@ -2538,7 +2521,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
        ConfM=self$values
        SumaMatriz <-sum(ConfM)
-       MLandas <- (self$sumfil %*% t(self$sumcol))/(SumaMatriz*SumaMatriz)
+       MLandas <- (private$sumfil(self$values) %*% t(private$sumcol(self$values)))/(SumaMatriz*SumaMatriz)
        K <- (SumaMatriz*SumaMatriz -
                sum(ConfM*ConfM))/sum((SumaMatriz*MLandas - ConfM )^2)
        MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(ConfM + K*MLandas)
@@ -2669,8 +2652,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
      # UnWeighted marginals (quantities)
-        ncol <- self$sumcol
-        nrow<- self$sumfil
+        ncol <- private$sumcol(self$values)
+        nrow<- private$sumfil(self$values)
 
         # In %
         ConfM<- self$values/sum(self$values)
@@ -3223,7 +3206,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        ConfInt_inf<-p-z*sqrt(var)
        ConfInt_sup<-p+z*sqrt(var)
        return(list(ConfInt_inf=ConfInt_inf,ConfInt_sup=ConfInt_sup))
+     },
+
+     sumfil=function(v){
+       sumfil<-apply(v,1,sum)
+       return(sumfil)
+     },
+
+     sumcol=function(v){
+       sumcol<-apply(v,2,sum)
+       return(sumcol)
      }
+
 
    ),
    active = list(

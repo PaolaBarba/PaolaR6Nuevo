@@ -89,17 +89,17 @@ A$Ji.test()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{vectors}}{initialize vectors}
+\item{\code{vectors}}{Data vectors.}
 
-\item{\code{prob}}{initialize prob}
+\item{\code{prob}}{Probability vectors.}
 
-\item{\code{ID}}{initialize ID}
+\item{\code{ID}}{Identifier.}
 
-\item{\code{Date}}{initialize date}
+\item{\code{Date}}{Date.}
 
-\item{\code{ClassName}}{Class name}
+\item{\code{ClassName}}{Class name.}
 
-\item{\code{Source}}{Source vectors}
+\item{\code{Source}}{Source vectors.}
 }
 \if{html}{\out{</div>}}
 }

@@ -33,17 +33,17 @@
 QCCS <- R6Class("QCCS",
   public = list(
 
-    #' @field vectors initialize vectors
+    #' @field vectors Data vectors.
     vectors = NULL,
-    #' @field prob initialize prob
+    #' @field prob Probability vectors.
     prob = NULL,
-    #' @field ID initialize ID
+    #' @field ID Identifier.
     ID=NULL,
-    #' @field Date initialize date
+    #' @field Date Date.
     Date=NULL,
-    #' @field ClassName Class name
+    #' @field ClassName Class name.
     ClassName=NULL,
-    #' @field Source Source vectors
+    #' @field Source Source vectors.
     Source=NULL,
     #' @description Public method to create an instance of the QCCS class.
     #' At the time of creation, a list of vectors with data and a list
