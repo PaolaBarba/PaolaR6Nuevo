@@ -3,9 +3,6 @@
 \name{QCCS}
 \alias{QCCS}
 \title{Quality Control Columns Set}
-\value{
-Object of class QCCS.
-}
 \description{
 In the QCCS class, the confusion matrices will be given by
 vectors with their corresponding probabilities. In this way,
@@ -88,6 +85,23 @@ A$Ji.test()
 \insertRef{QCCS}{ConfMatrix}
 
 \insertRef{alba2020}{ConfMatrix}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{vectors}}{initialize vectors}
+
+\item{\code{prob}}{initialize prob}
+
+\item{\code{ID}}{initialize ID}
+
+\item{\code{Date}}{initialize date}
+
+\item{\code{ClassName}}{Class name}
+
+\item{\code{Source}}{Source vectors}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{

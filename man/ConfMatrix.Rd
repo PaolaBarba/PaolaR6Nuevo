@@ -3,9 +3,6 @@
 \name{ConfMatrix}
 \alias{ConfMatrix}
 \title{Confusion matrix}
-\value{
-Object of class ConfMatrix.
-}
 \description{
 In the ConfMatrix class works with confusion matrices,
 thus providing the possibility of calculating various indices to obtain
@@ -27,11 +24,6 @@ List of possible errors:
 }
 }
 \examples{
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-cm<-ConfMatrix$new(A,ID=5,Date="27-10-2023",
-Source="Congalton and Green, 2008")
-
 
 ## ------------------------------------------------
 ## Method `ConfMatrix$new`
@@ -659,6 +651,27 @@ p$print()
 \insertRef{turk1979gt}{ConfMatrix}goodman1968analysis
 
 \insertRef{goodman1968analysis}{ConfMatrix}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{values}}{initialize the confusion matrix. An array must be added}
+
+\item{\code{ID}}{initialize name}
+
+\item{\code{nk}}{initialize range}
+
+\item{\code{Date}}{initialize date}
+
+\item{\code{Source}}{Source Matrix}
+
+\item{\code{ClassName}}{Class name}
+
+\item{\code{sumfil}}{initialize sumfil}
+
+\item{\code{sumcol}}{initialize sumcol}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{

@@ -4,17 +4,6 @@
 #' information on the given matrices, their variances and their
 #' confidence intervals. The most important global indices are presented
 #' graphically, in addition to the user and producer accuracies.
-#' @param values Confusion matrix
-#' @param ID Identifier. By default ID is a date in YYYYMMDD format
-#' @param Date Date provided by the user. By default the date provided
-#' by the system will be taken.
-#' @param Source Indicates where the matrix comes from
-#' (article, project, etc.).
-#' By default is NULL.
-#' @param ClassName Name of the classes. By default for the column
-#' elements they will be Ref_i and for the row elements C_i, with i
-#' being the row or column number.
-#' @return Object of class ConfMatrix.
 #' @note  Error Messages.
 #' List of possible errors:
 #' \itemize{
@@ -80,34 +69,29 @@
 #'
 #' \insertRef{goodman1968analysis}{ConfMatrix}
 #'
-#' @examples
-#' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-#' nrow=4,ncol=4)
-#' cm<-ConfMatrix$new(A,ID=5,Date="27-10-2023",
-#' Source="Congalton and Green, 2008")
-#'
-#' @aliases
+#' @aliases ConfMatrix
 
 
 
 ConfMatrix <- R6Class("ConfMatrix",
   public = list(
-    #initialize the confusion matrix. An array must be added
+    #' @field values initialize the confusion matrix. An array must be added
     values = NULL,
-    #initialize name
+    #' @field ID initialize name
     ID = NULL,
-    #initialize range
+    #' @field nk initialize range
     nk = NULL,
-    #initialize date
+    #' @field Date initialize date
     Date = NULL,
-    #Source Matrix
+    #' @field Source Source Matrix
     Source=NULL,
-    #Class name
+    #' @field ClassName Class name
     ClassName=NULL,
-    #initialize sumfil
+    #' @field sumfil initialize sumfil
     sumfil=NULL,
-    #initialize sumcol
+    #' @field sumcol initialize sumcol
     sumcol=NULL,
+
 
     #' @description Public method to create an instance of the ConfMatrix class.
     #' When creating it, values must be given to the matrix. The optional
@@ -133,7 +117,7 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
     #' Source="Congalton and Green, 2008")
     #'
-    #' @aliases
+    #' @aliases NULL
 
 #All parameters are entered
 initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
@@ -142,12 +126,12 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 # Initializing values -----------------------------------------------------
 
 
-
   self$values<-values
   #Source is optional so you can identify the origin of the matrix.
   #If you add this value, a custom ID is given to the ConfMatrix
   #otherwise you will be given today's date as ID
   #ID="Name" or ID=YYYYMMDD
+
   if(is.null(ID)){
     secuencia <- sprintf("%s-%03d", format(Sys.Date(),"%Y%m%d"), 1:999)
     self$ID <- secuencia[1]
@@ -155,6 +139,7 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
   }else{
     self$ID<-ID
   }
+
   #If no date is added (Date=2710, Date="27-10", Date="27/10")
   #In that case the system date will be taken
   if(!is.null(Date)){
@@ -223,7 +208,8 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
     for (j in 1:ncolumnas){
       if(self$values[i,j]<0){
      error3<-TRUE
-     print("Error type 3: negative values\n")
+     cat("Error type 3: negative values.\nIn position:",i,j,
+         ". Value:",self$values[i,j],"\n")
       }
      }
     }
@@ -291,7 +277,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A)
       #' p$OverallAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      OverallAcc = function(a=NULL) {
      index <- sum(diag(self$values))/sum(self$values)
@@ -338,7 +324,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$UserAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      UserAcc = function(a=NULL){
      #matrix range
@@ -394,7 +380,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$UserAcc_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      UserAcc_i=function(i,a=NULL){
       UserAcc_i <- self$values[i,i] / self$sumfil[i]
@@ -441,7 +427,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$ProdAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      ProdAcc = function (a=NULL){
       n <- sqrt(length(self$values))
@@ -496,7 +482,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$ProdAcc_i(1)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      ProdAcc_i = function(i,a=NULL){
       ProdAcc_i <- self$values[i,i] / self$sumcol[i]
@@ -542,7 +528,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvUserProdAcc_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvUserProdAcc_i = function(i,a=NULL){
       AvUserProdAcc_i <- (self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]])/2
@@ -589,7 +575,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Labatut and Cherifi 2011")
       #' p$Sucess()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      Sucess = function(a=NULL){
       Sucess <- self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]] - 1
@@ -637,7 +623,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Labatut and Cherifi 2011")
       #' p$Sucess_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      Sucess_i = function(i,a=NULL){
       Sucess_i <- self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]] - 1
@@ -686,7 +672,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Rosenfield and Fitzpatrick 1986")
       #' p$AvHelldenAcc_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvHelldenAcc_i = function(i,a=NULL){
 
@@ -745,7 +731,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Rosenfield and Fitzpatrick-Lins 1986")
       #' p$ShortAcc_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      ShortAcc_i = function(i,a=NULL){
       if (self$sumfil[i] + self$sumcol[i] - self$values[i,i] == 0) {
@@ -803,7 +789,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Næsset 1996")
       #' p$UserKappa_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      UserKappa_i = function(i,a=NULL){
       if (1 - self$sumcol[i]/sum(self$values) == 0) {
@@ -862,7 +848,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Næsset 1996")
       #' p$ProdKappa_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
       ProdKappa_i = function(i,a=NULL){
       if (1 - self$sumfil[i]/sum(self$values) == 0) {
@@ -910,7 +896,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Foody 1992")
       #' p$ModKappa()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      ModKappa = function(a=NULL){
        ModKappa <- (self$OverallAcc()[[1]] -
@@ -961,7 +947,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$ModKappaUser_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      ModKappaUser_i = function(i,a=NULL){
        ModKappaUser_i <- (self$UserAcc_i(i)[[1]] -
@@ -1014,7 +1000,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$ModKappaProd_i(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      ModKappaProd_i = function(i,a=NULL){
       ModKappaProd_i <- (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
@@ -1080,7 +1066,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
      #' p$EntropUser_i(1)
      #'
-     #' @aliases
+     #' @aliases NULL
 
         #They can be negative values if the entropy (uncertainty) increases and
         #positive if entropy decreases
@@ -1167,7 +1153,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
      #' p$EntropProd_i(2)
      #'
-     #' @aliases
+     #' @aliases NULL
 
     EntropProd_i = function(i,v=NULL,a=NULL){
      if(!is.null(v)){
@@ -1226,7 +1212,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$AvUserAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvUserAcc = function(a=NULL){
        for (i in 1:length(self$sumfil)) {
@@ -1275,7 +1261,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$AvProdAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvProdAcc = function(a=NULL){
       AvProdAcc <- 1/sqrt(length(self$values)) *
@@ -1318,7 +1304,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvUserProdAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvUserProdAcc = function(a=NULL){
       AvUserProdAcc <- (self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
@@ -1363,7 +1349,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvHelldenAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvHelldenAcc = function(a=NULL){
       AvHelldenAcc <- 1/sqrt(length(self$values)) *
@@ -1406,7 +1392,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvShortAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvShortAcc = function(a=NULL){
       sum1 <- self$sumfil+self$sumcol- diag(self$values)
@@ -1455,7 +1441,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$CombUserAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      CombUserAcc = function(a=NULL){
       CombUserAcc <- (self$OverallAcc()[[1]] + self$AvUserAcc()[[1]]) / 2
@@ -1495,7 +1481,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
       #' p$CombProdAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      CombProdAcc = function(a=NULL){
       CombProdAcc <- (self$OverallAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
@@ -1538,7 +1524,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$CombUserProdAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      CombUserProdAcc = function(a=NULL){
       CombUserProdAcc <- (self$OverallAcc()[[1]]+self$AvHelldenAcc()[[1]])/2
@@ -1591,7 +1577,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$Kappa()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      Kappa = function(a=NULL){
       ExpAcc <- (sum (self$sumfil * self$sumcol))/sum(self$values)^2
@@ -1643,7 +1629,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$Entrop()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      Entrop = function(v=NULL,a=NULL){
       if(!is.null(v)){
@@ -1699,7 +1685,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$NormEntropUser()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      NormEntropUser = function(v=NULL,a=NULL){
       if(!is.null(v)){
@@ -1761,7 +1747,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
       #' p$NormEntropProd()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      NormEntropProd = function(v=NULL,a=NULL){
       if(!is.null(v)){
@@ -1832,7 +1818,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvNormEntrop()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvNormEntrop = function(v=NULL,a=NULL){
       if(!is.null(v)){
@@ -1905,7 +1891,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$GeomAvNormEntrop()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      GeomAvNormEntrop = function(v=NULL,a=NULL){
       if(!is.null(v)){
@@ -1977,7 +1963,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AvMaxNormEntrop()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AvMaxNormEntrop = function(v=NULL,a=NULL){
        if(!is.null(v)){
@@ -2034,7 +2020,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
       #' p$Tau()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      Tau = function(a=NULL){
         Ca<-1/nrow(self$values)
@@ -2082,7 +2068,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Türk 1979")
       #' p$GroundTruth()
       #'
-      #' @aliases
+      #' @aliases NULL
 
 
     GroundTruth=function(a=NULL){
@@ -2163,7 +2149,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$UserProdAcc()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      UserProdAcc =function(){
       #  calculation of Class accuracies and standard deviations
@@ -2191,7 +2177,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$DetailedKappa()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      DetailedKappa=function (){
        nc <- nrow(self$values)
@@ -2230,7 +2216,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$DetailedCondKappa ()
       #'
-      #' @aliases
+      #' @aliases NULL
 
 
      DetailedCondKappa = function(){
@@ -2281,7 +2267,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$QES(TI=1, SF=6)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      QES = function(TI=NULL, SF=1){
       # Overall Quantity, Exchange and Shift values
@@ -2398,7 +2384,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$AllParameters()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      AllParameters=function(){
      # Overall Accuracy
@@ -2442,7 +2428,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A, Source="Congalton and Green 2008")
       #' p$MBootStrap(2)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      MBootStrap=function(n,pr=NULL){
       #matrix range
@@ -2490,7 +2476,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
       #' p$MNormalize()$values
       #'
-      #' @aliases
+      #' @aliases NULL
 
      MNormalize=function(n=NULL){
 
@@ -2532,7 +2518,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
       #' p$MPseudoZeroes()
       #'
-      #' @aliases
+      #' @aliases NULL
 
      MPseudoZeroes = function(){
 
@@ -2579,7 +2565,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$DetailedWTau(WV)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      DetailedWTau = function(WV){
        nc <- nrow(self$values)
@@ -2623,7 +2609,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A)
       #' p$DetailedWKappa(WM)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      DetailedWKappa = function(WM){
        nc <- nrow(self$values)
@@ -2672,7 +2658,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' nrow = 4, ncol=4))
       #' p$UserProdAcc_W(WM)
       #'
-      #' @aliases
+      #' @aliases NULL
 
      UserProdAcc_W =function(WM){
      #  Calculation of weighted Class accuracies
@@ -2764,7 +2750,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$StHell(f)
       #'
-      #' @aliases
+      #' @aliases NULL
 
     StHell = function(f,p=NULL,q=NULL){
 
@@ -2822,7 +2808,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$Kappa.test(f)
       #'
-      #' @aliases
+      #' @aliases NULL
 
       Kappa.test=function(f,alpha=NULL){
         if(class(f)[1]!="ConfMatrix"){
@@ -2879,7 +2865,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$OverallAcc.test(f)
       #'
-      #' @aliases
+      #' @aliases NULL
 
     OverallAcc.test=function(f,alpha=NULL){
       if(class(f)[1]!="ConfMatrix"){
@@ -2939,7 +2925,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$Tau.test(f)
       #'
-      #' @aliases
+      #' @aliases NULL
 
     Tau.test=function(f,alpha=NULL){
       if(class(f)[1]!="ConfMatrix"){
@@ -2987,7 +2973,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
       #' p$TSCM.test(f)
       #'
-      #' @aliases
+      #' @aliases NULL
 
     TSCM.test=function(f,n1=NULL,alpha=NULL){
       if(class(f)[1]!="ConfMatrix"){
@@ -3076,7 +3062,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source= "Türk 1979")
       #' p$QIndep.test()
       #'
-      #' @aliases
+      #' @aliases NULL
 
 
     QIndep.test=function(alpha=NULL){
@@ -3125,7 +3111,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$plot.global()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     plot.global=function(){
     #OverallAcc
@@ -3165,7 +3151,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
       #' p$plot.class()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     plot.class=function(){
 
@@ -3207,7 +3193,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' "agriculture","shrub"),Source="Congalton and Green 2008")
       #' p$print()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     print=function(){
       cat("Identifier (ID)\n", self$ID, "\n")
@@ -3227,14 +3213,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
    ),
    private = list(
 
-     #' @description Private method to calculate the confidence
-     #' interval from
-     #' the value of a given index.
-     #' @param a Significance level. By default 0.05
-     #' @param p Index value
-     #' @param var Index variance
-     #' @return Confidence interval
-
      ConfInt=function(p,var,a=NULL){
 
        if(is.null(a)){
@@ -3246,6 +3224,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        ConfInt_sup<-p+z*sqrt(var)
        return(list(ConfInt_inf=ConfInt_inf,ConfInt_sup=ConfInt_sup))
      }
+
    ),
    active = list(
    )

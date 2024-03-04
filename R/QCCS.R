@@ -6,16 +6,6 @@
 #' the given data and the probability vectors, which follow a multinomial
 #' or binomial distribution. Hypothesis contrasts are applied and it is
 #' decided whether the classification of elements is optimal or not.
-#' @param vectors vector list
-#' @param prob probabilities list
-#' @param ID Identifier. By default ID is a date in YYYYMMDD format.
-#' @param Date Date provided by the user. By default the date provided by the
-#' system will be taken.
-#' @param ClassName Name of the classes. By default the elements will be
-#' called Ref_i, with i being the column number.
-#' @param Source Indicates where the matrix comes from (article, project, etc.).
-#'  By default is NULL.
-#' @return Object of class QCCS.
 #' @export QCCS
 #' @note  Error Messages.
 #' List of possible errors:
@@ -37,11 +27,24 @@
 #' @importFrom Rdpack reprompt
 #'
 #'
-#' @aliases
+#' @aliases QCCS
 
 
 QCCS <- R6Class("QCCS",
   public = list(
+
+    #' @field vectors initialize vectors
+    vectors = NULL,
+    #' @field prob initialize prob
+    prob = NULL,
+    #' @field ID initialize ID
+    ID=NULL,
+    #' @field Date initialize date
+    Date=NULL,
+    #' @field ClassName Class name
+    ClassName=NULL,
+    #' @field Source Source vectors
+    Source=NULL,
     #' @description Public method to create an instance of the QCCS class.
     #' At the time of creation, a list of vectors with data and a list
     #' of probability vectors that correspond to the data must be
@@ -67,15 +70,8 @@ QCCS <- R6Class("QCCS",
     #' A<-QCCS$new(vectors,prob,
     #' Source="Alba-Fernández et al. 2020")
     #'
-    #' @aliases
+    #' @aliases NULL
 
-
-    vectors = NULL,
-    prob = NULL,
-    ID=NULL,
-    Date=NULL,
-    ClassName=NULL,
-    Source=NULL,
   initialize = function(vectors, prob, ID = NULL, Date=NULL,ClassName=NULL, Source=NULL) {
 
 
@@ -159,11 +155,11 @@ QCCS <- R6Class("QCCS",
 
         if(vi[i]<0){
           error5<-TRUE
-          cat("Error type 5: Some element of the data\nvector is negative\n")
+          cat("Error type 5: Some element of the data\nvector is negative\n",vi,"\n")
         }
         if(pi[i]<0){
           error6<-TRUE
-          cat("Error type 6: Some element of the probability\nvector is negative.\n")
+          cat("Error type 6: Some element of the probability\nvector is negative.\n",pi,"\n")
         }
         }
       }
@@ -190,7 +186,7 @@ QCCS <- R6Class("QCCS",
       #' Source="Alba-Fernández et al. 2020")
       #' A$Exact.test()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     print=function(){
       cat("Identifier (ID)\n", self$ID, "\n")
@@ -235,7 +231,7 @@ QCCS <- R6Class("QCCS",
       #' Source="Alba-Fernández et al. 2020")
       #' A$Exact.test()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     Exact.test = function(alpha=NULL) {
       if(is.null(alpha)){
@@ -294,7 +290,7 @@ QCCS <- R6Class("QCCS",
       #' Source="Alba-Fernández et al. 2020")
       #' A$JiGlobal.test()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     JiGlobal.test=function(alpha=NULL){
       if(is.null(alpha)){
@@ -364,7 +360,7 @@ QCCS <- R6Class("QCCS",
       #' Source="Alba-Fernández et al. 2020")
       #' A$Ji.test()
       #'
-      #' @aliases
+      #' @aliases NULL
 
     Ji.test=function(alpha=NULL){
       if(is.null(alpha)){
@@ -409,40 +405,6 @@ QCCS <- R6Class("QCCS",
 
 
   private = list(
-
-       #' @description Public method that applies the Bonferroni method
-       #' to make decisions in contrasting hypotheses. The reference
-       #' \insertCite{alba2020}{ConfMatrix} is followed for the
-       #' computations.
-       #' The mathematical expression is:
-       #'
-       #' \deqn{
-       #' BonfMeth = \left\{
-       #' \begin{array}{lcc} H_0 \text{is rejected}
-       #' &  if & p value \geq \dfrac{\alpha}{4} \\
-       #' \\ H_0 \text{is rejected}   &  if & p value<\dfrac{\alpha}{4}
-       #' \end{array}
-       #' \right.
-       #' }
-       #'
-       #' Where:
-       #' \enumerate{
-       #'   \item BonfMeth: Bonferroni method.
-       #'   \item alpha: significance level.
-       #' }
-       #' @return The statistic value of the statistical test based
-       #' on the Hellinger distance.
-       #' @param pvalue vector with the p values obtained.
-       #' @param alpha significance level. By default alpha=0.05.
-       #' @examples
-       #' vectors<-list(c(47,4,0),c(40,5,3),c(45,6,2),c(48,0))
-       #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02),
-       #' c(0.9,0.08,0.02),c(0.99,0.01))
-       #' p <- QCCS$new(vectors,prob,Source="")
-       #' pval<-p$QCCS()[[2]]
-       #' p$MethBonf(pval)
-       #'
-       #' @aliases
 
      MethBonf = function(pvalue,alpha=NULL){
        if(is.null(alpha)){
