@@ -4,13 +4,28 @@
 \alias{QCCS}
 \title{Quality Control Columns Set}
 \description{
-In the QCCS class, the confusion matrices will be given by
-vectors with their corresponding probabilities. In this way,
-the confusion matrices will be analyzed by columns, which will
-represent the given reference data. The p-value is calculated from
-the given data and the probability vectors, which follow a multinomial
-or binomial distribution. Hypothesis contrasts are applied and it is
-decided whether the classification of elements is optimal or not.
+The difference between a QCCS and a confusion matrix is
+that while forming a confusion matrix requires that the reference and
+the product be more or less equivalent, for the QCCS it is required
+that the reference be actually of higher quality than the product.
+This forces us to leave the marginals corresponding to the reference
+fixed. That is why we work in columns. In this way, the QCCS class
+works with a confusion matrix expressed as a set of column vectors
+and it will be analyzed by columns. A QCCS is constructed by comparing
+a sample of a set of common positions in the product and the ground
+truth. Appropriate sampling methods must be applied to generate the
+QCCS. It is considered that the classes of the ground truth
+correspond to the columns and that the classes of the
+product to be valued correspond to the rows. On the other hand, the
+concept of QCCS is directly linked to quality control, so the
+specifications of this control must be indicated. Specifications are
+stated as percentages. E.g. for class "A" under consideration, a
+minimum quality value is established (e.g. better than 90%), and
+maximum values of confusion with other categories (e.g. confusion
+between A and B less than 5%). The specifications are proportions of
+a multinomial. First, an object of this class of object must be
+created (instantiated) and then the methods that offer the index
+calculations will be invoked.
 }
 \note{
 Error Messages.
@@ -31,31 +46,20 @@ List of possible errors:
 ## Method `QCCS$new`
 ## ------------------------------------------------
 
-vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+vectors<-list(c(47,4,0),c(44,5,3))
+prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
 A<-QCCS$new(vectors,prob,
-Source="Alba-Fernández et al. 2020")
-
-
-## ------------------------------------------------
-## Method `QCCS$print`
-## ------------------------------------------------
-
-vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(vectors,prob,
-Source="Alba-Fernández et al. 2020")
-A$Exact.test()
+Source="Ariza-Lopez et al. 2019")
 
 
 ## ------------------------------------------------
 ## Method `QCCS$Exact.test`
 ## ------------------------------------------------
 
-vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+vectors<-list(c(47,4,0),c(44,5,3))
+prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
 A<-QCCS$new(vectors,prob,
-Source="Alba-Fernández et al. 2020")
+Source="Ariza-Lopez et al. 2019")
 A$Exact.test()
 
 
@@ -79,6 +83,17 @@ prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
 A <- QCCS$new(vectors,prob,
 Source="Alba-Fernández et al. 2020")
 A$Ji.test()
+
+
+## ------------------------------------------------
+## Method `QCCS$print`
+## ------------------------------------------------
+
+vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
+A$print()
 
 }
 \references{
@@ -107,11 +122,10 @@ A$Ji.test()
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
-\item \href{#method-QCCS-print}{\code{QCCS$print()}}
 \item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
 \item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}
 \item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
-\item \href{#method-QCCS-clone}{\code{QCCS$clone()}}
+\item \href{#method-QCCS-print}{\code{QCCS$print()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -119,14 +133,12 @@ A$Ji.test()
 \if{latex}{\out{\hypertarget{method-QCCS-new}{}}}
 \subsection{Method \code{new()}}{
 Public method to create an instance of the QCCS class.
-At the time of creation, a list of vectors with data and a list
-of probability vectors that correspond to the data must be
-defined. The same number of data vectors as probability vectors
-must be entered, the pairs of data-probability vectors must have
-the same size, otherwise an error will be displayed.
+At the time of creation, column set data and specification values
+must be provided. The same number of data and as specification values
+must be entered, and the pairs of data-specifications vectors must
+have the same size, otherwise an error will be provided.
 The optional possibility of adding metadata to the matrix is offered.
-The values of the data vectors represent the reference categories that
-will be taken into account.
+The values of the data vectors represent the classes of ground truth.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$new(
   vectors,
@@ -150,9 +162,11 @@ will be taken into account.
 \item{\code{Date}}{Date provided by the user. By default the date provided
 by the system will be taken.}
 
-\item{\code{ClassName}}{Name of the classes. By default for the column
-elements they will be Ref_i and for the row elements C_i, with i
-being the row or column number.}
+\item{\code{ClassName}}{Name of the classes. It is given by a vector whose
+elements are the name of the classes by rows or columns.
+By default for the column elements they will be Ref_i and for the
+elements of row C_i, with i being the corresponding row or column
+number.}
 
 \item{\code{Source}}{Indicates where the matrix comes from
 (article, project, etc.). By default is NULL.}
@@ -161,10 +175,124 @@ being the row or column number.}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(47,4,0),c(44,5,3))
+prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+A<-QCCS$new(vectors,prob,
+Source="Ariza-Lopez et al. 2019")
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-Exact.test"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-Exact.test}{}}}
+\subsection{Method \code{Exact.test()}}{
+Public method that using a QCCS object
+instance calculates whether the data meets specifications.
+An exact test is applied to each of the multinomials
+that are defined for each column.
+The Bonferroni method is used.
+The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
+for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The p value of the exact test using Bonferroni.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(47,4,0),c(44,5,3))
+prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+A<-QCCS$new(vectors,prob,
+Source="Ariza-Lopez et al. 2019")
+A$Exact.test()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-JiGlobal.test"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-JiGlobal.test}{}}}
+\subsection{Method \code{JiGlobal.test()}}{
+Public method that using a QCCS
+object instance calculates whether the data meets
+specifications. The chi square test is used.
+The references
+\insertCite{QCCS,alba2020}{ConfMatrix}
+are followed for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The p value derived from the chi square test.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
 \preformatted{vectors<-list(c(18,0,3,0),c(27,19))
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(vectors,prob,
+A <- QCCS$new(vectors,prob,
 Source="Alba-Fernández et al. 2020")
+A$JiGlobal.test()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-Ji.test"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-Ji.test}{}}}
+\subsection{Method \code{Ji.test()}}{
+Public method that using a QCCS object instance
+calculates whether the data meets specifications. The chi
+square test is used. The Bonferroni method is used.
+The references \insertCite{QCCS,alba2020}{ConfMatrix} are
+followed for the computations.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(alpha = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{alpha}}{significance level. By default alpha=0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The p value from the chi square test.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
+prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(vectors,prob,
+Source="Alba-Fernández et al. 2020")
+A$Ji.test()
 
 }
 \if{html}{\out{</div>}}
@@ -192,156 +320,12 @@ of data and data vectors and probability.
 prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
 A<-QCCS$new(vectors,prob,
 Source="Alba-Fernández et al. 2020")
-A$Exact.test()
+A$print()
 
 }
 \if{html}{\out{</div>}}
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-Exact.test"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-Exact.test}{}}}
-\subsection{Method \code{Exact.test()}}{
-Public method that, using a list of vectors and their
-corresponding probabilities, through a multinomial or binomial
-distribution depending on the size of the vector, calculates the
-p value using each pair of vector-probability data. The null
-hypothesis shows that for each category the data set is either
-well classified or not. The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{ConfMatrix} is followed
-for the computations.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(alpha = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The p value is obtained for each vector, and using
-the Bonferroni criterion it is decided whether the elements
-are well classified or not.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(vectors,prob,
-Source="Alba-Fernández et al. 2020")
-A$Exact.test()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-JiGlobal.test"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-JiGlobal.test}{}}}
-\subsection{Method \code{JiGlobal.test()}}{
-Public method that, using a list of vectors and their
-corresponding probabilities that follow a binomial or multinomial
-distribution, calculates the p-value for compliance with all
-defined specifications. The chi square test is used.
-The null hypothesis verifies that the probabilities are met and
-therefore that the set of elements are well defined. If one of
-the defined probabilities is not met, the null hypothesis would
-be rejected. The references \insertCite{QCCS,alba2020}{ConfMatrix}
-is followed for the computations.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(alpha = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The p value of the entire data set is obtained, through
-the chi-square, and it is decided whether the elements are well
-classified or not.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,
-Source="Alba-Fernández et al. 2020")
-A$JiGlobal.test()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-Ji.test"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-Ji.test}{}}}
-\subsection{Method \code{Ji.test()}}{
-Public method that, using a list of vectors and
-their corresponding probabilities that follow a multinomial
-or binomial distribution, calculates the p value using each
-vector-probability data pair. The chi square test is used. The
-null hypothesis shows that for each category the data set is either
-well classified or not. The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{ConfMatrix} is
-followed for the computations.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(alpha = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The p value is obtained for each vector, and using
-the Bonferroni criterion it is decided whether the elements are
-well classified or not.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,
-Source="Alba-Fernández et al. 2020")
-A$Ji.test()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
 }
 }

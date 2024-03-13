@@ -4,19 +4,29 @@
 \alias{ConfMatrix}
 \title{Confusion matrix}
 \description{
-In the ConfMatrix class works with confusion matrices,
-thus providing the possibility of calculating various indices to obtain
-information on the given matrices, their variances and their
-confidence intervals. The most important global indices are presented
-graphically, in addition to the user and producer accuracies.
+The ConfMatrix class works with confusion matrices, thus providing
+the possibility of calculating several indices with their
+corresponding variances and confidence intervals. A confusion matrix
+is constructed by comparing a sample of a set of common positions in
+the product and the ground truth. Appropriate sampling methods must
+be applied to generate the confusion matrix. It is considered that
+the classes of the ground truth correspond to the columns
+and that the classes of the product to be valued correspond
+to the rows. First, an object of this class of object must be created
+(instantiated) and then the methods that offer the index calculations
+will be invoked. Mnemonic method names are proposed and are therefore
+long, for example methods that provide averages start with "AV" and
+those that provide combinations start with "Comb". Methods related
+to a specific class end with the ending "_i".
 }
 \note{
-Error Messages.
+Error Messages:
+
 List of possible errors:
 \itemize{
  \item \code{Error type 1}: Non-square matrix.
  \item \code{Error type 2}: Single element matrix.
- \item \code{Error type 3}: negative values.
+ \item \code{Error type 3}: Negative values.
  \item \code{Error type 4}: Sum of elements 0.
  \item \code{Error type 5}: Sum of rows 0.
  \item \code{Error type 6}: Sum of columns 0.
@@ -31,7 +41,7 @@ List of possible errors:
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
-cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
+cm<-ConfMatrix$new (A,ID="5",Date="27-10-2023",
 Source="Congalton and Green, 2008")
 
 
@@ -511,7 +521,7 @@ r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
 B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),
 nrow=4,ncol=4)
 f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
-p$StHell(f)
+r$StHell(f)
 
 
 ## ------------------------------------------------
@@ -655,15 +665,25 @@ p$print()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{values}}{Confusion matrix.}
+\item{\code{values}}{\verb{
+Confusion matrix. An array must be added.
+}}
 
-\item{\code{ID}}{Identifier.}
+\item{\code{ID}}{\verb{
+Identifier.
+}}
 
-\item{\code{Date}}{Date.}
+\item{\code{Date}}{\verb{
+Date.
+}}
 
-\item{\code{Source}}{Source Matrix.}
+\item{\code{Source}}{\verb{
+Source Matrix.
+}}
 
-\item{\code{ClassName}}{Class name.}
+\item{\code{ClassName}}{\verb{
+Class name.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -726,7 +746,6 @@ p$print()
 \item \href{#method-ConfMatrix-plot.global}{\code{ConfMatrix$plot.global()}}
 \item \href{#method-ConfMatrix-plot.class}{\code{ConfMatrix$plot.class()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
-\item \href{#method-ConfMatrix-clone}{\code{ConfMatrix$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -734,12 +753,13 @@ p$print()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-new}{}}}
 \subsection{Method \code{new()}}{
 Public method to create an instance of the ConfMatrix class.
-When creating it, values must be given to the matrix. The optional
-possibility of adding metadata to the matrix is offered.
-The creation includes a series of checks on the data that, if not met,
-give coded error messages. The values of the matrix must be organized in
-such a way that the columns represent the categories in the reference
-and the rows represent the categories in the product being evaluated.
+When creating it, values must be given to the matrix. The values
+of the matrix must be organized in such a way that the columns
+represent the classes in the reference and the rows represent
+the classes in the product being evaluated. The creation of a
+ConfMatrix instance includes a series of checks on the data. If
+checks are not met, the system generates coded error messages.
+The optional possibility of adding metadata to the matrix is offered.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(values, ID = NULL, Date = NULL, ClassName = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
@@ -747,31 +767,47 @@ and the rows represent the categories in the product being evaluated.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{values}}{Confusion matrix. An array must be added.}
+\item{\code{values}}{\verb{
+Matrix of values. A matrix must be added.
+}}
 
-\item{\code{ID}}{Identifier. By default, the date in YYYYMMDD format will be
-taken as the ID.}
+\item{\code{ID}}{\verb{
+Identifier. It is a character string with a maximum length of 50
+characters. By default, "CM_i" will be taken as identification.
+Where \emph{i} will be the number of ConfMatrix instances already defined.
+}}
 
-\item{\code{Date}}{Date provided by the user. By default the date provided by
-the system will be taken.}
+\item{\code{Date}}{\verb{
+Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+By default the date provided by the system will be taken.
 
-\item{\code{ClassName}}{Name of the classes. By default for the column
-elements they will be Ref_i and for the row elements C_i, with i
-being the row or column number.}
+}}
 
-\item{\code{Source}}{Indicates where the matrix comes from (article, project,
-etc.). By default is NULL.}
+\item{\code{ClassName}}{\verb{
+Name of the classes. It is given by a character strings vector whose
+elements are the name of the classes. Each element of the vector is
+a string of maximum 20 characters. By default for the column elements
+they will be Ref_i and for the elements of row C_i, with i being the
+corresponding row or column number.
+}}
+
+\item{\code{Source}}{\verb{
+Indicates where the matrix comes from (article, project, etc.).
+It is suggested to enter a reference or a DOI. A character
+string with a maximum length of 80 characters can be entered.
+By default, is NULL.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Object of class ConfMatrix or an error if a matrix isn't entered.
+Object of the ConfMatrix class, or an error message.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
-cm<-ConfMatrix$new (A,ID=5,Date="27-10-2023",
+cm<-ConfMatrix$new (A,ID="5",Date="27-10-2023",
 Source="Congalton and Green, 2008")
 
 }
@@ -785,11 +821,11 @@ Source="Congalton and Green, 2008")
 \if{latex}{\out{\hypertarget{method-ConfMatrix-OverallAcc}{}}}
 \subsection{Method \code{OverallAcc()}}{
 Public method to calculate the global index called
-Overall accuracy. The Overall accuracy for a particular classified
-image/map is then calculated by dividing the sum of the entries that
-form the major diagonal (i.e., the number of correct classifications)
-by the total number of samples taken. The method also offers the
-variance and confidence interval. The reference \insertCite{congalton2008}{ConfMatrix}
+Overall Accuracy. The Overall Accuracy is calculated by dividing
+the sum of the entries that form the major diagonal (i.e., the
+number of correct classifications) by the total number of cases.
+The method also offers the variance and confidence interval.
+The reference \insertCite{congalton2008}{ConfMatrix}
 is followed for the computations.
 
 
@@ -817,13 +853,15 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the overall accuracy, its variance, and its
-confidence interval.
+A list of real values containing the overall accuracy,
+its variance, and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -842,12 +880,13 @@ p$OverallAcc()
 \if{html}{\out{<a id="method-ConfMatrix-UserAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-UserAcc}{}}}
 \subsection{Method \code{UserAcc()}}{
-Public method for deriving a class index called
-user's accuracy. The user's accuracy for the class i of thematic
-map is calculated by dividing the value in the diagonal of class i
-by the sum of all values in the row of the class i. The method also
-offers the variance and confidence interval. The reference
-\insertCite{congalton2008}{ConfMatrix} is followed
+Public method for deriving the index called user’s
+accuracy for all the classes in a ConfMatrix object instance.
+The user's accuracy for the class i of a thematic product is
+calculated by dividing the value in the diagonal of class i by
+the sum of all values in the row of the class i (row marginal).
+The method also offers the variance and confidence interval.
+The reference \insertCite{congalton2008}{ConfMatrix} is followed
 for the computations.
 
 
@@ -874,14 +913,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with a vector of values for the user's accuracy
-rate for all classes, another vector with their variances and
-confidence intervals for each class.
+\verb{
+A list of vectors each one containing the user’s accuracy real values
+for all classes, their variances and confidence intervals for each
+class, respectively.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -900,14 +943,14 @@ p$UserAcc()
 \if{html}{\out{<a id="method-ConfMatrix-UserAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-UserAcc_i}{}}}
 \subsection{Method \code{UserAcc_i()}}{
-Public method where the user's accuracy index is
-defined for a specific class i. The user precision for class i
-of the thematic map is calculated by dividing the value on the
-diagonal of class i by the sum of all values in the row of class i.
-The method also offers the
-variance and confidence interval. The reference
-\insertCite{congalton2008}{ConfMatrix} is followed for
-the calculations.
+(): Public method for deriving the index called
+user’s accuracy for a specific class i in a ConfMatrix object
+instance. The user’s accuracy for the class i of a thematic
+product is calculated by dividing the value in the diagonal of
+class i by the sum of all values in the row of the class i
+(row marginal). The method also offers the variance and confidence
+interval. The reference \insertCite{congalton2008}{ConfMatrix}
+is followed for the computations.
 
 
 \deqn{
@@ -934,15 +977,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{User class to evaluate.}
+\item{\code{i}}{\verb{
+User class to evaluate, where} \eqn{i \in \mathbb{N}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the user's accuracy index values for class i,
-its variance and its confidence interval.
+\verb{
+A list of real values containing the user’s accuracy for class i, its
+variance, and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -961,12 +1009,13 @@ p$UserAcc_i(2)
 \if{html}{\out{<a id="method-ConfMatrix-ProdAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-ProdAcc}{}}}
 \subsection{Method \code{ProdAcc()}}{
-Public method for deriving a class index called
-producer's accuracy. The producer's accuracy for the class i of
-thematic map is calculated by dividing the value in the diagonal
-of class i by the sum of all values in the column of the class i.
-The method also offers the
-variance and confidence interval. The reference
+Public method for deriving the index called
+producer’s accuracy for all the classes in a ConfMatrix
+object instance. The producer’s accuracy for the class i
+of a thematic product is calculated by dividing the value
+in the diagonal of class i by the sum of all values in the
+row of the class i (column marginal). The method also
+offers the variance and confidence interval. The reference
 \insertCite{congalton2008}{ConfMatrix} if followed for the
 computations.
 
@@ -993,14 +1042,16 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with a vector of values for the producer's
-accuracy index of all classes, another vector with their variances
-and confidence intervals for each class.
+A list of vectors each one containing the producer’s
+accuracy real values for all classes, their variances and
+confidence intervals for each class, respectively.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1019,13 +1070,13 @@ p$ProdAcc()
 \if{html}{\out{<a id="method-ConfMatrix-ProdAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-ProdAcc_i}{}}}
 \subsection{Method \code{ProdAcc_i()}}{
-Public method where the producer's accuracy index is
-defined for a specific class i. The user precision for class i of
-the thematic map is calculated by dividing the value on the diagonal
-of class i by the sum of all values in the column of class i.
-The method also offers the
-variance and confidence interval.
-method also offers variance. The reference
+Public method for deriving the index called
+producer’s accuracy for a specific class i in a ConfMatrix
+object instance. The user’s accuracy for the class i of a
+thematic product is calculated by dividing the value in the
+diagonal of class i by the sum of all values in the column
+of the class i (column marginal). The method also offers
+the variance and confidence interval. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the
 calculations.
 
@@ -1053,15 +1104,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Producer class to evaluate.}
+\item{\code{i}}{\verb{
+Producer class to evaluate, where \eqn{i \in \mathbb{N}}.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the producer's accuracy index values for class i,
-its variance and its confidence interval.
+A list of real values containing the producer’s
+accuracy for class i, its variance, and its confidence
+interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1080,11 +1136,11 @@ p$ProdAcc_i(1)
 \if{html}{\out{<a id="method-ConfMatrix-AvUserProdAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvUserProdAcc_i}{}}}
 \subsection{Method \code{AvUserProdAcc_i()}}{
-Public method that provides the average of the
-accuracy rates of the user and producer of a specific class.
-The method also offers the
-variance and confidence interval. The reference
-\insertCite{liu2007}{ConfMatrix} is followed for the calculations.
+Public method that provides the average of
+user’s and producer’s accuracies for a specific class i
+The method also offers the variance and confidence
+interval. The reference \insertCite{liu2007}{ConfMatrix}
+is followed for the calculations.
 
 
 The mathematical expression is:
@@ -1099,7 +1155,7 @@ where:
 
 \enumerate{
   \item \eqn{AvUserProdAcc_i}: average of user's and producer's
-  accuracy.
+  accuracies.
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
   \item \eqn{N}: number of cases involved in the calculation of
@@ -1112,15 +1168,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{\verb{
+Class to evaluate, where \eqn{i \in \mathbb{N}}.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with average of user's and producer's accuracy,
-its variance for class i and its confidence interval.
+A list of real values containing the average of
+user’s and producer’s accuracies, its variance and
+confidence interval for class i.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1140,11 +1201,11 @@ p$AvUserProdAcc_i(2)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-Sucess}{}}}
 \subsection{Method \code{Sucess()}}{
 Public method that provides the Classification
-Success Index (CSI) applies to all class and gives an overall
-estimation of classification effectiveness.
+Success Index (CSI) which considers all classes and gives an
+overall estimation of classification effectiveness.
 The method also offers the variance and confidence interval.
 The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
-is followed for the calculations.
+are followed for the calculations.
 
 
 The mathematical expression is:
@@ -1152,13 +1213,13 @@ The mathematical expression is:
 Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
 }
  \deqn{
-VarSucess=\dfrac{Sucess \cdot (1-Sucess)}{N}
+\sigma^2_{Sucess}=\dfrac{Sucess \cdot (1-Sucess)}{N}
 }
 
 where:
 
 \enumerate{
-  \item \eqn{Sucess}: classification succes index.
+  \item \eqn{Sucess}: classification success index.
   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
   \item \eqn{N}: number of cases involved in the calculation of
@@ -1171,13 +1232,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the classification success index, its
-variance and its confidence interval.
+A list of real values containing the ICSI, its variance
+and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1197,11 +1260,11 @@ p$Sucess()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-Sucess_i}{}}}
 \subsection{Method \code{Sucess_i()}}{
 Public method that provides the Individual
-Classification Success Index (ICSI) applies to the classification
+Classification Success Index (ICSI) which considers  the classification
 effectiveness for one particular class of interest.
 The method also offers the variance and confidence interval.
 The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
-is followed for the calculations.
+are followed for the calculations.
 
 
 The mathematical expression is:
@@ -1229,14 +1292,14 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the individual classification success index,
+A list of real values containing the ICSI,
 its variance and its confidence interval.
 }
 \subsection{Examples}{
@@ -1256,14 +1319,16 @@ p$Sucess_i(2)
 \if{html}{\out{<a id="method-ConfMatrix-AvHelldenAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvHelldenAcc_i}{}}}
 \subsection{Method \code{AvHelldenAcc_i()}}{
-Public method that provides the Hellden' average
-accuracy, denotes for the probability that a randomly chosen point
-of a specific class on the map has a correspondence of the same
-class in the same position in the field and that a randomly chosen
-point in the field of the same class has a correspondence of the
-same class in the same position on the map. The method also offers the
-variance and confidence interval. The references
-\insertCite{hellden1980,rosenfield1986}{ConfMatrix} is
+Public method that provides the Hellden’ average
+accuracy, denotes for the probability that a randomly chosen
+position or element assigned to a specific class on the product
+has a correspondence of the same class in the homologous position
+or element in the reference, and that a randomly chosen point
+or element assigned to a specific class on the reference has a
+correspondence of the same class in the homologous position or
+element in the product. The method also offers the variance and
+confidence interval. The references
+\insertCite{hellden1980,rosenfield1986}{ConfMatrix} are
 followed for the calculations.
 
 
@@ -1289,15 +1354,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with Hellden's mean accuracy, its variance and
-its confidence interval.
+A list of real values containing the Hellden’s mean
+accuracy, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1316,15 +1381,15 @@ p$AvHelldenAcc_i(2)
 \if{html}{\out{<a id="method-ConfMatrix-ShortAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-ShortAcc_i}{}}}
 \subsection{Method \code{ShortAcc_i()}}{
-Public method that provides Short's mapping accuracy
-for each class is stated as the number of correctly classified
-pixels (equal to the total in the correctly classified area) in
-terms of all pixels affected by its classification (equal to this
-total in the displayed area as well as the pixels involved in errors
-of commission and omission). The method also offers the
-variance and confidence interval.
-The references \insertCite{rosenfield1986,short1982}{ConfMatrix}
-is followed for the calculations.
+Public method that provides the Short's mapping
+accuracy. For each category of the matrix i, it is determined
+as the quotient between the well-classified elements (value on
+the diagonal) and the sum of that same value and the errors of
+omission and commission (rest of values in the column and row)
+corresponding to that class. The method also offers the
+variance and confidence interval. The references
+\insertCite{rosenfield1986,short1982}{ConfMatrix}
+are followed for the calculations.
 
 
 \deqn{
@@ -1339,8 +1404,8 @@ where:
 \enumerate{
   \item \eqn{ShortAcc_i}: Short's mapping accuracy
   \item \eqn{x_{ii}}: diagonal element of the matrix.
-  \item \eqn{x_{j+}}: sum of all elements in rows j.
-  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{x_{j+}}: sum of all omissions in row j.
+  \item \eqn{x_{+j}}: sum of all commissions in column j.
   \item \eqn{N}: number of cases involved in the calculation of
   the index.
 }
@@ -1351,15 +1416,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}.}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with Short's mapping accuracy, its variance
-and its confidence interval.
+A list of real values containing the Short's
+mapping accuracy, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1413,15 +1478,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with coefficient kappa (user's), its variance
-and its confidence interval.
+A list of real values containing the kappa coefficient
+(user’s), its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1475,15 +1540,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with coefficient kappa (producer's), its variance
-and its confidence interval.
+A list of real values containing the coefficient kappa
+(producer’s), its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1505,7 +1570,7 @@ p$ProdKappa_i(2)
 Public method that provides the overall modified
 kappa coefficient. The method also offers the
 variance and confidence interval. The references
-\insertCite{stehman1997,foody1992}{ConfMatrix} is followed for
+\insertCite{stehman1997,foody1992}{ConfMatrix} are followed for
 the calculations.
 
 
@@ -1537,8 +1602,8 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with modified coefficient kappa, its variance
-and its confidence interval.
+A list of real values containing modified coefficient
+kappa, its variance and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1559,9 +1624,9 @@ p$ModKappa()
 \subsection{Method \code{ModKappaUser_i()}}{
 Public method, derived from the general modified
 kappa coefficient, which provides the modified coefficient kappa
-for the user. The method also offers the
-variance and confidence interval. The references
-\insertCite{stehman1997,foody1992}{ConfMatrix} is followed
+for the user and for a specific class i. The method also offers
+the variance and confidence interval. The references
+\insertCite{stehman1997,foody1992}{ConfMatrix} are followed
 for the calculations.
 
 
@@ -1589,15 +1654,16 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with modified coefficient kappa (user's),
-its variance and confidence interval
+A list of real values containing the modified
+coefficient kappa (user's), its variance and
+confidence interval
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1618,9 +1684,9 @@ p$ModKappaUser_i(2)
 \subsection{Method \code{ModKappaProd_i()}}{
 Public method, derived from the general modified
 kappa coefficient, which provides the modified coefficient kappa
-for the producer. The method also offers the
-variance and confidence interval.
-The references \insertCite{stehman1997,foody1992}{ConfMatrix} is
+for the producer and for a specific class i. The method also
+offers the variance and confidence interval. The references
+\insertCite{stehman1997,foody1992}{ConfMatrix} are
 followed for the calculations.
 
 
@@ -1635,7 +1701,7 @@ ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}
 where:
 
 \enumerate{
-  \item \eqn{ModKappaUser_i}: modified coefficient kappa (producer's).
+  \item \eqn{ModKappaProd_i}: modified coefficient kappa (producer's).
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
   \item \eqn{M}: number of classes.
   \item \eqn{N}: number of cases involved in the calculation
@@ -1648,15 +1714,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with modified coefficient kappa (producer's),
-its variance and confidence interval.
+A list of real values containing the modified coefficient
+kappa (producer's), its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1676,9 +1742,8 @@ p$ModKappaProd_i(2)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-EntropUser_i}{}}}
 \subsection{Method \code{EntropUser_i()}}{
 Public method that calculates relative change of
-entropy given a category on map. That is, the degree of
-uncertainty of the category. The method also offers the
-variance and confidence interval.
+entropy for a given class i of the product. The method also
+offers the variance and confidence interval.
 The reference \insertCite{finn1993}{ConfMatrix} is followed for
 the calculations.
 
@@ -1704,9 +1769,9 @@ where:
 
 \enumerate{
   \item \eqn{EntropUser_i}: relative change of entropy given a
-  category on map.
+  class on the product.
   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to
-  the category of the map.
+  the class of the map.
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(A|b_i)}: Entropy of map A knowing that the
@@ -1721,21 +1786,29 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate (row).}
+\item{\code{i}}{\verb{
+Class to evaluate (row), where \eqn{i \in \mathbb{N}}.
+}}
 
-\item{\code{v}}{Base of the logarithm. By default v=10.
-This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-v=e(nats).}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{By default
+v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
+v=e(nats).
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the relative change of entropy given a
-category on map, its variance, its confidence interval, map entropy,
-and entropy of map A knowing that the location corresponding to map
-B is in class b_i.
+\verb{
+A list of real values containing the relative change of
+entropy for given class i, its variance, its confidence interval,
+map entropy, and entropy of map A knowing that the location
+corresponding to map B is in class \eqn{b_i}.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1755,10 +1828,9 @@ p$EntropUser_i(1)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-EntropProd_i}{}}}
 \subsection{Method \code{EntropProd_i()}}{
 Public method that calculates relative change of
-entropy given a category on ground truthing. That is, the degree
-of uncertainty of the category. The method also offers the
-variance and confidence interval.
-The reference \insertCite{stehman1997}{ConfMatrix} is followed for
+entropy for a given a class i of the reference. The method also offers the
+variance and confidence interval. The reference
+\insertCite{stehman1997}{ConfMatrix} is followed for
 the calculations.
 
 
@@ -1782,9 +1854,9 @@ where:
 
 \enumerate{
   \item \eqn{EntropProd_i}: relative change of entropy given a
-  category on ground truthing.
+  class on ground truthing.
   \item \eqn{Entrop_i(B)}: Entropy of the map with respect to
-  the category on ground truthing.
+  the class on ground truthing.
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(B|a_j)}: Entropy of map B knowing that the
@@ -1799,21 +1871,27 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate}
+\item{\code{i}}{\verb{
+Class to evaluate (row), where \eqn{i \in \mathbb{N}}.
+}}
 
-\item{\code{v}}{Base of the logarithm. By default v=10.
-This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-v=e(nats).}
+\item{\code{v}}{\verb{
+Base of the logarithm, where \code{\eqn{v \in \mathbb{R}^{+}-\{1\}}}. By default
+v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
+v=e(nats).
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the relative change of entropy given a category
-on ground truthing, its variance,its confidence interval,
+A list of real values containing the relative change of
+entropy for given class i, its variance, its confidence interval,
 map entropy, and entropy of map B knowing that the location
-corresponding to map A is in class a_j.
+corresponding to map A is in class \eqn{a_j}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1832,13 +1910,11 @@ p$EntropProd_i(2)
 \if{html}{\out{<a id="method-ConfMatrix-AvUserAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvUserAcc}{}}}
 \subsection{Method \code{AvUserAcc()}}{
-Public method that provides the user's average
-accuracy, which is an average of the accuracy of individual
-categories, in this case the categories will be taken from
-the user's perspective. The method also offers the
-variance and confidence interval. The
-reference \insertCite{tung1988}{ConfMatrix} is followed for the
-calculations.
+Public method that provides the arithmetic average,
+without weighing, of all user’s accuracies of a ConfMatrix object
+instance. The method also offers the variance and confidence
+interval. The reference \insertCite{tung1988}{ConfMatrix} is
+followed for the calculations.
 
 
 \deqn{
@@ -1870,8 +1946,8 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the average accuracy from user's perspective,
-its variance and its confidence interval.
+A list of real values containing the average
+user’s accuracy, its variance, and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1889,13 +1965,11 @@ p$AvUserAcc()
 \if{html}{\out{<a id="method-ConfMatrix-AvProdAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvProdAcc}{}}}
 \subsection{Method \code{AvProdAcc()}}{
-Public method that provides the producer's average
-accuracy, which is an average of the accuracy of individual
-categories, in this case the categories will be taken from the
-producer's perspective. The method also offers the
-variance and confidence interval.
-The reference \insertCite{tung1988}{ConfMatrix} is followed for
-the calculations.
+Public method that provides the arithmetic
+average of all producer’s accuracies of a ConfMatrix object
+instance. The method also offers the variance and confidence
+interval. The reference \insertCite{tung1988}{ConfMatrix}
+is followed for the calculations.
 
 
 \deqn{
@@ -1927,8 +2001,8 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the average accuracy from producer's
-perspective, its variance and its confidence interval.
+A list of real values containing the average producer’s
+accuracy, its variance, and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1946,11 +2020,12 @@ p$AvProdAcc()
 \if{html}{\out{<a id="method-ConfMatrix-AvUserProdAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvUserProdAcc}{}}}
 \subsection{Method \code{AvUserProdAcc()}}{
-Public method that offers the average of the average
-precision from the perspective of the user and the producer.
-The method also offers the variance and confidence interval.
-The reference \insertCite{liu2007}{ConfMatrix} is followed
-for the calculations.
+Public method that provides the arithmetic
+average of all user’s and producer’s accuracy indexes of
+a ConfMatrix object instance. The method also offers the
+variance and confidence interval. The reference
+\insertCite{liu2007}{ConfMatrix} is followed for the
+calculations.
 
 
 \deqn{
@@ -1982,8 +2057,9 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the average mean precision values from the user
-and producer perspective, their variance and confidence interval.
+A list of real values containing the average mean
+precision values from the user's and producer's perspective,
+their variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2040,8 +2116,9 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with average of Hellden's mean accuracy index,
-its variance and confidence interval.
+A list of real values containing the average of
+Hellden's mean accuracy index, its variance and
+confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2060,7 +2137,7 @@ p$AvHelldenAcc()
 \if{html}{\out{<a id="method-ConfMatrix-AvShortAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvShortAcc}{}}}
 \subsection{Method \code{AvShortAcc()}}{
-Public method that provides the average of Short's
+Public method that provides the average of the Short's
 mapping accuracy index. The method also offers the
 variance and confidence interval. The
 reference \insertCite{liu2007}{ConfMatrix} is followed for
@@ -2078,8 +2155,8 @@ AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^n_{i=1} x_{ii}}
 where:
 
 \enumerate{
-  \item \eqn{x_{+i}}: sum of all elements in column i.
-  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{x_{i+}}: sum of all omissions in row i.
+  \item \eqn{x_{+i}}: sum of all commissions in column i.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{M}: number of classes.
   \item \eqn{N}: number of cases involved in the calculation of the index.
@@ -2096,7 +2173,9 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with average of Short's mapping accuracy index, its variance and confidence interval.
+A list of real values containing the average of
+Short's mapping accuracy index, its variance and
+confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2116,7 +2195,7 @@ p$AvShortAcc()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-CombUserAcc}{}}}
 \subsection{Method \code{CombUserAcc()}}{
 Public method that provides the combined user accuracy
-that is the average of the overall accuracy and the average user
+that is the average of the overall accuracy and the average user's
 accuracy. The method also offers the
 variance and confidence interval. The reference
 \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
@@ -2150,7 +2229,8 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the combined accuracy from the user's perspective,
+A list of real values containing the combined
+accuracy from the user's perspective,
 its variation and confidence interval.
 }
 \subsection{Examples}{
@@ -2169,7 +2249,7 @@ p$CombUserAcc()
 \if{html}{\out{<a id="method-ConfMatrix-CombProdAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-CombProdAcc}{}}}
 \subsection{Method \code{CombProdAcc()}}{
-Public method that provides the combined producer
+Public method that provides the combined producer's
 accuracy that is the average of the overall accuracy and the average
 producer accuracy. The method also offers the
 variance and confidence interval. The reference
@@ -2204,8 +2284,8 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the combined accuracy from producer's perspective,
-its variance and confidence interval.
+A list of real values containing the combined accuracy
+from producer's perspective, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2224,8 +2304,8 @@ p$CombProdAcc()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-CombUserProdAcc}{}}}
 \subsection{Method \code{CombUserProdAcc()}}{
 Public method that provides the combined accuracy
-which is the average of the overall accuracy and the Hellden
-average accuracy, which refers to the average user and producer
+which is the average of the overall accuracy and the Hellden's
+average accuracy, which refers to the average user's and producer's
 accuracies. The method also offers the
 variance and confidence interval. The reference
 \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
@@ -2260,7 +2340,7 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the combined accuracy from both user's and
+A list of real values containing the combined accuracy from both user's and
 producer's perspectives, its variance and confidence interval.
 }
 \subsection{Examples}{
@@ -2325,8 +2405,8 @@ where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with kappa coefficient, its variance and confidence
-interval.
+A list of real values containing with kappa
+coefficient, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2345,11 +2425,11 @@ p$Kappa()
 \if{html}{\out{<a id="method-ConfMatrix-Entrop"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-Entrop}{}}}
 \subsection{Method \code{Entrop()}}{
-Public method for calculating map entropy.
-Which refers to the degree of uncertainty that the map presents.
-The method also offers the
-variance and confidence interval. The reference
-\insertCite{finn1993}{ConfMatrix} is followed for the calculations.
+Public method for calculating product entropy,which
+refers to the lack of orden and predictability that the product
+presents. The method also offers the variance and confidence
+interval. The reference \insertCite{finn1993}{ConfMatrix} is
+followed for the calculations.
 
 
 \deqn{
@@ -2363,7 +2443,7 @@ Entrop=\sum^n_{i,j=1} (\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
 where:
 
 \enumerate{
-  \item \eqn{Entrop}: map entropy.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N}: number of cases involved in the calculation of
@@ -2384,7 +2464,8 @@ for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with map entropy, its variance and confidence interval.
+A list of real values containing the entropy, its variance
+and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2404,8 +2485,8 @@ p$Entrop()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-NormEntropUser}{}}}
 \subsection{Method \code{NormEntropUser()}}{
 Public method that calculates normalized entropy
-using the map. The method also offers the
-variance and confidence interval. The reference
+of the porduct. The method also offers the variance and
+confidence interval. The reference
 \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
 
 
@@ -2423,9 +2504,9 @@ NormEntropUser=\dfrac{Entrop}{Entrop_i(B)}
 where:
 
 \enumerate{
-  \item \eqn{NormEntropUser}: normalized entropy using map.
-  \item \eqn{Entrop_i(B)}: entropy of the map with respect to
-  the category on ground truthing.
+  \item \eqn{NormEntropUser}: normalized entropy of the product.
+  \item \eqn{Entrop_i(B)}: entropy of the product with respect to
+  the class i on ground truthing.
   \item \eqn{Entrop}: map entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
@@ -2447,8 +2528,8 @@ for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using map, its variance and
-confidence interval.
+A list of real values containing with normalized entropy
+of the product class i , conditioned to ---- , its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2467,10 +2548,10 @@ p$NormEntropUser()
 \if{html}{\out{<a id="method-ConfMatrix-NormEntropProd"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-NormEntropProd}{}}}
 \subsection{Method \code{NormEntropProd()}}{
-Public method that calculates normalized entropy using
-on ground truthing. The method also offers the
-variance and confidence interval. The reference
-\insertCite{finn1993}{ConfMatrix} is followed for the calculations.
+Public method that calculates normalized entropy of
+the reference. The method also offers the variance and confidence
+interval. The reference \insertCite{finn1993}{ConfMatrix} is
+followed for the calculations.
 
 
 \deqn{
@@ -2490,7 +2571,7 @@ where:
   \item \eqn{NormEntropProd}: normalized mutual information using
   the entropy on ground truthing.
   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to
-  the category of the map.
+  the class of the map.
   \item \eqn{Entrop}: map entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
@@ -2533,9 +2614,8 @@ p$NormEntropProd()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvNormEntrop}{}}}
 \subsection{Method \code{AvNormEntrop()}}{
 Public method that calculates normalized entropy using
-the arithmetic mean of the entropies on the map and on ground
-truthing. The method also offers the
-variance and confidence interval. The reference
+the arithmetic mean of the entropies on the product and the
+reference. The method also offers the variance and confidence interval. The reference
 \insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
 
 
@@ -2559,13 +2639,13 @@ AvNormEntrop=\dfrac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
 where:
 
 \enumerate{
-  \item \eqn{AvNormEntrop}: normalized entropy using the arithmetic
-  mean of the entropies on the map and on ground truthing.
-  \item \eqn{Entrop_i(B)}: entropy of the map with respect to
-  the category on ground truthing.
-  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to
-  the category of the map.
-  \item \eqn{Entrop}: map entropy.
+  \item \eqn{AvNormEntrop}: normalized entropy using the
+  arithmetic mean of the entropies of product and reference.
+  \item \eqn{Entrop_i(B)}: entropy of class i of the
+  product with respect to the category on the reference.
+  \item \eqn{Entrop_i(A)}: entropy of the class i of
+  the product with respect to the class I of the product.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N}: number of cases involved in the calculation of the
@@ -2587,8 +2667,9 @@ v=e(nats).}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-normalized entropy using the arithmetic mean of the entropies
- on the map and on ground truthing, its variance and confidence interval.
+list of real values containing the normalized
+entropy (arithmetic mean of the entropies on the product
+and reference), its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2607,8 +2688,8 @@ p$AvNormEntrop()
 \if{html}{\out{<a id="method-ConfMatrix-GeomAvNormEntrop"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-GeomAvNormEntrop}{}}}
 \subsection{Method \code{GeomAvNormEntrop()}}{
-Public method that calculates normalized entropy using
-the geometric mean of the entropies on the map and on ground truthing.
+Public method that calculates the normalized entropy
+using the geometric mean of the product and reference entropies.
 The method also offers the variance and confidence interval.
 The reference \insertCite{ghosh2002}{ConfMatrix} is followed
 for the calculations.
@@ -2635,11 +2716,11 @@ where:
 
 \enumerate{
   \item \eqn{GeomAvNormEntrop}: normalized entropy using the
-  geometric mean of the entropies on map and on ground truthing.
+  geometric mean of the entropies on the product and reference.
   \item \eqn{Entrop_i(B)}: entropy of the map with respect to the
-  category on ground truthing.
+  class on ground truthing.
   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the
-  category of the map.
+  class of the map.
   \item \eqn{Entrop}: map entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
@@ -2683,8 +2764,8 @@ p$GeomAvNormEntrop()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvMaxNormEntrop}{}}}
 \subsection{Method \code{AvMaxNormEntrop()}}{
 Public mathod that provides normalized entropy using
-the arithmetic mean of the maximum entropies on map and on ground
-truthing. The method also offers the variance and confidence interval.
+the arithmetic mean of the maximum entropies o the product and
+reference. The method also offers the variance and confidence interval.
 The reference \insertCite{strehl2002relationship}{ConfMatrix} is
 followed for the calculations.
 
@@ -2713,9 +2794,9 @@ where:
   \item \eqn{AvMaxNormEntrop}: normalized entropy using the arithmetic
   mean of the maximum entropies on map and on ground truthing.
   \item \eqn{Entrop_i(B)}: entropy of the map with respect to the
-  category on ground truthing.
+  class on ground truthing.
   \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the
-  category of the map.
+  class of the map.
   \item \eqn{Entrop}: map entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
@@ -2759,12 +2840,12 @@ p$AvMaxNormEntrop()
 \if{html}{\out{<a id="method-ConfMatrix-Tau"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-Tau}{}}}
 \subsection{Method \code{Tau()}}{
-Public method that calculates the tau index and
+Public method that calculates the Tau index and
 its variance. Its value indicates how much the classification has
 improved compared to a random classification of the N elements into
 M groups. The method also offers the
 variance and confidence interval.
-The reference \insertCite{book}{ConfMatrix} is followed
+The reference \insertCite{ma1995Tau}{ConfMatrix} is followed
 for the computations.
 
 
@@ -2774,12 +2855,12 @@ The mathematical expression is:
 PrAgCoef=\dfrac{1}{M}
 }
 \deqn{
-Tau = \dfrac{OverallAcc-CoefAccPr}{1-PrAgCoef}
+Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
 }
 
 \deqn{
 \sigma^2_{Tau}=\dfrac{OverallAcc \cdot (1-OverallAcc)}
-{N \cdot (1-CoefAccPr)^2}
+{N \cdot (1-PrAgCoef)^2}
 }
 
 Where:
@@ -2802,7 +2883,8 @@ Where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with Tau index, its variance and confidence interval.
+A list of real values containing the Tau index,
+its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2883,10 +2965,9 @@ p$GroundTruth()
 \if{html}{\out{<a id="method-ConfMatrix-UserProdAcc"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-UserProdAcc}{}}}
 \subsection{Method \code{UserProdAcc()}}{
-Public method that calculates the pressures of the
-user and the producer jointly. The method also offers the standard
-desviations. The reference \insertCite{congalton2008}{ConfMatrix}
-is followed for the computations.
+Public method that calculates the user’s and the
+producer’s indexes jointly. This method is equivalent to the methods
+[ConfMatrix$UserAcc], [ConfMatrix$ProdAcc].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$UserProdAcc()}\if{html}{\out{</div>}}
 }
@@ -2989,7 +3070,7 @@ is followed for the computations.
 \subsection{Returns}{
 A list of general values for the interval t of difference,
 quantity, shift, and shift.In addition to the differences for
-categories, number of components, change of categories and turn of
+classes, number of components, change of classes and turn of
 the components.
 }
 \subsection{Examples}{
@@ -3009,20 +3090,23 @@ p$QES(TI=1, SF=6)
 \if{html}{\out{<a id="method-ConfMatrix-MTypify"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-MTypify}{}}}
 \subsection{Method \code{MTypify()}}{
-Public method that types the values of each cell.
- The total sum of the original matrix is used for typing.
- The resulting values can be presented as real (parameter RaR=1) or
- as a percentage (parameter RaR !=1)
+Public method that typifies the confusion matrix.
+The total sum of the original matrix is used for typing. In a
+typed matrix the sum of all values is unity. The resulting
+values can be presented as real values (parameter RaR=1), or as
+a percentage (parameter RaR !=1).
 
 
-\deqn{
-MTypify=\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
+The matematical expression is:
+ \deqn{
+MTypify=\dfrac{CM}{\sum^n_{i,j=1} x_{ij}}
 }
 
 where:
 
 \enumerate{
   \item MTyipify: typified matrix.
+  \item CM: Confusion Matrix.
   \item \eqn{x_{ij}}: matrix element.
 }
 \subsection{Usage}{
@@ -3038,7 +3122,8 @@ as integer. By default RaR=1.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with original matrix and typified matrix
+A list with two arrays, the first is the original array,
+the second the typed one.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3057,18 +3142,19 @@ p$MTypify(RaR=5)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AllParameters}{}}}
 \subsection{Method \code{AllParameters()}}{
 Public method in which multiple parameters are
-calculated for the given confusion matrix. The references
-\insertCite{congalton2008,cohen1960,munoz2016}{ConfMatrix} is
-followed for the computations.
+calculated for the given confusion matrix. This method is
+equivalent to [ConfMatrix$OverallAcc],[ConfMatrix$UserAcc],
+[ConfMatrix$ProdAcc],[ConfMatrix$Kappa] and [ConfMatrix$MPseudoZeroes].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AllParameters()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-A list containing confusion matrix, dimension, total sum of
-cell values, overall precision, overall variance precision,
-global precision kappa index, global kappa simplified variance,
-producer precision by class, user precision by class, pseudoceros matrix.
+The following list of elements: the confusion matrix,
+dimension, total sum of cell values, overall accuracy, overall
+accuracy variance, global kappa index, global kappa simplified
+variance, producer accuracy by class, user accuracy by class,
+and pseudoceros matrix.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3088,8 +3174,9 @@ p$AllParameters()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-MBootStrap}{}}}
 \subsection{Method \code{MBootStrap()}}{
 Public method that provides N resamples of the confusion
-matrix from a ConfMatrix object. The reference
-\insertCite{ariza2011}{ConfMatrix} is followed for the computations.
+matrix from a ConfMatrix object. As a result, a set of bootstrapped
+cases is offered. The reference \insertCite{fienberg1970}{ConfMatrix} is
+followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MBootStrap(n, pr = NULL)}\if{html}{\out{</div>}}
 }
@@ -3099,14 +3186,14 @@ matrix from a ConfMatrix object. The reference
 \describe{
 \item{\code{n}}{Number of resamples.}
 
-\item{\code{pr}}{Probability for resampling. By default, the probability of
-success for each cell will be taken.}
+\item{\code{pr}}{Vector with resampling probabilities. By default, the
+success probability of each cell will be taken.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list formed by the original confusion matrix and simulated
-matrices, from the confusion matrix. The multinomial distribution is
+A list of n+1 arrays formed by the original confusion matrix
+and all the simulated cases The multinomial distribution is
 applied.
 }
 \subsection{Examples}{
@@ -3126,13 +3213,10 @@ p$MBootStrap(2)
 \if{html}{\out{<a id="method-ConfMatrix-MNormalize"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-MNormalize}{}}}
 \subsection{Method \code{MNormalize()}}{
-Public method that carries out an iterative process
-is carried out where each element is divided by the total of the
-sum of its row, thus obtaining new values. In the next iteration,
-all the elements are added by columns and each element is divided
-by the total of its column and they obtain new values, and so on.
+Public method that carries out an iterative process in
+order to get the sum of values by rows and columns to be worth one.
 The references \insertCite{fienberg1970,munoz2016}{ConfMatrix}
-is followed for the computations.
+are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MNormalize(n = NULL)}\if{html}{\out{</div>}}
 }
@@ -3214,7 +3298,7 @@ concordance index and its standard deviation.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the weight matrix, the Tau index, its standard
+A list with the Tau index, the weight matrix, its standard
 deviation and its statistics.
 }
 \subsection{Examples}{
@@ -3274,8 +3358,8 @@ p$DetailedWKappa(WM)
 \if{html}{\out{<a id="method-ConfMatrix-UserProdAcc_W"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-UserProdAcc_W}{}}}
 \subsection{Method \code{UserProdAcc_W()}}{
-Public method that calculates the weighted accuracies
-and standard deviations of the user and the producer.
+Public method that calculates the weighted user’s
+and producer’s accuracies and their standard deviations.
 The reference \insertCite{congalton2008}{ConfMatrix} is followed
 for the computations.
 \subsection{Usage}{
@@ -3285,15 +3369,14 @@ for the computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{WM}}{Weight matrix}
+\item{\code{WM}}{Weight matrix (as matrix)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with weight matrix, Matrix formed with its original
-elements and their corresponding weights, general accuracy of the
-weight matrix obtained, accuracy of the producer and user and their
-standard deviations,
+A list with the weight matrix, the product of the
+confusion matrix and the weight matrix, weighted user's
+and producer's accuracies and their standard deviations.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3360,7 +3443,7 @@ r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
 B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),
 nrow=4,ncol=4)
 f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
-p$StHell(f)
+r$StHell(f)
 
 }
 \if{html}{\out{</div>}}
@@ -3373,22 +3456,22 @@ p$StHell(f)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-Kappa.test}{}}}
 \subsection{Method \code{Kappa.test()}}{
 Public method that tests whether two independent
-confusion matrices of the ConfMatrix class are significantly different
-using their kappa index.
+confusion matrices (instances of the ConfMatrix class), are
+significantly different when using the kappa indexes.
 The reference \insertCite{congalton2008}{ConfMatrix} is followed
 for the computations.
-The mathematical expression to calculate its statistic is:
+The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|k1-k2|}{\sqrt{(var(K1)+var(K2))}}
+Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
 }
 
 Where:
 \enumerate{
-  \item \eqn{k1}: kappa index of matrix A
-  \item \eqn{k2}: kappa index of matrix B
-  \item \eqn{var(k1)}: variance of k1.
-  \item \eqn{var(k2)}: variance of k2.
+  \item \eqn{k_A}: kappa index of matrix A
+  \item \eqn{k_B}: kappa index of matrix B
+  \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
+  \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Kappa.test(f, alpha = NULL)}\if{html}{\out{</div>}}
@@ -3404,8 +3487,8 @@ Where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the value of the statistic between kappa values
-and its z score for a given alpha significance level.
+A list with the value of the test statistic and its
+z score for a given alpha significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3426,22 +3509,22 @@ p$Kappa.test(f)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-OverallAcc.test}{}}}
 \subsection{Method \code{OverallAcc.test()}}{
 Public method that tests whether two independent
-confusion matrices of the ConfMatrix class are significantly different
-using their overall accuracy index.
-The reference \insertCite{book,ma1995Tau}{ConfMatrix} is followed
+confusion matrices (instances of the ConfMatrix class), are
+significantly different using their overall accuracy indexes.
+The reference \insertCite{book,ma1995Tau}{ConfMatrix} are followed
 for the computations.
-The mathematical expression to calculate its statistic is:
+The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
+Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
 }
 
 Where:
 \enumerate{
-  \item \eqn{k1}: overall index of matrix A
-  \item \eqn{k2}: overall index of matrix B
-  \item \eqn{var(K1)}: variance of k1.
-  \item \eqn{var(K2)}: variance of k2.
+  \item \eqn{k_A}: overall index of matrix A
+  \item \eqn{k_B}: overall index of matrix B
+  \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
+  \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$OverallAcc.test(f, alpha = NULL)}\if{html}{\out{</div>}}
@@ -3457,8 +3540,8 @@ Where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the statistic's value between the overall
-accuracies and its z-score for a given alpha significance level.
+A list with the value of the test statistic and its z
+score for a given alpha significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3479,22 +3562,22 @@ p$OverallAcc.test(f)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-Tau.test}{}}}
 \subsection{Method \code{Tau.test()}}{
 Public method that tests whether two independent
-confusion matrices of the ConfMatrix class are significantly different
-using their Tau index.
-The reference \insertCite{book,ma1995Tau}{ConfMatrix} is followed
+confusion matrices (instances of the ConfMatrix class), are
+significantly different using their Tau indexes.
+The reference \insertCite{book,ma1995Tau}{ConfMatrix} are followed
 for the computations.
-The mathematical expression to calculate its statistic is:
+The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|k1-k2|}{\sqrt{var(k1)+var(k2)}}
+Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
 }
 
 Where:
 \enumerate{
-  \item \eqn{k1}: Tau index of matrix A
-  \item \eqn{k2}: Tau index of matrix B
-  \item \eqn{var(k1)}: variance of k1.
-  \item \eqn{var(k2)}: variance of k2.
+  \item \eqn{k_A}: Tau index of matrix A
+  \item \eqn{k_B}: Tau index of matrix B
+  \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
+  \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Tau.test(f, alpha = NULL)}\if{html}{\out{</div>}}
@@ -3510,8 +3593,8 @@ Where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the statistic's value between the Tau index and
-its z-score for a given alpha significance level.
+A list with the value of the test statistic and its z
+score for a given alpha significance level
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3533,8 +3616,9 @@ p$Tau.test(f)
 \if{html}{\out{<a id="method-ConfMatrix-TSCM.test"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-TSCM.test}{}}}
 \subsection{Method \code{TSCM.test()}}{
-Public method that performs a homogeneity test between
-two matrices of the ConfMatrix class based on the Hellinger distance.
+Public method that performs a homogeneity test
+based on the Hellinger distance between two confusion matrices
+(instances of the ConfMatrix class)
 The test considers the individual cell values in the matrices.
 The reference \insertCite{garcia2018}{ConfMatrix} is followed for
 the computations.
@@ -3555,7 +3639,8 @@ By default n=10000.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-p value, alpha and decision to make.
+A list with the value of the test statistic and its z
+score for a given alpha significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3578,9 +3663,10 @@ p$TSCM.test(f)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-QIndep.test}{}}}
 \subsection{Method \code{QIndep.test()}}{
 Public method that performs the
- quasi-independence test. The reference
-\insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} is followed for the computations.
-The mathematical expression to calculate its statistic is:
+ quasi-independence test for the elements of a confusion matrix.
+ The reference
+ \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
+The mathematical expression is:
 
 \deqn{
 G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
@@ -3624,17 +3710,17 @@ p$QIndep.test()
 \if{html}{\out{<a id="method-ConfMatrix-plot.global"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.global}{}}}
 \subsection{Method \code{plot.global()}}{
-Public method that provides the graph of the indices of
+Public method that provides a graph of the indices of
 the functions OverallAcc, Kappa, Tau, AvHelldenAcc,
-AvShortAcc with their corresponding standard desviation.
+AvShortAcc with their corresponding standard deviations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.global()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-the graph of the indices of the functions OverallAcc, Kappa,
+A graph of the indices of the functions OverallAcc, Kappa,
 Tau, AvHelldenAcc, AvShortAcc with their corresponding
-standard desviation.
+standard deviations.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3653,9 +3739,8 @@ p$plot.global()
 \if{html}{\out{<a id="method-ConfMatrix-plot.class"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.class}{}}}
 \subsection{Method \code{plot.class()}}{
-Public method that provides the graph of the accuracy
-index of users and producers with their corresponding
-standard desviation.
+Public method that provides a graph for the user’s
+and producer’s accuracies and standard deviations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.class()}\if{html}{\out{</div>}}
 }
@@ -3704,22 +3789,5 @@ p$print()
 
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ConfMatrix-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-ConfMatrix-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$clone(deep = FALSE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
 }
 }

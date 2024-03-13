@@ -1,11 +1,26 @@
 #' @title Quality Control Columns Set
-#' @description In the QCCS class, the confusion matrices will be given by
-#' vectors with their corresponding probabilities. In this way,
-#' the confusion matrices will be analyzed by columns, which will
-#' represent the given reference data. The p-value is calculated from
-#' the given data and the probability vectors, which follow a multinomial
-#' or binomial distribution. Hypothesis contrasts are applied and it is
-#' decided whether the classification of elements is optimal or not.
+#' @description The difference between a QCCS and a confusion matrix is
+#' that while forming a confusion matrix requires that the reference and
+#' the product be more or less equivalent, for the QCCS it is required
+#' that the reference be actually of higher quality than the product.
+#' This forces us to leave the marginals corresponding to the reference
+#' fixed. That is why we work in columns. In this way, the QCCS class
+#' works with a confusion matrix expressed as a set of column vectors
+#' and it will be analyzed by columns. A QCCS is constructed by comparing
+#' a sample of a set of common positions in the product and the ground
+#' truth. Appropriate sampling methods must be applied to generate the
+#' QCCS. It is considered that the classes of the ground truth
+#' correspond to the columns and that the classes of the
+#' product to be valued correspond to the rows. On the other hand, the
+#' concept of QCCS is directly linked to quality control, so the
+#' specifications of this control must be indicated. Specifications are
+#' stated as percentages. E.g. for class "A" under consideration, a
+#' minimum quality value is established (e.g. better than 90%), and
+#' maximum values of confusion with other categories (e.g. confusion
+#' between A and B less than 5%). The specifications are proportions of
+#' a multinomial. First, an object of this class of object must be
+#' created (instantiated) and then the methods that offer the index
+#' calculations will be invoked.
 #' @export QCCS
 #' @note  Error Messages.
 #' List of possible errors:
@@ -31,7 +46,8 @@
 
 
 QCCS <- R6Class("QCCS",
-  public = list(
+  cloneable=FALSE,
+   public = list(
 
     #' @field vectors Data vectors.
     vectors = NULL,
@@ -46,29 +62,29 @@ QCCS <- R6Class("QCCS",
     #' @field Source Source vectors.
     Source=NULL,
     #' @description Public method to create an instance of the QCCS class.
-    #' At the time of creation, a list of vectors with data and a list
-    #' of probability vectors that correspond to the data must be
-    #' defined. The same number of data vectors as probability vectors
-    #' must be entered, the pairs of data-probability vectors must have
-    #' the same size, otherwise an error will be displayed.
+    #' At the time of creation, column set data and specification values
+    #' must be provided. The same number of data and as specification values
+    #' must be entered, and the pairs of data-specifications vectors must
+    #' have the same size, otherwise an error will be provided.
     #' The optional possibility of adding metadata to the matrix is offered.
-    #' The values of the data vectors represent the reference categories that
-    #' will be taken into account.
+    #' The values of the data vectors represent the classes of ground truth.
     #' @param vectors vector list.
     #' @param prob probabilities list.
     #' @param ID Identifier. By default ID is a date in YYYYMMDD format
     #' @param Date Date provided by the user. By default the date provided
     #' by the system will be taken.
-    #' @param ClassName Name of the classes. By default for the column
-    #' elements they will be Ref_i and for the row elements C_i, with i
-    #' being the row or column number.
+    #' @param ClassName Name of the classes. It is given by a vector whose
+    #' elements are the name of the classes by rows or columns.
+    #' By default for the column elements they will be Ref_i and for the
+    #' elements of row C_i, with i being the corresponding row or column
+    #' number.
     #' @param Source Indicates where the matrix comes from
     #' (article, project, etc.). By default is NULL.
     #' @examples
-    #' vectors<-list(c(18,0,3,0),c(27,19))
-    #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+    #' vectors<-list(c(47,4,0),c(44,5,3))
+    #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
     #' A<-QCCS$new(vectors,prob,
-    #' Source="Alba-Fernández et al. 2020")
+    #' Source="Ariza-Lopez et al. 2019")
     #'
     #' @aliases NULL
 
@@ -173,65 +189,30 @@ QCCS <- R6Class("QCCS",
 
 
 
-# print function ----------------------------------------------------------
-
-      #' @description Public method that shows all the data entered
-      #' by the user.
-      #' @return QCCS object identifier, Date, name of classes, source
-      #' of data and data vectors and probability.
-      #' @examples
-      #' vectors<-list(c(18,0,3,0),c(27,19))
-      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A<-QCCS$new(vectors,prob,
-      #' Source="Alba-Fernández et al. 2020")
-      #' A$Exact.test()
-      #'
-      #' @aliases NULL
-
-    print=function(){
-      cat("Identifier (ID)\n", self$ID, "\n")
-      cat("-------------------------------------\n")
-      cat(sprintf("Date\n %s \n", self$Date))
-      cat("-------------------------------------\n")
-      cat("Source\n", self$Source, "\n")
-      cat("-------------------------------------\n")
-      for(i in 1:length(self$vectors)){
-        cat("Name of Class|",names(self$vectors)[i], "\n")
-        cat("Vector       |",self$vectors[[i]],"\n")
-        cat("Probability  |",self$prob[[i]],"\n")
-        cat("-------------------------------------\n")
-
-      }
-
-    },
-
-
 
 
 # To calculate p-value, use test-ntol (method private) --------------------
 # Multinomial or binomial Exact Tests -------------------------------------
 
 
-      #' @description Public method that, using a list of vectors and their
-      #' corresponding probabilities, through a multinomial or binomial
-      #' distribution depending on the size of the vector, calculates the
-      #' p value using each pair of vector-probability data. The null
-      #' hypothesis shows that for each category the data set is either
-      #' well classified or not. The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} is followed
+      #' @description Public method that using a QCCS object
+      #' instance calculates whether the data meets specifications.
+      #' An exact test is applied to each of the multinomials
+      #' that are defined for each column.
+      #' The Bonferroni method is used.
+      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
       #' for the computations.
-      #' @return The p value is obtained for each vector, and using
-      #' the Bonferroni criterion it is decided whether the elements
-      #' are well classified or not.
       #' @param alpha significance level. By default alpha=0.05.
+      #' @return The p value of the exact test using Bonferroni.
       #' @examples
-      #' vectors<-list(c(18,0,3,0),c(27,19))
-      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' vectors<-list(c(47,4,0),c(44,5,3))
+      #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
       #' A<-QCCS$new(vectors,prob,
-      #' Source="Alba-Fernández et al. 2020")
+      #' Source="Ariza-Lopez et al. 2019")
       #' A$Exact.test()
       #'
       #' @aliases NULL
+
 
     Exact.test = function(alpha=NULL) {
       if(is.null(alpha)){
@@ -270,19 +251,14 @@ QCCS <- R6Class("QCCS",
 
 # ji global multinomial or binomial test ----------------------------------------------
 
-      #' @description Public method that, using a list of vectors and their
-      #' corresponding probabilities that follow a binomial or multinomial
-      #' distribution, calculates the p-value for compliance with all
-      #' defined specifications. The chi square test is used.
-      #' The null hypothesis verifies that the probabilities are met and
-      #' therefore that the set of elements are well defined. If one of
-      #' the defined probabilities is not met, the null hypothesis would
-      #' be rejected. The references \insertCite{QCCS,alba2020}{ConfMatrix}
-      #' is followed for the computations.
-      #' @return The p value of the entire data set is obtained, through
-      #' the chi-square, and it is decided whether the elements are well
-      #' classified or not.
+      #' @description Public method that using a QCCS
+      #' object instance calculates whether the data meets
+      #' specifications. The chi square test is used.
+      #' The references
+      #' \insertCite{QCCS,alba2020}{ConfMatrix}
+      #' are followed for the computations.
       #' @param alpha significance level. By default alpha=0.05.
+      #' @return The p value derived from the chi square test.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
       #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
@@ -341,18 +317,13 @@ QCCS <- R6Class("QCCS",
 
 # ji multinomial or binomial test ----------------------------------------------
 
-      #' @description Public method that, using a list of vectors and
-      #' their corresponding probabilities that follow a multinomial
-      #' or binomial distribution, calculates the p value using each
-      #' vector-probability data pair. The chi square test is used. The
-      #' null hypothesis shows that for each category the data set is either
-      #' well classified or not. The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} is
+      #' @description Public method that using a QCCS object instance
+      #' calculates whether the data meets specifications. The chi
+      #' square test is used. The Bonferroni method is used.
+      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are
       #' followed for the computations.
-      #' @return The p value is obtained for each vector, and using
-      #' the Bonferroni criterion it is decided whether the elements are
-      #' well classified or not.
       #' @param alpha significance level. By default alpha=0.05.
+      #' @return The p value from the chi square test.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
       #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
@@ -393,6 +364,38 @@ QCCS <- R6Class("QCCS",
         a<-private$MethBonf(p_value,alpha)
 
     return(list(a,OriginalVectors=self$vectors,OriginalProb=self$prob))
+    },
+
+# print function ----------------------------------------------------------
+
+      #' @description Public method that shows all the data entered
+      #' by the user.
+      #' @return QCCS object identifier, Date, name of classes, source
+      #' of data and data vectors and probability.
+      #' @examples
+      #' vectors<-list(c(18,0,3,0),c(27,19))
+      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A<-QCCS$new(vectors,prob,
+      #' Source="Alba-Fernández et al. 2020")
+      #' A$print()
+      #'
+      #' @aliases NULL
+
+    print=function(){
+      cat("Identifier (ID)\n", self$ID, "\n")
+      cat("-------------------------------------\n")
+      cat(sprintf("Date\n %s \n", self$Date))
+      cat("-------------------------------------\n")
+      cat("Source\n", self$Source, "\n")
+      cat("-------------------------------------\n")
+      for(i in 1:length(self$vectors)){
+        cat("Name of Class|",names(self$vectors)[i], "\n")
+        cat("Vector       |",self$vectors[[i]],"\n")
+        cat("Probability  |",self$prob[[i]],"\n")
+        cat("-------------------------------------\n")
+
+      }
+
     }
 
 
