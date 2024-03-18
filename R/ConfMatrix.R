@@ -86,11 +86,11 @@
 ConfMatrix <- R6Class("ConfMatrix",
   cloneable=FALSE,
    public = list(
-    #' @field values
+    #' @field Values
     #'\verb{
     #'Matrix of integer values. An matrix must be added.
     #'}
-    values = NULL,
+    Values = NULL,
     #' @field ID
     #'\verb{
     #' Identifier. It is a character string with a maximum length of 50
@@ -110,7 +110,8 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' Name of the classes. It is given by a character strings vector whose
     #' elements are the name of the classes. Each element of the vector is
     #' a string of maximum 20 characters. By default for the column elements
-    #' they will be} \eqn{Ref_i'} \verb{and for the elements of row} \eqn{C_i'}\verb{, with} \eqn{i'} \verb{being the
+    #' they will be} \eqn{Ref_{i}} \verb{and for the elements of row}
+    #' \eqn{C_{i}} \verb{, with} \eqn{i} \verb{being the
     #' corresponding row or column number.
     #' }
     ClassName=NULL,
@@ -133,7 +134,7 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' ConfMatrix instance includes a series of checks on the data. If
     #' checks are not met, the system generates coded error messages.
     #' The optional possibility of adding metadata to the matrix is offered.
-    #' @param values
+    #' @param Values
     #'\verb{
     #' Matrix of integer values. A matrix must be added.
     #'}
@@ -178,13 +179,13 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' @aliases NULL
 
 #All parameters are entered
-initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
+initialize = function(Values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
 
 # Initializing values -----------------------------------------------------
 
 
-  self$values<-values
+  self$Values<-Values
   #Source is optional so you can identify the origin of the matrix.
   #If you add this value, a custom ID is given to the ConfMatrix
   #otherwise you will be given today's date as ID
@@ -209,23 +210,23 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
   if(!is.null(ClassName)){
     self$ClassName<-ClassName
 
-    for(i in 1:sqrt(length(self$values))){
+    for(i in 1:sqrt(length(self$Values))){
       colname<-c(colname,sprintf("Ref_%.20s",self$ClassName[i]))
       rowname<-c(rowname,sprintf("C_%.20s",self$ClassName[i]))
     }
 
     self$ClassName <- ClassName
-    colnames(self$values)<-colname
-    rownames(self$values)<-rowname
+    colnames(self$Values)<-colname
+    rownames(self$Values)<-rowname
 
   }else{
-    for(i in 1:nrow(self$values)){
+    for(i in 1:nrow(self$Values)){
       colname<-c(colname,sprintf("Ref_%d",i))
       rowname<-c(rowname,sprintf("C_%d",i))
     }
-    colnames(self$values)<-colname
-    rownames(self$values)<-rowname
-    self$ClassName<-c(1:nrow(self$values))
+    colnames(self$Values)<-colname
+    rownames(self$Values)<-rowname
+    self$ClassName<-c(1:nrow(self$Values))
       }
 
 
@@ -235,9 +236,9 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
   #Values to check the ConfMatrix
   #matrix rank
-  nk<-nrow(self$values)
-  nfilas <- nrow(self$values)
-  ncolumnas <- ncol(self$values)
+  nk<-nrow(self$Values)
+  nfilas <- nrow(self$Values)
+  ncolumnas <- ncol(self$Values)
 
 # Matrix check ------------------------------------------------------------
 
@@ -260,26 +261,26 @@ initialize = function(values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
    for (i in 1:nfilas){
     for (j in 1:ncolumnas){
-      if(self$values[i,j]<0){
+      if(self$Values[i,j]<0){
      error3<-TRUE
      cat("Error type 3: negative values.\nIn position:",i,j,
-         ". Value:",self$values[i,j],"\n")
+         ". Value:",self$Values[i,j],"\n")
       }
      }
     }
-   if(sum(self$values)==0 ){
+   if(sum(self$Values)==0 ){
      error4<-TRUE
      print("Error type 4: Sum of elements 0\n")
    }
-   if(sum(apply(self$values,1,sum))==0 ){
+   if(sum(apply(self$Values,1,sum))==0 ){
      error5<-TRUE
      print("Error type 5: Sum of rows 0\n")
    }
-   if(sum(apply(self$values,2,sum))==0 ){
+   if(sum(apply(self$Values,2,sum))==0 ){
      error6<-TRUE
      print("Error type 6: Sum of columns 0\n")
    }
-   if(is.matrix(self$values) == FALSE){
+   if(is.matrix(self$Values) == FALSE){
      error7<-TRUE
      print("Error type 7: It is not a matrix\n")
    }
@@ -323,8 +324,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a \verb{
       #' Significance level. By default 0.05.
       #' }
-      #' @return A list of real values containing the overall accuracy,
+      #' @return \verb{
+      #' A list of real values containing the overall accuracy,
       #' its variance, and its confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -334,8 +337,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      OverallAcc = function(a=NULL) {
-     index <- sum(diag(self$values))/sum(self$values)
-     VarIndex<-abs((index*(1-index))/sum(self$values))
+     index <- sum(diag(self$Values))/sum(self$Values)
+     VarIndex<-abs((index*(1-index))/sum(self$Values))
      ConfInt<-private$ConfInt(index,VarIndex,a)
      return(list(OverallAcc=index,VarOverallAcc=VarIndex,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -388,13 +391,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      UserAcc = function(a=NULL){
      #matrix range
-     n <- sqrt(length(self$values))
+     n <- sqrt(length(self$Values))
      UserAcc <- rep(0,n)
      VarUserAcc<-rep(0,n)
      ConfInt<-list()
        for (i in 1:n){
-         UserAcc[i] <- self$values[i,i] / private$sumfil(self$values)[i]
-         VarUserAcc[i]<-abs((UserAcc[i]*(1-UserAcc[i]))/private$sumfil(self$values)[i])
+         UserAcc[i] <- self$Values[i,i] / private$sumfil(self$Values)[i]
+         VarUserAcc[i]<-abs((UserAcc[i]*(1-UserAcc[i]))/private$sumfil(self$Values)[i])
          ConfInt[[i]]<-c(private$ConfInt(UserAcc[i],VarUserAcc[i],a)$ConfInt_inf,
                          private$ConfInt(UserAcc[i],VarUserAcc[i])$ConfInt_sup,a)
        }
@@ -431,12 +434,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   the index.
       #' }
       #'
-      #' @param i User class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
       #'
-      #' @param a Significance level. By default 0.05.
-      #'
-      #' @return A list of real values containing the user’s accuracy for class i, its
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #'}
+      #' @return \verb{
+      #' A list of real values containing the user’s accuracy for class i, its
       #' variance, and its confidence interval.
+      #'}
       #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
@@ -447,8 +454,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      UserAcc_i=function(i,a=NULL){
-      UserAcc_i <- self$values[i,i] / private$sumfil(self$values)[i]
-      VarUserAcc_i <- abs((UserAcc_i*(1-UserAcc_i))/private$sumfil(self$values)[i])
+      UserAcc_i <- self$Values[i,i] / private$sumfil(self$Values)[i]
+      VarUserAcc_i <- abs((UserAcc_i*(1-UserAcc_i))/private$sumfil(self$Values)[i])
       ConfInt <- private$ConfInt(UserAcc_i,VarUserAcc_i,a)
      return(list(UserAcc_i=UserAcc_i,VarUserAcc_i=VarUserAcc_i,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -485,9 +492,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a \verb{
       #' Significance level. By default 0.05.
       #' }
-      #' @return A list of vectors each one containing the producer’s
+      #' @return \verb{
+      #' A list of vectors each one containing the producer’s
       #' accuracy real values for all classes, their variances and
       #' confidence intervals for each class, respectively.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -497,13 +506,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      ProdAcc = function (a=NULL){
-      n <- sqrt(length(self$values))
+      n <- sqrt(length(self$Values))
       ProdAcc <- rep(0,n)
       VarProdAcc<-rep(0,n)
       ConfInt<-list()
         for(i in 1:n){
-          ProdAcc[i] <- self$values[i,i] / private$sumcol(self$values)[i]
-          VarProdAcc[i]<-abs((ProdAcc[i]*(1-ProdAcc[i]))/private$sumcol(self$values)[i])
+          ProdAcc[i] <- self$Values[i,i] / private$sumcol(self$Values)[i]
+          VarProdAcc[i]<-abs((ProdAcc[i]*(1-ProdAcc[i]))/private$sumcol(self$Values)[i])
           ConfInt[[i]]<-c(private$ConfInt(ProdAcc[i],VarProdAcc[i],a)$ConfInt_inf,
                           private$ConfInt(ProdAcc[i],VarProdAcc[i])$ConfInt_sup,a)
         }
@@ -541,15 +550,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #'
       #' @param i \verb{
-      #' Producer class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #' Producer class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}.
+      #' }
       #'
       #' @param a \verb{
       #' Significance level. By default 0.05.
       #' }
       #'
-      #' @return A list of real values containing the producer’s
+      #' @return \verb{
+      #' A list of real values containing the producer’s
       #' accuracy for class i, its variance, and its confidence
       #' interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -559,8 +571,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      ProdAcc_i = function(i,a=NULL){
-      ProdAcc_i <- self$values[i,i] / private$sumcol(self$values)[i]
-      VarProdAcc_i <- abs((ProdAcc_i*(1-ProdAcc_i))/private$sumcol(self$values)[i])
+      ProdAcc_i <- self$Values[i,i] / private$sumcol(self$Values)[i]
+      VarProdAcc_i <- abs((ProdAcc_i*(1-ProdAcc_i))/private$sumcol(self$Values)[i])
       ConfInt <- private$ConfInt(ProdAcc_i,VarProdAcc_i,a)
      return(list(ProdAcc_i=ProdAcc_i,VarProdAcc_i=VarProdAcc_i,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -600,9 +612,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Significance level. By default 0.05.
       #' }
       #'
-      #' @return A list of real values containing the average of
+      #' @return \verb{
+      #' A list of real values containing the average of
       #' user’s and producer’s accuracies, its variance and
       #' confidence interval for class i.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -614,7 +628,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      AvUserProdAcc_i = function(i,a=NULL){
       AvUserProdAcc_i <- (self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]])/2
       VarAvUserProdAcc_i <- abs((AvUserProdAcc_i*
-                          (1-AvUserProdAcc_i))/(private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
+                          (1-AvUserProdAcc_i))/(private$sumcol(self$Values)[i]+private$sumfil(self$Values)[i]))
       ConfInt <- private$ConfInt(AvUserProdAcc_i,VarAvUserProdAcc_i,a)
      return(list(AvUserProdAcc_i=AvUserProdAcc_i,
                  VarAvUserProdAcc_i=VarAvUserProdAcc_i,
@@ -662,7 +676,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      Sucess = function(a=NULL){
       Sucess <- self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]] - 1
-       VarSucess <- abs((Sucess*(1-Sucess))/sum(self$values))
+       VarSucess <- abs((Sucess*(1-Sucess))/sum(self$Values))
        ConfInt <- private$ConfInt(Sucess,VarSucess,a)
      return(list(Sucess=Sucess,VarSucess=VarSucess,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -697,10 +711,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   the index.
       #' }
       #'
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the ICSI,
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the ICSI,
       #' its variance and its confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(0.3,0.02,0.01,0.12,0.19,0.03,0.02,0.01,0.3),
       #' nrow=3,ncol=3)
@@ -711,7 +731,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      Sucess_i = function(i,a=NULL){
       Sucess_i <- self$UserAcc_i(i)[[1]] + self$ProdAcc_i(i)[[1]] - 1
-      VarSucess_i <- abs((Sucess_i*(1-Sucess_i))/(private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
+      VarSucess_i <- abs((Sucess_i*(1-Sucess_i))/(private$sumcol(self$Values)[i]+private$sumfil(self$Values)[i]))
       ConfInt <- private$ConfInt(Sucess_i,VarSucess_i,a)
      return (list(Sucess_i=Sucess_i,VarSucess_i=VarSucess_i,
                   Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -734,7 +754,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' followed for the calculations.
       #' @description
       #'  \deqn{
-      #' AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}
+      #' AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}=
+      #' \dfrac{2 UserAcc_i \cdot ProdAcc_i}{UserAcc_i + ProdAcc_i}
       #' }
       #' \deqn{
       #' \sigma^2_{AvHelldenAcc_i}=\dfrac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N_{AvHelldenAcc_i}}
@@ -748,10 +769,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{AvHelldenAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the Hellden’s mean
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the Hellden’s mean
       #' accuracy, its variance and its confidence interval.
+      #' }
       #' @examples
       #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
       #' 7,1,1,0,6,25,1,1,0,0,1,6), nrow=5,ncol=5)
@@ -768,7 +795,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
           AvHelldenAcc_i <- 2 / (1/self$UserAcc_i(i)[[1]] +
                                 1/self$ProdAcc_i(i)[[1]])
          VarAvHelldenAcc_i <- abs((AvHelldenAcc_i*(1-AvHelldenAcc_i))/
-                                    (private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
+                                    (private$sumcol(self$Values)[i]+private$sumfil(self$Values)[i]))
          ConfInt <- private$ConfInt(AvHelldenAcc_i,VarAvHelldenAcc_i,a)
          }
 
@@ -791,8 +818,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' are followed for the calculations.
       #' @description
       #'  \deqn{
-      #' ShortAcc_i=\dfrac{x_{ii}}{\sum^M_{j=1} x_{+ j}+
-      #' \sum^M_{i=1} x_{i +}-x_{ii}}
+      #' ShortAcc_i=\dfrac{x_{ii}}{ x_{+ j}+
+      #'  x_{i +}-x_{ii}}
       #' }
       #'\deqn{
       #' \sigma^2_{ShortAcc_i}=\dfrac{ShortAcc_i \cdot (1-ShortAcc_i)}{N_{ShortAcc_i}}
@@ -802,16 +829,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{ShortAcc_i}: Short's mapping accuracy
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{x_{j+}}: sum of all omissions in row j.
+      #'   \item \eqn{x_{i+}}: sum of all omissions in row i.
       #'   \item \eqn{x_{+j}}: sum of all commissions in column j.
       #'   \item \eqn{N_{ShortAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #'
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the Short's
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the Short's
       #' mapping accuracy, its variance and its confidence interval.
+      #' }
       #' @examples
       #' A <- matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,
       #' 39,7,1,1,0,6,25,1,1,0,0,1,6), nrow=5,ncol=5)
@@ -821,13 +854,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      ShortAcc_i = function(i,a=NULL){
-      if (private$sumfil(self$values)[i] + private$sumcol(self$values)[i] - self$values[i,i] == 0) {
+      if (private$sumfil(self$Values)[i] + private$sumcol(self$Values)[i] - self$Values[i,i] == 0) {
       stop ("/ by 0")
       }else{
-        ShortAcc_i = self$values[i,i] / (private$sumfil(self$values)[i] + private$sumcol(self$values)[i]
-                     - self$values[i,i])
+        ShortAcc_i = self$Values[i,i] / (private$sumfil(self$Values)[i] + private$sumcol(self$Values)[i]
+                     - self$Values[i,i])
         VarShortAcc_i=abs((ShortAcc_i*(1-ShortAcc_i))/
-                      (private$sumcol(self$values)[i]+private$sumfil(self$values)[i]))
+                      (private$sumcol(self$Values)[i]+private$sumfil(self$Values)[i]))
         ConfInt <- private$ConfInt(ShortAcc_i,VarShortAcc_i,a)
         }
 
@@ -846,14 +879,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for the calculations.
       #' @description
       #'  \deqn{
-      #' UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^M_{i=1} x_{i + }}
-      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{i=1} x_{i + }}
-      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
+      #' UserKappa_i=\dfrac{UserAcc_i-\dfrac{ x_{i + }}
+      #' {\sum^M_{i,j=1} x_{ij}}}{1-\dfrac{ x_{i + }}
+      #' {\sum^M_{i,j=1} x_{ij}}}
       #' }
       #'  \deqn{
       #' \sigma^2_{UserKappa_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}
-      #' { \left(1-\dfrac{\sum^M_{i=1} x_{i + }}
-      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}\right)^2 \cdot N_{UserKappa_i}}
+      #' { \left(1-\dfrac{ x_{i + }}
+      #' {\sum^M_{i,j=1} x_{ij}}\right)^2 \cdot N_{UserKappa_i}}
       #' }
       #' where:
       #'
@@ -861,16 +894,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{UserKappa_i}: coefficient kappa (user's).
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{i+}}: sum of all elements in rows i.
       #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{N_{UserKappa_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #'
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the kappa coefficient
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the kappa coefficient
       #' (user’s), its variance and its confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(73,13,5,1,0,21,32,13,3,0,16,39,35,
       #' 29,13,3,5,7,28,48,1,0,2,3,17), nrow=5,ncol=5)
@@ -880,15 +919,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      UserKappa_i = function(i,a=NULL){
-      if (1 - private$sumcol(self$values)[i]/sum(self$values) == 0) {
+      if (1 - private$sumcol(self$Values)[i]/sum(self$Values) == 0) {
        stop ("/ by 0")
       }else{
         UserKappa_i <- (self$UserAcc_i(i)[[1]] -
-                        private$sumcol(self$values)[i]/sum(self$values)) /
-                        (1 - private$sumcol(self$values)[i]/sum(self$values))
-        #VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/private$sumfil(self$values)[i])
+                        private$sumcol(self$Values)[i]/sum(self$Values)) /
+                        (1 - private$sumcol(self$Values)[i]/sum(self$Values))
+        #VarUserKappa_i <- abs((UserKappa_i*(1-UserKappa_i))/private$sumfil(self$Values)[i])
         VarUserKappa_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]])) /
-          (((1 - private$sumcol(self$values)[i]/sum(self$values))^2)*private$sumfil(self$values)[i])
+          (((1 - private$sumcol(self$Values)[i]/sum(self$Values))^2)*private$sumfil(self$Values)[i])
         ConfInt <- private$ConfInt(UserKappa_i,VarUserKappa_i,a)
         }
 
@@ -906,14 +945,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for the calculations.
       #' @description
       #'  \deqn{
-      #' ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^M_{j=1} x_{ + j }}
-      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{j=1} x_{+ j }}
-      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
+      #' ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{ x_{ + j }}
+      #' {\sum^M_{i,j=1} x_{ij}}}{1-\dfrac{ x_{+ j }}
+      #' {\sum^M_{i,j=1} x_{ij}}}
       #' }
       #'  \deqn{
       #' \sigma^2_{ProdKappa_i}=\dfrac{ProdAcc_i \cdot (1- ProdAcc_i)}
-      #' {\left(1-\dfrac{\sum^M_{j=1} x_{+ j }}
-      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}} \right)^2 \cdot N_{ProdAcc_i}}
+      #' {\left(1-\dfrac{ x_{+ j }}
+      #' {\sum^M_{i,j=1} x_{ij}} \right)^2 \cdot N_{ProdAcc_i}}
       #' }
       #' where:
       #'
@@ -921,14 +960,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{ProdKappa_i}: coefficient kappa (producer's).
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{i+}}: sum of all elements in rows j.
       #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of the
       #'   index.
       #' }
       #'
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
-      #' @param a Significance level. By default 0.05.
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
       #' @return A list of real values containing the coefficient kappa
       #' (producer’s), its variance and its confidence interval.
       #' @examples
@@ -940,13 +983,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
       ProdKappa_i = function(i,a=NULL){
-      if (1 - private$sumfil(self$values)[i]/sum(self$values) == 0) {
+      if (1 - private$sumfil(self$Values)[i]/sum(self$Values) == 0) {
        stop ("/ by 0")
       }else{
-        ProdKappa_i <- (self$ProdAcc_i(i)[[1]] - private$sumfil(self$values)[i]/sum(self$values)) / (1 - private$sumfil(self$values)[i]/sum(self$values))
-        #VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/private$sumcol(self$values)[i])
+        ProdKappa_i <- (self$ProdAcc_i(i)[[1]] - private$sumfil(self$Values)[i]/sum(self$Values)) / (1 - private$sumfil(self$Values)[i]/sum(self$Values))
+        #VarProdKappa_i <- abs((ProdKappa_i*(1-ProdKappa_i))/private$sumcol(self$Values)[i])
         VarProdKappa_i <-(self$ProdAcc_i(i)[[1]]*(1-self$ProdAcc_i(i)[[1]])) /
-          (((1 - private$sumfil(self$values)[i]/sum(self$values))^2)*private$sumcol(self$values)[i])
+          (((1 - private$sumfil(self$Values)[i]/sum(self$Values))^2)*private$sumcol(self$Values)[i])
         ConfInt <- private$ConfInt(ProdKappa_i,VarProdKappa_i,a)
         }
      return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i,
@@ -976,7 +1019,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{ModKappa}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
       #' @return A list of real values containing modified coefficient
       #' kappa, its variance and its confidence interval.
       #' @examples
@@ -989,11 +1034,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      ModKappa = function(a=NULL){
        ModKappa <- (self$OverallAcc()[[1]] -
-                   1/sqrt(length(self$values)))/(1 -
-                   1/sqrt(length(self$values)))
-       #VarModKappa <- abs((ModKappa*(1-ModKappa))/sum(self$values))
+                   1/sqrt(length(self$Values)))/(1 -
+                   1/sqrt(length(self$Values)))
+       #VarModKappa <- abs((ModKappa*(1-ModKappa))/sum(self$Values))
        VarModKappa <- (self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/
-         (((1 - 1/sqrt(length(self$values)))^2)*sum(self$values))
+         (((1 - 1/sqrt(length(self$Values)))^2)*sum(self$Values))
        ConfInt <- private$ConfInt(ModKappa,VarModKappa,a)
      return(list(ModKappa=ModKappa,VarModKappa=VarModKappa,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1026,11 +1071,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{ModKappaUser_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the modified
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the modified
       #' coefficient kappa (user's), its variance and
-      #' confidence interval
+      #' confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
@@ -1041,11 +1092,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      ModKappaUser_i = function(i,a=NULL){
        ModKappaUser_i <- (self$UserAcc_i(i)[[1]] -
-                         1/sqrt(length(self$values)))/(1 -
-                         1/sqrt(length(self$values)))
-      # VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/private$sumfil(self$values)[i])
+                         1/sqrt(length(self$Values)))/(1 -
+                         1/sqrt(length(self$Values)))
+      # VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/private$sumfil(self$Values)[i])
        VarModKappaUser_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]]))/
-         (((1 - 1/sqrt(length(self$values)))^2)*sum(self$fil[i]))
+         (((1 - 1/sqrt(length(self$Values)))^2)*sum(self$fil[i]))
        ConfInt <- private$ConfInt(ModKappaUser_i,VarModKappaUser_i,a)
      return(list(ModKappaUser_i=ModKappaUser_i,
                  VarModKappaUser_i=VarModKappaUser_i,
@@ -1080,10 +1131,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{ModKappaProd_i}}: number of cases involved in the calculation
       #'   of the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the modified coefficient
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the modified coefficient
       #' kappa (producer's), its variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(317,61,2,35,23,120,4,29,0,0,60,0,0,0,0,8),
       #' nrow=4,ncol=4)
@@ -1093,10 +1150,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      ModKappaProd_i = function(i,a=NULL){
-      ModKappaProd_i <- (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$values))) / (1 - 1/sqrt(length(self$values)))
-      #VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/private$sumcol(self$values)[i])
+      ModKappaProd_i <- (self$ProdAcc_i(i)[[1]] - 1/sqrt(length(self$Values))) / (1 - 1/sqrt(length(self$Values)))
+      #VarModKappaProd_i <- abs((ModKappaProd_i*(1-ModKappaProd_i))/private$sumcol(self$Values)[i])
       VarModKappaProd_i <- (self$ProdAcc_i(i)[[1]]*(1-self$ProdAcc_i(i)[[1]]))/
-        (((1 - 1/sqrt(length(self$values)))^2)*sum(self$col[i]))
+        (((1 - 1/sqrt(length(self$Values)))^2)*sum(self$col[i]))
       ConfInt <- private$ConfInt(ModKappaProd_i,VarModKappaProd_i,a)
      return(list(ModKappaProd_i=ModKappaProd_i,
                  VarModKappaProd_i=VarModKappaProd_i,
@@ -1113,14 +1170,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
      #' }
      #'  \deqn{
-     #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+     #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{i +}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i +}}
      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
      #' }
      #' \deqn{
      #' Entrop_i(A|b_i)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{ij}}
-     #' {\sum^M_{j=1} x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
-     #' {\sum^M_{j=1} x_{+ j}}\right) \right)
+     #' { x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
+     #' { x_{+ j}}\right) \right)
      #' }
      #' \deqn{
      #' \sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N_{EntropUser_i}}
@@ -1133,7 +1190,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'   class on the product.
       #'   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
-     #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+     #'   \item \eqn{x_{i+}}: sum of all elements in rows i.
      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
      #'   \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
      #'   location corresponding to the reference map B is in class\eqn{b_i}.
@@ -1142,15 +1199,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'   the index.
      #' }
      #' @param i \verb{
-     #' Class to evaluate (row), where }\eqn{i \in \mathbb{Z}-\{0\}}.
+     #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
      #'
      #' @param a \verb{
      #' Significance level. By default 0.05.
      #' }
      #' @param v \verb{
-     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default v=10.
-     #' This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-     #' v=e(nats).
+     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default v=10.
+     #' This value is used for the entropy units, v=10(units Hartleys), v=2(units bits),
+     #' v=e(units nats).
      #' }
      #' @return \verb{
      #' A list of real values containing the relative change of entropy
@@ -1159,10 +1216,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' location corresponding to the reference map B is in class} \eqn{b_i}.
      #'
      #' @examples
-     #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+     #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
      #' nrow=4,ncol=4)
-     #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-     #' p$EntropUser_i(1)
+     #' p<-ConfMatrix$new(A,Source="Finn 1993")
+     #' p$EntropUser_i(1,v=2)
      #'
      #' @aliases NULL
 
@@ -1171,7 +1228,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         #Classes by rows. If any element is 0 in the row you get an error,
         #due to log
 
-    EntropUser_i = function(i,v=NULL,a=NULL){
+    EntropUser_i = function(i,a=NULL,v=NULL){
       if(!is.null(v)){
        v<-v
       }else{v<-10}
@@ -1182,16 +1239,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      #na.rm=TRUE. In this way it does the sum with the values it has and
      #ignores NA
-    Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) *
-                  (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
-    Entrop_iAbi <- - sum ((self$values[i,] / private$sumfil(self$values)[i]) *
-                    log(self$values[i,] / private$sumfil(self$values)[i],base=v),na.rm=TRUE)
+    Entrop_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) *
+                  (log(private$sumcol(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
+    Entrop_iAbi <- - sum ((self$Values[i,] / private$sumfil(self$Values)[i]) *
+                    log(self$Values[i,] / private$sumfil(self$Values)[i],base=v),na.rm=TRUE)
 
     if (Entrop_iA == 0){
      stop("/by 0")
     }else {
       EntropUser_i <- (Entrop_iA - Entrop_iAbi) / Entrop_iA
-      VarEntropUser_i <- abs((EntropUser_i*(1-EntropUser_i))/sum(self$values))
+      VarEntropUser_i <- abs((EntropUser_i*(1-EntropUser_i))/sum(self$Values))
       ConfInt <- private$ConfInt(EntropUser_i,VarEntropUser_i,a)
       }
     return(list(EntropUser_i=EntropUser_i,VarEntropUser_i=VarEntropUser_i,
@@ -1211,14 +1268,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' }
      #'
      #'  \deqn{
-     #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{\sum^M_{j=1} x_{+ j}}
-     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+ j}}
+     #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{ x_{+ j}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+ j}}
      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
      #' }
      #' \deqn{
-     #' Entrop_i(B|a_j)=-\sum^M_{j=1}\left( \left(\dfrac{ x_{ij}}
-     #' {\sum^M_{i=1} x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
-     #' {\sum^M_{i=1} x_{i +}}\right) \right)
+     #' Entrop_i(B|a_j)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{ij}}
+     #' { x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
+     #' { x_{i +}}\right) \right)
      #' }
      #'\deqn{
      #' \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N_{EntropProd_i}}
@@ -1230,7 +1287,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'    the reference data.
      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
      #'   reference with respect to the class on the reference. B is a matrix.
-     #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+     #'   \item \eqn{x_{i+}}: sum of all elements in rows i.
      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
      #'   \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
      #'   the location corresponding map of product A is in class \eqn{a_j}.
@@ -1239,14 +1296,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' }
      #'
      #' @param i \verb{
-     #' Class to evaluate (row), where} \eqn{i \in \mathbb{Z}-\{0\}}.
+     #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+     #'
      #' @param a \verb{
      #' Significance level. By default 0.05.
      #' }
      #' @param v \verb{
-     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default
-     #' v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-     #' v=e(nats).
+     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default
+     #' v=10. This value is used for the entropy units, v=10(units Hartleys), v=2(units bits),
+     #' v=e(units nats).
      #' }
      #' @return \verb{
      #' A list of real values containing the relative change of entropy
@@ -1254,27 +1312,27 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' respect to reference classes, and entropy with respect to reference
      #' classes knowing that the location corresponding to map A is in class} \eqn{a_j}.
      #' @examples
-     #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+     #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
      #' nrow=4,ncol=4)
-     #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-     #' p$EntropProd_i(2)
+     #' p<-ConfMatrix$new(A,Source="Finn 1993")
+     #' p$EntropProd_i(2,v=2)
      #'
      #' @aliases NULL
 
-    EntropProd_i = function(i,v=NULL,a=NULL){
+    EntropProd_i = function(i,a=NULL,v=NULL){
      if(!is.null(v)){
       v<-v
      }else{v<-10}
-    Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) *
-                  (log(private$sumfil(self$values)/sum(self$values),base = v)),na.rm=TRUE)
-    Entrop_iBaj <- - sum ((self$values[,i] / private$sumcol(self$values)[i]) *
-                    log(self$values[,i] / private$sumcol(self$values)[i],base=v),na.rm=TRUE)
+    Entrop_iB <- - sum ((private$sumfil(self$Values)/sum(self$Values)) *
+                  (log(private$sumfil(self$Values)/sum(self$Values),base = v)),na.rm=TRUE)
+    Entrop_iBaj <- - sum ((self$Values[,i] / private$sumcol(self$Values)[i]) *
+                    log(self$Values[,i] / private$sumcol(self$Values)[i],base=v),na.rm=TRUE)
 
       if (Entrop_iB == 0){
         stop("/by 0")
       }else {
         EntropProd_i <- (Entrop_iB - Entrop_iBaj) / Entrop_iB
-        VarEntropProd_i <- abs((EntropProd_i*(1-EntropProd_i))/sum(self$values))
+        VarEntropProd_i <- abs((EntropProd_i*(1-EntropProd_i))/sum(self$Values))
         ConfInt <- private$ConfInt(EntropProd_i,VarEntropProd_i,a)
         }
     return(list(EntropProd_i=EntropProd_i,VarEntropProd_i=VarEntropProd_i,
@@ -1293,7 +1351,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #'  \deqn{
       #' AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
-      #' {\sum_{j=1}^M x_{j+}}
+      #' { x_{i+}}
       #' }
       #'\deqn{
       #' \sigma^2_{AvUserAcc}=\dfrac{AvUserAcc \cdot (1-AvUserAcc)}{N_{AvUserAcc}}
@@ -1302,15 +1360,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' \enumerate{
       #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
-      #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
+      #'   \item \eqn{x_{i+}}: sum of all elements in rows i.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N_{AvUserAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the average
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the average
       #' user’s accuracy, its variance, and its confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
@@ -1319,14 +1381,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      AvUserAcc = function(a=NULL){
-       for (i in 1:length(private$sumfil(self$values))) {
-          if (private$sumfil(self$values)[i] == 0) {
+       for (i in 1:length(private$sumfil(self$Values))) {
+          if (private$sumfil(self$Values)[i] == 0) {
             stop ("/ by 0")
           }
        }
-      AvUserAcc <- 1/sqrt(length(self$values)) *
-        sum (diag(self$values)/private$sumfil(self$values))
-      VarAvUserAcc <- abs((AvUserAcc*(1-AvUserAcc))/sum(self$values))
+      AvUserAcc <- 1/sqrt(length(self$Values)) *
+        sum (diag(self$Values)/private$sumfil(self$Values))
+      VarAvUserAcc <- abs((AvUserAcc*(1-AvUserAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(AvUserAcc,VarAvUserAcc,a)
      return(list(AvUserAcc=AvUserAcc,VarAvUserAcc=VarAvUserAcc,
             Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1339,8 +1401,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^M_{i=1} \dfrac{x_{ii}}
-      #' {\sum_{j=1}^M x_{+j}}
+      #' AvProdAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+      #' { x_{+j}}
       #' }
       #'\deqn{
       #' \sigma^2_{AvProdAcc}=\dfrac{AvProdAcc \cdot (1-AvProdAcc)}{N_{AvProdAcc}}
@@ -1355,9 +1417,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{AvProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the average producer’s
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the average producer’s
       #' accuracy, its variance, and its confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
@@ -1366,9 +1432,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      AvProdAcc = function(a=NULL){
-      AvProdAcc <- 1/sqrt(length(self$values)) *
-        sum (diag(self$values)/private$sumcol(self$values))
-      VarAvProdAcc <- abs((AvProdAcc*(1-AvProdAcc))/sum(self$values))
+      AvProdAcc <- 1/sqrt(length(self$Values)) *
+        sum (diag(self$Values)/private$sumcol(self$Values))
+      VarAvProdAcc <- abs((AvProdAcc*(1-AvProdAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(AvProdAcc,VarAvProdAcc,a)
      return(list(AvProdAcc=AvProdAcc,VarAvProdAcc=VarAvProdAcc,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1398,10 +1464,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{AvUserProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the average mean
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the average mean
       #' precision values from the user's and producer's perspective,
       #' their variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1412,7 +1482,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      AvUserProdAcc = function(a=NULL){
       AvUserProdAcc <- (self$AvUserAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
-      VarAvUserProdAcc <- abs((AvUserProdAcc*(1-AvUserProdAcc))/sum(self$values))
+      VarAvUserProdAcc <- abs((AvUserProdAcc*(1-AvUserProdAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(AvUserProdAcc,VarAvUserProdAcc,a)
      return(list(AvUserProdAcc=AvUserProdAcc,VarAvUserProdAcc=VarAvUserProdAcc,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1426,8 +1496,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the calculations.
       #' @description
       #'  \deqn{
-      #' AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^M_{i=1} \dfrac{2 x_{ii}}
-      #' { x_{+i} + x_{i+}}
+      #' AvHelldenAcc=\dfrac{1}{\sqrt{M}} \dfrac{2 \sum^M_{i=1} x_{ii}}
+      #' { x_{+j} + x_{i+}}
       #' }
       #'  \deqn{
       #' \sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N_{AvHelldenAcc}}
@@ -1438,16 +1508,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N_{AvHelldenAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the average of
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the average of
       #' Hellden's mean accuracy index, its variance and
       #' confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1457,9 +1531,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      AvHelldenAcc = function(a=NULL){
-      AvHelldenAcc <- 1/sqrt(length(self$values)) *
-        sum ((2*diag(self$values)) / (private$sumfil(self$values) + private$sumcol(self$values)))
-      VarAvHelldenAcc <- abs((AvHelldenAcc*(1-AvHelldenAcc))/sum(self$values))
+      AvHelldenAcc <- 1/sqrt(length(self$Values)) *
+        sum ((2*diag(self$Values)) / (private$sumfil(self$Values) + private$sumcol(self$Values)))
+      VarAvHelldenAcc <- abs((AvHelldenAcc*(1-AvHelldenAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(AvHelldenAcc,VarAvHelldenAcc,a)
      return(list(AvHelldenAcc=AvHelldenAcc,VarAvHelldenAcc=VarAvHelldenAcc,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1474,7 +1548,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #'  \deqn{
       #' AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^M_{i=1} x_{ii}}
-      #' {\sum^M_{i,j=1}x_{ij}}}{\sum^M_{j=1} x_{+ j}+\sum^M_{i=1} x_{i +}
+      #' {\sum^M_{i,j=1}x_{ij}}}{ x_{+ j}+ x_{i +}
       #' -x_{ii}}
       #' }
       #'\deqn{
@@ -1490,10 +1564,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N_{AvShortAcc}}: number of cases involved in the calculation of the index.
       #'    }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the average of
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the average of
       #' Short's mapping accuracy index, its variance and
       #' confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1503,15 +1581,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      AvShortAcc = function(a=NULL){
-      sum1 <- private$sumfil(self$values)+private$sumcol(self$values)- diag(self$values)
+      sum1 <- private$sumfil(self$Values)+private$sumcol(self$Values)- diag(self$Values)
        for (i in 1:length(sum1)) {
           if (sum1[i] == 0) {
            stop ("/ by 0")
           }
        }
-      AvShortAcc = 1/sqrt(length(self$values)) *
-        sum (diag(self$values) / (private$sumfil(self$values) + private$sumcol(self$values) - diag(self$values)))
-      VarAvShortAcc=abs((AvShortAcc*(1-AvShortAcc))/sum(self$values))
+      AvShortAcc = 1/sqrt(length(self$Values)) *
+        sum (diag(self$Values) / (private$sumfil(self$Values) + private$sumcol(self$Values) - diag(self$Values)))
+      VarAvShortAcc=abs((AvShortAcc*(1-AvShortAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(AvShortAcc,VarAvShortAcc,a)
 
      return(list(AvShortAcc=AvShortAcc,VarAvShortAcc=VarAvShortAcc,
@@ -1541,10 +1619,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{CombUserAcc}}: number of cases involved in the calculation of
       #'   the index.
       #'   }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the combined
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the combined
       #' accuracy from the user's perspective,
       #' its variation and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
@@ -1554,7 +1636,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      CombUserAcc = function(a=NULL){
       CombUserAcc <- (self$OverallAcc()[[1]] + self$AvUserAcc()[[1]]) / 2
-      VarCombUserAcc <- abs((CombUserAcc*(1-CombUserAcc))/sum(self$values))
+      VarCombUserAcc <- abs((CombUserAcc*(1-CombUserAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(CombUserAcc,VarCombUserAcc,a)
      return(list(CombUserAcc=CombUserAcc,VarCombUserAcc=VarCombUserAcc,
             Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1582,9 +1664,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{CombProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the combined accuracy
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the combined accuracy
       #' from producer's perspective, its variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
@@ -1594,7 +1680,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      CombProdAcc = function(a=NULL){
       CombProdAcc <- (self$OverallAcc()[[1]] + self$AvProdAcc()[[1]]) / 2
-      VarCombProdAcc <- abs((CombProdAcc*(1-CombProdAcc))/sum(self$values))
+      VarCombProdAcc <- abs((CombProdAcc*(1-CombProdAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(CombProdAcc,VarCombProdAcc,a)
      return(list(CombProdAcc=CombProdAcc,VarCombProdAcc=VarCombProdAcc,
             Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1624,9 +1710,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{CombUserProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the combined accuracy from both user's and
-      #' producer's perspectives, its variance and confidence interval.
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the combined accuracy from both user's
+      #' and producer's perspectives, its variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1638,7 +1728,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      CombUserProdAcc = function(a=NULL){
       CombUserProdAcc <- (self$OverallAcc()[[1]]+self$AvHelldenAcc()[[1]])/2
       VarCombUserProdAcc <- abs((CombUserProdAcc*
-                            (1-CombUserProdAcc))/sum(self$values))
+                            (1-CombUserProdAcc))/sum(self$Values))
       ConfInt <- private$ConfInt(CombUserProdAcc,VarCombUserProdAcc,a)
      return(list(CombUserProdAcc=CombUserProdAcc,
                  VarCombUserProdAcc=VarCombUserProdAcc,
@@ -1656,8 +1746,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
       #' }
       #'  \deqn{
-      #' ExpAcc=\sum^M_{i=1} \left( \dfrac{x_{+ i}}{\sum_{j=1}^M x_{ij}}
-      #' \cdot \dfrac{x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+      #' ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
       #' }
       #'  \deqn{
       #' \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N_{Kappa}}
@@ -1677,9 +1766,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{Kappa}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing with kappa
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing with kappa
       #' coefficient, its variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1689,13 +1782,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      Kappa = function(a=NULL){
-      ExpAcc <- (sum (private$sumfil(self$values) * private$sumcol(self$values)))/sum(self$values)^2
+      ExpAcc <- (sum (private$sumfil(self$Values) * private$sumcol(self$Values)))/sum(self$Values)^2
       if (1-ExpAcc == 0){
        stop ("/ by 0")
       }else{
         kappa <- (self$OverallAcc()[[1]]- ExpAcc) / (1 - ExpAcc)
         VarKappa <- abs((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))
-                    /(sum(self$values)*(1-ExpAcc)^2))
+                    /(sum(self$Values)*(1-ExpAcc)^2))
         ConfInt <- private$ConfInt(kappa,VarKappa,a)
       }
      return(list(Kappa=kappa,VarKappa=VarKappa,
@@ -1713,8 +1806,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #'  \deqn{
       #' Entrop=\sum^M_{i,j=1} \left(\dfrac{x_{ij}}{\sum^M_{i,j=1} x_{ij}}
-      #'  \cdot \log \left(\dfrac{x_{ij}}{\dfrac{\sum^M_{i=1} x_{i+}
-      #'  \cdot \sum^M_{j=1} x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
+      #'  \cdot \log \left(\dfrac{x_{ij}}{\dfrac{ x_{i+}
+      #'  \cdot  x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
       #' }
       #'\deqn{
       #' \sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N_{Entrop}}
@@ -1729,13 +1822,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   the index.
       #' }
       #'
-      #' @param a Significance level. By default 0.05.
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
       #'
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-      #' By default v=10. This value is used for the entropy units, v=10(Hartleys),
-      #' v=2(bits), v=e(nats).
-      #' @return A list of real values containing the entropy, its variance
-      #' and confidence interval.
+      #' @param v \verb{
+      #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' \verb{By default v=10. This value is used for the entropy units, v=10(units Hartleys),
+      #' v=2(units bits), v=e(units nats).}
+      #' @return \verb{
+      #' A list of real values containing the entropy, its variance
+      #' and confidence interval.}
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
@@ -1744,15 +1841,25 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     Entrop = function(v=NULL,a=NULL){
+     Entrop = function(a=NULL,v=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-       Entrop <- sum ((self$values/sum(self$values)) *
-                log(self$values / ((private$sumfil(self$values) * private$sumcol(self$values))/sum(self$values))
-                ,base=v),na.rm=TRUE)
-       VarEntrop <- abs((Entrop*(1-Entrop))/sum(self$values))
+       # Entrop <- sum ((self$Values/sum(self$Values)) *
+       #          log(self$Values / ((private$sumfil(self$Values) * private$sumcol(self$Values))/sum(self$Values))
+       #          ,base=v),na.rm=TRUE)
+
+       # Entrop <- sum ((self$Values/sum(self$Values)) *
+       #                  log((self$Values/sum(self$Values)) / (((private$sumfil(self$Values)/sum(self$Values)) * (private$sumcol(self$Values)/sum(self$Values))))
+       #                      ,base=v),na.rm=TRUE)
+
+       Entrop<-sum((self$Values/sum(self$Values))*
+              log(((self$Values/sum(self$Values))/private$sumcol(self$Values))/(private$sumfil(self$Values)/sum(self$Values)),base=v),na.rm=TRUE)
+
+
+
+       VarEntrop <- abs((Entrop*(1-Entrop))/sum(self$Values))
        ConfInt <- private$ConfInt(Entrop,VarEntrop,a)
      return(list(Entrop=Entrop,VarEntrop=VarEntrop,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -1789,12 +1896,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   the index.
       #' }
       #'
-      #' @param a Significance level. By default 0.05.
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-      #'  By default v=10. This value is used for the entropy units,
-      #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @return A list of real values containing with normalized entropy
-      #' of the product class i, conditioned to reference data, its variance and confidence interval.
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #'
+      #' @param v \verb{
+      #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' \verb{By default v=10. This value is used for the entropy units,
+      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' @return \verb{
+      #' A list of real values containing with normalized entropy
+      #' of the product class i, conditioned to reference data, its variance
+      #' and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
@@ -1803,20 +1917,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     NormEntropUser = function(v=NULL,a=NULL){
+     NormEntropUser = function(a=NULL,v=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-       Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) *
-                      (log(private$sumfil(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+       Entrop_iB <- - sum ((private$sumfil(self$Values)/sum(self$Values)) *
+                      (log(private$sumfil(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
 
        if(Entrop_iB == 0){
         stop("/ by 0")
        }
 
        NormEntropUser <- self$Entrop(v)[[1]]/Entrop_iB
-       VarNormEntropUser <- abs((NormEntropUser*(1-NormEntropUser))/sum(self$values))
+       VarNormEntropUser <- abs((NormEntropUser*(1-NormEntropUser))/sum(self$Values))
        ConfInt <- private$ConfInt(NormEntropUser,VarNormEntropUser,a)
      return(list(NormEntropUser=NormEntropUser,
                  VarNormEntropUser=VarNormEntropUser,
@@ -1853,14 +1967,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   the index.
       #' }
       #'
-      #' @param a Significance level. By default 0.05.
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
       #'
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-      #'  By default v=10. This value is used for the entropy units,
-      #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @return A list of real values containing with normalized entropy
+      #' @param v \verb{
+      #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' \verb{By default v=10. This value is used for the entropy units,
+      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' @return \verb{
+      #' A list of real values containing with normalized entropy
       #' of the reference class i, conditioned to producer, its variance
       #' and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
@@ -1869,18 +1988,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     NormEntropProd = function(v=NULL,a=NULL){
+     NormEntropProd = function(a=NULL,v=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-      Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) *
-                     (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) *
+                     (log(private$sumcol(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
        if (Entrop_iA == 0){
         stop ("/ by 0")
        }else{
          NormEntropProd <- self$Entrop()[[1]]/Entrop_iA
-         VarNormEntropProd <- abs((NormEntropProd*(1-NormEntropProd))/sum(self$values))
+         VarNormEntropProd <- abs((NormEntropProd*(1-NormEntropProd))/sum(self$Values))
          ConfInt <- private$ConfInt(NormEntropProd,VarNormEntropProd,a)
          }
      return(list(NormEntropProd=NormEntropProd,
@@ -1925,13 +2044,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{AvNormEntrop}}: number of cases involved in the calculation of the
       #'   index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-      #'  By default v=10. This value is used for the entropy units,
-      #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @return A list of real values containing the normalized
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @param v \verb{
+      #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' \verb{By default v=10. This value is used for the entropy units,
+      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' @return \verb{
+      #' A list of real values containing the normalized
       #' entropy (arithmetic mean of the entropies on the product
-      #' and reference), its variance and confidence interval.
+      #' and reference), its variance and confidence interval.}
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1940,20 +2063,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     AvNormEntrop = function(v=NULL,a=NULL){
+     AvNormEntrop = function(a=NULL,v=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
 
-      Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) *
-                     (log(private$sumfil(self$values)/sum(self$values),base=v)),na.rm=TRUE)
-      Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) *
-                     (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iB <- - sum ((private$sumfil(self$Values)/sum(self$Values)) *
+                     (log(private$sumfil(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) *
+                     (log(private$sumcol(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
         if (Entrop_iA + Entrop_iB == 0) {
           stop ("/ by 0")
         }else{
           AvNormEntrop <- 2 * self$Entrop(v)[[1]] / (Entrop_iA + Entrop_iB)
-          VarAvNormEntrop <- abs((AvNormEntrop*(1-AvNormEntrop))/sum(self$values))
+          VarAvNormEntrop <- abs((AvNormEntrop*(1-AvNormEntrop))/sum(self$Values))
           ConfInt <- private$ConfInt(AvNormEntrop,VarAvNormEntrop,a)
         }
 
@@ -2000,13 +2123,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{GeomAvNormEntrop}}: number of cases involved in the calculation of the index.
       #' }
       #'
-      #' @param a Significance level. By default 0.05.
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-      #'  By default v=10. This value is used for the entropy units,
-      #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @return A list of real values containing the normalized
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @param v \verb{
+      #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' \verb{By default v=10. This value is used for the entropy units,
+      #'  v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' @return \verb{
+      #' A list of real values containing the normalized
       #' entropy (geometric mean of the entropies on the product
       #' and reference), its variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -2015,12 +2143,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     GeomAvNormEntrop = function(v=NULL,a=NULL){
+     GeomAvNormEntrop = function(a=NULL,v=NULL){
       if(!is.null(v)){
         v<-v
       }else{v<-10}
-      Entrop_iB <- - sum ((private$sumfil(self$values)/sum(self$values)) * (log(private$sumfil(self$values)/sum(self$values),base=v)),na.rm=TRUE)
-      Entrop_iA <- - sum ((private$sumcol(self$values)/sum(self$values)) * (log(private$sumcol(self$values)/sum(self$values),base=v)),na.rm=TRUE)
+      Entrop_iB <- - sum ((private$sumfil(self$Values)/sum(self$Values)) * (log(private$sumfil(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
+      Entrop_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) * (log(private$sumcol(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
        if (Entrop_iA * Entrop_iB == 0) {
         stop ("/ by 0")
        }else{
@@ -2073,13 +2201,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{N_{AvMaxNormEntrop}}: number of cases involved in the calculation
       #'   of the index.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-      #' By default v=10. This value is used for the entropy units,
-      #' v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @return A list of real values containing the normalized entropy
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @param v \verb{
+      #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' \verb{By default v=10. This value is used for the entropy units,
+      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' @return \verb{
+      #' A list of real values containing the normalized entropy
       #' (arithmetic mean of the maximum entropies in the product and in
       #' reference), its variance, and its confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -2088,13 +2221,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     AvMaxNormEntrop = function(v=NULL,a=NULL){
+     AvMaxNormEntrop = function(a=NULL,v=NULL){
        if(!is.null(v)){
          v<-v
        }else{v<-10}
 
-        AvMaxNormEntrop <- self$Entrop(v)[[1]] / log(sqrt(length(self$values)),base=v)
-        VarAvMaxNormEntrop <- abs((AvMaxNormEntrop*(1-AvMaxNormEntrop))/sum(self$values))
+        AvMaxNormEntrop <- self$Entrop(v)[[1]] / log(sqrt(length(self$Values)),base=v)
+        VarAvMaxNormEntrop <- abs((AvMaxNormEntrop*(1-AvMaxNormEntrop))/sum(self$Values))
         ConfInt <- private$ConfInt(AvMaxNormEntrop,VarAvMaxNormEntrop,a)
 
      return (list(AvMaxNormEntrop=AvMaxNormEntrop,Var=VarAvMaxNormEntrop,
@@ -2131,12 +2264,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{PrAgCoef}: a priori random agreement coefficient.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N_{Tau}}: number of elements of the matrix, cardinal of
-      #'   the matrix.
+      #'   \item \eqn{N_{Tau}}: number of elements of the matrix.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list of real values containing the Tau index,
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
+      #' }
+      #' @return \verb{
+      #' A list of real values containing the Tau index,
       #' its variance and confidence interval.
+      #' }
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
@@ -2148,9 +2284,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      Tau = function(a=NULL){
-        Ca<-1/nrow(self$values)
+        Ca<-1/nrow(self$Values)
         Tau <- ((self$OverallAcc()[[1]]-Ca)/(1-Ca))
-        VarTau <- ((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$values)*(1-Ca)))
+        VarTau <- ((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$Values)*(1-Ca)))
         ConfInt <- private$ConfInt(Tau,VarTau,a)
      return(list(Tau=Tau,VarTau=VarTau,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -2177,7 +2313,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      UserProdAcc =function(){
       #  calculation of Class accuracies and standard deviations
-      nc <- nrow(self$values)
+      nc <- nrow(self$Values)
        for (i in 1:nc){
          pcpa <- self$ProdAcc()[[1]]
          pcua <-self$UserAcc()[[1]]
@@ -2201,11 +2337,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
       #' }
       #'
-      #' \deqn{
-      #' ExpAcc=\sum^M_{i=1} \left(  \dfrac{x_{+i}}{\sum_{j=1}^M x_{ij}}
-      #' \cdot \dfrac{x_{i+}}{\sum_{j=1}^M x_{ij}} \right)
+      #'  \deqn{
+      #' ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
       #' }
-      #'
       #' \deqn{
       #' \sigma^2_{Kappa} = \dfrac{1}{N_{Kappa}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
       #' + \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
@@ -2268,17 +2402,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      DetailedKappa=function (){
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
+       nc <- nrow(self$Values)
+       SumaMatriz <-sum(self$Values)
 
        # The 4 coefficients
-       O1 <- sum(diag(self$values))/SumaMatriz #OA
-       O2 <- sum((private$sumcol(self$values)*private$sumfil(self$values)))/(SumaMatriz*SumaMatriz) #EA
-       O3 <- sum(diag(self$values)*(private$sumcol(self$values)+private$sumfil(self$values)))/(SumaMatriz*SumaMatriz)
-       mintermedia1<- matrix(rep(private$sumcol(self$values), nc), nrow =nc, ncol=nc, byrow=TRUE)
-       mintermedia2<- matrix(rep(private$sumfil(self$values), nc), nrow =nc, ncol=nc, byrow=FALSE)
+       O1 <- sum(diag(self$Values))/SumaMatriz #OA
+       O2 <- sum((private$sumcol(self$Values)*private$sumfil(self$Values)))/(SumaMatriz*SumaMatriz) #EA
+       O3 <- sum(diag(self$Values)*(private$sumcol(self$Values)+private$sumfil(self$Values)))/(SumaMatriz*SumaMatriz)
+       mintermedia1<- matrix(rep(private$sumcol(self$Values), nc), nrow =nc, ncol=nc, byrow=TRUE)
+       mintermedia2<- matrix(rep(private$sumfil(self$Values), nc), nrow =nc, ncol=nc, byrow=FALSE)
        mintermedia3 <-(mintermedia1+mintermedia2)^2
-       O4 <- sum(self$values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
+       O4 <- sum(self$Values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
        t1 <- (1-O1) #no oa
        t2<- (1-O2) #no ea
        K <- (O1-O2)/t2 #Kappa
@@ -2337,11 +2471,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{GroundTruth}: index ground truth.
       #'   \item \eqn{R}: casual lucky guess.
       #'   \item \eqn{ProdAcc}: producer accuracy.
-      #'   \item \eqn{N_{GroundTruth}}: number of elements of the matrix, cardinal of the matrix.
+      #'   \item \eqn{N_{GroundTruth}}: number of elements of the matrix.
+      #'   }
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
       #' }
-      #' @param a Significance level. By default 0.05.
-      #' @return A list with Ground Truth indexes, their variance, confidence
+      #' @return \verb{
+      #' A list with Ground Truth indexes, their variance, confidence
       #' intervals and the matrix with the expected frequencies.
+      #' }
       #' @examples
       #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
       #' 6,25,1,1,0,0,1,6),nrow=5,ncol=5)
@@ -2352,7 +2490,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
     GroundTruth=function(a=NULL){
-      M<-self$values
+      M<-self$Values
       #Matrix without diagonal
       M_0<-M-diag(diag(M),nrow(M),nrow(M))
       #Marginals of rows and columns of the matrix without diagonal
@@ -2400,7 +2538,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       Ai<-self$ProdAcc()[[1]]
       #index ground truth
       GroundTruth<-(Ai-Ri)/(1-Ri)
-      VarGroundTruth<-(GroundTruth*(1-GroundTruth))/sum(self$values)
+      VarGroundTruth<-(GroundTruth*(1-GroundTruth))/sum(self$Values)
       ConfInt<-list()
       for (i in 1:length(GroundTruth)) {
         ConfInt[[i]]<-c(private$ConfInt(GroundTruth[i],VarGroundTruth[i],
@@ -2459,12 +2597,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{GroundTruth_i}: index ground truth for class i.
       #'   \item \eqn{R_i}: casual lucky guess for class i. Is a real value.
       #'   \item \eqn{ProdAcc_i}: producer accuracy for class i.
-      #'   \item \eqn{N_{GroundTruth_i}}: number of elements of the matrix, cardinal of the matrix.
+      #'   \item \eqn{N_{GroundTruth_i}}: number of elements of the matrix.
+      #'   }
+      #' @param i \verb{
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a \verb{
+      #' Significance level. By default 0.05.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.
-      #' @param a Significance level. By default 0.05.
-      #' @return A list with Ground Truth index for class i, its variance, confidence
+      #' @return \verb{
+      #' A list with Ground Truth index for class i, its variance, confidence
       #' interval and the matrix with the expected frequencies for all classes.
+      #' }
       #' @examples
       #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
       #' 6,25,1,1,0,0,1,6),nrow=5,ncol=5)
@@ -2500,9 +2644,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{ij}}: observed frequency.
       #'   \item \eqn{E_{ij}}: expected frequency.
       #' }
-      #' @param a significance level. By default a=0.05.
-      #' @return A list of the statistic's value and its z-score for a given
-      #' significance level.
+      #' @param a \verb{
+      #' Significance level. By default a=0.05.
+      #' }
+      #' @return \verb{
+      #' A list of the statistic's value and its z-score for a given
+      #' significance level.}
       #' @examples
       #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
       #' 7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
@@ -2516,8 +2663,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       if(is.null(a)){
         a<-0.05
       }else{a<-a}
-      A_0<-self$values-diag(diag(self$values),nrow(self$values),
-          nrow(self$values))
+      A_0<-self$Values-diag(diag(self$Values),nrow(self$Values),
+          nrow(self$Values))
       Expfij<-self$GroundTruth()[[4]]
       k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
       matr2<-A_0/Expfij
@@ -2590,9 +2737,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
      DetailedCondKappa = function(){
-       SumaMatriz <-sum(self$values)
+       SumaMatriz <-sum(self$Values)
         # In %
-        ConfM<- self$values/sum(self$values)
+        ConfM<- self$Values/sum(self$Values)
 
        # UnWeighted marginals (quantities)
         pcol <- apply(ConfM,2,sum)
@@ -2645,9 +2792,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      QES = function(){
       # Overall Quantity, Exchange and Shift values
 
-      nc <- nrow(self$values)
-      SumaMatriz <-sum(self$values)
-      SumaDigonal<-sum(diag(self$values))
+      nc <- nrow(self$Values)
+      SumaMatriz <-sum(self$Values)
+      SumaDigonal<-sum(diag(self$Values))
       ee<- matrix(rep(0, nc*nc), nrow =nc, ncol=nc, byrow=TRUE)
       d<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
       q<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
@@ -2656,7 +2803,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         for (j in 1:nc){
           for (i in 1:nc){
             if (i>j){#diagonal 0//triangular superior
-            ee[i,j] <-  (min(self$values[i,j], self$values[j,i]))*2
+            ee[i,j] <-  (min(self$Values[i,j], self$Values[j,i]))*2
             }else{
               ee[i,j] <- 0
             }
@@ -2664,8 +2811,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         }
 
         for (j in 1:nc){
-        d[j]<-d[j]+ sum(self$values[,j])+sum(self$values[j,])-2*self$values[j,j]
-        q[j]<-q[j]+ abs(sum(self$values[,j])- sum(self$values[j,]))
+        d[j]<-d[j]+ sum(self$Values[,j])+sum(self$Values[j,])-2*self$Values[j,j]
+        q[j]<-q[j]+ abs(sum(self$Values[,j])- sum(self$Values[j,]))
         e[j]<-e[j]+ sum(ee[,j])+sum(ee[j,])
         s[j]<-d[j]- q[j]-e[j]
         }
@@ -2720,7 +2867,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         }else{R<-1}
       # Create a matrix in which all elements are proportions
       # such that the sum of all the elements is 1
-      ConfM=self$values
+      ConfM=self$Values
 
       M <- ConfM/(sum(ConfM))
         if (RaR==1){
@@ -2729,7 +2876,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         } else {
       M <- ConfM/(sum(ConfM))
       M[] <- as.integer(100*M)
-      return(list(OriginalMatrix=self$values,TypifyMatrix=M))
+      return(list(OriginalMatrix=self$Values,TypifyMatrix=M))
       }
      },
 
@@ -2760,17 +2907,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      # Variances
      # Pseudozero matrix
       OverallAcc<-self$OverallAcc()
-      dimension <- nrow(self$values)
-      SumaMatriz <-sum(self$values)
+      dimension <- nrow(self$Values)
+      SumaMatriz <-sum(self$Values)
       PAcuerdo <- OverallAcc[[1]]
       ExProdu <- self$ProdAcc()[[1]]
       UserAcc <-self$UserAcc()[[1]]
-      PAAzar <- sum((private$sumfil(self$values)*private$sumcol(self$values)))/(SumaMatriz*SumaMatriz)
+      PAAzar <- sum((private$sumfil(self$Values)*private$sumcol(self$Values)))/(SumaMatriz*SumaMatriz)
       Kappa <- self$Kappa()[[1]]
       VarPAcuerdo <- self$OverallAcc()[[2]]
       VarKappa <-  self$Kappa()[[2]]
       MPseudoceros <- self$MPseudoZeroes()[[2]]
-      salida<-list(Matrix=self$values, Dimension =dimension, n=SumaMatriz,
+      salida<-list(Matrix=self$Values, Dimension =dimension, n=SumaMatriz,
                    OverallAcc=PAcuerdo, VarOverallAcc=VarPAcuerdo, Kappa=Kappa,
                    VarKappa=VarKappa,ProdAcc=ExProdu,UserAcc=UserAcc,
                    MPseudoceros=MPseudoceros)
@@ -2799,10 +2946,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
      MBootStrap=function(B,pr=NULL){
       #matrix range
-      nc<-ncol(self$values)
+      nc<-ncol(self$Values)
       #convert to vector
-      #M1<-as.vector(self$values)
-      M1<-self$values
+      #M1<-as.vector(self$Values)
+      M1<-self$Values
       #probability
       if(is.null(pr)){
         pr<-M1/sum(M1)
@@ -2820,7 +2967,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
           M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
         }
 
-     return(list(OriginalMatrix=self$values,BootStrap=M2))
+     return(list(OriginalMatrix=self$Values,BootStrap=M2))
      },
 
 
@@ -2828,9 +2975,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' order to get the sum of values by rows and columns to be worth one.
       #' The references \insertCite{fienberg1970,munoz2016}{ConfMatrix}
       #' are followed for the computations.
-      #' @param iter Number of iteration. By default iter=1000.
-      #' @return A list formed by the original confusion matrix and the
+      #' @param iter \verb{
+      #' Number of iteration. By default iter=1000.
+      #' }
+      #' @return \verb{
+      #' A list formed by the original confusion matrix and the
       #' normalized matrix.
+      #' }
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
@@ -2847,8 +2998,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         iter <- iter
       }else{iter<-1000}
 
-      rg<-nrow(self$values)
-      x1<-self$values
+      rg<-nrow(self$Values)
+      x1<-self$Values
         for (k in 1:iter) {
         sumfilas=apply(x1,1,sum)
           for (i in 1:rg) {
@@ -2860,7 +3011,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
           }
         }
       NormMatrix<-x1
-     return(list(OriginalMatrix=self$values,NormalizeMatrix=NormMatrix))
+     return(list(OriginalMatrix=self$Values,NormalizeMatrix=NormMatrix))
      },
 
 
@@ -2887,26 +3038,26 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
        #It checks if any element is 0
        k=0
-       rg<-nrow(self$values)
+       rg<-nrow(self$Values)
         for (i in 1:rg) {
          for (j in 1:rg) {
-          if((self$values[i,j]!=0)==TRUE){
+          if((self$Values[i,j]!=0)==TRUE){
             k=k+1
-             if(k==length(self$values)){
+             if(k==length(self$Values)){
                stop("The Pseudoceros Matrix removes the zeros from the matrix.
                     Your matrix does not have any zeros to remove.")
              }}
         }
        }
 
-       ConfM=self$values
+       ConfM=self$Values
        SumaMatriz <-sum(ConfM)
-       MLandas <- (private$sumfil(self$values) %*% t(private$sumcol(self$values)))/(SumaMatriz*SumaMatriz)
+       MLandas <- (private$sumfil(self$Values) %*% t(private$sumcol(self$Values)))/(SumaMatriz*SumaMatriz)
        K <- (SumaMatriz*SumaMatriz -
                sum(ConfM*ConfM))/sum((SumaMatriz*MLandas - ConfM )^2)
        MPseudoceros <- (SumaMatriz/(K+SumaMatriz))*(ConfM + K*MLandas)
 
-     return(list(OriginalMatrix=self$values,PseudoZeroesMatrix=MPseudoceros))
+     return(list(OriginalMatrix=self$Values,PseudoZeroesMatrix=MPseudoceros))
      },
 
 
@@ -2931,10 +3082,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      DetailedWTau = function(WV){
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
+       nc <- nrow(self$Values)
+       SumaMatriz <-sum(self$Values)
       # In %
-       ConfM<- self$values/SumaMatriz
+       ConfM<- self$Values/SumaMatriz
       # UnWeighted marginals (prob)
        pcol <- apply(ConfM,2,sum)
        prow<- apply(ConfM,1,sum)
@@ -2975,10 +3126,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
      DetailedWKappa = function(WM){
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
+       nc <- nrow(self$Values)
+       SumaMatriz <-sum(self$Values)
       # In %
-       ConfM<- self$values/SumaMatriz
+       ConfM<- self$Values/SumaMatriz
       # UnWeighted marginals (prob)
        pcol <- apply(ConfM,2,sum)
        prow<- apply(ConfM,1,sum)
@@ -3031,11 +3182,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
      # UnWeighted marginals (quantities)
-        ncol <- private$sumcol(self$values)
-        nrow<- private$sumfil(self$values)
+        ncol <- private$sumcol(self$Values)
+        nrow<- private$sumfil(self$Values)
 
         # In %
-        ConfM<- self$values/sum(self$values)
+        ConfM<- self$Values/sum(self$Values)
         # Weighted matrix
         WConfM<-ConfM*WM
 
@@ -3120,8 +3271,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        warning("A ConfMatrix element is not being introduced\n")
         stop(" ")
       }
-      A<-self$values
-      B<-f$values
+      A<-self$Values
+      B<-f$Values
       if(is.null(p)){
       p<-A/sum(A)
       }else{p<-p}
@@ -3132,7 +3283,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       if(length(q)!=length(p)){
         stop("Probabilities with different sizes.")
       }else{
-        p_orig <- 4*((sum(self$values)*sum(B)/(sum(self$values)+sum(B))) *
+        p_orig <- 4*((sum(self$Values)*sum(B)/(sum(self$Values)+sum(B))) *
                        sum((sqrt(p) - sqrt(q))^2))
 
       return(StHell=p_orig)
@@ -3160,10 +3311,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{\sigma^2_{k_A}}: variance of \eqn{k_A}.
       #'   \item \eqn{\sigma^2_{k_B}}: variance of \eqn{k_B}.
       #' }
-      #' @param a significance level. By default a=0.05.
-      #' @param f Element of the ConfMatrix class.
-      #' @return A list with the value of the test statistic and its
+      #' @param a \verb{
+      #' Significance level. By default a=0.05.
+      #' }
+      #' @param f \verb{
+      #' Element of the ConfMatrix class.
+      #' }
+      #' @return \verb{
+      #' A list with the value of the test statistic and its
       #' z score for a given significance level.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
@@ -3218,10 +3375,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{\sigma^2_{OA_A}}: variance of \eqn{OA_A}.
       #'   \item \eqn{\sigma^2_{OA_B}}: variance of \eqn{OA_B}.
       #' }
-      #' @param a significance level. By default a=0.05.
-      #' @param f Element of the ConfMatrix class.
-      #' @return A list with the value of the test statistic and its z
+      #' @param a \verb{
+      #' Significance level. By default a=0.05.
+      #' }
+      #' @param f \verb{
+      #' Element of the ConfMatrix class.
+      #' }
+      #' @return \verb{
+      #' A list with the value of the test statistic and its z
       #' score for a given significance level.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
@@ -3277,10 +3440,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{\sigma^2_{\tau_A}}: variance of \eqn{\tau_A}.
       #'   \item \eqn{\sigma^2_{\tau_B}}: variance of \eqn{\tau_B}.
       #' }
-      #' @param a significance level. By default a=0.05.
-      #' @param f Element of the ConfMatrix class.
-      #' @return A list with the value of the test statistic and its z
-      #' score for a given significance level
+      #' @param a \verb{
+      #' Significance level. By default a=0.05.
+      #' }
+      #' @param f \verb{
+      #' Element of the ConfMatrix class.
+      #' }
+      #' @return \verb{
+      #' A list with the value of the test statistic and its z
+      #' score for a given significance level.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -3326,12 +3495,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' To use this test, the column vectors are chained one after the other.
       #' The reference \insertCite{garcia2018}{ConfMatrix} is followed for
       #' the computations.
-      #' @param B Number of bootstraps that you want to generate.
+      #' @param B \verb{
+      #' Number of bootstraps that you want to generate.
       #' By default B=1000.
-      #' @param a significance level. By default a=0.05.
-      #' @param f Element of the ConfMatrix class.
-      #' @return A list with the value of the test statistic and its z
+      #' }
+      #' @param a \verb{
+      #' Significance level. By default a=0.05.
+      #' }
+      #' @param f \verb{
+      #' Element of the ConfMatrix class.
+      #' }
+      #' @return \verb{
+      #' A list with the value of the test statistic and its z
       #' score for a given significance level.
+      #' }
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -3356,8 +3533,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         a<-0.05
       }else{a<-a}
 
-      A<-self$values
-      B<-f$values
+      A<-self$Values
+      B<-f$Values
       n<-length(A)
       m<-length(B)
       p2<-A/sum(A)
@@ -3513,7 +3690,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       cat("Source\n", self$Source, "\n")
       cat("-------------------------------------\n")
       cat("Confusion Matrix\n")
-      print(self$values)
+      print(self$Values)
 
     }
 

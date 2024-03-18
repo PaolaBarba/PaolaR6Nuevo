@@ -197,20 +197,20 @@ p$ModKappaProd_i(2)
 ## Method `ConfMatrix$EntropUser_i`
 ## ------------------------------------------------
 
-A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-p$EntropUser_i(1)
+p<-ConfMatrix$new(A,Source="Finn 1993")
+p$EntropUser_i(1,v=2)
 
 
 ## ------------------------------------------------
 ## Method `ConfMatrix$EntropProd_i`
 ## ------------------------------------------------
 
-A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-p$EntropProd_i(2)
+p<-ConfMatrix$new(A,Source="Finn 1993")
+p$EntropProd_i(2,v=2)
 
 
 ## ------------------------------------------------
@@ -673,7 +673,7 @@ p$print()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{values}}{\verb{
+\item{\code{Values}}{\verb{
 Matrix of integer values. An matrix must be added.
 }}
 
@@ -693,7 +693,8 @@ By default the date provided by the system will be taken.
 Name of the classes. It is given by a character strings vector whose
 elements are the name of the classes. Each element of the vector is
 a string of maximum 20 characters. By default for the column elements
-they will be} \eqn{Ref_i'} \verb{and for the elements of row} \eqn{C_i'}\verb{, with} \eqn{i'} \verb{being the
+they will be} \eqn{Ref_{i}} \verb{and for the elements of row}
+\eqn{C_{i}} \verb{, with} \eqn{i} \verb{being the
 corresponding row or column number.
 }}
 
@@ -781,13 +782,13 @@ ConfMatrix instance includes a series of checks on the data. If
 checks are not met, the system generates coded error messages.
 The optional possibility of adding metadata to the matrix is offered.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(values, ID = NULL, Date = NULL, ClassName = NULL, Source = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(Values, ID = NULL, Date = NULL, ClassName = NULL, Source = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{values}}{\verb{
+\item{\code{Values}}{\verb{
 Matrix of integer values. A matrix must be added.
 }}
 
@@ -882,8 +883,10 @@ Significance level. By default 0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the overall accuracy,
 its variance, and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -999,15 +1002,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{User class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the user’s accuracy for class i, its
 variance, and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1066,9 +1074,11 @@ Significance level. By default 0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of vectors each one containing the producer’s
 accuracy real values for all classes, their variances and
 confidence intervals for each class, respectively.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1122,7 +1132,8 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Producer class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
+Producer class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}.
+}}
 
 \item{\code{a}}{\verb{
 Significance level. By default 0.05.
@@ -1131,9 +1142,11 @@ Significance level. By default 0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the producer’s
 accuracy for class i, its variance, and its confidence
 interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1194,9 +1207,11 @@ Significance level. By default 0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the average of
 user’s and producer’s accuracies, its variance and
 confidence interval for class i.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1307,15 +1322,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the ICSI,
 its variance and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1348,7 +1368,8 @@ followed for the calculations.
 
 
 \deqn{
-AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}
+AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}=
+\dfrac{2 UserAcc_i \cdot ProdAcc_i}{UserAcc_i + ProdAcc_i}
 }
 \deqn{
 \sigma^2_{AvHelldenAcc_i}=\dfrac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N_{AvHelldenAcc_i}}
@@ -1369,15 +1390,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the Hellden’s mean
 accuracy, its variance and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1408,8 +1434,8 @@ are followed for the calculations.
 
 
 \deqn{
-ShortAcc_i=\dfrac{x_{ii}}{\sum^M_{j=1} x_{+ j}+
-\sum^M_{i=1} x_{i +}-x_{ii}}
+ShortAcc_i=\dfrac{x_{ii}}{ x_{+ j}+
+ x_{i +}-x_{ii}}
 }
 \deqn{
 \sigma^2_{ShortAcc_i}=\dfrac{ShortAcc_i \cdot (1-ShortAcc_i)}{N_{ShortAcc_i}}
@@ -1419,7 +1445,7 @@ where:
 \enumerate{
   \item \eqn{ShortAcc_i}: Short's mapping accuracy
   \item \eqn{x_{ii}}: diagonal element of the matrix.
-  \item \eqn{x_{j+}}: sum of all omissions in row j.
+  \item \eqn{x_{i+}}: sum of all omissions in row i.
   \item \eqn{x_{+j}}: sum of all commissions in column j.
   \item \eqn{N_{ShortAcc_i}}: number of cases involved in the calculation of
   the index.
@@ -1431,15 +1457,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the Short's
 mapping accuracy, its variance and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1466,14 +1497,14 @@ for the calculations.
 
 
 \deqn{
-UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^M_{i=1} x_{i + }}
-{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{i=1} x_{i + }}
-{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
+UserKappa_i=\dfrac{UserAcc_i-\dfrac{ x_{i + }}
+{\sum^M_{i,j=1} x_{ij}}}{1-\dfrac{ x_{i + }}
+{\sum^M_{i,j=1} x_{ij}}}
 }
  \deqn{
 \sigma^2_{UserKappa_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}
-{ \left(1-\dfrac{\sum^M_{i=1} x_{i + }}
-{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}\right)^2 \cdot N_{UserKappa_i}}
+{ \left(1-\dfrac{ x_{i + }}
+{\sum^M_{i,j=1} x_{ij}}\right)^2 \cdot N_{UserKappa_i}}
 }
 where:
 
@@ -1481,7 +1512,7 @@ where:
   \item \eqn{UserKappa_i}: coefficient kappa (user's).
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
-  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{i+}}: sum of all elements in rows i.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{N_{UserKappa_i}}: number of cases involved in the calculation of
   the index.
@@ -1493,15 +1524,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the kappa coefficient
 (user’s), its variance and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1528,14 +1564,14 @@ for the calculations.
 
 
 \deqn{
-ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^M_{j=1} x_{ + j }}
-{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{j=1} x_{+ j }}
-{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
+ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{ x_{ + j }}
+{\sum^M_{i,j=1} x_{ij}}}{1-\dfrac{ x_{+ j }}
+{\sum^M_{i,j=1} x_{ij}}}
 }
  \deqn{
 \sigma^2_{ProdKappa_i}=\dfrac{ProdAcc_i \cdot (1- ProdAcc_i)}
-{\left(1-\dfrac{\sum^M_{j=1} x_{+ j }}
-{\sum^M_{i=1}\sum^M_{j=1} x_{ij}} \right)^2 \cdot N_{ProdAcc_i}}
+{\left(1-\dfrac{ x_{+ j }}
+{\sum^M_{i,j=1} x_{ij}} \right)^2 \cdot N_{ProdAcc_i}}
 }
 where:
 
@@ -1543,7 +1579,7 @@ where:
   \item \eqn{ProdKappa_i}: coefficient kappa (producer's).
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
-  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{i+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of the
   index.
@@ -1555,9 +1591,12 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -1612,7 +1651,9 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -1669,16 +1710,21 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the modified
 coefficient kappa (user's), its variance and
-confidence interval
+confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1729,15 +1775,20 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the modified coefficient
 kappa (producer's), its variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1767,14 +1818,14 @@ the calculations.
 EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
 }
  \deqn{
-Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i +}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
 Entrop_i(A|b_i)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{ij}}
-{\sum^M_{j=1} x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
-{\sum^M_{j=1} x_{+ j}}\right) \right)
+{ x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
+{ x_{+ j}}\right) \right)
 }
 \deqn{
 \sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N_{EntropUser_i}}
@@ -1787,7 +1838,7 @@ where:
   class on the product.
   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
   the product with respect to the class \emph{i} of the product. A is a matrix.
-  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{i+}}: sum of all elements in rows i.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
   location corresponding to the reference map B is in class\eqn{b_i}.
@@ -1796,23 +1847,23 @@ where:
   the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$EntropUser_i(i, v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$EntropUser_i(i, a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate (row), where }\eqn{i \in \mathbb{Z}-\{0\}}.}
-
-\item{\code{v}}{\verb{
-Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default v=10.
-This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-v=e(nats).
-}}
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{a}}{\verb{
 Significance level. By default 0.05.
+}}
+
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default v=10.
+This value is used for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).
 }}
 }
 \if{html}{\out{</div>}}
@@ -1826,10 +1877,10 @@ location corresponding to the reference map B is in class} \eqn{b_i}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+\preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-p$EntropUser_i(1)
+p<-ConfMatrix$new(A,Source="Finn 1993")
+p$EntropUser_i(1,v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -1853,14 +1904,14 @@ EntropProd_i= \dfrac{Entrop_i(B)-Entrop_i(B|a_j)}{Entrop_i(B)}
 }
 
  \deqn{
-Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{\sum^M_{j=1} x_{+ j}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+ j}}
+Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{ x_{+ j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+ j}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
-Entrop_i(B|a_j)=-\sum^M_{j=1}\left( \left(\dfrac{ x_{ij}}
-{\sum^M_{i=1} x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
-{\sum^M_{i=1} x_{i +}}\right) \right)
+Entrop_i(B|a_j)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{ij}}
+{ x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
+{ x_{i +}}\right) \right)
 }
 \deqn{
 \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N_{EntropProd_i}}
@@ -1872,7 +1923,7 @@ where:
    the reference data.
   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
   reference with respect to the class on the reference. B is a matrix.
-  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{i+}}: sum of all elements in rows i.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
   the location corresponding map of product A is in class \eqn{a_j}.
@@ -1880,23 +1931,23 @@ where:
   the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$EntropProd_i(i, v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$EntropProd_i(i, a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate (row), where} \eqn{i \in \mathbb{Z}-\{0\}}.}
-
-\item{\code{v}}{\verb{
-Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default
-v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-v=e(nats).
-}}
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{a}}{\verb{
 Significance level. By default 0.05.
+}}
+
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default
+v=10. This value is used for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).
 }}
 }
 \if{html}{\out{</div>}}
@@ -1910,10 +1961,10 @@ classes knowing that the location corresponding to map A is in class} \eqn{a_j}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+\preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-p$EntropProd_i(2)
+p<-ConfMatrix$new(A,Source="Finn 1993")
+p$EntropProd_i(2,v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -1934,7 +1985,7 @@ followed for the calculations.
 
 \deqn{
 AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
-{\sum_{j=1}^M x_{j+}}
+{ x_{i+}}
 }
 \deqn{
 \sigma^2_{AvUserAcc}=\dfrac{AvUserAcc \cdot (1-AvUserAcc)}{N_{AvUserAcc}}
@@ -1943,7 +1994,7 @@ where:
 
 \enumerate{
   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
-  \item \eqn{x_{j+}}: sum of all elements in rows j.
+  \item \eqn{x_{i+}}: sum of all elements in rows i.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{M}: number of classes.
   \item \eqn{N_{AvUserAcc}}: number of cases involved in the calculation of
@@ -1956,13 +2007,17 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the average
 user’s accuracy, its variance, and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1988,8 +2043,8 @@ is followed for the calculations.
 
 
 \deqn{
-AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^M_{i=1} \dfrac{x_{ii}}
-{\sum_{j=1}^M x_{+j}}
+AvProdAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+{ x_{+j}}
 }
 \deqn{
 \sigma^2_{AvProdAcc}=\dfrac{AvProdAcc \cdot (1-AvProdAcc)}{N_{AvProdAcc}}
@@ -2011,13 +2066,17 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the average producer’s
 accuracy, its variance, and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2067,14 +2126,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the average mean
 precision values from the user's and producer's perspective,
 their variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2101,8 +2164,8 @@ the calculations.
 
 
 \deqn{
-AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^M_{i=1} \dfrac{2 x_{ii}}
-{ x_{+i} + x_{i+}}
+AvHelldenAcc=\dfrac{1}{\sqrt{M}} \dfrac{2 \sum^M_{i=1} x_{ii}}
+{ x_{+j} + x_{i+}}
 }
  \deqn{
 \sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N_{AvHelldenAcc}}
@@ -2113,7 +2176,7 @@ where:
 \enumerate{
   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
-  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{M}: number of classes.
   \item \eqn{N_{AvHelldenAcc}}: number of cases involved in the calculation of
@@ -2126,14 +2189,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the average of
 Hellden's mean accuracy index, its variance and
 confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2161,7 +2228,7 @@ the calculations.
 
 \deqn{
 AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^M_{i=1} x_{ii}}
-{\sum^M_{i,j=1}x_{ij}}}{\sum^M_{j=1} x_{+ j}+\sum^M_{i=1} x_{i +}
+{\sum^M_{i,j=1}x_{ij}}}{ x_{+ j}+ x_{i +}
 -x_{ii}}
 }
 \deqn{
@@ -2184,14 +2251,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the average of
 Short's mapping accuracy index, its variance and
 confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2240,14 +2311,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the combined
 accuracy from the user's perspective,
 its variation and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2295,13 +2370,17 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the combined accuracy
 from producer's perspective, its variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2351,13 +2430,17 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of real values containing the combined accuracy from both user's and
-producer's perspectives, its variance and confidence interval.
+\verb{
+A list of real values containing the combined accuracy from both user's
+and producer's perspectives, its variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2388,8 +2471,7 @@ for the calculations.
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 }
  \deqn{
-ExpAcc=\sum^M_{i=1} \left( \dfrac{x_{+ i}}{\sum_{j=1}^M x_{ij}}
-\cdot \dfrac{x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
 }
  \deqn{
 \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N_{Kappa}}
@@ -2416,13 +2498,17 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing with kappa
 coefficient, its variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2450,8 +2536,8 @@ followed for the calculations.
 
 \deqn{
 Entrop=\sum^M_{i,j=1} \left(\dfrac{x_{ij}}{\sum^M_{i,j=1} x_{ij}}
- \cdot \log \left(\dfrac{x_{ij}}{\dfrac{\sum^M_{i=1} x_{i+}
- \cdot \sum^M_{j=1} x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
+ \cdot \log \left(\dfrac{x_{ij}}{\dfrac{ x_{i+}
+ \cdot  x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
 }
 \deqn{
 \sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N_{Entrop}}
@@ -2466,23 +2552,27 @@ where:
   the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Entrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Entrop(a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-By default v=10. This value is used for the entropy units, v=10(Hartleys),
-v=2(bits), v=e(nats).}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\verb{By default v=10. This value is used for the entropy units, v=10(units Hartleys),
+v=2(units bits), v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the entropy, its variance
-and confidence interval.
+and confidence interval.}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2531,23 +2621,29 @@ where:
   the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$NormEntropUser(v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$NormEntropUser(a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-By default v=10. This value is used for the entropy units,
-v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\verb{By default v=10. This value is used for the entropy units,
+v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing with normalized entropy
-of the product class i, conditioned to reference data, its variance and confidence interval.
+of the product class i, conditioned to reference data, its variance
+and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2597,24 +2693,29 @@ where:
   the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$NormEntropProd(v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$NormEntropProd(a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-By default v=10. This value is used for the entropy units,
-v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\verb{By default v=10. This value is used for the entropy units,
+v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing with normalized entropy
 of the reference class i, conditioned to producer, its variance
 and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2672,24 +2773,28 @@ where:
   index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AvNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AvNormEntrop(a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-By default v=10. This value is used for the entropy units,
-v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\verb{By default v=10. This value is used for the entropy units,
+v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the normalized
 entropy (arithmetic mean of the entropies on the product
-and reference), its variance and confidence interval.
+and reference), its variance and confidence interval.}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2747,24 +2852,29 @@ where:
   \item \eqn{N_{GeomAvNormEntrop}}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GeomAvNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GeomAvNormEntrop(a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-By default v=10. This value is used for the entropy units,
-v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\verb{By default v=10. This value is used for the entropy units,
+ v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the normalized
 entropy (geometric mean of the entropies on the product
 and reference), its variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2825,24 +2935,29 @@ where:
   of the index.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AvMaxNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AvMaxNormEntrop(a = NULL, v = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
-By default v=10. This value is used for the entropy units,
-v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{v}}{\verb{
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\verb{By default v=10. This value is used for the entropy units,
+v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the normalized entropy
 (arithmetic mean of the maximum entropies in the product and in
 reference), its variance, and its confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2890,8 +3005,7 @@ Where:
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{PrAgCoef}: a priori random agreement coefficient.
   \item \eqn{M}: number of classes.
-  \item \eqn{N_{Tau}}: number of elements of the matrix, cardinal of
-  the matrix.
+  \item \eqn{N_{Tau}}: number of elements of the matrix.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Tau(a = NULL)}\if{html}{\out{</div>}}
@@ -2900,13 +3014,17 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of real values containing the Tau index,
 its variance and confidence interval.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2967,11 +3085,9 @@ The mathematical expression is:
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 }
 
-\deqn{
-ExpAcc=\sum^M_{i=1} \left(  \dfrac{x_{+i}}{\sum_{j=1}^M x_{ij}}
-\cdot \dfrac{x_{i+}}{\sum_{j=1}^M x_{ij}} \right)
+ \deqn{
+ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
 }
-
 \deqn{
 \sigma^2_{Kappa} = \dfrac{1}{N_{Kappa}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
 + \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
@@ -3091,8 +3207,8 @@ Where:
   \item \eqn{GroundTruth}: index ground truth.
   \item \eqn{R}: casual lucky guess.
   \item \eqn{ProdAcc}: producer accuracy.
-  \item \eqn{N_{GroundTruth}}: number of elements of the matrix, cardinal of the matrix.
-}
+  \item \eqn{N_{GroundTruth}}: number of elements of the matrix.
+  }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GroundTruth(a = NULL)}\if{html}{\out{</div>}}
 }
@@ -3100,13 +3216,17 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list with Ground Truth indexes, their variance, confidence
 intervals and the matrix with the expected frequencies.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3173,8 +3293,8 @@ Where:
   \item \eqn{GroundTruth_i}: index ground truth for class i.
   \item \eqn{R_i}: casual lucky guess for class i. Is a real value.
   \item \eqn{ProdAcc_i}: producer accuracy for class i.
-  \item \eqn{N_{GroundTruth_i}}: number of elements of the matrix, cardinal of the matrix.
-}
+  \item \eqn{N_{GroundTruth_i}}: number of elements of the matrix.
+  }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GroundTruth_i(i, a = NULL)}\if{html}{\out{</div>}}
 }
@@ -3182,15 +3302,20 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.}
+\item{\code{i}}{\verb{
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{Significance level. By default 0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default 0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list with Ground Truth index for class i, its variance, confidence
 interval and the matrix with the expected frequencies for all classes.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3232,13 +3357,16 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list of the statistic's value and its z-score for a given
-significance level.
+significance level.}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3483,13 +3611,17 @@ are followed for the computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{iter}}{Number of iteration. By default iter=1000.}
+\item{\code{iter}}{\verb{
+Number of iteration. By default iter=1000.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list formed by the original confusion matrix and the
 normalized matrix.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3741,15 +3873,21 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{f}}{Element of the ConfMatrix class.}
+\item{\code{f}}{\verb{
+Element of the ConfMatrix class.
+}}
 
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list with the value of the test statistic and its
 z score for a given significance level.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3795,15 +3933,21 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{f}}{Element of the ConfMatrix class.}
+\item{\code{f}}{\verb{
+Element of the ConfMatrix class.
+}}
 
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list with the value of the test statistic and its z
 score for a given significance level.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3849,15 +3993,21 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{f}}{Element of the ConfMatrix class.}
+\item{\code{f}}{\verb{
+Element of the ConfMatrix class.
+}}
 
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list with the value of the test statistic and its z
-score for a given significance level
+score for a given significance level.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3893,18 +4043,26 @@ the computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{f}}{Element of the ConfMatrix class.}
+\item{\code{f}}{\verb{
+Element of the ConfMatrix class.
+}}
 
-\item{\code{B}}{Number of bootstraps that you want to generate.
-By default B=1000.}
+\item{\code{B}}{\verb{
+Number of bootstraps that you want to generate.
+By default B=1000.
+}}
 
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+Significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 A list with the value of the test statistic and its z
 score for a given significance level.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

@@ -47,16 +47,16 @@
 QCCS <- R6Class("QCCS",
   cloneable=FALSE,
    public = list(
-    #' @field vectors
+    #' @field Vectors
     #'\verb{
      #'List of integer data vectors.
      #'}
-    vectors = NULL,
-    #' @field prob
+    Vectors = NULL,
+    #' @field Prob
     #'\verb{
     #'List of probability vectors.
     #'}
-    prob = NULL,
+    Prob = NULL,
     #' @field ID
     #'\verb{
     #' Identifier. It is a character string with a maximum length of 50
@@ -95,11 +95,11 @@ QCCS <- R6Class("QCCS",
     #' have the same size, otherwise an error will be provided.
     #' The optional possibility of adding metadata to the matrix is offered.
     #' The values of the data vectors represent the classes of ground truth.
-    #' @param vectors
+    #' @param Vectors
     #' \verb{
     #' List of integer data vectors.
     #' }
-    #' @param prob
+    #' @param Prob
     #' \verb{
     #' List of probability vectors.
     #' }
@@ -124,27 +124,27 @@ QCCS <- R6Class("QCCS",
     #'
     #' @param Source
     #' \verb{
-    #' Indicates where the "vectors" and "prob" parameters come from (article,
+    #' Indicates where the "Vectors" and "Prob" parameters come from (article,
     #' project, etc.). It is suggested to enter a reference or a DOI. A character
     #' string with a maximum length of 80 characters can be entered. By default,
     #' is NULL.
     #' }
     #' @examples
-    #' vectors<-list(c(47,4,0),c(44,5,3))
-    #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
-    #' A<-QCCS$new(vectors,prob,
+    #' Vectors<-list(c(47,4,0),c(44,5,3))
+    #' Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+    #' A<-QCCS$new(Vectors,Prob,
     #' Source="Ariza-Lopez et al. 2019")
     #'
     #' @aliases NULL
 
-  initialize = function(vectors,prob,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
+  initialize = function(Vectors,Prob,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
 
 # Optional values ---------------------------------------------------------
 
 
-    self$vectors <- vectors
-    self$prob <- prob
+    self$Vectors <- Vectors
+    self$Prob <- Prob
 
     if(is.null(ID)){
       secuencia <- paste("QCCS_",seq(1:999),sep="")
@@ -160,17 +160,17 @@ QCCS <- R6Class("QCCS",
     colname<-c()
     if (!is.null(ClassName)) {
       self$ClassName <- ClassName
-      for (i in 1:length(self$vectors)) {
+      for (i in 1:length(self$Vectors)) {
         colname <- c(colname, sprintf("Ref_%.20s", self$ClassName[i]))
       }
-      names(self$vectors) <- colname
+      names(self$Vectors) <- colname
 
     } else {
       self$ClassName <- ClassName
-      for (i in 1:length(self$vectors)) {
+      for (i in 1:length(self$Vectors)) {
         colname <- c(colname, sprintf("Ref_%d", i))
       }
-      names(self$vectors) <- colname
+      names(self$Vectors) <- colname
     }
     if(!is.null(Source)){
       self$Source <- substr(Source,1,80)
@@ -185,16 +185,16 @@ QCCS <- R6Class("QCCS",
     error6<- FALSE
 
 
-    n <- length(self$vectors)
-    m <- length(self$prob)
+    n <- length(self$Vectors)
+    m <- length(self$Prob)
       if (n != m) {
         error1<-TRUE
-        cat("Error type 1: There must be the same number of\ndata columns as probability columns")
+        cat("Error type 1: There must be the same number of\ndata columns as Probability columns")
       }
 
       for (i in 1:n) {
-        vi <- self$vectors[[i]]
-        pi <- self$prob[[i]]
+        vi <- self$Vectors[[i]]
+        pi <- self$Prob[[i]]
         ni <- length(vi)
         mi <- length(pi)
 
@@ -250,9 +250,9 @@ QCCS <- R6Class("QCCS",
       #' @param a significance level. By default a=0.05.
       #' @return The p value of the exact test using Bonferroni.
       #' @examples
-      #' vectors<-list(c(47,4,0),c(44,5,3))
-      #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
-      #' A<-QCCS$new(vectors,prob,
+      #' Vectors<-list(c(47,4,0),c(44,5,3))
+      #' Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+      #' A<-QCCS$new(Vectors,Prob,
       #' Source="Ariza-Lopez et al. 2019")
       #' A$Exact.test()
       #'
@@ -264,14 +264,14 @@ QCCS <- R6Class("QCCS",
         a<-0.05
       }else{a<-a}
 
-      n <- length(self$vectors)
-      m <- length(self$prob)
+      n <- length(self$Vectors)
+      m <- length(self$Prob)
       sol <- c()
       p_value<-c()
       p_value1<-0
         for (i in 1:n) {
-          vi <- self$vectors[[i]]
-          pi <- self$prob[[i]]
+          vi <- self$Vectors[[i]]
+          pi <- self$Prob[[i]]
           ni <- length(vi)
           mi <- length(pi)
           s <- sum(vi)
@@ -289,7 +289,7 @@ QCCS <- R6Class("QCCS",
 
       ap<-private$MethBonf(sol,a)
 
-    return(list(ap,OriginalVectors=self$vectors,OriginalProb=self$prob))
+    return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
     },
 
 
@@ -305,9 +305,9 @@ QCCS <- R6Class("QCCS",
       #' @param a significance level. By default a=0.05.
       #' @return The p value derived from the chi square test.
       #' @examples
-      #' vectors<-list(c(18,0,3,0),c(27,19))
-      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A <- QCCS$new(vectors,prob,
+      #' Vectors<-list(c(18,0,3,0),c(27,19))
+      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A <- QCCS$new(Vectors,Prob,
       #' Source="Alba-Fernández et al. 2020")
       #' A$JiGlobal.test()
       #'
@@ -318,9 +318,9 @@ QCCS <- R6Class("QCCS",
         a<-0.05
       }else{a<-a}
 
-    #number of vectors and prob vectors
-    n <- length(self$vectors)
-    m <- length(self$prob)
+    #number of vectors and Prob vectors
+    n <- length(self$Vectors)
+    m <- length(self$Prob)
     p_value<-c()
     Suma<-0
     S<-list()
@@ -328,8 +328,8 @@ QCCS <- R6Class("QCCS",
     #for each vector
       for (j in 1:n) {
       #elements of each vector
-      vi <- self$vectors[[j]]
-      pi <- self$prob[[j]]
+      vi <- self$Vectors[[j]]
+      pi <- self$Prob[[j]]
       ni <- length(vi)
       mi <- length(pi)
       k<-k+(ni-1)
@@ -370,9 +370,9 @@ QCCS <- R6Class("QCCS",
       #' @param a significance level. By default a=0.05.
       #' @return The p value from the chi square test.
       #' @examples
-      #' vectors<-list(c(18,0,3,0),c(27,19))
-      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A <- QCCS$new(vectors,prob,
+      #' Vectors<-list(c(18,0,3,0),c(27,19))
+      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A <- QCCS$new(Vectors,Prob,
       #' Source="Alba-Fernández et al. 2020")
       #' A$Ji.test()
       #'
@@ -383,16 +383,16 @@ QCCS <- R6Class("QCCS",
       a<-0.05
       }else{a<-a}
 
-      #number of vectors and prob vectors
-      n <- length(self$vectors)
-      m <- length(self$prob)
+      #number of Vectors and Prob Vectors
+      n <- length(self$Vectors)
+      m <- length(self$Prob)
       p_value<-c()
       k<-0
       #for each vector
         for (j in 1:n) {
         #elements of each vector
-        vi <- self$vectors[[j]]
-        pi <- self$prob[[j]]
+        vi <- self$Vectors[[j]]
+        pi <- self$Prob[[j]]
         ni <- length(vi)
         mi <- length(pi)
         k<-ni-1
@@ -408,7 +408,7 @@ QCCS <- R6Class("QCCS",
 
         ap<-private$MethBonf(p_value,a)
 
-    return(list(ap,OriginalVectors=self$vectors,OriginalProb=self$prob))
+    return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
     },
 
 # print function ----------------------------------------------------------
@@ -418,9 +418,9 @@ QCCS <- R6Class("QCCS",
       #' @return QCCS object identifier, Date, name of classes, source
       #' of data and data vectors and probability.
       #' @examples
-      #' vectors<-list(c(18,0,3,0),c(27,19))
-      #' prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A<-QCCS$new(vectors,prob,
+      #' Vectors<-list(c(18,0,3,0),c(27,19))
+      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A<-QCCS$new(Vectors,Prob,
       #' Source="Alba-Fernández et al. 2020")
       #' A$print()
       #'
@@ -433,10 +433,10 @@ QCCS <- R6Class("QCCS",
       cat("-------------------------------------\n")
       cat("Source\n", self$Source, "\n")
       cat("-------------------------------------\n")
-      for(i in 1:length(self$vectors)){
-        cat("Name of Class|",names(self$vectors)[i], "\n")
-        cat("Vector       |",self$vectors[[i]],"\n")
-        cat("Probability  |",self$prob[[i]],"\n")
+      for(i in 1:length(self$Vectors)){
+        cat("Name of Class|",names(self$Vectors)[i], "\n")
+        cat("Vector       |",self$Vectors[[i]],"\n")
+        cat("Probability  |",self$Prob[[i]],"\n")
         cat("-------------------------------------\n")
 
       }

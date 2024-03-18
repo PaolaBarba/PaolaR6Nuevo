@@ -45,9 +45,9 @@ Error Messages: List of possible errors:
 ## Method `QCCS$new`
 ## ------------------------------------------------
 
-vectors<-list(c(47,4,0),c(44,5,3))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
-A<-QCCS$new(vectors,prob,
+Vectors<-list(c(47,4,0),c(44,5,3))
+Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
 
 
@@ -55,9 +55,9 @@ Source="Ariza-Lopez et al. 2019")
 ## Method `QCCS$Exact.test`
 ## ------------------------------------------------
 
-vectors<-list(c(47,4,0),c(44,5,3))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
-A<-QCCS$new(vectors,prob,
+Vectors<-list(c(47,4,0),c(44,5,3))
+Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
 A$Exact.test()
 
@@ -66,9 +66,9 @@ A$Exact.test()
 ## Method `QCCS$JiGlobal.test`
 ## ------------------------------------------------
 
-vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,
+Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
 A$JiGlobal.test()
 
@@ -77,9 +77,9 @@ A$JiGlobal.test()
 ## Method `QCCS$Ji.test`
 ## ------------------------------------------------
 
-vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,
+Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
 A$Ji.test()
 
@@ -88,9 +88,9 @@ A$Ji.test()
 ## Method `QCCS$print`
 ## ------------------------------------------------
 
-vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(vectors,prob,
+Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
 A$print()
 
@@ -103,11 +103,11 @@ A$print()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{vectors}}{\verb{
+\item{\code{Vectors}}{\verb{
 List of integer data vectors.
 }}
 
-\item{\code{prob}}{\verb{
+\item{\code{Prob}}{\verb{
 List of probability vectors.
 }}
 
@@ -160,8 +160,8 @@ The optional possibility of adding metadata to the matrix is offered.
 The values of the data vectors represent the classes of ground truth.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$new(
-  vectors,
-  prob,
+  Vectors,
+  Prob,
   ID = NULL,
   Date = NULL,
   ClassName = NULL,
@@ -172,11 +172,11 @@ The values of the data vectors represent the classes of ground truth.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{vectors}}{\verb{
+\item{\code{Vectors}}{\verb{
 List of integer data vectors.
 }}
 
-\item{\code{prob}}{\verb{
+\item{\code{Prob}}{\verb{
 List of probability vectors.
 }}
 
@@ -199,7 +199,7 @@ a string of maximum 20 characters. By default for the column elements
 they will be} \eqn{Ref_i'}.}
 
 \item{\code{Source}}{\verb{
-Indicates where the "vectors" and "prob" parameters come from (article,
+Indicates where the "Vectors" and "Prob" parameters come from (article,
 project, etc.). It is suggested to enter a reference or a DOI. A character
 string with a maximum length of 80 characters can be entered. By default,
 is NULL.
@@ -209,9 +209,9 @@ is NULL.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(47,4,0),c(44,5,3))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
-A<-QCCS$new(vectors,prob,
+\preformatted{Vectors<-list(c(47,4,0),c(44,5,3))
+Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
 
 }
@@ -247,9 +247,9 @@ The p value of the exact test using Bonferroni.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(47,4,0),c(44,5,3))
-prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
-A<-QCCS$new(vectors,prob,
+\preformatted{Vectors<-list(c(47,4,0),c(44,5,3))
+Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
+A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
 A$Exact.test()
 
@@ -285,9 +285,9 @@ The p value derived from the chi square test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,
+\preformatted{Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
 A$JiGlobal.test()
 
@@ -322,9 +322,9 @@ The p value from the chi square test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(vectors,prob,
+\preformatted{Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A <- QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
 A$Ji.test()
 
@@ -350,9 +350,9 @@ of data and data vectors and probability.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{vectors<-list(c(18,0,3,0),c(27,19))
-prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(vectors,prob,
+\preformatted{Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
 A$print()
 
