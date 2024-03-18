@@ -49,18 +49,38 @@ QCCS <- R6Class("QCCS",
   cloneable=FALSE,
    public = list(
 
-    #' @field vectors Data vectors.
+    #' @field vectors
+    #' \verb{
+    #'  Data vectors.
+    #' }
     vectors = NULL,
-    #' @field prob Probability vectors.
+    #' @field prob
+    #' \verb{
+    #'  Probability vectors.
+    #' }
     prob = NULL,
-    #' @field ID Identifier.
+    #' @field ID
+    #' \verb{
+    #'  Identifier.
+    #'  }
     ID=NULL,
-    #' @field Date Date.
+    #' @field Date
+    #' \verb{
+    #'  Date.
+    #' }
     Date=NULL,
-    #' @field ClassName Class name.
+    #' @field ClassName
+    #' \verb{
+    #'  Class name.
+    #'  }
     ClassName=NULL,
-    #' @field Source Source vectors.
+    #' @field Source
+    #' \verb{
+    #'  Source vectors.
+    #' }
     Source=NULL,
+
+
     #' @description Public method to create an instance of the QCCS class.
     #' At the time of creation, column set data and specification values
     #' must be provided. The same number of data and as specification values
@@ -70,16 +90,30 @@ QCCS <- R6Class("QCCS",
     #' The values of the data vectors represent the classes of ground truth.
     #' @param vectors vector list.
     #' @param prob probabilities list.
-    #' @param ID Identifier. By default ID is a date in YYYYMMDD format
-    #' @param Date Date provided by the user. By default the date provided
-    #' by the system will be taken.
+    #' @param ID
+    #'\verb{
+    #' Identifier. It is a character string with a maximum length of 50
+    #' characters. By default, "CM_i" will be taken as identification.
+    #' Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
+    #'}
+    #' @param Date
+    #'\verb{
+    #' Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+    #' By default the date provided by the system will be taken.
+    #'
+    #'}
     #' @param ClassName Name of the classes. It is given by a vector whose
-    #' elements are the name of the classes by rows or columns.
-    #' By default for the column elements they will be Ref_i and for the
-    #' elements of row C_i, with i being the corresponding row or column
-    #' number.
-    #' @param Source Indicates where the matrix comes from
-    #' (article, project, etc.). By default is NULL.
+    #' elements are the name of the classes.Each element of the vector is
+    #' a string of maximum 20 characters. By default for the column elements
+    #' they will be Ref_i and for the elements of row C_i, with i being the
+    #' corresponding class number.
+    #' @param Source
+    #' \verb{
+    #' Indicates where the "vectors" and "prob" parameters come from (article,
+    #' project, etc.). It is suggested to enter a reference or a DOI. A character
+    #' string with a maximum length of 80 characters can be entered. By default,
+    #' is NULL.
+    #' }
     #' @examples
     #' vectors<-list(c(47,4,0),c(44,5,3))
     #' prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
@@ -98,11 +132,11 @@ QCCS <- R6Class("QCCS",
     self$prob <- prob
 
     if(is.null(ID)){
-      secuencia <- sprintf("%s-%03d", format(Sys.Date(),"%Y%m%d"), 1:999)
+      secuencia <- paste("QCCS_",seq(1:999),sep="")
       self$ID <- secuencia[1]
       secuencia <- setdiff(secuencia, secuencia[1])
     }else{
-      self$ID<-ID
+      self$ID<-substr(ID,1,50)
     }
     if(!is.null(Date)){
       self$Date<-Date
@@ -112,7 +146,7 @@ QCCS <- R6Class("QCCS",
     if (!is.null(ClassName)) {
       self$ClassName <- ClassName
       for (i in 1:length(self$vectors)) {
-        colname <- c(colname, sprintf("Ref_%s", self$ClassName[i]))
+        colname <- c(colname, sprintf("Ref_%.20s", self$ClassName[i]))
       }
       names(self$vectors) <- colname
 
@@ -122,13 +156,9 @@ QCCS <- R6Class("QCCS",
         colname <- c(colname, sprintf("Ref_%d", i))
       }
       names(self$vectors) <- colname
-
-
     }
-
-
     if(!is.null(Source)){
-      self$Source <- Source
+      self$Source <- substr(Source,1,80)
     }else{self$Source<-NULL}
 
 # Initializing values and checking if they are correct values -----------

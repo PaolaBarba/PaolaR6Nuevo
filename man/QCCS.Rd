@@ -104,17 +104,29 @@ A$print()
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{vectors}}{Data vectors.}
+\item{\code{vectors}}{\verb{
+ Data vectors.
+}}
 
-\item{\code{prob}}{Probability vectors.}
+\item{\code{prob}}{\verb{
+ Probability vectors.
+}}
 
-\item{\code{ID}}{Identifier.}
+\item{\code{ID}}{\verb{
+Identifier.
+}}
 
-\item{\code{Date}}{Date.}
+\item{\code{Date}}{\verb{
+ Date.
+}}
 
-\item{\code{ClassName}}{Class name.}
+\item{\code{ClassName}}{\verb{
+Class name.
+}}
 
-\item{\code{Source}}{Source vectors.}
+\item{\code{Source}}{\verb{
+ Source vectors.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -157,19 +169,30 @@ The values of the data vectors represent the classes of ground truth.
 
 \item{\code{prob}}{probabilities list.}
 
-\item{\code{ID}}{Identifier. By default ID is a date in YYYYMMDD format}
+\item{\code{ID}}{\verb{
+Identifier. It is a character string with a maximum length of 50
+characters. By default, "CM_i" will be taken as identification.
+Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
+}}
 
-\item{\code{Date}}{Date provided by the user. By default the date provided
-by the system will be taken.}
+\item{\code{Date}}{\verb{
+Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+By default the date provided by the system will be taken.
+
+}}
 
 \item{\code{ClassName}}{Name of the classes. It is given by a vector whose
-elements are the name of the classes by rows or columns.
-By default for the column elements they will be Ref_i and for the
-elements of row C_i, with i being the corresponding row or column
-number.}
+elements are the name of the classes.Each element of the vector is
+a string of maximum 20 characters. By default for the column elements
+they will be Ref_i and for the elements of row C_i, with i being the
+corresponding class number.}
 
-\item{\code{Source}}{Indicates where the matrix comes from
-(article, project, etc.). By default is NULL.}
+\item{\code{Source}}{\verb{
+Indicates where the "vectors" and "prob" parameters come from (article,
+project, etc.). It is suggested to enter a reference or a DOI. A character
+string with a maximum length of 80 characters can be entered. By default,
+is NULL.
+}}
 }
 \if{html}{\out{</div>}}
 }

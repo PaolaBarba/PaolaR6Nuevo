@@ -384,6 +384,16 @@ p$GroundTruth()
 
 
 ## ------------------------------------------------
+## Method `ConfMatrix$GroundTruth_i`
+## ------------------------------------------------
+
+A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
+6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source="Türk 1979")
+p$GroundTruth_i(3)
+
+
+## ------------------------------------------------
 ## Method `ConfMatrix$UserProdAcc`
 ## ------------------------------------------------
 
@@ -666,24 +676,24 @@ p$print()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{values}}{\verb{
-Confusion matrix. An array must be added.
+ Confusion matrix. An array must be added.
 }}
 
 \item{\code{ID}}{\verb{
 Identifier.
-}}
+  }}
 
 \item{\code{Date}}{\verb{
 Date.
-}}
+  }}
 
 \item{\code{Source}}{\verb{
 Source Matrix.
-}}
+  }}
 
 \item{\code{ClassName}}{\verb{
 Class name.
-}}
+  }}
 }
 \if{html}{\out{</div>}}
 }
@@ -725,6 +735,7 @@ Class name.
 \item \href{#method-ConfMatrix-AvMaxNormEntrop}{\code{ConfMatrix$AvMaxNormEntrop()}}
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
+\item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-DetailedKappa}{\code{ConfMatrix$DetailedKappa()}}
 \item \href{#method-ConfMatrix-DetailedCondKappa}{\code{ConfMatrix$DetailedCondKappa()}}
@@ -774,7 +785,7 @@ Matrix of values. A matrix must be added.
 \item{\code{ID}}{\verb{
 Identifier. It is a character string with a maximum length of 50
 characters. By default, "CM_i" will be taken as identification.
-Where \emph{i} will be the number of ConfMatrix instances already defined.
+Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
 }}
 
 \item{\code{Date}}{\verb{
@@ -787,7 +798,7 @@ By default the date provided by the system will be taken.
 Name of the classes. It is given by a character strings vector whose
 elements are the name of the classes. Each element of the vector is
 a string of maximum 20 characters. By default for the column elements
-they will be Ref_i and for the elements of row C_i, with i being the
+they will be} \eqn{Ref_i}\verb{ and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
 corresponding row or column number.
 }}
 
@@ -921,9 +932,9 @@ Significance level. By default 0.05.
 }
 \subsection{Returns}{
 \verb{
-A list of vectors each one containing the user’s accuracy real values
-for all classes, their variances and confidence intervals for each
-class, respectively.
+A list of vectors, containing the user’s accuracy real values for
+all classes, their variances and confidence intervals for each class,
+respectively.
 }
 }
 \subsection{Examples}{
@@ -1770,12 +1781,13 @@ where:
 \enumerate{
   \item \eqn{EntropUser_i}: relative change of entropy given a
   class on the product.
-  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to
-  the class of the map.
+  \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
+  the product with respect to the class \emph{i} of the product. A is a matrix.
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
-  \item \eqn{Entrop_i(A|b_i)}: Entropy of map A knowing that the
-  location corresponding to map B is in class b_i.
+  \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
+  location corresponding to the reference map B is in class\eqn{b_i}.
+  B is a matrix.
   \item \eqn{N}: number of cases involved in the calculation of
   the index.
 }
@@ -1787,12 +1799,11 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate (row), where \eqn{i \in \mathbb{N}}.
-}}
+Class to evaluate (row), where }\eqn{i \in \mathbb{N}}.}
 
 \item{\code{v}}{\verb{
-Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{By default
-v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default v=10.
+This value is used for the entropy units, v=10(Hartleys), v=2(bits),
 v=e(nats).
 }}
 
@@ -1804,11 +1815,10 @@ Significance level. By default 0.05.
 }
 \subsection{Returns}{
 \verb{
-A list of real values containing the relative change of
-entropy for given class i, its variance, its confidence interval,
-map entropy, and entropy of map A knowing that the location
-corresponding to map B is in class \eqn{b_i}.
-}
+A list of real values containing the relative change of entropy
+for given class i, its variance, its confidence interval, producer
+entropy, and producer entropy knowing that the
+location corresponding to the reference map B is in class} \eqn{b_i}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1845,7 +1855,7 @@ Entrop_i(B|a_j)=-\sum^n_{j=1}( (\dfrac{ x_{ij}}
 {\sum^n_{i=1} x_{i +}}) )
 }
 \deqn{
-EntropProd_i= \dfrac{EntropMap(B)-EntropMap(B|a_j)}{EntropMap(B)}
+EntropProd_i= \dfrac{Entrop_i(B)-Entrop_i(B|a_j)}{Entrop_i(B)}
 }
 \deqn{
 \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N}
@@ -1853,14 +1863,14 @@ EntropProd_i= \dfrac{EntropMap(B)-EntropMap(B|a_j)}{EntropMap(B)}
 where:
 
 \enumerate{
-  \item \eqn{EntropProd_i}: relative change of entropy given a
-  class on ground truthing.
-  \item \eqn{Entrop_i(B)}: Entropy of the map with respect to
-  the class on ground truthing.
+  \item \eqn{EntropProd_i}: relative entropy change given a class over
+   the reference data.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
-  \item \eqn{Entrop_i(B|a_j)}: Entropy of map B knowing that the
-  location corresponding to map A is in class a_j.
+  \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
+  the location corresponding map of product A is in class \eqn{a_j}.
   \item \eqn{N}: number of cases involved in the calculation of
   the index.
 }
@@ -1872,11 +1882,10 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate (row), where \eqn{i \in \mathbb{N}}.
-}}
+Class to evaluate (row), where} \eqn{i \in \mathbb{N}}.}
 
 \item{\code{v}}{\verb{
-Base of the logarithm, where \code{\eqn{v \in \mathbb{R}^{+}-\{1\}}}. By default
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default
 v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
 v=e(nats).
 }}
@@ -1888,10 +1897,11 @@ Significance level. By default 0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of real values containing the relative change of
-entropy for given class i, its variance, its confidence interval,
-map entropy, and entropy of map B knowing that the location
-corresponding to map A is in class \eqn{a_j}.
+\verb{
+A list of real values containing the relative change of entropy
+for given class i, its variance, its confidence interval, entropy with
+respect to reference classes, and entropy with respect to reference
+classes knowing that the location corresponding to map A is in class} \eqn{a_j}.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2456,8 +2466,9 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm. By default v=10. This value is used
-for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+By default v=10. This value is used for the entropy units, v=10(Hartleys),
+v=2(bits), v=e(nats).}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -2505,9 +2516,9 @@ where:
 
 \enumerate{
   \item \eqn{NormEntropUser}: normalized entropy of the product.
-  \item \eqn{Entrop_i(B)}: entropy of the product with respect to
-  the class i on ground truthing.
-  \item \eqn{Entrop}: map entropy.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N}: number of cases involved in the calculation of
@@ -2520,8 +2531,9 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm. By default v=10. This value is used
-for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+By default v=10. This value is used for the entropy units,
+v=10(Hartleys), v=2(bits), v=e(nats).}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -2529,7 +2541,7 @@ for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
 }
 \subsection{Returns}{
 A list of real values containing with normalized entropy
-of the product class i , conditioned to ---- , its variance and confidence interval.
+of the product class i, conditioned to reference data, its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2569,10 +2581,10 @@ where:
 
 \enumerate{
   \item \eqn{NormEntropProd}: normalized mutual information using
-  the entropy on ground truthing.
-  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to
-  the class of the map.
-  \item \eqn{Entrop}: map entropy.
+  the entropy on the reference.
+  \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
+  the product with respect to the class \emph{i} of the product. A is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N}: number of cases involved in the calculation of
@@ -2585,16 +2597,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm. By default v=10. This value is
-used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+By default v=10. This value is used for the entropy units,
+v=10(Hartleys), v=2(bits), v=e(nats).}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using on ground truthing,
-its variance and confidence interval.
+A list of real values containing with normalized entropy
+of the reference class i, conditioned to producer, its variance
+and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2641,10 +2655,10 @@ where:
 \enumerate{
   \item \eqn{AvNormEntrop}: normalized entropy using the
   arithmetic mean of the entropies of product and reference.
-  \item \eqn{Entrop_i(B)}: entropy of class i of the
-  product with respect to the category on the reference.
-  \item \eqn{Entrop_i(A)}: entropy of the class i of
-  the product with respect to the class I of the product.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
+  the product with respect to the class \emph{i} of the product. A is a matrix.
   \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
@@ -2658,16 +2672,16 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm. By default v=10.
-This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-v=e(nats).}
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+By default v=10. This value is used for the entropy units,
+v=10(Hartleys), v=2(bits), v=e(nats).}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-list of real values containing the normalized
+A list of real values containing the normalized
 entropy (arithmetic mean of the entropies on the product
 and reference), its variance and confidence interval.
 }
@@ -2717,11 +2731,11 @@ where:
 \enumerate{
   \item \eqn{GeomAvNormEntrop}: normalized entropy using the
   geometric mean of the entropies on the product and reference.
-  \item \eqn{Entrop_i(B)}: entropy of the map with respect to the
-  class on ground truthing.
-  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the
-  class of the map.
-  \item \eqn{Entrop}: map entropy.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
+  the product with respect to the class \emph{i} of the product. A is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N}: number of cases involved in the calculation of the index.
@@ -2733,18 +2747,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm. By default v=10.
-This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-v=e(nats).}
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+By default v=10. This value is used for the entropy units,
+v=10(Hartleys), v=2(bits), v=e(nats).}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using the geometric mean of
-the entropies on map and on ground truthing, its variance and
-confidence interval.
+A list of real values containing the normalized
+entropy (geometric mean of the entropies on the product
+and reference), its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2763,8 +2777,8 @@ p$GeomAvNormEntrop()
 \if{html}{\out{<a id="method-ConfMatrix-AvMaxNormEntrop"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-AvMaxNormEntrop}{}}}
 \subsection{Method \code{AvMaxNormEntrop()}}{
-Public mathod that provides normalized entropy using
-the arithmetic mean of the maximum entropies o the product and
+Public method that provides normalized entropy using
+the arithmetic mean of the maximum entropies of the product and
 reference. The method also offers the variance and confidence interval.
 The reference \insertCite{strehl2002relationship}{ConfMatrix} is
 followed for the calculations.
@@ -2792,12 +2806,12 @@ where:
 
 \enumerate{
   \item \eqn{AvMaxNormEntrop}: normalized entropy using the arithmetic
-  mean of the maximum entropies on map and on ground truthing.
-  \item \eqn{Entrop_i(B)}: entropy of the map with respect to the
-  class on ground truthing.
-  \item \eqn{Entrop_i(A)}: Entropy of the map with respect to the
-  class of the map.
-  \item \eqn{Entrop}: map entropy.
+  mean of the maximum entropies on product and on reference.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
+  the product with respect to the class \emph{i} of the product. A is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{M}: number of elements of the matrix.
@@ -2811,17 +2825,18 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm. By default v=10. This value is
-used for the entropy units, v=10(Hartleys), v=2(bits), v=e(nats).}
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+By default v=10. This value is used for the entropy units,
+v=10(Hartleys), v=2(bits), v=e(nats).}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with normalized entropy using the arithmetic mean of
-the maximum entropies on map and on ground truthing, its variance
-and confidence interval.
+A list of real values containing the normalized entropy
+(arithmetic mean of the maximum entropies in the product and in
+reference), its variance, and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -2912,11 +2927,33 @@ is followed for the computations.
 
 The mathematical expression is:
 
+To calculate R_i we begin the following iterative process:
+Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
+\eqn{f_i^0} equal to producer accuracy.
+
+ When \eqn{2m (m=1,2,\cdots)}
+ \deqn{
+ V_i^{2m-1}=\dfrac{f_i^0}{U_.^{2m-2}-U_i^{2m-2}}
+ }
+ where \eqn{U_.^{2m}=\sum_{i=1}^k U_j^{2m} }
+ and when \eqn{2m+1 (m=1,2,\cdots)}
+ \deqn{
+ u_j^{2m}=\dfrac{f_j^0}{V_.^{2m-1}-V_i^{2m-1}}
+ }
+ where \eqn{V_.^{2m-1}=\sum_{i=1}^k V_i^{2m-1} }
+
+ The iterative steps continue for \eqn{m=1, 2,\cdots} until
+ the accuracy stabilizes.
+ Where
+ \deqn{
+R=\dfrac{V/\sum_{i=1}^{k} V_i}
+}
+
 \deqn{
-A_i=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
+ProdAcc=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
 }
 \deqn{
-GroundTruth = \dfrac{ProdAcc-R_i}{1-R_i}
+GroundTruth = \dfrac{ProdAcc-R}{1-R}
 }
 
 \deqn{
@@ -2927,8 +2964,7 @@ GroundTruth = \dfrac{ProdAcc-R_i}{1-R_i}
 Where:
 \enumerate{
   \item \eqn{GroundTruth}: index ground truth.
-  \item \eqn{R_i}: casual lucky guess.
-  (See \insertCite{turk1979gt}{ConfMatrix})
+  \item \eqn{R}: casual lucky guess.
   \item \eqn{ProdAcc}: producer accuracy.
   \item \eqn{N}: number of elements of the matrix, cardinal of
   the matrix.
@@ -2954,6 +2990,91 @@ interval and the matrix with the expected frequencies.
 6,25,1,1,0,0,1,6),nrow=5,ncol=5)
 p<-ConfMatrix$new(A,Source="Türk 1979")
 p$GroundTruth()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ConfMatrix-GroundTruth_i"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-GroundTruth_i}{}}}
+\subsection{Method \code{GroundTruth_i()}}{
+Public method that calculates the Ground Truth index
+for class i, its variance and confidence interval.The reference
+\insertCite{turk1979gt}{ConfMatrix} is followed for the computations.
+
+
+The mathematical expression is:
+
+To calculate R_i we begin the following iterative process:
+Take the original matrix by replacing its diagonal elements with 0.
+Thus define the new matrix \eqn{M_0}.
+Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
+\eqn{f_i^0} equal to producer accuracy sobre \eqn{M_0}.
+
+ When \eqn{2m (m=1,2,\cdots)}
+ \deqn{
+ V_i^{2m-1}=\dfrac{f_i^0}{U_.^{2m-2}-U_i^{2m-2}}
+ }
+ where \eqn{U_.^{2m}=\sum_{i=1}^k U_j^{2m} }
+ and when \eqn{2m+1 (m=1,2,\cdots)}
+ \deqn{
+ u_j^{2m}=\dfrac{f_j^0}{V_.^{2m-1}-V_i^{2m-1}}
+ }
+ where \eqn{V_.^{2m-1}=\sum_{i=1}^k V_i^{2m-1} }
+
+ The iterative steps continue for \eqn{m=1, 2,\cdots} until
+ the accuracy stabilizes.
+ Where
+ \deqn{
+R_i=\dfrac{V_i/\sum_{i=1}^{k} V_i}
+}
+
+\deqn{
+ProdAcc_i=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
+}
+\deqn{
+GroundTruth_i = \dfrac{ProdAcc_i-R_i}{1-R_i}
+}
+
+\deqn{
+\sigma^2_{GroundTruth_i}=\dfrac{GroundTruth_i \cdot (1-GroundTruth_i)}
+{N}
+}
+
+Where:
+\enumerate{
+  \item \eqn{GroundTruth_i}: index ground truth for class i.
+  \item \eqn{R_i}: casual lucky guess for class i. Is a real value.
+  \item \eqn{ProdAcc_i}: producer accuracy for class i.
+  \item \eqn{N}: number of elements of the matrix, cardinal of
+  the matrix.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GroundTruth_i(i, a = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+
+\item{\code{a}}{Significance level. By default 0.05.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A list with Ground Truth index for class i, its variance, confidence
+interval and the matrix with the expected frequencies for all classes.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
+6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source="Türk 1979")
+p$GroundTruth_i(3)
 
 }
 \if{html}{\out{</div>}}
@@ -3051,9 +3172,15 @@ p$DetailedCondKappa ()
 \if{html}{\out{<a id="method-ConfMatrix-QES"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-QES}{}}}
 \subsection{Method \code{QES()}}{
-Public method that calculates the values of quantity,
-change and shift. The reference \insertCite{pontius2014}{ConfMatrix}
-is followed for the computations.
+Public method that calculates the values of quantity
+difference, change and shift. Quantity difference is the amount of
+difference between the product and the reference and is due to the
+less than maximum match in the proportions of the categories. Exchange
+represents transitions from class i to j and a transition from class j
+to class i in an identical number of cases. Shift refers to the
+difference remaining after subtracting quantity difference and exchange
+from the overall difference. The reference
+\insertCite{pontius2014}{ConfMatrix} is followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QES(TI = NULL, SF = 1)}\if{html}{\out{</div>}}
 }
@@ -3068,8 +3195,8 @@ is followed for the computations.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of general values for the interval t of difference,
-quantity, shift, and shift.In addition to the differences for
+For the interval t of difference. A list real values,
+quantity, exchange, and shift.In addition to the differences for
 classes, number of components, change of classes and turn of
 the components.
 }
@@ -3173,9 +3300,10 @@ p$AllParameters()
 \if{html}{\out{<a id="method-ConfMatrix-MBootStrap"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-MBootStrap}{}}}
 \subsection{Method \code{MBootStrap()}}{
-Public method that provides N resamples of the confusion
-matrix from a ConfMatrix object. As a result, a set of bootstrapped
-cases is offered. The reference \insertCite{fienberg1970}{ConfMatrix} is
+Public method that provides N resamples, using a
+multinomial distribution, of the confusion matrix of a ConfMatrix
+object. As a result, a set of bootstrapped cases is offered. The
+reference \insertCite{fienberg1970}{ConfMatrix} is
 followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MBootStrap(n, pr = NULL)}\if{html}{\out{</div>}}
@@ -3193,8 +3321,7 @@ success probability of each cell will be taken.}
 }
 \subsection{Returns}{
 A list of n+1 arrays formed by the original confusion matrix
-and all the simulated cases The multinomial distribution is
-applied.
+and all the simulated cases.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3330,13 +3457,13 @@ computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{WM}}{Weight matrix}
+\item{\code{WM}}{Weight matrix (as matrix).}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A list with the weight matrix, kappa index obtained from
-the original matrix and the weight matrix, its standard desviations
+the original matrix and the weight matrix, its standard deviations
 and the value of its test statistic.
 }
 \subsection{Examples}{
@@ -3409,7 +3536,7 @@ HD = \dfrac{4nm}{n+m} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
 
 Where:
 \enumerate{
-  \item \eqn{HD}: Hellinger Distance
+  \item \eqn{HD}: Hellinger Distance.
   \item \eqn{n}: number of elements in the matrix A.
   \item \eqn{p_i}: element i of the probability vector of matrix A.
   \item \eqn{q_i}: element i of the probability vector of matrix B.
@@ -3423,17 +3550,17 @@ Where:
 \describe{
 \item{\code{f}}{f Element of the ConfMatrix.}
 
-\item{\code{p}}{matrix probability vector. By default, the probability of
+\item{\code{p}}{probability vector. By default, the probability of
 success for each cell is taken.}
 
-\item{\code{q}}{matrix probability vector. By default, the probability of
+\item{\code{q}}{probability vector. By default, the probability of
 success for each cell is taken.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The statistic value of the statistical test based on the
-Hellinger distance.
+A real value for the statistic value of the statistical
+test based on the Hellinger distance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
