@@ -28,8 +28,7 @@ created (instantiated) and then the methods that offer the index
 calculations will be invoked.
 }
 \note{
-Error Messages.
-List of possible errors:
+Error Messages: List of possible errors:
 \itemize{
  \item \code{Error type 1}: Different number of data vectors and probability.
  \item \code{Error type 2}: Different number of elements in the pair of data
@@ -105,27 +104,35 @@ A$print()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{vectors}}{\verb{
- Data vectors.
+List of integer data vectors.
 }}
 
 \item{\code{prob}}{\verb{
- Probability vectors.
+List of probability vectors.
 }}
 
 \item{\code{ID}}{\verb{
-Identifier.
+Identifier. It is a character string with a maximum length of 50
+characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
+Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
 }}
 
 \item{\code{Date}}{\verb{
- Date.
+Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+By default the date provided by the system will be taken.
 }}
 
 \item{\code{ClassName}}{\verb{
-Class name.
-}}
+Name of the classes. It is given by a character strings vector whose
+elements are the name of the classes. Each element of the vector is
+a string of maximum 20 characters. By default for the column elements
+they will be} \eqn{Ref_i'}.}
 
 \item{\code{Source}}{\verb{
- Source vectors.
+Indicates where the "vectors" and "prob" parameters come from (article,
+project, etc.). It is suggested to enter a reference or a DOI. A character
+string with a maximum length of 80 characters can be entered. By default,
+is NULL.
 }}
 }
 \if{html}{\out{</div>}}
@@ -165,14 +172,18 @@ The values of the data vectors represent the classes of ground truth.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{vectors}}{vector list.}
+\item{\code{vectors}}{\verb{
+List of integer data vectors.
+}}
 
-\item{\code{prob}}{probabilities list.}
+\item{\code{prob}}{\verb{
+List of probability vectors.
+}}
 
 \item{\code{ID}}{\verb{
 Identifier. It is a character string with a maximum length of 50
-characters. By default, "CM_i" will be taken as identification.
-Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
+characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
+Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
 }}
 
 \item{\code{Date}}{\verb{
@@ -181,11 +192,11 @@ By default the date provided by the system will be taken.
 
 }}
 
-\item{\code{ClassName}}{Name of the classes. It is given by a vector whose
-elements are the name of the classes.Each element of the vector is
+\item{\code{ClassName}}{\verb{
+Name of the classes. It is given by a character strings vector whose
+elements are the name of the classes. Each element of the vector is
 a string of maximum 20 characters. By default for the column elements
-they will be Ref_i and for the elements of row C_i, with i being the
-corresponding class number.}
+they will be} \eqn{Ref_i'}.}
 
 \item{\code{Source}}{\verb{
 Indicates where the "vectors" and "prob" parameters come from (article,
@@ -221,13 +232,13 @@ The Bonferroni method is used.
 The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
 for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }
@@ -259,13 +270,13 @@ The references
 \insertCite{QCCS,alba2020}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }
@@ -296,13 +307,13 @@ square test is used. The Bonferroni method is used.
 The references \insertCite{QCCS,alba2020}{ConfMatrix} are
 followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }

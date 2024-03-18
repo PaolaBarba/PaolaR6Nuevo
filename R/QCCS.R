@@ -22,8 +22,7 @@
 #' created (instantiated) and then the methods that offer the index
 #' calculations will be invoked.
 #' @export QCCS
-#' @note  Error Messages.
-#' List of possible errors:
+#' @note  Error Messages: List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Different number of data vectors and probability.
 #'  \item \code{Error type 2}: Different number of elements in the pair of data
@@ -48,36 +47,44 @@
 QCCS <- R6Class("QCCS",
   cloneable=FALSE,
    public = list(
-
     #' @field vectors
-    #' \verb{
-    #'  Data vectors.
-    #' }
+    #'\verb{
+     #'List of integer data vectors.
+     #'}
     vectors = NULL,
     #' @field prob
-    #' \verb{
-    #'  Probability vectors.
-    #' }
+    #'\verb{
+    #'List of probability vectors.
+    #'}
     prob = NULL,
     #' @field ID
-    #' \verb{
-    #'  Identifier.
-    #'  }
+    #'\verb{
+    #' Identifier. It is a character string with a maximum length of 50
+    #' characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
+    #' Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
+    #'}
     ID=NULL,
     #' @field Date
-    #' \verb{
-    #'  Date.
-    #' }
+    #'\verb{
+    #'Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+    #'By default the date provided by the system will be taken.
+    #'}
     Date=NULL,
     #' @field ClassName
-    #' \verb{
-    #'  Class name.
-    #'  }
+    #'\verb{
+    #' Name of the classes. It is given by a character strings vector whose
+    #' elements are the name of the classes. Each element of the vector is
+    #' a string of maximum 20 characters. By default for the column elements
+    #' they will be} \eqn{Ref_i'}.
+    #'
     ClassName=NULL,
     #' @field Source
-    #' \verb{
-    #'  Source vectors.
-    #' }
+    #'\verb{
+    #'Indicates where the "vectors" and "prob" parameters come from (article,
+    #'project, etc.). It is suggested to enter a reference or a DOI. A character
+    #'string with a maximum length of 80 characters can be entered. By default,
+    #'is NULL.
+    #'}
     Source=NULL,
 
 
@@ -88,13 +95,19 @@ QCCS <- R6Class("QCCS",
     #' have the same size, otherwise an error will be provided.
     #' The optional possibility of adding metadata to the matrix is offered.
     #' The values of the data vectors represent the classes of ground truth.
-    #' @param vectors vector list.
-    #' @param prob probabilities list.
+    #' @param vectors
+    #' \verb{
+    #' List of integer data vectors.
+    #' }
+    #' @param prob
+    #' \verb{
+    #' List of probability vectors.
+    #' }
     #' @param ID
     #'\verb{
     #' Identifier. It is a character string with a maximum length of 50
-    #' characters. By default, "CM_i" will be taken as identification.
-    #' Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
+    #' characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
+    #' Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
     #'}
     #' @param Date
     #'\verb{
@@ -102,11 +115,13 @@ QCCS <- R6Class("QCCS",
     #' By default the date provided by the system will be taken.
     #'
     #'}
-    #' @param ClassName Name of the classes. It is given by a vector whose
-    #' elements are the name of the classes.Each element of the vector is
+    #' @param ClassName
+    #' \verb{
+    #' Name of the classes. It is given by a character strings vector whose
+    #' elements are the name of the classes. Each element of the vector is
     #' a string of maximum 20 characters. By default for the column elements
-    #' they will be Ref_i and for the elements of row C_i, with i being the
-    #' corresponding class number.
+    #' they will be} \eqn{Ref_i'}.
+    #'
     #' @param Source
     #' \verb{
     #' Indicates where the "vectors" and "prob" parameters come from (article,
@@ -122,7 +137,7 @@ QCCS <- R6Class("QCCS",
     #'
     #' @aliases NULL
 
-  initialize = function(vectors, prob, ID = NULL, Date=NULL,ClassName=NULL, Source=NULL) {
+  initialize = function(vectors,prob,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
 
 # Optional values ---------------------------------------------------------
@@ -232,7 +247,7 @@ QCCS <- R6Class("QCCS",
       #' The Bonferroni method is used.
       #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
       #' for the computations.
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param a significance level. By default a=0.05.
       #' @return The p value of the exact test using Bonferroni.
       #' @examples
       #' vectors<-list(c(47,4,0),c(44,5,3))
@@ -244,10 +259,10 @@ QCCS <- R6Class("QCCS",
       #' @aliases NULL
 
 
-    Exact.test = function(alpha=NULL) {
-      if(is.null(alpha)){
-        alpha<-0.05
-      }else{alpha<-alpha}
+    Exact.test = function(a=NULL) {
+      if(is.null(a)){
+        a<-0.05
+      }else{a<-a}
 
       n <- length(self$vectors)
       m <- length(self$prob)
@@ -272,9 +287,9 @@ QCCS <- R6Class("QCCS",
 
       sol <- c(sol, p_value)
 
-      a<-private$MethBonf(sol,alpha)
+      ap<-private$MethBonf(sol,a)
 
-    return(list(a,OriginalVectors=self$vectors,OriginalProb=self$prob))
+    return(list(ap,OriginalVectors=self$vectors,OriginalProb=self$prob))
     },
 
 
@@ -287,7 +302,7 @@ QCCS <- R6Class("QCCS",
       #' The references
       #' \insertCite{QCCS,alba2020}{ConfMatrix}
       #' are followed for the computations.
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param a significance level. By default a=0.05.
       #' @return The p value derived from the chi square test.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
@@ -298,10 +313,10 @@ QCCS <- R6Class("QCCS",
       #'
       #' @aliases NULL
 
-    JiGlobal.test=function(alpha=NULL){
-      if(is.null(alpha)){
-        alpha<-0.05
-      }else{alpha<-alpha}
+    JiGlobal.test=function(a=NULL){
+      if(is.null(a)){
+        a<-0.05
+      }else{a<-a}
 
     #number of vectors and prob vectors
     n <- length(self$vectors)
@@ -332,11 +347,11 @@ QCCS <- R6Class("QCCS",
 
     p_value<-pchisq(Suma, k, lower.tail=FALSE)
 
-    if(p_value>alpha){
-      cat("The null hypothesis is not rejected.\n",p_value,">=",alpha)
+    if(p_value>a){
+      cat("The null hypothesis is not rejected.\n",p_value,">=",a)
       cat("\nThe set of elements are well defined")
     }else{
-      cat("The null hypothesis is rejected.\n",p_value,"<",alpha)
+      cat("The null hypothesis is rejected.\n",p_value,"<",a)
       cat("\nThe set of elements are not well defined")
 
     }
@@ -352,7 +367,7 @@ QCCS <- R6Class("QCCS",
       #' square test is used. The Bonferroni method is used.
       #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are
       #' followed for the computations.
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param a significance level. By default a=0.05.
       #' @return The p value from the chi square test.
       #' @examples
       #' vectors<-list(c(18,0,3,0),c(27,19))
@@ -363,10 +378,10 @@ QCCS <- R6Class("QCCS",
       #'
       #' @aliases NULL
 
-    Ji.test=function(alpha=NULL){
-      if(is.null(alpha)){
-      alpha<-0.05
-      }else{alpha<-alpha}
+    Ji.test=function(a=NULL){
+      if(is.null(a)){
+      a<-0.05
+      }else{a<-a}
 
       #number of vectors and prob vectors
       n <- length(self$vectors)
@@ -391,9 +406,9 @@ QCCS <- R6Class("QCCS",
         p_value<-c(p_value,pvalue)
         }
 
-        a<-private$MethBonf(p_value,alpha)
+        ap<-private$MethBonf(p_value,a)
 
-    return(list(a,OriginalVectors=self$vectors,OriginalProb=self$prob))
+    return(list(ap,OriginalVectors=self$vectors,OriginalProb=self$prob))
     },
 
 # print function ----------------------------------------------------------
@@ -439,12 +454,12 @@ QCCS <- R6Class("QCCS",
 
   private = list(
 
-     MethBonf = function(pvalue,alpha=NULL){
-       if(is.null(alpha)){
-         alpha<-0.05
-       }else{alpha<-alpha}
+     MethBonf = function(pvalue,a=NULL){
+       if(is.null(a)){
+         a<-0.05
+       }else{a<-a}
        n<-length(pvalue)
-        v<-alpha/n
+        v<-a/n
        for (i in 1:n) {
          if(pvalue[i]>v){
            cat(" The null hypothesis is not rejected.\n ",pvalue[i],">=",v,"\n")

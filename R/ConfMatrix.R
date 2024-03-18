@@ -15,9 +15,7 @@
 #' those that provide combinations start with "Comb". Methods related
 #' to a specific class end with the ending "_i".
 #'
-#' @note Error Messages:
-#'
-#' List of possible errors:
+#' @note Error Messages: List of possible errors:
 #' \itemize{
 #'  \item \code{Error type 1}: Non-square matrix.
 #'  \item \code{Error type 2}: Single element matrix.
@@ -77,7 +75,7 @@
 #'
 #' \insertRef{alba2020}{ConfMatrix}
 #'
-#' \insertRef{turk1979gt}{ConfMatrix}goodman1968analysis
+#' \insertRef{turk1979gt}{ConfMatrix}
 #'
 #' \insertRef{goodman1968analysis}{ConfMatrix}
 #'
@@ -89,30 +87,41 @@ ConfMatrix <- R6Class("ConfMatrix",
   cloneable=FALSE,
    public = list(
     #' @field values
-    #' \verb{
-    #'  Confusion matrix. An array must be added.
+    #'\verb{
+    #'Matrix of integer values. An matrix must be added.
     #'}
     values = NULL,
     #' @field ID
-    #' \verb{
-    #'  Identifier.
-    #'    }
+    #'\verb{
+    #' Identifier. It is a character string with a maximum length of 50
+    #' characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
+    #' Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
+    #'}
     ID = NULL,
     #' @field Date
     #' \verb{
-    #'  Date.
-    #'    }
+    #' Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+    #' By default the date provided by the system will be taken.
+    #'
+    #'}
     Date = NULL,
-    #' @field Source
-    #' \verb{
-    #'  Source Matrix.
-    #'    }
-    Source=NULL,
     #' @field ClassName
-    #' \verb{
-    #'  Class name.
-    #'    }
+    #'\verb{
+    #' Name of the classes. It is given by a character strings vector whose
+    #' elements are the name of the classes. Each element of the vector is
+    #' a string of maximum 20 characters. By default for the column elements
+    #' they will be} \eqn{Ref_i'} \verb{and for the elements of row} \eqn{C_i'}\verb{, with} \eqn{i'} \verb{being the
+    #' corresponding row or column number.
+    #' }
     ClassName=NULL,
+    #' @field Source
+    #'  \verb{
+    #' Indicates where the matrix comes from (article, project, etc.).
+    #' It is suggested to enter a reference or a DOI. A character
+    #' string with a maximum length of 80 characters can be entered.
+    #' By default, is NULL.
+    #' }
+    Source=NULL,
 
 
     #' @description
@@ -126,14 +135,14 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' The optional possibility of adding metadata to the matrix is offered.
     #' @param values
     #'\verb{
-    #' Matrix of values. A matrix must be added.
+    #' Matrix of integer values. A matrix must be added.
     #'}
     #'
     #' @param ID
     #'\verb{
     #' Identifier. It is a character string with a maximum length of 50
-    #' characters. By default, "CM_i" will be taken as identification.
-    #' Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
+    #' characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
+    #' Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
     #'}
     #' @param Date
     #'\verb{
@@ -146,7 +155,7 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' Name of the classes. It is given by a character strings vector whose
     #' elements are the name of the classes. Each element of the vector is
     #' a string of maximum 20 characters. By default for the column elements
-    #' they will be} \eqn{Ref_i}\verb{ and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
+    #' they will be} \eqn{Ref_i} \verb{and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
     #' corresponding row or column number.
     #' }
     #' @param Source
@@ -157,7 +166,9 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' By default, is NULL.
     #' }
     #' @return
-    #'    Object of the ConfMatrix class, or an error message.
+    #' \verb{
+    #' Object of the ConfMatrix class, or an error message.
+    #' }
     #' @examples
     #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
     #' nrow=4,ncol=4)
@@ -294,18 +305,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' OverallAcc = \dfrac{\sum_{i=1}^{n} x_{ii}}{\sum_{i, j=1}^{n} x_{ij}}
+      #' OverallAcc = \dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
       #' }
       #'
       #' \deqn{
-      #' \sigma^2_{OverallAcc}=\dfrac{OverallAcc \cdot (1-OverallAcc)}{N}
+      #' \sigma^2_{OverallAcc}=\dfrac{OverallAcc \cdot (1-OverallAcc)}{N_{OverallAcc}}
       #' }
       #' Where:
       #' \enumerate{
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{ij}}: element of the matrix.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{OverallAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #'
@@ -344,10 +355,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #' The mathematical expression is:
       #' \deqn{
-      #' UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+      #' UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
       #' }
       #'  \deqn{
-      #' \sigma^2_{UserAcc}=\dfrac{UserAcc \cdot (1-UserAcc)}{N}
+      #' \sigma^2_{UserAcc}=\dfrac{UserAcc \cdot (1-UserAcc)}{N_{UserAcc}}
       #' }
       #' where:
       #'
@@ -355,7 +366,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{UserAcc}: user accuracy.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{ij}}: element of the matrix.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{UserAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a \verb{
@@ -393,7 +404,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
 
-      #' @description (): Public method for deriving the index called
+      #' @description Public method for deriving the index called
       #' user’s accuracy for a specific class i in a ConfMatrix object
       #' instance. The user’s accuracy for the class i of a thematic
       #' product is calculated by dividing the value in the diagonal of
@@ -403,10 +414,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' is followed for the computations.
       #' @description
       #'  \deqn{
-      #' UserAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+      #' UserAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
       #' }
       #' \deqn{
-      #' \sigma^2_{UserAcc_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}{N}
+      #' \sigma^2_{UserAcc_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}{N_{UserAcc_i}}
       #' }
       #'
       #'
@@ -416,19 +427,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{ij}}: element of the matrix.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{UserAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i \verb{
-      #' User class to evaluate, where} \eqn{i \in \mathbb{N}}.
       #'
-      #' @param a \verb{
-      #' Significance level. By default 0.05.
-      #' }
-      #' @return \verb{
-      #' A list of real values containing the user’s accuracy for class i, its
+      #' @param i User class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
+      #' @param a Significance level. By default 0.05.
+      #'
+      #' @return A list of real values containing the user’s accuracy for class i, its
       #' variance, and its confidence interval.
-      #' }
+      #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -459,10 +468,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' computations.
       #' @description
       #'  \deqn{
-      #' ProdAcc=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
+      #' ProdAcc=\dfrac{x_{jj}}{\sum_{j=1}^M x_{ij}}
       #' }
       #'\deqn{
-      #' \sigma^2_{ProdAcc}=\dfrac{ProdAcc \cdot (1-ProdAcc)}{N}
+      #' \sigma^2_{ProdAcc}=\dfrac{ProdAcc \cdot (1-ProdAcc)}{N_{ProdAcc}}
       #' }
       #' where:
       #'
@@ -470,7 +479,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{ProdAcc}: producer accuracy.
       #'   \item \eqn{x_{jj}}: diagonal element of the matrix.
       #'   \item \eqn{x_{ij}}: element of the matrix.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{ProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a \verb{
@@ -515,10 +524,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' calculations.
       #' @description
       #'  \deqn{
-      #' ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
+      #' ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^M x_{ij}}
       #' }
       #'\deqn{
-      #' \sigma^2_{ProdAcc_i}=\dfrac{ProdAcc_i \cdot (1-ProdAcc_i)}{N}
+      #' \sigma^2_{ProdAcc_i}=\dfrac{ProdAcc_i \cdot (1-ProdAcc_i)}{N_{ProdAcc_i}}
       #' }
       #'
       #' where:
@@ -527,15 +536,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
       #'   \item \eqn{x_{jj}}: diagonal element of the matrix.
       #'   \item \eqn{x_{ij}}: element of the matrix.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
+      #'
       #' @param i \verb{
-      #' Producer class to evaluate, where \eqn{i \in \mathbb{N}}.
-      #' }
+      #' Producer class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
       #' @param a \verb{
       #' Significance level. By default 0.05.
       #' }
+      #'
       #' @return A list of real values containing the producer’s
       #' accuracy for class i, its variance, and its confidence
       #' interval.
@@ -569,7 +580,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #'\deqn{
       #' \sigma^2_{AvUserProdAcc_i}=\dfrac{AvUserProdAcc_i
-      #' \cdot (1-AvUserProdAcc_i)}{N}
+      #' \cdot (1-AvUserProdAcc_i)}{N_{AvUserProdAcc_i}}
       #' }
       #' where:
       #'
@@ -578,15 +589,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   accuracies.
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{AvUserProdAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
+      #'
       #' @param i \verb{
-      #' Class to evaluate, where \eqn{i \in \mathbb{N}}.
-      #' }
+      #' Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.
+      #'
       #' @param a \verb{
       #' Significance level. By default 0.05.
       #' }
+      #'
       #' @return A list of real values containing the average of
       #' user’s and producer’s accuracies, its variance and
       #' confidence interval for class i.
@@ -622,7 +635,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
       #' }
       #'  \deqn{
-      #' \sigma^2_{Sucess}=\dfrac{Sucess \cdot (1-Sucess)}{N}
+      #' \sigma^2_{Sucess}=\dfrac{Sucess \cdot (1-Sucess)}{N_{Sucess}}
       #' }
       #'
       #' where:
@@ -631,7 +644,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{Sucess}: classification success index.
       #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
       #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{Sucess}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a \verb{
@@ -671,7 +684,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #'
       #' \deqn{
-      #' \sigma^2_{Sucess_i}=\dfrac{Sucess_i \cdot (1-Sucess_i)}{N}
+      #' \sigma^2_{Sucess_i}=\dfrac{Sucess_i \cdot (1-Sucess_i)}{N_{Sucess_i}}
       #' }
       #'
       #' where:
@@ -680,10 +693,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{Sucess_i}: individual classification success index.
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{Sucess_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #'
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the ICSI,
       #' its variance and its confidence interval.
@@ -723,7 +737,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}
       #' }
       #' \deqn{
-      #' \sigma^2_{AvHelldenAcc_i}=\dfrac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N}
+      #' \sigma^2_{AvHelldenAcc_i}=\dfrac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N_{AvHelldenAcc_i}}
       #' }
       #' where:
       #'
@@ -731,10 +745,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{AvHelldenAcc_i}: Hellden's mean accuracy.
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{AvHelldenAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the Hellden’s mean
       #' accuracy, its variance and its confidence interval.
@@ -777,11 +791,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' are followed for the calculations.
       #' @description
       #'  \deqn{
-      #' ShortAcc_i=\dfrac{x_{ii}}{\sum^n_{j=1} x_{+ j}+
-      #' \sum^n_{i=1} x_{i +}-x_{ii}}
+      #' ShortAcc_i=\dfrac{x_{ii}}{\sum^M_{j=1} x_{+ j}+
+      #' \sum^M_{i=1} x_{i +}-x_{ii}}
       #' }
       #'\deqn{
-      #' \sigma^2_{ShortAcc_i}=\dfrac{ShortAcc_i \cdot (1-ShortAcc_i)}{N}
+      #' \sigma^2_{ShortAcc_i}=\dfrac{ShortAcc_i \cdot (1-ShortAcc_i)}{N_{ShortAcc_i}}
       #' }
       #' where:
       #'
@@ -790,10 +804,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{j+}}: sum of all omissions in row j.
       #'   \item \eqn{x_{+j}}: sum of all commissions in column j.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{ShortAcc_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}.
+      #'
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the Short's
       #' mapping accuracy, its variance and its confidence interval.
@@ -831,14 +846,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for the calculations.
       #' @description
       #'  \deqn{
-      #' UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^n_{i=1} x_{i + }}
-      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\dfrac{\sum^n_{i=1} x_{i + }}
-      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+      #' UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^M_{i=1} x_{i + }}
+      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{i=1} x_{i + }}
+      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
       #' }
       #'  \deqn{
       #' \sigma^2_{UserKappa_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}
-      #' {(1-\dfrac{\sum^n_{i=1} x_{i + }}
-      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
+      #' { \left(1-\dfrac{\sum^M_{i=1} x_{i + }}
+      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}\right)^2 \cdot N_{UserKappa_i}}
       #' }
       #' where:
       #'
@@ -848,10 +863,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
       #'   \item \eqn{x_{+j}}: sum of all elements in column j.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{UserKappa_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #'
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the kappa coefficient
       #' (user’s), its variance and its confidence interval.
@@ -890,14 +906,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for the calculations.
       #' @description
       #'  \deqn{
-      #' ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^n_{j=1} x_{ + j }}
-      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\dfrac{\sum^n_{j=1} x_{+ j }}
-      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+      #' ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^M_{j=1} x_{ + j }}
+      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{j=1} x_{+ j }}
+      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
       #' }
       #'  \deqn{
       #' \sigma^2_{ProdKappa_i}=\dfrac{ProdAcc_i \cdot (1- ProdAcc_i)}
-      #' {(1-\dfrac{\sum^n_{j=1} x_{+ j }}
-      #' {\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
+      #' {\left(1-\dfrac{\sum^M_{j=1} x_{+ j }}
+      #' {\sum^M_{i=1}\sum^M_{j=1} x_{ij}} \right)^2 \cdot N_{ProdAcc_i}}
       #' }
       #' where:
       #'
@@ -907,10 +923,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
       #'   \item \eqn{x_{+j}}: sum of all elements in column j.
-      #'   \item \eqn{N}: number of cases involved in the calculation of the
+      #'   \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of the
       #'   index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #'
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the coefficient kappa
       #' (producer’s), its variance and its confidence interval.
@@ -948,7 +965,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' \deqn{
       #' \sigma^2_{ModKappa}=\dfrac{OverallAcc \cdot (1- OverallAcc)}
-      #' {(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
+      #' {\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappa}}
       #' }
       #' where:
       #'
@@ -956,7 +973,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{ModKappa}: modified coefficient kappa.
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{ModKappa}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -998,7 +1015,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' \deqn{
       #' \sigma^2_{ModKappaUser_i}=\dfrac{UserAcc_i
-      #' \cdot (1- UserAcc_i)}{(1- \dfrac{1}{\sqrt{M}})^2 \cdot N}
+      #' \cdot (1- UserAcc_i)}{\left(1- \dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaUser_i}}
       #' }
       #' where:
       #'
@@ -1006,10 +1023,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{ModKappaUser_i}: modified coefficient kappa (user's).
       #'   \item \eqn{UserAcc_i}: user accuracy index for class i.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{ModKappaUser_i}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the modified
       #' coefficient kappa (user's), its variance and
@@ -1052,7 +1069,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' \deqn{
       #' \sigma^2_{ModKappaProd_i}=\dfrac{ProdAcc_i
-      #' \cdot (1- ProdAcc_i)}{(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
+      #' \cdot (1- ProdAcc_i)}{\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaProd_i}}
       #' }
       #' where:
       #'
@@ -1060,10 +1077,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{ModKappaProd_i}: modified coefficient kappa (producer's).
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation
+      #'   \item \eqn{N_{ModKappaProd_i}}: number of cases involved in the calculation
       #'   of the index.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the modified coefficient
       #' kappa (producer's), its variance and confidence interval.
@@ -1092,21 +1109,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' The reference \insertCite{finn1993}{ConfMatrix} is followed for
      #' the calculations.
      #' @description
-     #'  \deqn{
-     #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-     #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-     #' {\sum^n_{i,j=1} x_{ij} }) )
-     #' }
-     #' \deqn{
-     #' Entrop_i(A|b_i)=-\sum^n_{j=1}( (\dfrac{ x_{ij}}
-     #' {\sum^n_{j=1} x_{+ j} }) \cdot \log (\dfrac{x_{ij}}
-     #' {\sum^n_{j=1} x_{+ j}}) )
-     #' }
      #' \deqn{
      #' EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
      #' }
+     #'  \deqn{
+     #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+     #' }
      #' \deqn{
-     #' \sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N}
+     #' Entrop_i(A|b_i)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{ij}}
+     #' {\sum^M_{j=1} x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
+     #' {\sum^M_{j=1} x_{+ j}}\right) \right)
+     #' }
+     #' \deqn{
+     #' \sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N_{EntropUser_i}}
      #' }
      #'
      #' where:
@@ -1121,19 +1138,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'   \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
      #'   location corresponding to the reference map B is in class\eqn{b_i}.
      #'   B is a matrix.
-     #'   \item \eqn{N}: number of cases involved in the calculation of
+     #'   \item \eqn{N_{EntropUser_i}}: number of cases involved in the calculation of
      #'   the index.
      #' }
      #' @param i \verb{
-     #' Class to evaluate (row), where }\eqn{i \in \mathbb{N}}.
+     #' Class to evaluate (row), where }\eqn{i \in \mathbb{Z}-\{0\}}.
      #'
-     #' @param v \verb{
-     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default v=10.
-     #' This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-     #' v=e(nats).
-     #' }
      #' @param a \verb{
      #' Significance level. By default 0.05.
+     #' }
+     #' @param v \verb{
+     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default v=10.
+     #' This value is used for the entropy units, v=10(Hartleys), v=2(bits),
+     #' v=e(nats).
      #' }
      #' @return \verb{
      #' A list of real values containing the relative change of entropy
@@ -1188,21 +1205,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' \insertCite{stehman1997}{ConfMatrix} is followed for
      #' the calculations.
      #' @description
-     #'  \deqn{
-     #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-     #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-     #' {\sum^n_{i,j=1} x_{ij} }) )
-     #' }
-     #' \deqn{
-     #' Entrop_i(B|a_j)=-\sum^n_{j=1}( (\dfrac{ x_{ij}}
-     #' {\sum^n_{i=1} x_{i +} }) \cdot \log (\dfrac{x_{ij}}
-     #' {\sum^n_{i=1} x_{i +}}) )
-     #' }
+     #'
      #' \deqn{
      #' EntropProd_i= \dfrac{Entrop_i(B)-Entrop_i(B|a_j)}{Entrop_i(B)}
      #' }
+     #'
+     #'  \deqn{
+     #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{\sum^M_{j=1} x_{+ j}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+ j}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+     #' }
+     #' \deqn{
+     #' Entrop_i(B|a_j)=-\sum^M_{j=1}\left( \left(\dfrac{ x_{ij}}
+     #' {\sum^M_{i=1} x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
+     #' {\sum^M_{i=1} x_{i +}}\right) \right)
+     #' }
      #'\deqn{
-     #' \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N}
+     #' \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N_{EntropProd_i}}
      #' }
      #' where:
      #'
@@ -1215,19 +1234,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
      #'   \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
      #'   the location corresponding map of product A is in class \eqn{a_j}.
-     #'   \item \eqn{N}: number of cases involved in the calculation of
+     #'   \item \eqn{N_{EntropProd_i}}: number of cases involved in the calculation of
      #'   the index.
      #' }
-     #' @param i \verb{
-     #' Class to evaluate (row), where} \eqn{i \in \mathbb{N}}.
      #'
-     #' @param v \verb{
-     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default
-     #' v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
-     #' v=e(nats).
-     #' }
+     #' @param i \verb{
+     #' Class to evaluate (row), where} \eqn{i \in \mathbb{Z}-\{0\}}.
      #' @param a \verb{
      #' Significance level. By default 0.05.
+     #' }
+     #' @param v \verb{
+     #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default
+     #' v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
+     #' v=e(nats).
      #' }
      #' @return \verb{
      #' A list of real values containing the relative change of entropy
@@ -1273,11 +1292,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' followed for the calculations.
       #' @description
       #'  \deqn{
-      #' AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^n_{i=1} \dfrac{x_{ii}}
-      #' {\sum_{j=1}^n x_{j+}}
+      #' AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+      #' {\sum_{j=1}^M x_{j+}}
       #' }
       #'\deqn{
-      #' \sigma^2_{AvUserAcc}=\dfrac{AvUserAcc \cdot (1-AvUserAcc)}{N}
+      #' \sigma^2_{AvUserAcc}=\dfrac{AvUserAcc \cdot (1-AvUserAcc)}{N_{AvUserAcc}}
       #' }
       #' where:
       #'
@@ -1286,7 +1305,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{j+}}: sum of all elements in rows j.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{AvUserAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -1320,11 +1339,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^n_{i=1} \dfrac{x_{ii}}
-      #' {\sum_{j=1}^n x_{+j}}
+      #' AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^M_{i=1} \dfrac{x_{ii}}
+      #' {\sum_{j=1}^M x_{+j}}
       #' }
       #'\deqn{
-      #' \sigma^2_{AvProdAcc}=\dfrac{AvProdAcc \cdot (1-AvProdAcc)}{N}
+      #' \sigma^2_{AvProdAcc}=\dfrac{AvProdAcc \cdot (1-AvProdAcc)}{N_{AvProdAcc}}
       #' }
       #' where:
       #'
@@ -1333,7 +1352,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{AvProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -1366,7 +1385,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' AvUserProdAcc=\dfrac{AvUserAcc+AvProdAcc}{2}
       #' }
       #'  \deqn{
-      #' \sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc)}{N}
+      #' \sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc)}{N_{AvUserProdAcc}}
       #' }
       #'
       #' where:
@@ -1376,13 +1395,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   producer's perspective.
       #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
       #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{AvUserProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
+      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the average mean
       #' precision values from the user's and producer's perspective,
       #' their variance and confidence interval.
-      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -1407,22 +1426,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the calculations.
       #' @description
       #'  \deqn{
-      #' AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^n_{i=1} \dfrac{2 x_{ii}}
+      #' AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^M_{i=1} \dfrac{2 x_{ii}}
       #' { x_{+i} + x_{i+}}
       #' }
       #'  \deqn{
-      #' \sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N}
+      #' \sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N_{AvHelldenAcc}}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
       #'   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{AvHelldenAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -1454,21 +1473,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the calculations.
       #' @description
       #'  \deqn{
-      #' AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^n_{i=1} x_{ii}}
-      #' {\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}
+      #' AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^M_{i=1} x_{ii}}
+      #' {\sum^M_{i,j=1}x_{ij}}}{\sum^M_{j=1} x_{+ j}+\sum^M_{i=1} x_{i +}
       #' -x_{ii}}
       #' }
       #'\deqn{
-      #' \sigma^2_{AvShortAcc}=\dfrac{AvShortAcc \cdot (1-AvShortAcc)}{N}
+      #' \sigma^2_{AvShortAcc}=\dfrac{AvShortAcc \cdot (1-AvShortAcc)}{N_{AvShortAcc}}
       #' }
       #' where:
       #'
       #' \enumerate{
+      #'   \item \eqn{AvShortAcc}: average of Short's mapping accuracy index.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{i+}}: sum of all omissions in row i.
       #'   \item \eqn{x_{+i}}: sum of all commissions in column i.
-      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
+      #'   \item \eqn{N_{AvShortAcc}}: number of cases involved in the calculation of the index.
       #'    }
       #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the average of
@@ -1509,7 +1529,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' CombUserAcc=\dfrac{OverallAcc+AvUserAcc}{2}
       #' }
       #' \deqn{
-      #' \sigma^2_{CombUserAcc}=\dfrac{CombUserAcc \cdot (1-CombUserAcc)}{N}
+      #' \sigma^2_{CombUserAcc}=\dfrac{CombUserAcc \cdot (1-CombUserAcc)}{N_{CombUserAcc}}
       #' }
       #'
       #' where:
@@ -1518,13 +1538,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{CombUserAcc}: combined accuracy from user's perspective.
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{CombUserAcc}}: number of cases involved in the calculation of
       #'   the index.
       #'   }
+      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the combined
       #' accuracy from the user's perspective,
       #' its variation and confidence interval.
-      #' @param a Significance level. By default 0.05.
       #' @examples
       #' A<-matrix(c(352,43,89,203),nrow=2,ncol=2)
       #' p<-ConfMatrix$new(A,Source="Tung and LeDrew 1988")
@@ -1550,7 +1570,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' CombProdAcc=\dfrac{OverallAcc+AvProdAcc}{2}
       #' }
       #'\deqn{
-      #' \sigma^2_{CombProdAcc}=\dfrac{CombProdAcc \cdot (1-CombProdAcc)}{N}
+      #' \sigma^2_{CombProdAcc}=\dfrac{CombProdAcc \cdot (1-CombProdAcc)}{N_{CombProdAcc}}
       #' }
       #' where:
       #'
@@ -1559,7 +1579,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   perspective.
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{CombProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -1592,7 +1612,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #'  \deqn{
       #' \sigma^2_{CombUserProdAcc}=\dfrac{CombUserProdAcc \cdot
-      #' (1-CombUserProdAcc)}{N}
+      #' (1-CombUserProdAcc)}{N_{CombUserProdAcc}}
       #' }
       #' where:
       #'
@@ -1601,7 +1621,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   and producer's perspectives.
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{CombUserProdAcc}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -1632,15 +1652,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The reference \insertCite{cohen1960}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
-      #'  \deqn{
-      #' ExpAcc=\sum^n_{i=1} (\dfrac{x _{+ i}}{\sum_{j=1}^n x_{ij}}
-      #' \cdot \dfrac{x _{i +}}{\sum_{j=1}^n x_{ij}})
-      #' }
       #' \deqn{
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
       #' }
       #'  \deqn{
-      #' \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N}
+      #' ExpAcc=\sum^M_{i=1} \left( \dfrac{x_{+ i}}{\sum_{j=1}^M x_{ij}}
+      #' \cdot \dfrac{x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+      #' }
+      #'  \deqn{
+      #' \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N_{Kappa}}
       #' }
       #'
       #'
@@ -1654,7 +1674,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   were purely random.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{Kappa}}: number of cases involved in the calculation of
       #'   the index.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -1692,12 +1712,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' followed for the calculations.
       #' @description
       #'  \deqn{
-      #' Entrop=\sum^n_{i,j=1} (\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
-      #'  \cdot \log (\dfrac{x_{ij}}{\dfrac{\sum^n_{i=1} x_{i +}
-      #'  \cdot \sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij}}}))
+      #' Entrop=\sum^M_{i,j=1} \left(\dfrac{x_{ij}}{\sum^M_{i,j=1} x_{ij}}
+      #'  \cdot \log \left(\dfrac{x_{ij}}{\dfrac{\sum^M_{i=1} x_{i+}
+      #'  \cdot \sum^M_{j=1} x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
       #' }
       #'\deqn{
-      #' \sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N}
+      #' \sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N_{Entrop}}
       #' }
       #' where:
       #'
@@ -1705,11 +1725,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{Entrop}}: number of cases involved in the calculation of
       #'   the index.
       #' }
+      #'
       #' @param a Significance level. By default 0.05.
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #'
+      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
       #' By default v=10. This value is used for the entropy units, v=10(Hartleys),
       #' v=2(bits), v=e(nats).
       #' @return A list of real values containing the entropy, its variance
@@ -1742,16 +1764,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' confidence interval. The reference
       #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
-      #'  \deqn{
-      #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
+      #'
       #' \deqn{
       #' NormEntropUser=\dfrac{Entrop}{Entrop_i(B)}
       #' }
+      #' \deqn{
+      #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(  \dfrac{\sum^M_{j=1} x_{+ j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{j=1} x_{+ j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
       #'\deqn{
-      #' \sigma^2_{NormEntropUser}=\dfrac{NormEntropUser \cdot (1-NormEntropUser)}{N}
+      #' \sigma^2_{NormEntropUser}=\dfrac{NormEntropUser \cdot (1-NormEntropUser)}{N_{NormEntropUser}}
       #' }
       #' where:
       #'
@@ -1762,13 +1785,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{NormEntropUser}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #'
+      #' @param a Significance level. By default 0.05.
+      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
       #'  By default v=10. This value is used for the entropy units,
       #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing with normalized entropy
       #' of the product class i, conditioned to reference data, its variance and confidence interval.
       #' @examples
@@ -1804,34 +1828,36 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' interval. The reference \insertCite{finn1993}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
-      #'  \deqn{
-      #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
       #' \deqn{
       #' NormEntropProd=\dfrac{Entrop}{Entrop_i(A)}
       #' }
+      #'  \deqn{
+      #' Entrop_i(A)=-\sum^M_{j=1}\left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
       #'\deqn{
-      #' \sigma^2_{NormEntropProd}=\dfrac{NormEntropProd \cdot (1-NormEntropProd)}{N}
+      #' \sigma^2_{NormEntropProd}=\dfrac{NormEntropProd \cdot (1-NormEntropProd)}{N_{NormEntropProd}}
       #' }
       #' where:
       #'
       #' \enumerate{
       #'   \item \eqn{NormEntropProd}: normalized mutual information using
       #'   the entropy on the reference.
+      #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
-      #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of
+      #'   \item \eqn{N_{NormEntropProd}}: number of cases involved in the calculation of
       #'   the index.
       #' }
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #'
+      #' @param a Significance level. By default 0.05.
+      #'
+      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
       #'  By default v=10. This value is used for the entropy units,
       #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing with normalized entropy
       #' of the reference class i, conditioned to producer, its variance
       #' and confidence interval.
@@ -1867,21 +1893,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' reference. The method also offers the variance and confidence interval. The reference
       #' \insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
       #' @description
-      #'  \deqn{
-      #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
-      #' \deqn{
-      #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
       #' \deqn{
       #' AvNormEntrop=\dfrac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
       #' }
+      #'  \deqn{
+      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
       #' \deqn{
-      #' \sigma^2_{AvNormEntrop}=\dfrac{AvNormEntrop \cdot (1-AvNormEntrop)}{N}
+      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
+      #' \deqn{
+      #' \sigma^2_{AvNormEntrop}=\dfrac{AvNormEntrop \cdot (1-AvNormEntrop)}{N_{AvNormEntrop}}
       #' }
       #'
       #' where:
@@ -1889,20 +1915,20 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{AvNormEntrop}: normalized entropy using the
       #'   arithmetic mean of the entropies of product and reference.
-      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
-      #'   reference with respect to the class on the reference. B is a matrix.
+      #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
-      #'   \item \eqn{Entrop}: product entropy.
+      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+      #'   reference with respect to the class on the reference. B is a matrix.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of the
+      #'   \item \eqn{N_{AvNormEntrop}}: number of cases involved in the calculation of the
       #'   index.
       #' }
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' @param a Significance level. By default 0.05.
+      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
       #'  By default v=10. This value is used for the entropy units,
       #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the normalized
       #' entropy (arithmetic mean of the entropies on the product
       #' and reference), its variance and confidence interval.
@@ -1941,41 +1967,43 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The reference \insertCite{ghosh2002}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
-      #'  \deqn{
-      #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
-      #' \deqn{
-      #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
+      #'
       #' \deqn{
       #' GeomAvNormEntrop=\dfrac{Entrop}{\sqrt{Entrop_i(A) \cdot Entrop_i(B)}}
       #' }
+      #'  \deqn{
+      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
+      #' \deqn{
+      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
       #'\deqn{
       #' \sigma^2_{GeomAvNormEntrop}=
-      #' \dfrac{GeomAvNormEntrop \cdot (1-GeomAvNormEntrop)}{N}
+      #' \dfrac{GeomAvNormEntrop \cdot (1-GeomAvNormEntrop)}{N_{GeomAvNormEntrop}}
       #' }
       #' where:
       #'
       #' \enumerate{
       #'   \item \eqn{GeomAvNormEntrop}: normalized entropy using the
       #'   geometric mean of the entropies on the product and reference.
-      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
-      #'   reference with respect to the class on the reference. B is a matrix.
+      #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
-      #'   \item \eqn{Entrop}: product entropy.
+      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+      #'   reference with respect to the class on the reference. B is a matrix.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{N}: number of cases involved in the calculation of the index.
+      #'   \item \eqn{N_{GeomAvNormEntrop}}: number of cases involved in the calculation of the index.
       #' }
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #'
+      #' @param a Significance level. By default 0.05.
+      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
       #'  By default v=10. This value is used for the entropy units,
       #'  v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the normalized
       #' entropy (geometric mean of the entropies on the product
       #' and reference), its variance and confidence interval.
@@ -2012,43 +2040,43 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' followed for the calculations.
       #' @description
       #' \deqn{
-      #' Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
-      #' \deqn{
-      #' Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-      #' {\sum^n_{i,j=1} x_{ij} }) )
-      #' }
-      #' \deqn{
       #' AvMaxNormEntrop=\dfrac{2 Entrop}{max(Entrop_i(A))+max(Entrop_i(B))}=
       #' \dfrac{Entrop}{\log \sqrt{M}}
       #' }
+      #'  \deqn{
+      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
+      #' \deqn{
+      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
+      #' }
       #' \deqn{
       #' \sigma^2_{AvMaxNormEntrop}=
-      #' \dfrac{AvMaxNormEntrop \cdot (1-AvMaxNormEntrop)}{N}
+      #' \dfrac{AvMaxNormEntrop \cdot (1-AvMaxNormEntrop)}{N_{AvMaxNormEntrop}}
       #' }
       #' where:
       #'
       #' \enumerate{
       #'   \item \eqn{AvMaxNormEntrop}: normalized entropy using the arithmetic
       #'   mean of the maximum entropies on product and on reference.
-      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
-      #'   reference with respect to the class on the reference. B is a matrix.
+      #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
-      #'   \item \eqn{Entrop}: product entropy.
+      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+      #'   reference with respect to the class on the reference. B is a matrix.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{M}: number of elements of the matrix.
-      #'   \item \eqn{N}: number of cases involved in the calculation
+      #'   \item \eqn{N_{AvMaxNormEntrop}}: number of cases involved in the calculation
       #'   of the index.
       #' }
-      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+      #' @param a Significance level. By default 0.05.
+      #' @param v Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
       #' By default v=10. This value is used for the entropy units,
       #' v=10(Hartleys), v=2(bits), v=e(nats).
-      #' @param a Significance level. By default 0.05.
       #' @return A list of real values containing the normalized entropy
       #' (arithmetic mean of the maximum entropies in the product and in
       #' reference), its variance, and its confidence interval.
@@ -2086,23 +2114,24 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' PrAgCoef=\dfrac{1}{M}
+      #' Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
       #' }
       #' \deqn{
-      #' Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
+      #' PrAgCoef=\dfrac{1}{M}
       #' }
       #'
       #' \deqn{
       #' \sigma^2_{Tau}=\dfrac{OverallAcc \cdot (1-OverallAcc)}
-      #' {N \cdot (1-PrAgCoef)^2}
+      #' {N_{Tau} \cdot (1-PrAgCoef)^2}
       #' }
       #'
       #' Where:
       #' \enumerate{
+      #'   \item \eqn{Tau}: Tau index.
       #'   \item \eqn{OverallAcc}: overall accuracy.
       #'   \item \eqn{PrAgCoef}: a priori random agreement coefficient.
       #'   \item \eqn{M}: number of classes.
-      #'   \item \eqn{N}: number of elements of the matrix, cardinal of
+      #'   \item \eqn{N_{Tau}}: number of elements of the matrix, cardinal of
       #'   the matrix.
       #' }
       #' @param a Significance level. By default 0.05.
@@ -2128,14 +2157,149 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      },
 
 
+# Functions that return multiple indices ----------------------------------
+
+
+
+
+      #' @description Public method that calculates the user’s and the
+      #' producer’s indexes jointly. This method is equivalent to the methods
+      #' [ConfMatrix$UserAcc] and [ConfMatrix$ProdAcc].
+      #' @return A list containing the producer's and user's accuracies and
+      #' their standard deviations, respectively.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+      #' p$UserProdAcc()
+      #'
+      #' @aliases NULL
+
+     UserProdAcc =function(){
+      #  calculation of Class accuracies and standard deviations
+      nc <- nrow(self$values)
+       for (i in 1:nc){
+         pcpa <- self$ProdAcc()[[1]]
+         pcua <-self$UserAcc()[[1]]
+         pcpasd <- sqrt(self$ProdAcc()[[2]])
+         pcuasd <- sqrt(self$UserAcc()[[2]])
+       }
+     return(list(ProdAcc=pcpa,UserAcc= pcua,ProdAccSDeviation=pcpasd,
+                 UserAccSDeviation=pcuasd))
+     },
+
+
+      #' @description  Public method that calculates the general Kappa
+      #' agreement index, its standard deviation and the test statistic
+      #' to test its significance. The delta method has been used to calculate
+      #' the sample variance. The reference
+      #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+      #'
+      #' The mathematical expression is:
+      #'
+      #' \deqn{
+      #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
+      #' }
+      #'
+      #' \deqn{
+      #' ExpAcc=\sum^M_{i=1} \left(  \dfrac{x_{+i}}{\sum_{j=1}^M x_{ij}}
+      #' \cdot \dfrac{x_{i+}}{\sum_{j=1}^M x_{ij}} \right)
+      #' }
+      #'
+      #' \deqn{
+      #' \sigma^2_{Kappa} = \dfrac{1}{N_{Kappa}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
+      #' + \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
+      #' + \dfrac{(1-\theta_1)^2(\theta_4-4\theta_2^2)}{(1-\theta_2)^4} \right)
+      #' }
+      #' where
+      #'
+      #' \deqn{
+      #' \theta_1=OverallAcc=\dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
+      #' }
+      #'
+      #' \deqn{
+      #' \theta_2=ExpAcc=\sum^M_{i=1}
+      #' \left( \dfrac{x_{+ i}}{\sum_{j=1}^M x_{ij}}
+      #' \cdot \dfrac{x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+      #' }
+      #'
+      #'
+      #' \deqn{
+      #' \theta_3=\sum^M_{i=1} \left( \dfrac{x_{ii} x_{+ i}}{\sum_{j=1}^M x_{ij}}
+      #' \cdot \dfrac{x_{ii} x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+      #' }
+      #'
+      #'
+      #' \deqn{
+      #' \theta_4=\dfrac{1}{ ( \sum_{i,j=1}^M x_{ij})^3} \sum_{i,j=1}^M x_{ij}
+      #' (x_{j+}+x_{+i})^2
+      #' }
+      #'
+      #' \deqn{
+      #' Z=\dfrac{Kappa}{\sqrt{\sigma^2_{Kappa}}}
+      #' }
+      #'
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{Kappa}: Kappa coefficient.
+      #'   \item \eqn{ExpAcc}: expected accuracy of agreement if agreement
+      #'   were purely random.
+      #'   \item \eqn{OverallAcc}: overall accuracy.
+      #'   \item \eqn{\theta_1, \theta_2, \theta_3, \theta_4}: real values.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{Z}: the test statistic.
+      #'   \item \eqn{N_{Kappa}}: number of cases involved in the calculation of
+      #'   the index.
+      #'   \item \eqn{\sigma^2_{Kappa}}: kappa variance using the delta method
+      #' }
+      #'
+      #'
+      #'
+      #' @return A list of real values containing the kappa coefficient,
+      #' its standard deviation, and the value of its test statistic.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' nrow=4,ncol=4)
+      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+      #' p$DetailedKappa()
+      #'
+      #' @aliases NULL
+
+     DetailedKappa=function (){
+       nc <- nrow(self$values)
+       SumaMatriz <-sum(self$values)
+
+       # The 4 coefficients
+       O1 <- sum(diag(self$values))/SumaMatriz #OA
+       O2 <- sum((private$sumcol(self$values)*private$sumfil(self$values)))/(SumaMatriz*SumaMatriz) #EA
+       O3 <- sum(diag(self$values)*(private$sumcol(self$values)+private$sumfil(self$values)))/(SumaMatriz*SumaMatriz)
+       mintermedia1<- matrix(rep(private$sumcol(self$values), nc), nrow =nc, ncol=nc, byrow=TRUE)
+       mintermedia2<- matrix(rep(private$sumfil(self$values), nc), nrow =nc, ncol=nc, byrow=FALSE)
+       mintermedia3 <-(mintermedia1+mintermedia2)^2
+       O4 <- sum(self$values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
+       t1 <- (1-O1) #no oa
+       t2<- (1-O2) #no ea
+       K <- (O1-O2)/t2 #Kappa
+       t3<- 2*O1*O2-O3
+       t4<- O4-4*(O2^2)
+       t5<- O1*t1/(t2^2)+2*t1*t3/(t2^3)+(t1^2)*t4/(t2^4)
+       SdK <- sqrt((1/SumaMatriz)*t5) #standard desviation kappa
+       CV <- K/SdK #the test statistic to test significance
+
+     return(list(K=K, SdK=SdK, CV=CV))
+     },
+
+
       #' @description Public method that calculates the Ground Truth index
       #' , its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
       #' is followed for the computations.
       #' @description
       #' The mathematical expression is:
       #'
-      #' To calculate R_i we begin the following iterative process:
-      #' Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
+      #' To calculate \eqn{R} we begin the following iterative process:
+      #' Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
       #' \eqn{f_i^0} equal to producer accuracy.
       #'
       #'  When \eqn{2m (m=1,2,\cdots)}
@@ -2153,11 +2317,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'  the accuracy stabilizes.
       #'  Where
       #'  \deqn{
-      #' R=\dfrac{V/\sum_{i=1}^{k} V_i}
+      #' R=\dfrac{V}{\sum_{i=1}^{k} V_i}
       #' }
       #'
       #' \deqn{
-      #' ProdAcc=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
+      #' ProdAcc=\dfrac{x_{ii}}{\sum_{j=1}^M x_{+j}}
       #' }
       #' \deqn{
       #' GroundTruth = \dfrac{ProdAcc-R}{1-R}
@@ -2165,7 +2329,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' \deqn{
       #' \sigma^2_{GroundTruth}=\dfrac{GroundTruth \cdot (1-GroundTruth)}
-      #' {N}
+      #' {N_{GroundTruth}}
       #' }
       #'
       #' Where:
@@ -2173,12 +2337,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{GroundTruth}: index ground truth.
       #'   \item \eqn{R}: casual lucky guess.
       #'   \item \eqn{ProdAcc}: producer accuracy.
-      #'   \item \eqn{N}: number of elements of the matrix, cardinal of
-      #'   the matrix.
+      #'   \item \eqn{N_{GroundTruth}}: number of elements of the matrix, cardinal of the matrix.
       #' }
       #' @param a Significance level. By default 0.05.
-      #' @return A list with Ground Truth index, its variance, confidence
-      #' interval and the matrix with the expected frequencies.
+      #' @return A list with Ground Truth indexes, their variance, confidence
+      #' intervals and the matrix with the expected frequencies.
       #' @examples
       #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
       #' 6,25,1,1,0,0,1,6),nrow=5,ncol=5)
@@ -2249,7 +2412,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
                 Conf_Int=ConfInt,ExpFrec=Expfij))
     },
 
-
       #' @description Public method that calculates the Ground Truth index
       #' for class i, its variance and confidence interval.The reference
       #' \insertCite{turk1979gt}{ConfMatrix} is followed for the computations.
@@ -2259,8 +2421,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' To calculate R_i we begin the following iterative process:
       #' Take the original matrix by replacing its diagonal elements with 0.
       #' Thus define the new matrix \eqn{M_0}.
-      #' Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
-      #' \eqn{f_i^0} equal to producer accuracy sobre \eqn{M_0}.
+      #' Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
+      #' \eqn{f_i^0} equal to producer accuracy for \eqn{M_0}.
       #'
       #'  When \eqn{2m (m=1,2,\cdots)}
       #'  \deqn{
@@ -2277,11 +2439,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'  the accuracy stabilizes.
       #'  Where
       #'  \deqn{
-      #' R_i=\dfrac{V_i/\sum_{i=1}^{k} V_i}
+      #' R_i=\dfrac{V_i}{\sum_{i=1}^{k} V_i}
       #' }
       #'
       #' \deqn{
-      #' ProdAcc_i=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
+      #' ProdAcc_i=\dfrac{x_{ii}}{\sum_{j=1}^M x_{+j}}
       #' }
       #' \deqn{
       #' GroundTruth_i = \dfrac{ProdAcc_i-R_i}{1-R_i}
@@ -2289,7 +2451,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' \deqn{
       #' \sigma^2_{GroundTruth_i}=\dfrac{GroundTruth_i \cdot (1-GroundTruth_i)}
-      #' {N}
+      #' {N_{GroundTruth_i}}
       #' }
       #'
       #' Where:
@@ -2297,10 +2459,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{GroundTruth_i}: index ground truth for class i.
       #'   \item \eqn{R_i}: casual lucky guess for class i. Is a real value.
       #'   \item \eqn{ProdAcc_i}: producer accuracy for class i.
-      #'   \item \eqn{N}: number of elements of the matrix, cardinal of
-      #'   the matrix.
+      #'   \item \eqn{N_{GroundTruth_i}}: number of elements of the matrix, cardinal of the matrix.
       #' }
-      #' @param i Class to evaluate, where \eqn{i \in \mathbb{N}}
+      #' @param i Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.
       #' @param a Significance level. By default 0.05.
       #' @return A list with Ground Truth index for class i, its variance, confidence
       #' interval and the matrix with the expected frequencies for all classes.
@@ -2323,84 +2484,101 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
     },
 
 
-
-
-# Functions that return multiple indices ----------------------------------
-
-
-
-
-      #' @description Public method that calculates the user’s and the
-      #' producer’s indexes jointly. This method is equivalent to the methods
-      #' [ConfMatrix$UserAcc], [ConfMatrix$ProdAcc].
-      #' @return A list containing the producer's and user's accuracies and
-      #' their standard deviations, respectively.
+      #' @description Public method that performs the
+      #'  quasi-independence test for the elements of a confusion matrix.
+      #'  The reference
+      #'  \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
+      #' The mathematical expression is:
+      #'
+      #' \deqn{
+      #' G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{G^2}: statistic.
+      #'   \item \eqn{x_{ij}}: observed frequency.
+      #'   \item \eqn{E_{ij}}: expected frequency.
+      #' }
+      #' @param a significance level. By default a=0.05.
+      #' @return A list of the statistic's value and its z-score for a given
+      #' significance level.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-      #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' p$UserProdAcc()
+      #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
+      #' 7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+      #' p<-ConfMatrix$new(A,Source= "Türk 1979")
+      #' p$QIndep.test()
       #'
       #' @aliases NULL
 
-     UserProdAcc =function(){
-      #  calculation of Class accuracies and standard deviations
-      nc <- nrow(self$values)
-       for (i in 1:nc){
-         pcpa <- self$ProdAcc()[[1]]
-         pcua <-self$UserAcc()[[1]]
-         pcpasd <- sqrt(self$ProdAcc()[[2]])
-         pcuasd <- sqrt(self$UserAcc()[[2]])
-       }
-     return(list(ProdAcc=pcpa,UserAcc= pcua,ProdAccSDeviation=pcpasd,
-                 UserAccSDeviation=pcuasd))
-     },
 
+    QIndep.test=function(a=NULL){
+      if(is.null(a)){
+        a<-0.05
+      }else{a<-a}
+      A_0<-self$values-diag(diag(self$values),nrow(self$values),
+          nrow(self$values))
+      Expfij<-self$GroundTruth()[[4]]
+      k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
+      matr2<-A_0/Expfij
+      matr2[is.nan(matr2)] <- 0
 
-      #' @description  Public method that calculates the general Kappa
-      #' agreement index, its standard deviation and the test statistic
-      #' to test its significance. The reference
-      #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
-      #' @return A list of the kappa coefficient, its standard deviation,
-      #' and the value of its test statistic.
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-      #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' p$DetailedKappa()
-      #'
-      #' @aliases NULL
+      for (i in 1:nrow(A_0)) {
+        for (j in 1:nrow(A_0)) {
+          if(matr2[i,j]==0){
+            matr2[i,j]<-0
+          }else{
+            matr2[i,j]<-log(matr2[i,j])
+          }
+        }
+      }
 
-     DetailedKappa=function (){
-       nc <- nrow(self$values)
-       SumaMatriz <-sum(self$values)
+      Z<-2*sum(matr2)
+      ji_critico<-qchisq(1-a/2,k)
 
-       # The 4 coefficients
-       O1 <- sum(diag(self$values))/SumaMatriz #OA
-       O2 <- sum((private$sumcol(self$values)*private$sumfil(self$values)))/(SumaMatriz*SumaMatriz) #EA
-       O3 <- sum(diag(self$values)*(private$sumcol(self$values)+private$sumfil(self$values)))/(SumaMatriz*SumaMatriz)
-       mintermedia1<- matrix(rep(private$sumcol(self$values), nc), nrow =nc, ncol=nc, byrow=TRUE)
-       mintermedia2<- matrix(rep(private$sumfil(self$values), nc), nrow =nc, ncol=nc, byrow=FALSE)
-       mintermedia3 <-(mintermedia1+mintermedia2)^2
-       O4 <- sum(self$values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
-       t1 <- (1-O1) #no oa
-       t2<- (1-O2) #no ea
-       K <- (O1-O2)/t2 #Kappa
-       t3<- 2*O1*O2-O3
-       t4<- O4-4*(O2^2)
-       t5<- O1*t1/(t2^2)+2*t1*t3/(t2^3)+(t1^2)*t4/(t2^4)
-       SdK <- sqrt((1/SumaMatriz)*t5) #standard desviation kappa
-       CV <- K/SdK #the test statistic to test significance
+      if(Z<ji_critico){
+        cat("The null hypothesis is not rejected.\nTherefore, the quasi-independence between observed frequencies\nand expected is not rejected.\n")
+      }else{cat("The null hypothesis is rejected.\nTherefore, the quasi-independence between observedfrequencies\nand expected is rejected.\n")}
 
-     return(list(K=K, SdK=SdK, CV=CV))
-     },
-
+      return(list(Statistic=Z,Z=ji_critico))
+    },
 
       #' @description Public method that calculates the Kappa class agreement
       #' index (conditional Kappa) from the perspective of user (i) and
-      #' producer (j) and its standard desviations. The reference
+      #' producer (j) and its standard deviations. The reference
       #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
-      #' @return A list with conditional Kappa index of the user and the
+      #'
+      #'
+      #' @description
+      #' The mathematical expression is:
+      #'
+      #' \deqn{
+      #' CondKappa_{user}=\dfrac{\dfrac{x_{ii}}{x_{i+}}-x_{+j}}{1-x_{+j}}
+      #' }
+      #'
+      #' \deqn{
+      #' CondKappa_{producer}=\dfrac{\dfrac{x_{ii}}{x_{+j}}-x_{i+}}{1-x_{i+}}
+      #' }
+      #'
+      #' \deqn{
+      #' \sigma^2_{CondKappa_{producer}}=\dfrac{1}{\sum_{i,j=1}^M x_{ii}} \cdot
+      #' \dfrac{x_{+j}-x_{ii}}{x_{+j}^3 (1-x_{i+})^3} \cdot ((x_{+j}-x_{ii})\cdot
+      #' (x_{+j}x_{i+}-x_{ii}) + x_{ii} (1-x_{+j}-x_{i+}+x_{ii})  )
+      #' }
+      #'
+      #' \eqn{\sigma^2_{CondKappa_{user}}} is done in an analogous way by exchanging
+      #' \eqn{x_{i+}} to \eqn{x_{+j}}.
+      #'
+      #' \enumerate{
+      #' \item \eqn{CondKappa_{User}}: Conditional kappa index from the user's perspective.
+      #' \item \eqn{CondKappa_{Producer}}: Conditional kappa index from the producer's perspective.
+      #' \item \eqn{x_{ii}}: diagonal elements of the matrix.
+      #' \item \eqn{x_{+j}}: sum of all elements in column j.
+      #' \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'}
+      #'
+      #'
+      #' @return A list of real values containing conditional Kappa index of the user and the
       #' producer, and its corresponding standard deviation.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
@@ -2439,13 +2617,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
             tj4<-  ConfM[i,i]*(1-pcol[i]-prow[i]+ConfM[i,i])
             K_jsd[i] <- sqrt((1/SumaMatriz)*tj2*(tj3+tj4))
           }
-     return(list(UserCondKappa=Ki_, SD_UserCondKappa=Ki_sd, ProdCondKappa=K_j,
+     return(list(UserCondKappa=Ki_, ProdCondKappa=K_j,SD_UserCondKappa=Ki_sd,
                  SD_ProdCondKappa=K_jsd))
      },
 
 
       #' @description Public method that calculates the values of quantity
-      #' difference, change and shift. Quantity difference is the amount of
+      #' difference, exchange and shift. Quantity difference is the amount of
       #' difference between the product and the reference and is due to the
       #' less than maximum match in the proportions of the categories. Exchange
       #' represents transitions from class i to j and a transition from class j
@@ -2453,31 +2631,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' difference remaining after subtracting quantity difference and exchange
       #' from the overall difference. The reference
       #' \insertCite{pontius2014}{ConfMatrix} is followed for the computations.
-      #' @param TI Time interval (default value = 1)
-      #' @param SF Scale factor for results (default value = 1)
-      #' @return For the interval t of difference. A list real values,
-      #' quantity, exchange, and shift.In addition to the differences for
-      #' classes, number of components, change of classes and turn of
-      #' the components.
+      #' @return For the interval t of difference. A list of integer values with
+      #' quantity, exchange, and shift. In addition to the differences for
+      #' classes of the components of quantity, exchange and turn.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' p$QES(TI=1, SF=6)
+      #' p$QES()
       #'
       #' @aliases NULL
 
-     QES = function(TI=NULL, SF=1){
+     QES = function(){
       # Overall Quantity, Exchange and Shift values
-      # TI Time interval
-      # SF Scale factor
-       if(!is.null(TI)){
-         TI<-TI
-       }else{TI<-1}
-
-       if(!is.null(SF)){
-         SF<-SF
-       }else{SF<-1}
 
       nc <- nrow(self$values)
       SumaMatriz <-sum(self$values)
@@ -2490,9 +2656,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         for (j in 1:nc){
           for (i in 1:nc){
             if (i>j){#diagonal 0//triangular superior
-            ee[j,i] <-  (min(self$values[i,j], self$values[j,i]))*2
+            ee[i,j] <-  (min(self$values[i,j], self$values[j,i]))*2
             }else{
-              ee[j,i] <- 0
+              ee[i,j] <- 0
             }
           }
         }
@@ -2504,19 +2670,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         s[j]<-d[j]- q[j]-e[j]
         }
 
-      d<-d/((TI)*SumaMatriz)
-      q<-q/((TI)*SumaMatriz)
-      e<-e/((TI)*SumaMatriz)
-      s<-s/((TI)*SumaMatriz)
-      D<- SF*sum(d)/2
-      Q<- SF*sum(q)/2
-      E<- SF*sum(e)/2
-      S<- SF*sum(s)/2
-     return(list(OverallDiff=D, OverallQuant=Q, OverallExch=E, OverallShift=S,
-                 diff=d, quant=q, exch=e, shift=s))
+
+      D<- sum(d)/2
+      Q<- sum(q)/2
+      E<- sum(e)/2
+      S<- sum(s)/2
+
+     return(list( OverallQuant=Q, OverallExch=E, OverallShift=S,
+                  quant=q, exch=e, shift=s))
      },
-
-
 
 
 # Functions that return matrices ------------------------------------------
@@ -2530,7 +2692,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #' The matematical expression is:
       #'  \deqn{
-      #' MTypify=\dfrac{CM}{\sum^n_{i,j=1} x_{ij}}
+      #' MTypify=\dfrac{CM}{\sum^M_{i,j=1} x_{ij}}
       #' }
       #'
       #' where:
@@ -2617,15 +2779,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
 
-      #' @description Public method that provides N resamples, using a
+      #' @description Public method that provides B resamples, using a
       #' multinomial distribution, of the confusion matrix of a ConfMatrix
       #' object. As a result, a set of bootstrapped cases is offered. The
       #' reference \insertCite{fienberg1970}{ConfMatrix} is
       #' followed for the computations.
-      #' @param n Number of resamples.
+      #' @param B Number of resamples.
       #' @param pr Vector with resampling probabilities. By default, the
       #' success probability of each cell will be taken.
-      #' @return A list of n+1 arrays formed by the original confusion matrix
+      #' @return A list of B + 1 arrays formed by the original confusion matrix
       #' and all the simulated cases.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
@@ -2635,7 +2797,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     MBootStrap=function(n,pr=NULL){
+     MBootStrap=function(B,pr=NULL){
       #matrix range
       nc<-ncol(self$values)
       #convert to vector
@@ -2651,7 +2813,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #M2: matrix list
       M2<-list()
       #resampling with multinomial
-      boots<-rmultinom(n,sum(M1),pr)
+      boots<-rmultinom(B,sum(M1),pr)
 
       #save simulated matrix
         for(i in 1:ncol(boots)){
@@ -2666,7 +2828,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' order to get the sum of values by rows and columns to be worth one.
       #' The references \insertCite{fienberg1970,munoz2016}{ConfMatrix}
       #' are followed for the computations.
-      #' @param n Number of iteration. By default n=100.
+      #' @param iter Number of iteration. By default iter=1000.
       #' @return A list formed by the original confusion matrix and the
       #' normalized matrix.
       #' @examples
@@ -2679,15 +2841,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-     MNormalize=function(n=NULL){
+     MNormalize=function(iter=NULL){
 
-      if(!is.null(n)){
-        n <- n
-      }else{n<-100}
+      if(!is.null(iter)){
+        iter <- iter
+      }else{iter<-1000}
 
       rg<-nrow(self$values)
       x1<-self$values
-        for (k in 1:n) {
+        for (k in 1:iter) {
         sumfilas=apply(x1,1,sum)
           for (i in 1:rg) {
           x1[i,]=x1[i,]/sumfilas[i]
@@ -2755,10 +2917,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that calculates the general Tau
-      #' concordance index and its standard deviation.
+      #' concordance index (weighted) and its standard deviation.
       #' @param WV Weights vector (as matrix)
-      #' @return  A list with the Tau index, the weight matrix, its standard
-      #' deviation and its statistics.
+      #' @return  A list with the weighted Tau index, the weight matrix,
+      #' its standard deviation and its statistics.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -2803,7 +2965,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the original matrix and the weight matrix, its standard deviations
       #' and the value of its test statistic.
       #' @examples
-      #' A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' A <- matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
       #' WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1),
       #' nrow = 4, ncol=4))
@@ -2913,7 +3075,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      },
 
 
-
 # test function -----------------------------------------------------------
 
 
@@ -2924,20 +3085,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' HD = \dfrac{4nm}{n+m} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
+      #' HD = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
       #' }
       #'
       #' Where:
       #' \enumerate{
       #'   \item \eqn{HD}: Hellinger Distance.
-      #'   \item \eqn{n}: number of elements in the matrix A.
+      #'   \item \eqn{n_{A}}: number of elements in the matrix A.
+      #'   \item \eqn{m_{B}}: number of elements in the matrix B.
       #'   \item \eqn{p_i}: element i of the probability vector of matrix A.
       #'   \item \eqn{q_i}: element i of the probability vector of matrix B.
       #' }
-      #' @param f f Element of the ConfMatrix.
-      #' @param p probability vector. By default, the probability of
+      #' @param f Element of the ConfMatrix.
+      #' @param p probability vector of matrix A. By default, the probability of
       #' success for each cell is taken.
-      #' @param q probability vector. By default, the probability of
+      #' @param q probability vector of matrix B. By default, the probability of
       #' success for each cell is taken.
       #' @return A real value for the statistic value of the statistical
       #' test based on the Hellinger distance.
@@ -2987,20 +3149,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
+      #' Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2_{k_A}+\sigma^2_{k_B})}}
       #' }
       #'
       #' Where:
       #' \enumerate{
+      #'  \item \eqn{Z}: statistic.
       #'   \item \eqn{k_A}: kappa index of matrix A
       #'   \item \eqn{k_B}: kappa index of matrix B
-      #'   \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
-      #'   \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
+      #'   \item \eqn{\sigma^2_{k_A}}: variance of \eqn{k_A}.
+      #'   \item \eqn{\sigma^2_{k_B}}: variance of \eqn{k_B}.
       #' }
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param a significance level. By default a=0.05.
       #' @param f Element of the ConfMatrix class.
       #' @return A list with the value of the test statistic and its
-      #' z score for a given alpha significance level.
+      #' z score for a given significance level.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
@@ -3010,14 +3173,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-      Kappa.test=function(f,alpha=NULL){
+      Kappa.test=function(f,a=NULL){
         if(class(f)[1]!="ConfMatrix"){
           warning("A ConfMatrix element is not being introduced")
           stop(" ")
         }
-        if(is.null(alpha)){
-          alpha<-0.05
-        }else{alpha<-alpha}
+        if(is.null(a)){
+          a<-0.05
+        }else{a<-a}
 
         k1<-self$Kappa()[[1]]
         k2<-f$Kappa()[[1]]
@@ -3025,7 +3188,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         v2<-f$Kappa()[[2]]
 
         Z<-abs(k1-k2)/(sqrt(v1+v2))
-        cl<-qnorm(1-alpha/2)
+        cl<-qnorm(1-a/2)
 
         if(Z>-cl & Z<cl){
           cat("The null hypothesis is not rejected.\nTherefore, the kappa values and the\nconfusion matrices do not present\nsignificant differences.\n")
@@ -3044,20 +3207,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
+      #' Z = \dfrac{|OA_A-OA_B|}{\sqrt{(\sigma^2_{OA_A}+\sigma^2_{OA_B})}}
       #' }
       #'
       #' Where:
       #' \enumerate{
-      #'   \item \eqn{k_A}: overall index of matrix A
-      #'   \item \eqn{k_B}: overall index of matrix B
-      #'   \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
-      #'   \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
+      #'  \item \eqn{Z}: statistic.
+      #'   \item \eqn{OA_A}: overall index of matrix A
+      #'   \item \eqn{OA_B}: overall index of matrix B
+      #'   \item \eqn{\sigma^2_{OA_A}}: variance of \eqn{OA_A}.
+      #'   \item \eqn{\sigma^2_{OA_B}}: variance of \eqn{OA_B}.
       #' }
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param a significance level. By default a=0.05.
       #' @param f Element of the ConfMatrix class.
       #' @return A list with the value of the test statistic and its z
-      #' score for a given alpha significance level.
+      #' score for a given significance level.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
@@ -3067,14 +3231,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-    OverallAcc.test=function(f,alpha=NULL){
+    OverallAcc.test=function(f,a=NULL){
       if(class(f)[1]!="ConfMatrix"){
         warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
-      if(is.null(alpha)){
-        alpha<-0.05
-      }else{alpha<-alpha}
+      if(is.null(a)){
+        a<-0.05
+      }else{a<-a}
 
       k1<-self$OverallAcc()[[1]]
       k2<-f$OverallAcc()[[1]]
@@ -3084,7 +3248,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #Ma-Tau
       Z<-abs(k1-k2)/sqrt(v1+v2)
 
-      cl<-qnorm(1-alpha/2)
+      cl<-qnorm(1-a/2)
 
       if(Z>-cl & Z<cl){
         cat("The null hypothesis is not rejected.\nTherefore, the overall values and the\nconfusion matrices do not present\nsignificant differences.\n")
@@ -3102,20 +3266,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
+      #' Z = \dfrac{|\tau_A-\tau_B|}{\sqrt{(\sigma^2_{\tau_A}+\sigma^2_{\tau_B})}}
       #' }
       #'
       #' Where:
       #' \enumerate{
-      #'   \item \eqn{k_A}: Tau index of matrix A
-      #'   \item \eqn{k_B}: Tau index of matrix B
-      #'   \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
-      #'   \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
+      #'  \item \eqn{Z}: statistic.
+      #'   \item \eqn{\tau_A}: Tau index of matrix A
+      #'   \item \eqn{\tau_B}: Tau index of matrix B
+      #'   \item \eqn{\sigma^2_{\tau_A}}: variance of \eqn{\tau_A}.
+      #'   \item \eqn{\sigma^2_{\tau_B}}: variance of \eqn{\tau_B}.
       #' }
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param a significance level. By default a=0.05.
       #' @param f Element of the ConfMatrix class.
       #' @return A list with the value of the test statistic and its z
-      #' score for a given alpha significance level
+      #' score for a given significance level
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -3127,14 +3292,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-    Tau.test=function(f,alpha=NULL){
+    Tau.test=function(f,a=NULL){
       if(class(f)[1]!="ConfMatrix"){
         warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
-      if(is.null(alpha)){
-        alpha<-0.05
-      }else{alpha<-alpha}
+      if(is.null(a)){
+        a<-0.05
+      }else{a<-a}
 
       k1<-self$Tau()[[1]]
       k2<-f$Tau()[[1]]
@@ -3145,7 +3310,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #Ma-Tau
       Z<-abs(k1-k2)/sqrt(v1+v2)
 
-      cl<-qnorm(1-alpha/2)
+      cl<-qnorm(1-a/2)
 
       if(Z>-cl & Z<cl){
           cat("The null hypothesis is not rejected.\nTherefore, the tau values and the\nconfusion matrices do not present\nsignificant differences.\n")
@@ -3158,14 +3323,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' based on the Hellinger distance between two confusion matrices
       #' (instances of the ConfMatrix class)
       #' The test considers the individual cell values in the matrices.
+      #' To use this test, the column vectors are chained one after the other.
       #' The reference \insertCite{garcia2018}{ConfMatrix} is followed for
       #' the computations.
-      #' @param n1 Number of bootstraps that you want to generate.
-      #' By default n=10000.
-      #' @param alpha significance level. By default alpha=0.05.
+      #' @param B Number of bootstraps that you want to generate.
+      #' By default B=1000.
+      #' @param a significance level. By default a=0.05.
       #' @param f Element of the ConfMatrix class.
       #' @return A list with the value of the test statistic and its z
-      #' score for a given alpha significance level.
+      #' score for a given significance level.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
@@ -3177,18 +3343,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-    TSCM.test=function(f,n1=NULL,alpha=NULL){
+    TSCM.test=function(f,B=NULL,a=NULL){
       if(class(f)[1]!="ConfMatrix"){
         warning("A ConfMatrix element is not being introduced")
         stop(" ")
       }
-      if(is.null(n1)){
-        n1<-10000
-      }else{n1<-n1}
+      if(is.null(B)){
+        B<-1000
+      }else{B<-B}
 
-      if(is.null(alpha)){
-        alpha<-0.05
-      }else{alpha<-alpha}
+      if(is.null(a)){
+        a<-0.05
+      }else{a<-a}
 
       A<-self$values
       B<-f$values
@@ -3208,8 +3374,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #bootstrap
       q1<-list()
       p1<-list()
-      p1<-self$MBootStrap(n1,p_0)[[2]]
-      q1<-f$MBootStrap(n1,p_0)[[2]]
+      p1<-self$MBootStrap(B,p_0)[[2]]
+      q1<-f$MBootStrap(B,p_0)[[2]]
       #calculation of hellinger statistics by pairs
 
       Tn<-c()
@@ -3230,81 +3396,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #mean p
       pvalue<-length(Tn_boot)/length(Tn)
 
-     if(pvalue>alpha){
+     if(pvalue>a){
        cat("The null hypothesis is not rejected,\nboth confusion matrices exhibit\na similar level of accuracy.\n")
      }else{
        cat("The hypothesis that both distributions are is still\nrejected and the confusion matrices,\ntherefore, are not similar.\n")
      }
-    return(list(pvalue=pvalue, alpha=alpha))
-    },
-
-
-
-      #' @description Public method that performs the
-      #'  quasi-independence test for the elements of a confusion matrix.
-      #'  The reference
-      #'  \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
-      #' The mathematical expression is:
-      #'
-      #' \deqn{
-      #' G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
-      #' }
-      #'
-      #' Where:
-      #' \enumerate{
-      #'   \item \eqn{G^2}: statistic.
-      #'   \item \eqn{x_{ij}}: observed frequency.
-      #'   \item \eqn{E_{ij}}: expected frequency.
-      #' }
-      #' @param alpha significance level. By default alpha=0.05.
-      #' @return A list of the statistic's value and its z-score for a given
-      #' alpha significance level.
-      #' @examples
-      #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
-      #' 7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-      #' p<-ConfMatrix$new(A,Source= "Türk 1979")
-      #' p$QIndep.test()
-      #'
-      #' @aliases NULL
-
-
-    QIndep.test=function(alpha=NULL){
-      if(is.null(alpha)){
-        alpha<-0.05
-      }else{alpha<-alpha}
-      A_0<-self$values-diag(diag(self$values),nrow(self$values),
-          nrow(self$values))
-      Expfij<-self$GroundTruth()[[4]]
-      k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
-      matr2<-A_0/Expfij
-      matr2[is.nan(matr2)] <- 0
-
-      for (i in 1:nrow(A_0)) {
-        for (j in 1:nrow(A_0)) {
-          if(matr2[i,j]==0){
-            matr2[i,j]<-0
-          }else{
-            matr2[i,j]<-log(matr2[i,j])
-          }
-        }
-      }
-
-      Z<-2*sum(matr2)
-      ji_critico<-qchisq(1-alpha/2,k)
-
-      if(Z<ji_critico){
-        cat("The null hypothesis is not rejected.\nTherefore, the quasi-independence between observed frequencies\nand expected is not rejected.\n")
-      }else{cat("The null hypothesis is rejected.\nTherefore, the quasi-independence between observedfrequencies\nand expected is rejected.\n")}
-
-      return(list(Statistic=Z,Z=ji_critico))
+    return(list(pvalue=pvalue, alpha=a))
     },
 
 # graphics ----------------------------------------------------------------
 
 
       #' @description Public method that provides a graph of the indices of
-      #' the functions OverallAcc, Kappa, Tau, AvHelldenAcc,
-      #' AvShortAcc with their corresponding standard deviations.
+      #' the functions [ConfMatrix$OverallAcc], [ConfMatrix$Kappa],
+      #' [ConfMatrix$Tau], [ConfMatrix$AvHelldenAcc] and [ConfMatrix$AvShortAcc]
+      #'  with their corresponding standard deviations.
       #' @return A graph of the indices of the functions OverallAcc, Kappa,
       #' Tau, AvHelldenAcc, AvShortAcc with their corresponding
       #' standard deviations.
@@ -3436,6 +3542,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        sumcol<-apply(v,2,sum)
        return(sumcol)
      }
+
+
+
 
 
    ),

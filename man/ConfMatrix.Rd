@@ -20,9 +20,7 @@ those that provide combinations start with "Comb". Methods related
 to a specific class end with the ending "_i".
 }
 \note{
-Error Messages:
-
-List of possible errors:
+Error Messages: List of possible errors:
 \itemize{
  \item \code{Error type 1}: Non-square matrix.
  \item \code{Error type 2}: Single element matrix.
@@ -374,26 +372,6 @@ p$Tau()
 
 
 ## ------------------------------------------------
-## Method `ConfMatrix$GroundTruth`
-## ------------------------------------------------
-
-A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
-6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-p<-ConfMatrix$new(A,Source="Türk 1979")
-p$GroundTruth()
-
-
-## ------------------------------------------------
-## Method `ConfMatrix$GroundTruth_i`
-## ------------------------------------------------
-
-A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
-6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-p<-ConfMatrix$new(A,Source="Türk 1979")
-p$GroundTruth_i(3)
-
-
-## ------------------------------------------------
 ## Method `ConfMatrix$UserProdAcc`
 ## ------------------------------------------------
 
@@ -414,6 +392,36 @@ p$DetailedKappa()
 
 
 ## ------------------------------------------------
+## Method `ConfMatrix$GroundTruth`
+## ------------------------------------------------
+
+A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
+6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source="Türk 1979")
+p$GroundTruth()
+
+
+## ------------------------------------------------
+## Method `ConfMatrix$GroundTruth_i`
+## ------------------------------------------------
+
+A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,
+6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source="Türk 1979")
+p$GroundTruth_i(3)
+
+
+## ------------------------------------------------
+## Method `ConfMatrix$QIndep.test`
+## ------------------------------------------------
+
+A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
+7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source= "Türk 1979")
+p$QIndep.test()
+
+
+## ------------------------------------------------
 ## Method `ConfMatrix$DetailedCondKappa`
 ## ------------------------------------------------
 
@@ -430,7 +438,7 @@ p$DetailedCondKappa ()
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$QES(TI=1, SF=6)
+p$QES()
 
 
 ## ------------------------------------------------
@@ -501,7 +509,7 @@ p$DetailedWTau(WV)
 ## Method `ConfMatrix$DetailedWKappa`
 ## ------------------------------------------------
 
-A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+A <- matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
 WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1),
 nrow = 4, ncol=4))
@@ -583,16 +591,6 @@ p$TSCM.test(f)
 
 
 ## ------------------------------------------------
-## Method `ConfMatrix$QIndep.test`
-## ------------------------------------------------
-
-A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
-7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-p<-ConfMatrix$new(A,Source= "Türk 1979")
-p$QIndep.test()
-
-
-## ------------------------------------------------
 ## Method `ConfMatrix$plot.global`
 ## ------------------------------------------------
 
@@ -668,7 +666,7 @@ p$print()
 
 \insertRef{alba2020}{ConfMatrix}
 
-\insertRef{turk1979gt}{ConfMatrix}goodman1968analysis
+\insertRef{turk1979gt}{ConfMatrix}
 
 \insertRef{goodman1968analysis}{ConfMatrix}
 }
@@ -676,24 +674,35 @@ p$print()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{values}}{\verb{
- Confusion matrix. An array must be added.
+Matrix of integer values. An matrix must be added.
 }}
 
 \item{\code{ID}}{\verb{
-Identifier.
-  }}
+Identifier. It is a character string with a maximum length of 50
+characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
+Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
+}}
 
 \item{\code{Date}}{\verb{
-Date.
-  }}
+Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
+By default the date provided by the system will be taken.
 
-\item{\code{Source}}{\verb{
-Source Matrix.
-  }}
+}}
 
 \item{\code{ClassName}}{\verb{
-Class name.
-  }}
+Name of the classes. It is given by a character strings vector whose
+elements are the name of the classes. Each element of the vector is
+a string of maximum 20 characters. By default for the column elements
+they will be} \eqn{Ref_i'} \verb{and for the elements of row} \eqn{C_i'}\verb{, with} \eqn{i'} \verb{being the
+corresponding row or column number.
+}}
+
+\item{\code{Source}}{\verb{
+Indicates where the matrix comes from (article, project, etc.).
+It is suggested to enter a reference or a DOI. A character
+string with a maximum length of 80 characters can be entered.
+By default, is NULL.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -734,10 +743,11 @@ Class name.
 \item \href{#method-ConfMatrix-GeomAvNormEntrop}{\code{ConfMatrix$GeomAvNormEntrop()}}
 \item \href{#method-ConfMatrix-AvMaxNormEntrop}{\code{ConfMatrix$AvMaxNormEntrop()}}
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
-\item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
-\item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-DetailedKappa}{\code{ConfMatrix$DetailedKappa()}}
+\item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
+\item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
+\item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
 \item \href{#method-ConfMatrix-DetailedCondKappa}{\code{ConfMatrix$DetailedCondKappa()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
@@ -753,7 +763,6 @@ Class name.
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
 \item \href{#method-ConfMatrix-TSCM.test}{\code{ConfMatrix$TSCM.test()}}
-\item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
 \item \href{#method-ConfMatrix-plot.global}{\code{ConfMatrix$plot.global()}}
 \item \href{#method-ConfMatrix-plot.class}{\code{ConfMatrix$plot.class()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
@@ -779,13 +788,13 @@ The optional possibility of adding metadata to the matrix is offered.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{values}}{\verb{
-Matrix of values. A matrix must be added.
+Matrix of integer values. A matrix must be added.
 }}
 
 \item{\code{ID}}{\verb{
 Identifier. It is a character string with a maximum length of 50
-characters. By default, "CM_i" will be taken as identification.
-Where} \emph{i} \verb{will be the number of ConfMatrix instances already defined.
+characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
+Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
 }}
 
 \item{\code{Date}}{\verb{
@@ -798,7 +807,7 @@ By default the date provided by the system will be taken.
 Name of the classes. It is given by a character strings vector whose
 elements are the name of the classes. Each element of the vector is
 a string of maximum 20 characters. By default for the column elements
-they will be} \eqn{Ref_i}\verb{ and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
+they will be} \eqn{Ref_i} \verb{and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
 corresponding row or column number.
 }}
 
@@ -812,7 +821,9 @@ By default, is NULL.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
+\verb{
 Object of the ConfMatrix class, or an error message.
+}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -843,18 +854,18 @@ is followed for the computations.
 The mathematical expression is:
 
 \deqn{
-OverallAcc = \dfrac{\sum_{i=1}^{n} x_{ii}}{\sum_{i, j=1}^{n} x_{ij}}
+OverallAcc = \dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
 }
 
 \deqn{
-\sigma^2_{OverallAcc}=\dfrac{OverallAcc \cdot (1-OverallAcc)}{N}
+\sigma^2_{OverallAcc}=\dfrac{OverallAcc \cdot (1-OverallAcc)}{N_{OverallAcc}}
 }
 Where:
 \enumerate{
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{ij}}: element of the matrix.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{OverallAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -903,10 +914,10 @@ for the computations.
 
 The mathematical expression is:
 \deqn{
-UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
 }
  \deqn{
-\sigma^2_{UserAcc}=\dfrac{UserAcc \cdot (1-UserAcc)}{N}
+\sigma^2_{UserAcc}=\dfrac{UserAcc \cdot (1-UserAcc)}{N_{UserAcc}}
 }
 where:
 
@@ -914,7 +925,7 @@ where:
   \item \eqn{UserAcc}: user accuracy.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{ij}}: element of the matrix.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{UserAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -954,7 +965,7 @@ p$UserAcc()
 \if{html}{\out{<a id="method-ConfMatrix-UserAcc_i"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-UserAcc_i}{}}}
 \subsection{Method \code{UserAcc_i()}}{
-(): Public method for deriving the index called
+Public method for deriving the index called
 user’s accuracy for a specific class i in a ConfMatrix object
 instance. The user’s accuracy for the class i of a thematic
 product is calculated by dividing the value in the diagonal of
@@ -965,10 +976,10 @@ is followed for the computations.
 
 
 \deqn{
-UserAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^n x_{ij}}
+UserAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
 }
 \deqn{
-\sigma^2_{UserAcc_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}{N}
+\sigma^2_{UserAcc_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}{N_{UserAcc_i}}
 }
 
 
@@ -978,7 +989,7 @@ where:
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{ij}}: element of the matrix.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{UserAcc_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -988,20 +999,15 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{\verb{
-User class to evaluate, where} \eqn{i \in \mathbb{N}}.}
+\item{\code{i}}{User class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.}
 
-\item{\code{a}}{\verb{
-Significance level. By default 0.05.
-}}
+\item{\code{a}}{Significance level. By default 0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\verb{
 A list of real values containing the user’s accuracy for class i, its
 variance, and its confidence interval.
-}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -1032,10 +1038,10 @@ computations.
 
 
 \deqn{
-ProdAcc=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
+ProdAcc=\dfrac{x_{jj}}{\sum_{j=1}^M x_{ij}}
 }
 \deqn{
-\sigma^2_{ProdAcc}=\dfrac{ProdAcc \cdot (1-ProdAcc)}{N}
+\sigma^2_{ProdAcc}=\dfrac{ProdAcc \cdot (1-ProdAcc)}{N_{ProdAcc}}
 }
 where:
 
@@ -1043,7 +1049,7 @@ where:
   \item \eqn{ProdAcc}: producer accuracy.
   \item \eqn{x_{jj}}: diagonal element of the matrix.
   \item \eqn{x_{ij}}: element of the matrix.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{ProdAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1093,10 +1099,10 @@ calculations.
 
 
 \deqn{
-ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^n x_{ij}}
+ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^M x_{ij}}
 }
 \deqn{
-\sigma^2_{ProdAcc_i}=\dfrac{ProdAcc_i \cdot (1-ProdAcc_i)}{N}
+\sigma^2_{ProdAcc_i}=\dfrac{ProdAcc_i \cdot (1-ProdAcc_i)}{N_{ProdAcc_i}}
 }
 
 where:
@@ -1105,7 +1111,7 @@ where:
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
   \item \eqn{x_{jj}}: diagonal element of the matrix.
   \item \eqn{x_{ij}}: element of the matrix.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1116,8 +1122,7 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Producer class to evaluate, where \eqn{i \in \mathbb{N}}.
-}}
+Producer class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{a}}{\verb{
 Significance level. By default 0.05.
@@ -1160,7 +1165,7 @@ AvUserProdAcc_i=\dfrac{UserAcc_i+ProdAcc_i}{2}
 }
 \deqn{
 \sigma^2_{AvUserProdAcc_i}=\dfrac{AvUserProdAcc_i
-\cdot (1-AvUserProdAcc_i)}{N}
+\cdot (1-AvUserProdAcc_i)}{N_{AvUserProdAcc_i}}
 }
 where:
 
@@ -1169,7 +1174,7 @@ where:
   accuracies.
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{AvUserProdAcc_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1180,8 +1185,7 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate, where \eqn{i \in \mathbb{N}}.
-}}
+Class to evaluate, where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{a}}{\verb{
 Significance level. By default 0.05.
@@ -1224,7 +1228,7 @@ The mathematical expression is:
 Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
 }
  \deqn{
-\sigma^2_{Sucess}=\dfrac{Sucess \cdot (1-Sucess)}{N}
+\sigma^2_{Sucess}=\dfrac{Sucess \cdot (1-Sucess)}{N_{Sucess}}
 }
 
 where:
@@ -1233,7 +1237,7 @@ where:
   \item \eqn{Sucess}: classification success index.
   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{Sucess}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1284,7 +1288,7 @@ Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
 }
 
 \deqn{
-\sigma^2_{Sucess_i}=\dfrac{Sucess_i \cdot (1-Sucess_i)}{N}
+\sigma^2_{Sucess_i}=\dfrac{Sucess_i \cdot (1-Sucess_i)}{N_{Sucess_i}}
 }
 
 where:
@@ -1293,7 +1297,7 @@ where:
   \item \eqn{Sucess_i}: individual classification success index.
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{Sucess_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1303,7 +1307,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1347,7 +1351,7 @@ followed for the calculations.
 AvHelldenAcc_i=\dfrac{2}{\dfrac{1}{UserAcc_i}+\dfrac{1}{ProdAcc_i}}
 }
 \deqn{
-\sigma^2_{AvHelldenAcc_i}=\dfrac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N}
+\sigma^2_{AvHelldenAcc_i}=\dfrac{AvHelldenAcc_i \cdot (1-AvHelldenAcc_i)}{N_{AvHelldenAcc_i}}
 }
 where:
 
@@ -1355,7 +1359,7 @@ where:
   \item \eqn{AvHelldenAcc_i}: Hellden's mean accuracy.
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{AvHelldenAcc_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1365,7 +1369,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1404,11 +1408,11 @@ are followed for the calculations.
 
 
 \deqn{
-ShortAcc_i=\dfrac{x_{ii}}{\sum^n_{j=1} x_{+ j}+
-\sum^n_{i=1} x_{i +}-x_{ii}}
+ShortAcc_i=\dfrac{x_{ii}}{\sum^M_{j=1} x_{+ j}+
+\sum^M_{i=1} x_{i +}-x_{ii}}
 }
 \deqn{
-\sigma^2_{ShortAcc_i}=\dfrac{ShortAcc_i \cdot (1-ShortAcc_i)}{N}
+\sigma^2_{ShortAcc_i}=\dfrac{ShortAcc_i \cdot (1-ShortAcc_i)}{N_{ShortAcc_i}}
 }
 where:
 
@@ -1417,7 +1421,7 @@ where:
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{j+}}: sum of all omissions in row j.
   \item \eqn{x_{+j}}: sum of all commissions in column j.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{ShortAcc_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1427,7 +1431,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}.}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1462,14 +1466,14 @@ for the calculations.
 
 
 \deqn{
-UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^n_{i=1} x_{i + }}
-{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\dfrac{\sum^n_{i=1} x_{i + }}
-{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+UserKappa_i=\dfrac{UserAcc_i-\dfrac{\sum^M_{i=1} x_{i + }}
+{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{i=1} x_{i + }}
+{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
 }
  \deqn{
 \sigma^2_{UserKappa_i}=\dfrac{UserAcc_i \cdot (1-UserAcc_i)}
-{(1-\dfrac{\sum^n_{i=1} x_{i + }}
-{\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
+{ \left(1-\dfrac{\sum^M_{i=1} x_{i + }}
+{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}\right)^2 \cdot N_{UserKappa_i}}
 }
 where:
 
@@ -1479,7 +1483,7 @@ where:
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{UserKappa_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1489,7 +1493,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1524,14 +1528,14 @@ for the calculations.
 
 
 \deqn{
-ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^n_{j=1} x_{ + j }}
-{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}{1-\dfrac{\sum^n_{j=1} x_{+ j }}
-{\sum^n_{i=1}\sum^n_{j=1} x_{ij}}}
+ProdKappa_i=\dfrac{ProdAcc_i-\dfrac{\sum^M_{j=1} x_{ + j }}
+{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}{1-\dfrac{\sum^M_{j=1} x_{+ j }}
+{\sum^M_{i=1}\sum^M_{j=1} x_{ij}}}
 }
  \deqn{
 \sigma^2_{ProdKappa_i}=\dfrac{ProdAcc_i \cdot (1- ProdAcc_i)}
-{(1-\dfrac{\sum^n_{j=1} x_{+ j }}
-{\sum^n_{i=1}\sum^n_{j=1} x_{ij}})^2 \cdot N}
+{\left(1-\dfrac{\sum^M_{j=1} x_{+ j }}
+{\sum^M_{i=1}\sum^M_{j=1} x_{ij}} \right)^2 \cdot N_{ProdAcc_i}}
 }
 where:
 
@@ -1541,7 +1545,7 @@ where:
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{+j}}: sum of all elements in column j.
-  \item \eqn{N}: number of cases involved in the calculation of the
+  \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of the
   index.
 }
 \subsection{Usage}{
@@ -1551,7 +1555,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1590,7 +1594,7 @@ ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
 }
 \deqn{
 \sigma^2_{ModKappa}=\dfrac{OverallAcc \cdot (1- OverallAcc)}
-{(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
+{\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappa}}
 }
 where:
 
@@ -1598,7 +1602,7 @@ where:
   \item \eqn{ModKappa}: modified coefficient kappa.
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{ModKappa}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1647,7 +1651,7 @@ ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{\sqrt{M}}}
 }
 \deqn{
 \sigma^2_{ModKappaUser_i}=\dfrac{UserAcc_i
-\cdot (1- UserAcc_i)}{(1- \dfrac{1}{\sqrt{M}})^2 \cdot N}
+\cdot (1- UserAcc_i)}{\left(1- \dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaUser_i}}
 }
 where:
 
@@ -1655,7 +1659,7 @@ where:
   \item \eqn{ModKappaUser_i}: modified coefficient kappa (user's).
   \item \eqn{UserAcc_i}: user accuracy index for class i.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{ModKappaUser_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1665,7 +1669,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1707,7 +1711,7 @@ ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}
 }
 \deqn{
 \sigma^2_{ModKappaProd_i}=\dfrac{ProdAcc_i
-\cdot (1- ProdAcc_i)}{(1-\dfrac{1}{\sqrt{M}})^2 \cdot N}
+\cdot (1- ProdAcc_i)}{\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaProd_i}}
 }
 where:
 
@@ -1715,7 +1719,7 @@ where:
   \item \eqn{ModKappaProd_i}: modified coefficient kappa (producer's).
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation
+  \item \eqn{N_{ModKappaProd_i}}: number of cases involved in the calculation
   of the index.
 }
 \subsection{Usage}{
@@ -1725,7 +1729,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -1760,20 +1764,20 @@ the calculations.
 
 
 \deqn{
-Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-Entrop_i(A|b_i)=-\sum^n_{j=1}( (\dfrac{ x_{ij}}
-{\sum^n_{j=1} x_{+ j} }) \cdot \log (\dfrac{x_{ij}}
-{\sum^n_{j=1} x_{+ j}}) )
-}
-\deqn{
 EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
 }
+ \deqn{
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
 \deqn{
-\sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N}
+Entrop_i(A|b_i)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{ij}}
+{\sum^M_{j=1} x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
+{\sum^M_{j=1} x_{+ j}}\right) \right)
+}
+\deqn{
+\sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N_{EntropUser_i}}
 }
 
 where:
@@ -1788,7 +1792,7 @@ where:
   \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
   location corresponding to the reference map B is in class\eqn{b_i}.
   B is a matrix.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{EntropUser_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1799,10 +1803,10 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate (row), where }\eqn{i \in \mathbb{N}}.}
+Class to evaluate (row), where }\eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{v}}{\verb{
-Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default v=10.
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default v=10.
 This value is used for the entropy units, v=10(Hartleys), v=2(bits),
 v=e(nats).
 }}
@@ -1845,20 +1849,21 @@ the calculations.
 
 
 \deqn{
-Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-Entrop_i(B|a_j)=-\sum^n_{j=1}( (\dfrac{ x_{ij}}
-{\sum^n_{i=1} x_{i +} }) \cdot \log (\dfrac{x_{ij}}
-{\sum^n_{i=1} x_{i +}}) )
-}
-\deqn{
 EntropProd_i= \dfrac{Entrop_i(B)-Entrop_i(B|a_j)}{Entrop_i(B)}
 }
+
+ \deqn{
+Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{\sum^M_{j=1} x_{+ j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+ j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
 \deqn{
-\sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N}
+Entrop_i(B|a_j)=-\sum^M_{j=1}\left( \left(\dfrac{ x_{ij}}
+{\sum^M_{i=1} x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
+{\sum^M_{i=1} x_{i +}}\right) \right)
+}
+\deqn{
+\sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N_{EntropProd_i}}
 }
 where:
 
@@ -1871,7 +1876,7 @@ where:
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
   the location corresponding map of product A is in class \eqn{a_j}.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{EntropProd_i}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1882,10 +1887,10 @@ where:
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{i}}{\verb{
-Class to evaluate (row), where} \eqn{i \in \mathbb{N}}.}
+Class to evaluate (row), where} \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{v}}{\verb{
-Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}. \verb{ By default
+Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-{1}}. \verb{ By default
 v=10. This value is used for the entropy units, v=10(Hartleys), v=2(bits),
 v=e(nats).
 }}
@@ -1928,11 +1933,11 @@ followed for the calculations.
 
 
 \deqn{
-AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^n_{i=1} \dfrac{x_{ii}}
-{\sum_{j=1}^n x_{j+}}
+AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+{\sum_{j=1}^M x_{j+}}
 }
 \deqn{
-\sigma^2_{AvUserAcc}=\dfrac{AvUserAcc \cdot (1-AvUserAcc)}{N}
+\sigma^2_{AvUserAcc}=\dfrac{AvUserAcc \cdot (1-AvUserAcc)}{N_{AvUserAcc}}
 }
 where:
 
@@ -1941,7 +1946,7 @@ where:
   \item \eqn{x_{j+}}: sum of all elements in rows j.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{AvUserAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -1983,11 +1988,11 @@ is followed for the calculations.
 
 
 \deqn{
-AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^n_{i=1} \dfrac{x_{ii}}
-{\sum_{j=1}^n x_{+j}}
+AvProdAcc=\dfrac{1}{\sqrt{N}} \sum^M_{i=1} \dfrac{x_{ii}}
+{\sum_{j=1}^M x_{+j}}
 }
 \deqn{
-\sigma^2_{AvProdAcc}=\dfrac{AvProdAcc \cdot (1-AvProdAcc)}{N}
+\sigma^2_{AvProdAcc}=\dfrac{AvProdAcc \cdot (1-AvProdAcc)}{N_{AvProdAcc}}
 }
 where:
 
@@ -1996,7 +2001,7 @@ where:
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{AvProdAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2042,7 +2047,7 @@ calculations.
 AvUserProdAcc=\dfrac{AvUserAcc+AvProdAcc}{2}
 }
  \deqn{
-\sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc)}{N}
+\sigma^2_{AvUserProdAcc}=\dfrac{AvUserProdAcc \cdot (1-AvUserProdAcc)}{N_{AvUserProdAcc}}
 }
 
 where:
@@ -2052,7 +2057,7 @@ where:
   producer's perspective.
   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{AvUserProdAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2096,22 +2101,22 @@ the calculations.
 
 
 \deqn{
-AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^n_{i=1} \dfrac{2 x_{ii}}
+AvHelldenAcc=\dfrac{1}{\sqrt{M}}\sum^M_{i=1} \dfrac{2 x_{ii}}
 { x_{+i} + x_{i+}}
 }
  \deqn{
-\sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N}
+\sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N_{AvHelldenAcc}}
 }
 
 where:
 
 \enumerate{
   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{AvHelldenAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2155,21 +2160,22 @@ the calculations.
 
 
 \deqn{
-AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^n_{i=1} x_{ii}}
-{\sum^n_{i,j=1}x_{ij}}}{\sum^n_{j=1} x_{+ j}+\sum^n_{i=1} x_{i +}
+AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^M_{i=1} x_{ii}}
+{\sum^M_{i,j=1}x_{ij}}}{\sum^M_{j=1} x_{+ j}+\sum^M_{i=1} x_{i +}
 -x_{ii}}
 }
 \deqn{
-\sigma^2_{AvShortAcc}=\dfrac{AvShortAcc \cdot (1-AvShortAcc)}{N}
+\sigma^2_{AvShortAcc}=\dfrac{AvShortAcc \cdot (1-AvShortAcc)}{N_{AvShortAcc}}
 }
 where:
 
 \enumerate{
+  \item \eqn{AvShortAcc}: average of Short's mapping accuracy index.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{i+}}: sum of all omissions in row i.
   \item \eqn{x_{+i}}: sum of all commissions in column i.
-  \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of cases involved in the calculation of the index.
+  \item \eqn{N_{AvShortAcc}}: number of cases involved in the calculation of the index.
    }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AvShortAcc(a = NULL)}\if{html}{\out{</div>}}
@@ -2215,7 +2221,7 @@ variance and confidence interval. The reference
 CombUserAcc=\dfrac{OverallAcc+AvUserAcc}{2}
 }
 \deqn{
-\sigma^2_{CombUserAcc}=\dfrac{CombUserAcc \cdot (1-CombUserAcc)}{N}
+\sigma^2_{CombUserAcc}=\dfrac{CombUserAcc \cdot (1-CombUserAcc)}{N_{CombUserAcc}}
 }
 
 where:
@@ -2224,7 +2230,7 @@ where:
   \item \eqn{CombUserAcc}: combined accuracy from user's perspective.
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{AvUserAcc}: average accuracy from user's perspective.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{CombUserAcc}}: number of cases involved in the calculation of
   the index.
   }
 \subsection{Usage}{
@@ -2270,7 +2276,7 @@ variance and confidence interval. The reference
 CombProdAcc=\dfrac{OverallAcc+AvProdAcc}{2}
 }
 \deqn{
-\sigma^2_{CombProdAcc}=\dfrac{CombProdAcc \cdot (1-CombProdAcc)}{N}
+\sigma^2_{CombProdAcc}=\dfrac{CombProdAcc \cdot (1-CombProdAcc)}{N_{CombProdAcc}}
 }
 where:
 
@@ -2279,7 +2285,7 @@ where:
   perspective.
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{AvProdAcc}: average accuracy from producer's perspective.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{CombProdAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2326,7 +2332,7 @@ CombUserProdAcc=\dfrac{OverallAcc+AvHelldenAcc}{2}
 }
  \deqn{
 \sigma^2_{CombUserProdAcc}=\dfrac{CombUserProdAcc \cdot
-(1-CombUserProdAcc)}{N}
+(1-CombUserProdAcc)}{N_{CombUserProdAcc}}
 }
 where:
 
@@ -2335,7 +2341,7 @@ where:
   and producer's perspectives.
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{CombUserProdAcc}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2379,14 +2385,14 @@ for the calculations.
 
 
 \deqn{
-ExpAcc=\sum^n_{i=1} (\dfrac{x _{+ i}}{\sum_{j=1}^n x_{ij}}
-\cdot \dfrac{x _{i +}}{\sum_{j=1}^n x_{ij}})
-}
-\deqn{
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 }
  \deqn{
-\sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N}
+ExpAcc=\sum^M_{i=1} \left( \dfrac{x_{+ i}}{\sum_{j=1}^M x_{ij}}
+\cdot \dfrac{x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+}
+ \deqn{
+\sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N_{Kappa}}
 }
 
 
@@ -2400,7 +2406,7 @@ where:
   were purely random.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{Kappa}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2443,12 +2449,12 @@ followed for the calculations.
 
 
 \deqn{
-Entrop=\sum^n_{i,j=1} (\dfrac{x_{ij}}{\sum^n_{i,j=1} x_{ij}}
- \cdot \log (\dfrac{x_{ij}}{\dfrac{\sum^n_{i=1} x_{i +}
- \cdot \sum^n_{j=1} x_{+ j}}{\sum^n_{i,j=1} x_{ij}}}))
+Entrop=\sum^M_{i,j=1} \left(\dfrac{x_{ij}}{\sum^M_{i,j=1} x_{ij}}
+ \cdot \log \left(\dfrac{x_{ij}}{\dfrac{\sum^M_{i=1} x_{i+}
+ \cdot \sum^M_{j=1} x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
 }
 \deqn{
-\sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N}
+\sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N_{Entrop}}
 }
 where:
 
@@ -2456,7 +2462,7 @@ where:
   \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{Entrop}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2466,7 +2472,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
 By default v=10. This value is used for the entropy units, v=10(Hartleys),
 v=2(bits), v=e(nats).}
 
@@ -2502,15 +2508,15 @@ confidence interval. The reference
 
 
 \deqn{
-Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
 NormEntropUser=\dfrac{Entrop}{Entrop_i(B)}
 }
 \deqn{
-\sigma^2_{NormEntropUser}=\dfrac{NormEntropUser \cdot (1-NormEntropUser)}{N}
+Entrop_i(B)=-\sum^M_{i=1} \left( \left(  \dfrac{\sum^M_{j=1} x_{+ j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{j=1} x_{+ j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
+\deqn{
+\sigma^2_{NormEntropUser}=\dfrac{NormEntropUser \cdot (1-NormEntropUser)}{N_{NormEntropUser}}
 }
 where:
 
@@ -2521,7 +2527,7 @@ where:
   \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{NormEntropUser}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2531,7 +2537,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
 By default v=10. This value is used for the entropy units,
 v=10(Hartleys), v=2(bits), v=e(nats).}
 
@@ -2567,27 +2573,27 @@ followed for the calculations.
 
 
 \deqn{
-Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
 NormEntropProd=\dfrac{Entrop}{Entrop_i(A)}
 }
+ \deqn{
+Entrop_i(A)=-\sum^M_{j=1}\left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
 \deqn{
-\sigma^2_{NormEntropProd}=\dfrac{NormEntropProd \cdot (1-NormEntropProd)}{N}
+\sigma^2_{NormEntropProd}=\dfrac{NormEntropProd \cdot (1-NormEntropProd)}{N_{NormEntropProd}}
 }
 where:
 
 \enumerate{
   \item \eqn{NormEntropProd}: normalized mutual information using
   the entropy on the reference.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
   the product with respect to the class \emph{i} of the product. A is a matrix.
-  \item \eqn{Entrop}: product entropy.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{N}: number of cases involved in the calculation of
+  \item \eqn{N_{NormEntropProd}}: number of cases involved in the calculation of
   the index.
 }
 \subsection{Usage}{
@@ -2597,7 +2603,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
 By default v=10. This value is used for the entropy units,
 v=10(Hartleys), v=2(bits), v=e(nats).}
 
@@ -2634,20 +2640,20 @@ reference. The method also offers the variance and confidence interval. The refe
 
 
 \deqn{
-Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
 AvNormEntrop=\dfrac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
 }
+ \deqn{
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
 \deqn{
-\sigma^2_{AvNormEntrop}=\dfrac{AvNormEntrop \cdot (1-AvNormEntrop)}{N}
+Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
+\deqn{
+\sigma^2_{AvNormEntrop}=\dfrac{AvNormEntrop \cdot (1-AvNormEntrop)}{N_{AvNormEntrop}}
 }
 
 where:
@@ -2655,14 +2661,14 @@ where:
 \enumerate{
   \item \eqn{AvNormEntrop}: normalized entropy using the
   arithmetic mean of the entropies of product and reference.
-  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
-  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
   the product with respect to the class \emph{i} of the product. A is a matrix.
-  \item \eqn{Entrop}: product entropy.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{N}: number of cases involved in the calculation of the
+  \item \eqn{N_{AvNormEntrop}}: number of cases involved in the calculation of the
   index.
 }
 \subsection{Usage}{
@@ -2672,7 +2678,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
 By default v=10. This value is used for the entropy units,
 v=10(Hartleys), v=2(bits), v=e(nats).}
 
@@ -2710,35 +2716,35 @@ for the calculations.
 
 
 \deqn{
-Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
 GeomAvNormEntrop=\dfrac{Entrop}{\sqrt{Entrop_i(A) \cdot Entrop_i(B)}}
+}
+ \deqn{
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
+\deqn{
+Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
 \sigma^2_{GeomAvNormEntrop}=
-\dfrac{GeomAvNormEntrop \cdot (1-GeomAvNormEntrop)}{N}
+\dfrac{GeomAvNormEntrop \cdot (1-GeomAvNormEntrop)}{N_{GeomAvNormEntrop}}
 }
 where:
 
 \enumerate{
   \item \eqn{GeomAvNormEntrop}: normalized entropy using the
   geometric mean of the entropies on the product and reference.
-  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
-  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
   the product with respect to the class \emph{i} of the product. A is a matrix.
-  \item \eqn{Entrop}: product entropy.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{N}: number of cases involved in the calculation of the index.
+  \item \eqn{N_{GeomAvNormEntrop}}: number of cases involved in the calculation of the index.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GeomAvNormEntrop(v = NULL, a = NULL)}\if{html}{\out{</div>}}
@@ -2747,7 +2753,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
 By default v=10. This value is used for the entropy units,
 v=10(Hartleys), v=2(bits), v=e(nats).}
 
@@ -2785,37 +2791,37 @@ followed for the calculations.
 
 
 \deqn{
-Entrop_i(A)=-\sum^n_{j=1}( (\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log(\dfrac{\sum^n_{i=1} x_{i +}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
-Entrop_i(B)=-\sum^n_{i=1}( (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) \cdot \log (\dfrac{\sum^n_{j=1} x_{+ j}}
-{\sum^n_{i,j=1} x_{ij} }) )
-}
-\deqn{
 AvMaxNormEntrop=\dfrac{2 Entrop}{max(Entrop_i(A))+max(Entrop_i(B))}=
 \dfrac{Entrop}{\log \sqrt{M}}
 }
+ \deqn{
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
+\deqn{
+Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \right)
+}
 \deqn{
 \sigma^2_{AvMaxNormEntrop}=
-\dfrac{AvMaxNormEntrop \cdot (1-AvMaxNormEntrop)}{N}
+\dfrac{AvMaxNormEntrop \cdot (1-AvMaxNormEntrop)}{N_{AvMaxNormEntrop}}
 }
 where:
 
 \enumerate{
   \item \eqn{AvMaxNormEntrop}: normalized entropy using the arithmetic
   mean of the maximum entropies on product and on reference.
-  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
-  reference with respect to the class on the reference. B is a matrix.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
   the product with respect to the class \emph{i} of the product. A is a matrix.
-  \item \eqn{Entrop}: product entropy.
+  \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
+  reference with respect to the class on the reference. B is a matrix.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{M}: number of elements of the matrix.
-  \item \eqn{N}: number of cases involved in the calculation
+  \item \eqn{N_{AvMaxNormEntrop}}: number of cases involved in the calculation
   of the index.
 }
 \subsection{Usage}{
@@ -2825,7 +2831,7 @@ where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-\{1\}}.
+\item{\code{v}}{Base of the logarithm, where \eqn{v \in \mathbb{R}^{+}-{1}}.
 By default v=10. This value is used for the entropy units,
 v=10(Hartleys), v=2(bits), v=e(nats).}
 
@@ -2867,23 +2873,24 @@ for the computations.
 The mathematical expression is:
 
 \deqn{
-PrAgCoef=\dfrac{1}{M}
+Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
 }
 \deqn{
-Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
+PrAgCoef=\dfrac{1}{M}
 }
 
 \deqn{
 \sigma^2_{Tau}=\dfrac{OverallAcc \cdot (1-OverallAcc)}
-{N \cdot (1-PrAgCoef)^2}
+{N_{Tau} \cdot (1-PrAgCoef)^2}
 }
 
 Where:
 \enumerate{
+  \item \eqn{Tau}: Tau index.
   \item \eqn{OverallAcc}: overall accuracy.
   \item \eqn{PrAgCoef}: a priori random agreement coefficient.
   \item \eqn{M}: number of classes.
-  \item \eqn{N}: number of elements of the matrix, cardinal of
+  \item \eqn{N_{Tau}}: number of elements of the matrix, cardinal of
   the matrix.
 }
 \subsection{Usage}{
@@ -2917,6 +2924,124 @@ p$Tau()
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ConfMatrix-UserProdAcc"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-UserProdAcc}{}}}
+\subsection{Method \code{UserProdAcc()}}{
+Public method that calculates the user’s and the
+producer’s indexes jointly. This method is equivalent to the methods
+[ConfMatrix$UserAcc] and [ConfMatrix$ProdAcc].
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$UserProdAcc()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list containing the producer's and user's accuracies and
+their standard deviations, respectively.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+nrow=4,ncol=4)
+p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+p$UserProdAcc()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ConfMatrix-DetailedKappa"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-DetailedKappa}{}}}
+\subsection{Method \code{DetailedKappa()}}{
+Public method that calculates the general Kappa
+agreement index, its standard deviation and the test statistic
+to test its significance. The delta method has been used to calculate
+the sample variance. The reference
+\insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+
+The mathematical expression is:
+
+\deqn{
+Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
+}
+
+\deqn{
+ExpAcc=\sum^M_{i=1} \left(  \dfrac{x_{+i}}{\sum_{j=1}^M x_{ij}}
+\cdot \dfrac{x_{i+}}{\sum_{j=1}^M x_{ij}} \right)
+}
+
+\deqn{
+\sigma^2_{Kappa} = \dfrac{1}{N_{Kappa}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
++ \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
++ \dfrac{(1-\theta_1)^2(\theta_4-4\theta_2^2)}{(1-\theta_2)^4} \right)
+}
+where
+
+\deqn{
+\theta_1=OverallAcc=\dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
+}
+
+\deqn{
+\theta_2=ExpAcc=\sum^M_{i=1}
+\left( \dfrac{x_{+ i}}{\sum_{j=1}^M x_{ij}}
+\cdot \dfrac{x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+}
+
+
+\deqn{
+\theta_3=\sum^M_{i=1} \left( \dfrac{x_{ii} x_{+ i}}{\sum_{j=1}^M x_{ij}}
+\cdot \dfrac{x_{ii} x_{i +}}{\sum_{j=1}^M x_{ij}} \right)
+}
+
+
+\deqn{
+\theta_4=\dfrac{1}{ ( \sum_{i,j=1}^M x_{ij})^3} \sum_{i,j=1}^M x_{ij}
+(x_{j+}+x_{+i})^2
+}
+
+\deqn{
+Z=\dfrac{Kappa}{\sqrt{\sigma^2_{Kappa}}}
+}
+
+
+Where:
+\enumerate{
+  \item \eqn{Kappa}: Kappa coefficient.
+  \item \eqn{ExpAcc}: expected accuracy of agreement if agreement
+  were purely random.
+  \item \eqn{OverallAcc}: overall accuracy.
+  \item \eqn{\theta_1, \theta_2, \theta_3, \theta_4}: real values.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{Z}: the test statistic.
+  \item \eqn{N_{Kappa}}: number of cases involved in the calculation of
+  the index.
+  \item \eqn{\sigma^2_{Kappa}}: kappa variance using the delta method
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailedKappa()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list of real values containing the kappa coefficient,
+its standard deviation, and the value of its test statistic.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+nrow=4,ncol=4)
+p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+p$DetailedKappa()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ConfMatrix-GroundTruth"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-GroundTruth}{}}}
 \subsection{Method \code{GroundTruth()}}{
@@ -2927,8 +3052,8 @@ is followed for the computations.
 
 The mathematical expression is:
 
-To calculate R_i we begin the following iterative process:
-Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
+To calculate \eqn{R} we begin the following iterative process:
+Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
 \eqn{f_i^0} equal to producer accuracy.
 
  When \eqn{2m (m=1,2,\cdots)}
@@ -2946,11 +3071,11 @@ Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
  the accuracy stabilizes.
  Where
  \deqn{
-R=\dfrac{V/\sum_{i=1}^{k} V_i}
+R=\dfrac{V}{\sum_{i=1}^{k} V_i}
 }
 
 \deqn{
-ProdAcc=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
+ProdAcc=\dfrac{x_{ii}}{\sum_{j=1}^M x_{+j}}
 }
 \deqn{
 GroundTruth = \dfrac{ProdAcc-R}{1-R}
@@ -2958,7 +3083,7 @@ GroundTruth = \dfrac{ProdAcc-R}{1-R}
 
 \deqn{
 \sigma^2_{GroundTruth}=\dfrac{GroundTruth \cdot (1-GroundTruth)}
-{N}
+{N_{GroundTruth}}
 }
 
 Where:
@@ -2966,8 +3091,7 @@ Where:
   \item \eqn{GroundTruth}: index ground truth.
   \item \eqn{R}: casual lucky guess.
   \item \eqn{ProdAcc}: producer accuracy.
-  \item \eqn{N}: number of elements of the matrix, cardinal of
-  the matrix.
+  \item \eqn{N_{GroundTruth}}: number of elements of the matrix, cardinal of the matrix.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GroundTruth(a = NULL)}\if{html}{\out{</div>}}
@@ -2981,8 +3105,8 @@ Where:
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with Ground Truth index, its variance, confidence
-interval and the matrix with the expected frequencies.
+A list with Ground Truth indexes, their variance, confidence
+intervals and the matrix with the expected frequencies.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3011,8 +3135,8 @@ The mathematical expression is:
 To calculate R_i we begin the following iterative process:
 Take the original matrix by replacing its diagonal elements with 0.
 Thus define the new matrix \eqn{M_0}.
-Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
-\eqn{f_i^0} equal to producer accuracy sobre \eqn{M_0}.
+Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
+\eqn{f_i^0} equal to producer accuracy for \eqn{M_0}.
 
  When \eqn{2m (m=1,2,\cdots)}
  \deqn{
@@ -3029,11 +3153,11 @@ Be \eqn{U_j^{\(0\)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
  the accuracy stabilizes.
  Where
  \deqn{
-R_i=\dfrac{V_i/\sum_{i=1}^{k} V_i}
+R_i=\dfrac{V_i}{\sum_{i=1}^{k} V_i}
 }
 
 \deqn{
-ProdAcc_i=\dfrac{x_{ii}}{\sum_{j=1}^n x_{+j}}
+ProdAcc_i=\dfrac{x_{ii}}{\sum_{j=1}^M x_{+j}}
 }
 \deqn{
 GroundTruth_i = \dfrac{ProdAcc_i-R_i}{1-R_i}
@@ -3041,7 +3165,7 @@ GroundTruth_i = \dfrac{ProdAcc_i-R_i}{1-R_i}
 
 \deqn{
 \sigma^2_{GroundTruth_i}=\dfrac{GroundTruth_i \cdot (1-GroundTruth_i)}
-{N}
+{N_{GroundTruth_i}}
 }
 
 Where:
@@ -3049,8 +3173,7 @@ Where:
   \item \eqn{GroundTruth_i}: index ground truth for class i.
   \item \eqn{R_i}: casual lucky guess for class i. Is a real value.
   \item \eqn{ProdAcc_i}: producer accuracy for class i.
-  \item \eqn{N}: number of elements of the matrix, cardinal of
-  the matrix.
+  \item \eqn{N_{GroundTruth_i}}: number of elements of the matrix, cardinal of the matrix.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$GroundTruth_i(i, a = NULL)}\if{html}{\out{</div>}}
@@ -3059,7 +3182,7 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{N}}}
+\item{\code{i}}{Class to evaluate, where \eqn{i \in \mathbb{Z}-\{0\}}.}
 
 \item{\code{a}}{Significance level. By default 0.05.}
 }
@@ -3083,55 +3206,46 @@ p$GroundTruth_i(3)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ConfMatrix-UserProdAcc"></a>}}
-\if{latex}{\out{\hypertarget{method-ConfMatrix-UserProdAcc}{}}}
-\subsection{Method \code{UserProdAcc()}}{
-Public method that calculates the user’s and the
-producer’s indexes jointly. This method is equivalent to the methods
-[ConfMatrix$UserAcc], [ConfMatrix$ProdAcc].
+\if{html}{\out{<a id="method-ConfMatrix-QIndep.test"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-QIndep.test}{}}}
+\subsection{Method \code{QIndep.test()}}{
+Public method that performs the
+ quasi-independence test for the elements of a confusion matrix.
+ The reference
+ \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
+The mathematical expression is:
+
+\deqn{
+G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
+}
+
+Where:
+\enumerate{
+  \item \eqn{G^2}: statistic.
+  \item \eqn{x_{ij}}: observed frequency.
+  \item \eqn{E_{ij}}: expected frequency.
+}
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$UserProdAcc()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QIndep.test(a = NULL)}\if{html}{\out{</div>}}
 }
 
-\subsection{Returns}{
-A list containing the producer's and user's accuracies and
-their standard deviations, respectively.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$UserProdAcc()
-
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
-
 }
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ConfMatrix-DetailedKappa"></a>}}
-\if{latex}{\out{\hypertarget{method-ConfMatrix-DetailedKappa}{}}}
-\subsection{Method \code{DetailedKappa()}}{
-Public method that calculates the general Kappa
-agreement index, its standard deviation and the test statistic
-to test its significance. The reference
-\insertCite{congalton2008}{ConfMatrix} is followed for the computations.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailedKappa()}\if{html}{\out{</div>}}
-}
-
 \subsection{Returns}{
-A list of the kappa coefficient, its standard deviation,
-and the value of its test statistic.
+A list of the statistic's value and its z-score for a given
+significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$DetailedKappa()
+\preformatted{A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
+7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
+p<-ConfMatrix$new(A,Source= "Türk 1979")
+p$QIndep.test()
 
 }
 \if{html}{\out{</div>}}
@@ -3145,14 +3259,42 @@ p$DetailedKappa()
 \subsection{Method \code{DetailedCondKappa()}}{
 Public method that calculates the Kappa class agreement
 index (conditional Kappa) from the perspective of user (i) and
-producer (j) and its standard desviations. The reference
+producer (j) and its standard deviations. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+
+
+The mathematical expression is:
+
+\deqn{
+CondKappa_{user}=\dfrac{\dfrac{x_{ii}}{x_{i+}}-x_{+j}}{1-x_{+j}}
+}
+
+\deqn{
+CondKappa_{producer}=\dfrac{\dfrac{x_{ii}}{x_{+j}}-x_{i+}}{1-x_{i+}}
+}
+
+\deqn{
+\sigma^2_{CondKappa_{producer}}=\dfrac{1}{\sum_{i,j=1}^M x_{ii}} \cdot
+\dfrac{x_{+j}-x_{ii}}{x_{+j}^3 (1-x_{i+})^3} \cdot ((x_{+j}-x_{ii})\cdot
+(x_{+j}x_{i+}-x_{ii}) + x_{ii} (1-x_{+j}-x_{i+}+x_{ii})  )
+}
+
+\eqn{\sigma^2_{CondKappa_{user}}} is done in an analogous way by exchanging
+\eqn{x_{i+}} to \eqn{x_{+j}}.
+
+\enumerate{
+\item \eqn{CondKappa_{User}}: Conditional kappa index from the user's perspective.
+\item \eqn{CondKappa_{Producer}}: Conditional kappa index from the producer's perspective.
+\item \eqn{x_{ii}}: diagonal elements of the matrix.
+\item \eqn{x_{+j}}: sum of all elements in column j.
+\item \eqn{x_{i+}}: sum of all elements in row i.
+}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailedCondKappa()}\if{html}{\out{</div>}}
 }
 
 \subsection{Returns}{
-A list with conditional Kappa index of the user and the
+A list of real values containing conditional Kappa index of the user and the
 producer, and its corresponding standard deviation.
 }
 \subsection{Examples}{
@@ -3173,7 +3315,7 @@ p$DetailedCondKappa ()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-QES}{}}}
 \subsection{Method \code{QES()}}{
 Public method that calculates the values of quantity
-difference, change and shift. Quantity difference is the amount of
+difference, exchange and shift. Quantity difference is the amount of
 difference between the product and the reference and is due to the
 less than maximum match in the proportions of the categories. Exchange
 represents transitions from class i to j and a transition from class j
@@ -3182,30 +3324,20 @@ difference remaining after subtracting quantity difference and exchange
 from the overall difference. The reference
 \insertCite{pontius2014}{ConfMatrix} is followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QES(TI = NULL, SF = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QES()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{TI}}{Time interval (default value = 1)}
-
-\item{\code{SF}}{Scale factor for results (default value = 1)}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
-For the interval t of difference. A list real values,
-quantity, exchange, and shift.In addition to the differences for
-classes, number of components, change of classes and turn of
-the components.
+For the interval t of difference. A list of integer values with
+quantity, exchange, and shift. In addition to the differences for
+classes of the components of quantity, exchange and turn.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$QES(TI=1, SF=6)
+p$QES()
 
 }
 \if{html}{\out{</div>}}
@@ -3226,7 +3358,7 @@ a percentage (parameter RaR !=1).
 
 The matematical expression is:
  \deqn{
-MTypify=\dfrac{CM}{\sum^n_{i,j=1} x_{ij}}
+MTypify=\dfrac{CM}{\sum^M_{i,j=1} x_{ij}}
 }
 
 where:
@@ -3300,19 +3432,19 @@ p$AllParameters()
 \if{html}{\out{<a id="method-ConfMatrix-MBootStrap"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-MBootStrap}{}}}
 \subsection{Method \code{MBootStrap()}}{
-Public method that provides N resamples, using a
+Public method that provides B resamples, using a
 multinomial distribution, of the confusion matrix of a ConfMatrix
 object. As a result, a set of bootstrapped cases is offered. The
 reference \insertCite{fienberg1970}{ConfMatrix} is
 followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MBootStrap(n, pr = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MBootStrap(B, pr = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n}}{Number of resamples.}
+\item{\code{B}}{Number of resamples.}
 
 \item{\code{pr}}{Vector with resampling probabilities. By default, the
 success probability of each cell will be taken.}
@@ -3320,7 +3452,7 @@ success probability of each cell will be taken.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of n+1 arrays formed by the original confusion matrix
+A list of B + 1 arrays formed by the original confusion matrix
 and all the simulated cases.
 }
 \subsection{Examples}{
@@ -3345,13 +3477,13 @@ order to get the sum of values by rows and columns to be worth one.
 The references \insertCite{fienberg1970,munoz2016}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MNormalize(n = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MNormalize(iter = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{n}}{Number of iteration. By default n=100.}
+\item{\code{iter}}{Number of iteration. By default iter=1000.}
 }
 \if{html}{\out{</div>}}
 }
@@ -3412,7 +3544,7 @@ p$MPseudoZeroes()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-DetailedWTau}{}}}
 \subsection{Method \code{DetailedWTau()}}{
 Public method that calculates the general Tau
-concordance index and its standard deviation.
+concordance index (weighted) and its standard deviation.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailedWTau(WV)}\if{html}{\out{</div>}}
 }
@@ -3425,8 +3557,8 @@ concordance index and its standard deviation.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the Tau index, the weight matrix, its standard
-deviation and its statistics.
+A list with the weighted Tau index, the weight matrix,
+its standard deviation and its statistics.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3468,7 +3600,7 @@ and the value of its test statistic.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A <- A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+\preformatted{A <- matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
 WM<- t(matrix(c(1,0,0.67,1,0,1,0,0,1,0,1,1,0.91,0,0.61,1),
 nrow = 4, ncol=4))
@@ -3531,13 +3663,14 @@ for the computations.
 The mathematical expression is:
 
 \deqn{
-HD = \dfrac{4nm}{n+m} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
+HD = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
 }
 
 Where:
 \enumerate{
   \item \eqn{HD}: Hellinger Distance.
-  \item \eqn{n}: number of elements in the matrix A.
+  \item \eqn{n_{A}}: number of elements in the matrix A.
+  \item \eqn{m_{B}}: number of elements in the matrix B.
   \item \eqn{p_i}: element i of the probability vector of matrix A.
   \item \eqn{q_i}: element i of the probability vector of matrix B.
 }
@@ -3548,12 +3681,12 @@ Where:
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{f}}{f Element of the ConfMatrix.}
+\item{\code{f}}{Element of the ConfMatrix.}
 
-\item{\code{p}}{probability vector. By default, the probability of
+\item{\code{p}}{probability vector of matrix A. By default, the probability of
 success for each cell is taken.}
 
-\item{\code{q}}{probability vector. By default, the probability of
+\item{\code{q}}{probability vector of matrix B. By default, the probability of
 success for each cell is taken.}
 }
 \if{html}{\out{</div>}}
@@ -3590,18 +3723,19 @@ for the computations.
 The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
+Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2_{k_A}+\sigma^2_{k_B})}}
 }
 
 Where:
 \enumerate{
+ \item \eqn{Z}: statistic.
   \item \eqn{k_A}: kappa index of matrix A
   \item \eqn{k_B}: kappa index of matrix B
-  \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
-  \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
+  \item \eqn{\sigma^2_{k_A}}: variance of \eqn{k_A}.
+  \item \eqn{\sigma^2_{k_B}}: variance of \eqn{k_B}.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Kappa.test(f, alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Kappa.test(f, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3609,13 +3743,13 @@ Where:
 \describe{
 \item{\code{f}}{Element of the ConfMatrix class.}
 
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A list with the value of the test statistic and its
-z score for a given alpha significance level.
+z score for a given significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3643,18 +3777,19 @@ for the computations.
 The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
+Z = \dfrac{|OA_A-OA_B|}{\sqrt{(\sigma^2_{OA_A}+\sigma^2_{OA_B})}}
 }
 
 Where:
 \enumerate{
-  \item \eqn{k_A}: overall index of matrix A
-  \item \eqn{k_B}: overall index of matrix B
-  \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
-  \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
+ \item \eqn{Z}: statistic.
+  \item \eqn{OA_A}: overall index of matrix A
+  \item \eqn{OA_B}: overall index of matrix B
+  \item \eqn{\sigma^2_{OA_A}}: variance of \eqn{OA_A}.
+  \item \eqn{\sigma^2_{OA_B}}: variance of \eqn{OA_B}.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$OverallAcc.test(f, alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$OverallAcc.test(f, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3662,13 +3797,13 @@ Where:
 \describe{
 \item{\code{f}}{Element of the ConfMatrix class.}
 
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A list with the value of the test statistic and its z
-score for a given alpha significance level.
+score for a given significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3696,18 +3831,19 @@ for the computations.
 The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2 (K_A)+\sigma^2 (K_B))}}
+Z = \dfrac{|\tau_A-\tau_B|}{\sqrt{(\sigma^2_{\tau_A}+\sigma^2_{\tau_B})}}
 }
 
 Where:
 \enumerate{
-  \item \eqn{k_A}: Tau index of matrix A
-  \item \eqn{k_B}: Tau index of matrix B
-  \item \eqn{\sigma^2 (k_A)}: variance of \eqn{k_A}.
-  \item \eqn{\sigma^2 (k_B)}: variance of \eqn{k_B}.
+ \item \eqn{Z}: statistic.
+  \item \eqn{\tau_A}: Tau index of matrix A
+  \item \eqn{\tau_B}: Tau index of matrix B
+  \item \eqn{\sigma^2_{\tau_A}}: variance of \eqn{\tau_A}.
+  \item \eqn{\sigma^2_{\tau_B}}: variance of \eqn{\tau_B}.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Tau.test(f, alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Tau.test(f, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3715,13 +3851,13 @@ Where:
 \describe{
 \item{\code{f}}{Element of the ConfMatrix class.}
 
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A list with the value of the test statistic and its z
-score for a given alpha significance level
+score for a given significance level
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3747,10 +3883,11 @@ Public method that performs a homogeneity test
 based on the Hellinger distance between two confusion matrices
 (instances of the ConfMatrix class)
 The test considers the individual cell values in the matrices.
+To use this test, the column vectors are chained one after the other.
 The reference \insertCite{garcia2018}{ConfMatrix} is followed for
 the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, n1 = NULL, alpha = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, B = NULL, a = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3758,16 +3895,16 @@ the computations.
 \describe{
 \item{\code{f}}{Element of the ConfMatrix class.}
 
-\item{\code{n1}}{Number of bootstraps that you want to generate.
-By default n=10000.}
+\item{\code{B}}{Number of bootstraps that you want to generate.
+By default B=1000.}
 
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
+\item{\code{a}}{significance level. By default a=0.05.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A list with the value of the test statistic and its z
-score for a given alpha significance level.
+score for a given significance level.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3786,60 +3923,13 @@ p$TSCM.test(f)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ConfMatrix-QIndep.test"></a>}}
-\if{latex}{\out{\hypertarget{method-ConfMatrix-QIndep.test}{}}}
-\subsection{Method \code{QIndep.test()}}{
-Public method that performs the
- quasi-independence test for the elements of a confusion matrix.
- The reference
- \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
-The mathematical expression is:
-
-\deqn{
-G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
-}
-
-Where:
-\enumerate{
-  \item \eqn{G^2}: statistic.
-  \item \eqn{x_{ij}}: observed frequency.
-  \item \eqn{E_{ij}}: expected frequency.
-}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QIndep.test(alpha = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{alpha}}{significance level. By default alpha=0.05.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A list of the statistic's value and its z-score for a given
-alpha significance level.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,
-7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,ncol=5)
-p<-ConfMatrix$new(A,Source= "Türk 1979")
-p$QIndep.test()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ConfMatrix-plot.global"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.global}{}}}
 \subsection{Method \code{plot.global()}}{
 Public method that provides a graph of the indices of
-the functions OverallAcc, Kappa, Tau, AvHelldenAcc,
-AvShortAcc with their corresponding standard deviations.
+the functions [ConfMatrix$OverallAcc], [ConfMatrix$Kappa],
+[ConfMatrix$Tau], [ConfMatrix$AvHelldenAcc] and [ConfMatrix$AvShortAcc]
+ with their corresponding standard deviations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.global()}\if{html}{\out{</div>}}
 }
