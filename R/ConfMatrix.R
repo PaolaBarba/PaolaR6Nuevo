@@ -1004,11 +1004,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the calculations.
       #' @description
       #'  \deqn{
-      #' ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
+      #' ModKappa=\dfrac{OverallAcc-\dfrac{1}{M}}{1-\dfrac{1}{M}}
       #' }
       #' \deqn{
       #' \sigma^2_{ModKappa}=\dfrac{OverallAcc \cdot (1- OverallAcc)}
-      #' {\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappa}}
+      #' { \left(1-\dfrac{1}{M} \right)^2 \cdot N_{ModKappa}}
       #' }
       #' where:
       #'
@@ -1055,12 +1055,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for the calculations.
       #' @description
       #'  \deqn{
-      #' ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{\sqrt{M}}}
-      #' {1-\dfrac{1}{\sqrt{M}}}
+      #' ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{M}}
+      #' {1-\dfrac{1}{M}}
       #' }
       #' \deqn{
       #' \sigma^2_{ModKappaUser_i}=\dfrac{UserAcc_i
-      #' \cdot (1- UserAcc_i)}{\left(1- \dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaUser_i}}
+      #' \cdot (1- UserAcc_i)}{ \left(1- \dfrac{1}{M} \right)^2 \cdot N_{ModKappaUser_i}}
       #' }
       #' where:
       #'
@@ -1115,12 +1115,12 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' followed for the calculations.
       #' @description
       #'  \deqn{
-      #' ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}
-      #' {1-\dfrac{1}{\sqrt{M}}}
+      #' ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{M}}
+      #' {1-\dfrac{1}{M}}
       #' }
       #' \deqn{
       #' \sigma^2_{ModKappaProd_i}=\dfrac{ProdAcc_i
-      #' \cdot (1- ProdAcc_i)}{\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaProd_i}}
+      #' \cdot (1- ProdAcc_i)}{ \left( 1-\dfrac{1}{M} \right)^2 \cdot N_{ModKappaProd_i}}
       #' }
       #' where:
       #'
@@ -1170,14 +1170,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
      #' }
      #'  \deqn{
-     #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{i +}}
-     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i +}}
+     #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
      #' }
      #' \deqn{
      #' Entrop_i(A|b_i)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{ij}}
-     #' { x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
-     #' { x_{+ j}}\right) \right)
+     #' { x_{i+} }\right) \cdot \log \left(\dfrac{x_{ij}}
+     #' { x_{i+}}\right) \right)
      #' }
      #' \deqn{
      #' \sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N_{EntropUser_i}}
@@ -1193,7 +1193,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'   \item \eqn{x_{i+}}: sum of all elements in rows i.
      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
      #'   \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
-     #'   location corresponding to the reference map B is in class\eqn{b_i}.
+     #'   location corresponding to the reference map B is in class \eqn{b_i}.
      #'   B is a matrix.
      #'   \item \eqn{N_{EntropUser_i}}: number of cases involved in the calculation of
      #'   the index.
@@ -1268,14 +1268,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' }
      #'
      #'  \deqn{
-     #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{ x_{+ j}}
-     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+ j}}
+     #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{ x_{i+}}
+     #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i+}}
      #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
      #' }
      #' \deqn{
      #' Entrop_i(B|a_j)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{ij}}
-     #' { x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
-     #' { x_{i +}}\right) \right)
+     #' { x_{+j} }\right) \cdot \log \left(\dfrac{x_{ij}}
+     #' { x_{+j}}\right) \right)
      #' }
      #'\deqn{
      #' \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N_{EntropProd_i}}
@@ -1288,7 +1288,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
      #'   reference with respect to the class on the reference. B is a matrix.
      #'   \item \eqn{x_{i+}}: sum of all elements in rows i.
-     #'   \item \eqn{x_{+j}}: sum of all elements in column j.
      #'   \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
      #'   the location corresponding map of product A is in class \eqn{a_j}.
      #'   \item \eqn{N_{EntropProd_i}}: number of cases involved in the calculation of
@@ -1350,7 +1349,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' followed for the calculations.
       #' @description
       #'  \deqn{
-      #' AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+      #' AvUserAcc=\dfrac{1}{M} \sum^M_{i=1} \dfrac{x_{ii}}
       #' { x_{i+}}
       #' }
       #'\deqn{
@@ -1401,7 +1400,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' is followed for the calculations.
       #' @description
       #'  \deqn{
-      #' AvProdAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+      #' AvProdAcc=\dfrac{1}{M} \sum^M_{i=1} \dfrac{x_{ii}}
       #' { x_{+j}}
       #' }
       #'\deqn{
@@ -1496,8 +1495,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the calculations.
       #' @description
       #'  \deqn{
-      #' AvHelldenAcc=\dfrac{1}{\sqrt{M}} \dfrac{2 \sum^M_{i=1} x_{ii}}
-      #' { x_{+j} + x_{i+}}
+      #' AvHelldenAcc=\dfrac{1}{M} 2 \sum^M_{i=1} \dfrac{ x_{ii}}
+      #' { x_{+i} + x_{i+}}
       #' }
       #'  \deqn{
       #' \sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N_{AvHelldenAcc}}
@@ -1508,7 +1507,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \enumerate{
       #'   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
       #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
-      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
+      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N_{AvHelldenAcc}}: number of cases involved in the calculation of
@@ -1547,9 +1546,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the calculations.
       #' @description
       #'  \deqn{
-      #' AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^M_{i=1} x_{ii}}
-      #' {\sum^M_{i,j=1}x_{ij}}}{ x_{+ j}+ x_{i +}
-      #' -x_{ii}}
+      #' AvShortAcc=\dfrac{1}{M} \sum^M_{i=1} \dfrac{x_{ii}}
+      #' { x_{+ i}+ x_{i +}-x_{ii}}
       #' }
       #'\deqn{
       #' \sigma^2_{AvShortAcc}=\dfrac{AvShortAcc \cdot (1-AvShortAcc)}{N_{AvShortAcc}}
@@ -1745,10 +1743,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \deqn{
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
       #' }
-      #'  \deqn{
-      #' ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
+      #' \deqn{
+      #' ExpAcc= \dfrac{x_{+ i}x_{i +}}{ ( \sum_{i,j=1}^M x_{ij} )^{2} }
       #' }
-      #'  \deqn{
+      #' \deqn{
       #' \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N_{Kappa}}
       #' }
       #'
@@ -1809,14 +1807,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'  \cdot \log \left(\dfrac{x_{ij}}{\dfrac{ x_{i+}
       #'  \cdot  x_{+j}}{\sum^M_{i,j=1} x_{ij}}} \right) \right)
       #' }
-      #'\deqn{
+      #' \deqn{
       #' \sigma^2_{Entrop}=\dfrac{Entrop \cdot (1-Entrop)}{N_{Entrop}}
       #' }
       #' where:
       #'
       #' \enumerate{
       #'   \item \eqn{Entrop}: product entropy.
-      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{N_{Entrop}}: number of cases involved in the calculation of
       #'   the index.
@@ -1828,16 +1826,17 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @param v \verb{
       #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-      #' \verb{By default v=10. This value is used for the entropy units, v=10(units Hartleys),
-      #' v=2(units bits), v=e(units nats).}
+      #' \verb{By default v=10. This value is used
+      #' for the entropy units, v=10(units Hartleys), v=2(units bits),
+      #' v=e(units nats).}
       #' @return \verb{
       #' A list of real values containing the entropy, its variance
       #' and confidence interval.}
       #' @examples
-      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+      #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-      #' p$Entrop()
+      #' p<-ConfMatrix$new(A,Source="Finn 1993")
+      #' p$Entrop(v=2)
       #'
       #' @aliases NULL
 
@@ -1846,18 +1845,22 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         v<-v
       }else{v<-10}
 
-       # Entrop <- sum ((self$Values/sum(self$Values)) *
-       #          log(self$Values / ((private$sumfil(self$Values) * private$sumcol(self$Values))/sum(self$Values))
-       #          ,base=v),na.rm=TRUE)
+       pbi<-private$sumfil(self$Values)/sum(self$Values)
+       paj<-private$sumcol(self$Values)/sum(self$Values)
+       pbiaj<-self$Values/sum(self$Values)
+       pbiaj_<-matrix(rep(0),nrow=nrow(self$Values),ncol=ncol(self$Values))
+       for (i in 1:nrow(self$Values)) {
+         pbiaj_[,i]<-pbiaj[,i]/paj[i]
+       }
+       pbiaj_pbi<-matrix(rep(0),nrow=nrow(self$Values),ncol=ncol(self$Values))
+       for (j in 1:nrow(self$Values)) {
+         pbiaj_pbi[j,]<-pbiaj_[j,]/pbi[j]
+       }
 
-       # Entrop <- sum ((self$Values/sum(self$Values)) *
-       #                  log((self$Values/sum(self$Values)) / (((private$sumfil(self$Values)/sum(self$Values)) * (private$sumcol(self$Values)/sum(self$Values))))
-       #                      ,base=v),na.rm=TRUE)
-
-       Entrop<-sum((self$Values/sum(self$Values))*
-              log(((self$Values/sum(self$Values))/private$sumcol(self$Values))/(private$sumfil(self$Values)/sum(self$Values)),base=v),na.rm=TRUE)
-
-
+       l<-log(pbiaj_pbi,base=v)
+       s<-pbiaj*l
+       s<-s[!is.na(s)]
+       Entrop<-sum(s)
 
        VarEntrop <- abs((Entrop*(1-Entrop))/sum(self$Values))
        ConfInt <- private$ConfInt(Entrop,VarEntrop,a)
@@ -1867,7 +1870,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that calculates normalized entropy
-      #' of the porduct. The method also offers the variance and
+      #' of the product. The method also offers the variance and
       #' confidence interval. The reference
       #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
       #' @description
@@ -1876,8 +1879,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' NormEntropUser=\dfrac{Entrop}{Entrop_i(B)}
       #' }
       #' \deqn{
-      #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(  \dfrac{\sum^M_{j=1} x_{+ j}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{j=1} x_{+ j}}
+      #' Entrop_i(B)=-\sum^M_{i=1} \left( \left(  \dfrac {x_{i+}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{ x_{i+}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #'\deqn{
@@ -1887,10 +1890,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' \enumerate{
       #'   \item \eqn{NormEntropUser}: normalized entropy of the product.
+      #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
       #'   reference with respect to the class on the reference. B is a matrix.
-      #'   \item \eqn{Entrop}: product entropy.
-      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{N_{NormEntropUser}}: number of cases involved in the calculation of
       #'   the index.
@@ -1910,9 +1912,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' and confidence interval.
       #' }
       #' @examples
-      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+      #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Finn 1993")
       #' p$NormEntropUser()
       #'
       #' @aliases NULL
@@ -1928,8 +1930,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        if(Entrop_iB == 0){
         stop("/ by 0")
        }
-
-       NormEntropUser <- self$Entrop(v)[[1]]/Entrop_iB
+       NormEntropUser <- self$Entrop(v=v)[[1]]/Entrop_iB
        VarNormEntropUser <- abs((NormEntropUser*(1-NormEntropUser))/sum(self$Values))
        ConfInt <- private$ConfInt(NormEntropUser,VarNormEntropUser,a)
      return(list(NormEntropUser=NormEntropUser,
@@ -1946,8 +1947,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' NormEntropProd=\dfrac{Entrop}{Entrop_i(A)}
       #' }
       #'  \deqn{
-      #' Entrop_i(A)=-\sum^M_{j=1}\left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{i=1} x_{i +}}
+      #' Entrop_i(A)=-\sum^M_{j=1}\left( \left(\dfrac{ x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{x_{+j}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #'\deqn{
@@ -1961,8 +1962,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{Entrop}: product entropy.
       #'   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
-      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
-      #'   \item \eqn{x_{i+}}: sum of all elements in row i.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column i.
       #'   \item \eqn{N_{NormEntropProd}}: number of cases involved in the calculation of
       #'   the index.
       #' }
@@ -1973,17 +1973,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @param v \verb{
       #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-      #' \verb{By default v=10. This value is used for the entropy units,
-      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' \verb{By default v=10. This value is used
+      #' for the entropy units, v=10(units Hartleys), v=2(units bits),
+      #' v=e(units nats).}
       #' @return \verb{
       #' A list of real values containing with normalized entropy
       #' of the reference class i, conditioned to producer, its variance
       #' and confidence interval.
       #' }
       #' @examples
-      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+      #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+      #' p<-ConfMatrix$new(A,Source="Finn 1993")
       #' p$NormEntropProd()
       #'
       #' @aliases NULL
@@ -1998,7 +1999,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        if (Entrop_iA == 0){
         stop ("/ by 0")
        }else{
-         NormEntropProd <- self$Entrop()[[1]]/Entrop_iA
+         NormEntropProd <- self$Entrop(v=v)[[1]]/Entrop_iA
          VarNormEntropProd <- abs((NormEntropProd*(1-NormEntropProd))/sum(self$Values))
          ConfInt <- private$ConfInt(NormEntropProd,VarNormEntropProd,a)
          }
@@ -2016,13 +2017,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' AvNormEntrop=\dfrac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
       #' }
       #'  \deqn{
-      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #' \deqn{
-      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{i+}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{x_{i+}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #' \deqn{
@@ -2039,7 +2040,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   the product with respect to the class \emph{i} of the product. A is a matrix.
       #'   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
       #'   reference with respect to the class on the reference. B is a matrix.
-      #'   \item \eqn{x_{+i}}: sum of all elements in column i.
+      #'   \item \eqn{x_{+j}}: sum of all elements in column j.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
       #'   \item \eqn{N_{AvNormEntrop}}: number of cases involved in the calculation of the
       #'   index.
@@ -2049,8 +2050,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' @param v \verb{
       #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-      #' \verb{By default v=10. This value is used for the entropy units,
-      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' \verb{By default v=10. This value is used
+      #' for the entropy units, v=10(units Hartleys), v=2(units bits),
+      #' v=e(units nats).}
       #' @return \verb{
       #' A list of real values containing the normalized
       #' entropy (arithmetic mean of the entropies on the product
@@ -2075,7 +2077,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         if (Entrop_iA + Entrop_iB == 0) {
           stop ("/ by 0")
         }else{
-          AvNormEntrop <- 2 * self$Entrop(v)[[1]] / (Entrop_iA + Entrop_iB)
+          AvNormEntrop <- 2 * self$Entrop(v=v)[[1]] / (Entrop_iA + Entrop_iB)
           VarAvNormEntrop <- abs((AvNormEntrop*(1-AvNormEntrop))/sum(self$Values))
           ConfInt <- private$ConfInt(AvNormEntrop,VarAvNormEntrop,a)
         }
@@ -2095,13 +2097,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' GeomAvNormEntrop=\dfrac{Entrop}{\sqrt{Entrop_i(A) \cdot Entrop_i(B)}}
       #' }
       #'  \deqn{
-      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #' \deqn{
-      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{i+}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i+}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #'\deqn{
@@ -2128,8 +2130,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' @param v \verb{
       #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-      #' \verb{By default v=10. This value is used for the entropy units,
-      #'  v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' \verb{By default v=10. This value is used
+      #' for the entropy units, v=10(units Hartleys), v=2(units bits),
+      #' v=e(units nats).}
       #' @return \verb{
       #' A list of real values containing the normalized
       #' entropy (geometric mean of the entropies on the product
@@ -2152,7 +2155,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        if (Entrop_iA * Entrop_iB == 0) {
         stop ("/ by 0")
        }else{
-         GeomAvNormEntrop <- self$Entrop(v)[[1]] / sqrt(Entrop_iA * Entrop_iB)
+         GeomAvNormEntrop <- self$Entrop(v=v)[[1]] / sqrt(Entrop_iA * Entrop_iB)
          VarGeomAvNormEntrop <- abs((GeomAvNormEntrop*(1-GeomAvNormEntrop)))
          ConfInt<-private$ConfInt(GeomAvNormEntrop,VarGeomAvNormEntrop,a)
          }
@@ -2169,16 +2172,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #' \deqn{
       #' AvMaxNormEntrop=\dfrac{2 Entrop}{max(Entrop_i(A))+max(Entrop_i(B))}=
-      #' \dfrac{Entrop}{\log \sqrt{M}}
+      #' \dfrac{Entrop}{\log M}
       #' }
       #'  \deqn{
-      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+      #' Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #' \deqn{
-      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
-      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+      #' Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{i+}}
+      #' {\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i+}}
       #' {\sum^M_{i,j=1} x_{ij} }\right) \right)
       #' }
       #' \deqn{
@@ -2197,7 +2200,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   reference with respect to the class on the reference. B is a matrix.
       #'   \item \eqn{x_{+i}}: sum of all elements in column i.
       #'   \item \eqn{x_{i+}}: sum of all elements in row i.
-      #'   \item \eqn{M}: number of elements of the matrix.
+      #'   \item \eqn{M}: number of classes.
       #'   \item \eqn{N_{AvMaxNormEntrop}}: number of cases involved in the calculation
       #'   of the index.
       #' }
@@ -2206,8 +2209,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' @param v \verb{
       #' Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-      #' \verb{By default v=10. This value is used for the entropy units,
-      #' v=10(units Hartleys), v=2(units bits), v=e(units nats).}
+      #' \verb{By default v=10. This value is used
+      #' for the entropy units, v=10(units Hartleys), v=2(units bits),
+      #' v=e(units nats).}
       #' @return \verb{
       #' A list of real values containing the normalized entropy
       #' (arithmetic mean of the maximum entropies in the product and in
@@ -2226,7 +2230,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
          v<-v
        }else{v<-10}
 
-        AvMaxNormEntrop <- self$Entrop(v)[[1]] / log(sqrt(length(self$Values)),base=v)
+        AvMaxNormEntrop <- self$Entrop(v=v)[[1]] / log(sqrt(length(self$Values)),base=v)
         VarAvMaxNormEntrop <- abs((AvMaxNormEntrop*(1-AvMaxNormEntrop))/sum(self$Values))
         ConfInt <- private$ConfInt(AvMaxNormEntrop,VarAvMaxNormEntrop,a)
 
@@ -2338,7 +2342,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #'
       #'  \deqn{
-      #' ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
+      #' ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{(i,j=1}^M x_{ij})^{2}}
       #' }
       #' \deqn{
       #' \sigma^2_{Kappa} = \dfrac{1}{N_{Kappa}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
@@ -2348,7 +2352,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' where
       #'
       #' \deqn{
-      #' \theta_1=OverallAcc=\dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
+      #' \theta_1=OverallAcc= \sum_{i, j=1}^{M} \dfrac{ x_{ii}}{ x_{ij}}
       #' }
       #'
       #' \deqn{
@@ -2641,7 +2645,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Where:
       #' \enumerate{
       #'   \item \eqn{G^2}: statistic.
-      #'   \item \eqn{x_{ij}}: observed frequency.
+      #'   \item \eqn{x_{ij}}: matrix element. Observed frequency.
       #'   \item \eqn{E_{ij}}: expected frequency.
       #' }
       #' @param a \verb{

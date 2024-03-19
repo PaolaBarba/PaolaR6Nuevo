@@ -303,19 +303,19 @@ p$Kappa()
 ## Method `ConfMatrix$Entrop`
 ## ------------------------------------------------
 
-A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-p$Entrop()
+p<-ConfMatrix$new(A,Source="Finn 1993")
+p$Entrop(v=2)
 
 
 ## ------------------------------------------------
 ## Method `ConfMatrix$NormEntropUser`
 ## ------------------------------------------------
 
-A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p<-ConfMatrix$new(A,Source="Finn 1993")
 p$NormEntropUser()
 
 
@@ -323,9 +323,9 @@ p$NormEntropUser()
 ## Method `ConfMatrix$NormEntropProd`
 ## ------------------------------------------------
 
-A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p<-ConfMatrix$new(A,Source="Finn 1993")
 p$NormEntropProd()
 
 
@@ -1629,11 +1629,11 @@ the calculations.
 
 
 \deqn{
-ModKappa=\dfrac{OverallAcc-\dfrac{1}{\sqrt{M}}}{1-\dfrac{1}{\sqrt{M}}}
+ModKappa=\dfrac{OverallAcc-\dfrac{1}{M}}{1-\dfrac{1}{M}}
 }
 \deqn{
 \sigma^2_{ModKappa}=\dfrac{OverallAcc \cdot (1- OverallAcc)}
-{\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappa}}
+{ \left(1-\dfrac{1}{M} \right)^2 \cdot N_{ModKappa}}
 }
 where:
 
@@ -1687,12 +1687,12 @@ for the calculations.
 
 
 \deqn{
-ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{\sqrt{M}}}
-{1-\dfrac{1}{\sqrt{M}}}
+ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{M}}
+{1-\dfrac{1}{M}}
 }
 \deqn{
 \sigma^2_{ModKappaUser_i}=\dfrac{UserAcc_i
-\cdot (1- UserAcc_i)}{\left(1- \dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaUser_i}}
+\cdot (1- UserAcc_i)}{ \left(1- \dfrac{1}{M} \right)^2 \cdot N_{ModKappaUser_i}}
 }
 where:
 
@@ -1752,12 +1752,12 @@ followed for the calculations.
 
 
 \deqn{
-ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{\sqrt{M}}}
-{1-\dfrac{1}{\sqrt{M}}}
+ModKappaProd_i=\dfrac{ProdAcc_i-\dfrac{1}{M}}
+{1-\dfrac{1}{M}}
 }
 \deqn{
 \sigma^2_{ModKappaProd_i}=\dfrac{ProdAcc_i
-\cdot (1- ProdAcc_i)}{\left(1-\dfrac{1}{\sqrt{M}} \right)^2 \cdot N_{ModKappaProd_i}}
+\cdot (1- ProdAcc_i)}{ \left( 1-\dfrac{1}{M} \right)^2 \cdot N_{ModKappaProd_i}}
 }
 where:
 
@@ -1818,14 +1818,14 @@ the calculations.
 EntropUser_i= \dfrac{Entrop_i(A)-Entrop_i(A|b_i)}{Entrop_i(A)}
 }
  \deqn{
-Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{i +}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i +}}
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
 Entrop_i(A|b_i)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{ij}}
-{ x_{+ j} }\right) \cdot \log \left(\dfrac{x_{ij}}
-{ x_{+ j}}\right) \right)
+{ x_{i+} }\right) \cdot \log \left(\dfrac{x_{ij}}
+{ x_{i+}}\right) \right)
 }
 \deqn{
 \sigma^2_{EntropUser_i}= \dfrac{EntropUser_i \cdot (1-EntropUser_i)}{N_{EntropUser_i}}
@@ -1841,7 +1841,7 @@ where:
   \item \eqn{x_{i+}}: sum of all elements in rows i.
   \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(A|b_i)}: Producer entropy knowing that the
-  location corresponding to the reference map B is in class\eqn{b_i}.
+  location corresponding to the reference map B is in class \eqn{b_i}.
   B is a matrix.
   \item \eqn{N_{EntropUser_i}}: number of cases involved in the calculation of
   the index.
@@ -1904,14 +1904,14 @@ EntropProd_i= \dfrac{Entrop_i(B)-Entrop_i(B|a_j)}{Entrop_i(B)}
 }
 
  \deqn{
-Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{ x_{+ j}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+ j}}
+Entrop_i(B)=-\sum^M_{i=1} \left( \left(\dfrac{ x_{i+}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i+}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
 Entrop_i(B|a_j)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{ij}}
-{ x_{i +} }\right) \cdot \log \left(\dfrac{x_{ij}}
-{ x_{i +}}\right) \right)
+{ x_{+j} }\right) \cdot \log \left(\dfrac{x_{ij}}
+{ x_{+j}}\right) \right)
 }
 \deqn{
 \sigma^2_{EntropProd_i}= \dfrac{EntropProd_i \cdot (1-EntropProd_i)}{N_{EntropProd_i}}
@@ -1924,7 +1924,6 @@ where:
   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
   reference with respect to the class on the reference. B is a matrix.
   \item \eqn{x_{i+}}: sum of all elements in rows i.
-  \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{Entrop_i(B|a_j)}: Entropy of reference map B knowing that
   the location corresponding map of product A is in class \eqn{a_j}.
   \item \eqn{N_{EntropProd_i}}: number of cases involved in the calculation of
@@ -1984,7 +1983,7 @@ followed for the calculations.
 
 
 \deqn{
-AvUserAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+AvUserAcc=\dfrac{1}{M} \sum^M_{i=1} \dfrac{x_{ii}}
 { x_{i+}}
 }
 \deqn{
@@ -2043,7 +2042,7 @@ is followed for the calculations.
 
 
 \deqn{
-AvProdAcc=\dfrac{1}{\sqrt{M}} \sum^M_{i=1} \dfrac{x_{ii}}
+AvProdAcc=\dfrac{1}{M} \sum^M_{i=1} \dfrac{x_{ii}}
 { x_{+j}}
 }
 \deqn{
@@ -2164,8 +2163,8 @@ the calculations.
 
 
 \deqn{
-AvHelldenAcc=\dfrac{1}{\sqrt{M}} \dfrac{2 \sum^M_{i=1} x_{ii}}
-{ x_{+j} + x_{i+}}
+AvHelldenAcc=\dfrac{1}{M} 2 \sum^M_{i=1} \dfrac{ x_{ii}}
+{ x_{+i} + x_{i+}}
 }
  \deqn{
 \sigma^2_{AvHelldenAcc}=\dfrac{AvHelldenAcc \cdot (1-AvHelldenAcc)}{N_{AvHelldenAcc}}
@@ -2176,7 +2175,7 @@ where:
 \enumerate{
   \item \eqn{AvHelldenAcc}: average of Hellden's mean accuracy index.
   \item \eqn{x_{ii}}: diagonal element of the matrix.
-  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{M}: number of classes.
   \item \eqn{N_{AvHelldenAcc}}: number of cases involved in the calculation of
@@ -2227,9 +2226,8 @@ the calculations.
 
 
 \deqn{
-AvShortAcc=\dfrac{1}{\sqrt{M}}\dfrac{\dfrac{\sum^M_{i=1} x_{ii}}
-{\sum^M_{i,j=1}x_{ij}}}{ x_{+ j}+ x_{i +}
--x_{ii}}
+AvShortAcc=\dfrac{1}{M} \sum^M_{i=1} \dfrac{x_{ii}}
+{ x_{+ i}+ x_{i +}-x_{ii}}
 }
 \deqn{
 \sigma^2_{AvShortAcc}=\dfrac{AvShortAcc \cdot (1-AvShortAcc)}{N_{AvShortAcc}}
@@ -2470,10 +2468,10 @@ for the calculations.
 \deqn{
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 }
- \deqn{
-ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
+\deqn{
+ExpAcc= \dfrac{x_{+ i}x_{i +}}{ ( \sum_{i,j=1}^M x_{ij} )^{2} }
 }
- \deqn{
+\deqn{
 \sigma^2_{Kappa}=\dfrac{OverallAcc-ExpAcc}{(1-ExpAcc)^2 \cdot N_{Kappa}}
 }
 
@@ -2546,7 +2544,7 @@ where:
 
 \enumerate{
   \item \eqn{Entrop}: product entropy.
-  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N_{Entrop}}: number of cases involved in the calculation of
   the index.
@@ -2564,8 +2562,9 @@ Significance level. By default 0.05.
 
 \item{\code{v}}{\verb{
 Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-\verb{By default v=10. This value is used for the entropy units, v=10(units Hartleys),
-v=2(units bits), v=e(units nats).}}
+\verb{By default v=10. This value is used
+for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
@@ -2576,10 +2575,10 @@ and confidence interval.}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+\preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
-p$Entrop()
+p<-ConfMatrix$new(A,Source="Finn 1993")
+p$Entrop(v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -2592,7 +2591,7 @@ p$Entrop()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-NormEntropUser}{}}}
 \subsection{Method \code{NormEntropUser()}}{
 Public method that calculates normalized entropy
-of the porduct. The method also offers the variance and
+of the product. The method also offers the variance and
 confidence interval. The reference
 \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
 
@@ -2601,8 +2600,8 @@ confidence interval. The reference
 NormEntropUser=\dfrac{Entrop}{Entrop_i(B)}
 }
 \deqn{
-Entrop_i(B)=-\sum^M_{i=1} \left( \left(  \dfrac{\sum^M_{j=1} x_{+ j}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{j=1} x_{+ j}}
+Entrop_i(B)=-\sum^M_{i=1} \left( \left(  \dfrac {x_{i+}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{ x_{i+}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
@@ -2612,10 +2611,9 @@ where:
 
 \enumerate{
   \item \eqn{NormEntropUser}: normalized entropy of the product.
+  \item \eqn{Entrop}: product entropy.
   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
   reference with respect to the class on the reference. B is a matrix.
-  \item \eqn{Entrop}: product entropy.
-  \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N_{NormEntropUser}}: number of cases involved in the calculation of
   the index.
@@ -2647,9 +2645,9 @@ and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+\preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p<-ConfMatrix$new(A,Source="Finn 1993")
 p$NormEntropUser()
 
 }
@@ -2672,8 +2670,8 @@ followed for the calculations.
 NormEntropProd=\dfrac{Entrop}{Entrop_i(A)}
 }
  \deqn{
-Entrop_i(A)=-\sum^M_{j=1}\left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{\sum^M_{i=1} x_{i +}}
+Entrop_i(A)=-\sum^M_{j=1}\left( \left(\dfrac{ x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left( \dfrac{x_{+j}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
@@ -2687,8 +2685,7 @@ where:
   \item \eqn{Entrop}: product entropy.
   \item \eqn{Entrop_i(A)}: entropy of the class \emph{i} of
   the product with respect to the class \emph{i} of the product. A is a matrix.
-  \item \eqn{x_{+i}}: sum of all elements in column i.
-  \item \eqn{x_{i+}}: sum of all elements in row i.
+  \item \eqn{x_{+j}}: sum of all elements in column i.
   \item \eqn{N_{NormEntropProd}}: number of cases involved in the calculation of
   the index.
 }
@@ -2705,8 +2702,9 @@ Significance level. By default 0.05.
 
 \item{\code{v}}{\verb{
 Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-\verb{By default v=10. This value is used for the entropy units,
-v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
+\verb{By default v=10. This value is used
+for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
@@ -2719,9 +2717,9 @@ and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
+\preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p<-ConfMatrix$new(A,Source="Finn 1993")
 p$NormEntropProd()
 
 }
@@ -2744,13 +2742,13 @@ reference. The method also offers the variance and confidence interval. The refe
 AvNormEntrop=\dfrac{2Entrop}{Entrop_i(A)+Entrop_i(B)}
 }
  \deqn{
-Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
-Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{i+}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{x_{i+}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
@@ -2767,7 +2765,7 @@ where:
   the product with respect to the class \emph{i} of the product. A is a matrix.
   \item \eqn{Entrop_i(B)}: entropy of class \emph{i} of the
   reference with respect to the class on the reference. B is a matrix.
-  \item \eqn{x_{+i}}: sum of all elements in column i.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
   \item \eqn{x_{i+}}: sum of all elements in row i.
   \item \eqn{N_{AvNormEntrop}}: number of cases involved in the calculation of the
   index.
@@ -2785,8 +2783,9 @@ Significance level. By default 0.05.
 
 \item{\code{v}}{\verb{
 Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-\verb{By default v=10. This value is used for the entropy units,
-v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
+\verb{By default v=10. This value is used
+for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
@@ -2824,13 +2823,13 @@ for the calculations.
 GeomAvNormEntrop=\dfrac{Entrop}{\sqrt{Entrop_i(A) \cdot Entrop_i(B)}}
 }
  \deqn{
-Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
-Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{i+}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i+}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
@@ -2864,8 +2863,9 @@ Significance level. By default 0.05.
 
 \item{\code{v}}{\verb{
 Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-\verb{By default v=10. This value is used for the entropy units,
- v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
+\verb{By default v=10. This value is used
+for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
@@ -2902,16 +2902,16 @@ followed for the calculations.
 
 \deqn{
 AvMaxNormEntrop=\dfrac{2 Entrop}{max(Entrop_i(A))+max(Entrop_i(B))}=
-\dfrac{Entrop}{\log \sqrt{M}}
+\dfrac{Entrop}{\log M}
 }
  \deqn{
-Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{\sum^M_{i=1} x_{i +}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{i=1} x_{i +}}
+Entrop_i(A)=-\sum^M_{j=1} \left( \left(\dfrac{ x_{+j}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{+j}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
-Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{\sum^M_{j=1} x_{+j}}
-{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{\sum^M_{j=1} x_{+j}}
+Entrop_i(B)=-\sum^M_{i=1}\left( \left(\dfrac{ x_{i+}}
+{\sum^M_{i,j=1} x_{ij} }\right) \cdot \log \left(\dfrac{ x_{i+}}
 {\sum^M_{i,j=1} x_{ij} }\right) \right)
 }
 \deqn{
@@ -2930,7 +2930,7 @@ where:
   reference with respect to the class on the reference. B is a matrix.
   \item \eqn{x_{+i}}: sum of all elements in column i.
   \item \eqn{x_{i+}}: sum of all elements in row i.
-  \item \eqn{M}: number of elements of the matrix.
+  \item \eqn{M}: number of classes.
   \item \eqn{N_{AvMaxNormEntrop}}: number of cases involved in the calculation
   of the index.
 }
@@ -2947,8 +2947,9 @@ Significance level. By default 0.05.
 
 \item{\code{v}}{\verb{
 Base of the logarithm, where} \eqn{v \in \mathbb{R}^{+}-\{1\}}.
-\verb{By default v=10. This value is used for the entropy units,
-v=10(units Hartleys), v=2(units bits), v=e(units nats).}}
+\verb{By default v=10. This value is used
+for the entropy units, v=10(units Hartleys), v=2(units bits),
+v=e(units nats).}}
 }
 \if{html}{\out{</div>}}
 }
@@ -3086,7 +3087,7 @@ Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
 }
 
  \deqn{
-ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
+ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{(i,j=1}^M x_{ij})^{2}}
 }
 \deqn{
 \sigma^2_{Kappa} = \dfrac{1}{N_{Kappa}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
@@ -3096,7 +3097,7 @@ ExpAcc= \dfrac{x_{+ i}x_{i +}}{\sum_{i,j=1}^M (x_{ij})^{2}}
 where
 
 \deqn{
-\theta_1=OverallAcc=\dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
+\theta_1=OverallAcc= \sum_{i, j=1}^{M} \dfrac{ x_{ii}}{ x_{ij}}
 }
 
 \deqn{
@@ -3347,7 +3348,7 @@ G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
 Where:
 \enumerate{
   \item \eqn{G^2}: statistic.
-  \item \eqn{x_{ij}}: observed frequency.
+  \item \eqn{x_{ij}}: matrix element. Observed frequency.
   \item \eqn{E_{ij}}: expected frequency.
 }
 \subsection{Usage}{
