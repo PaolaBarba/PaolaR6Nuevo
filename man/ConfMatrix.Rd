@@ -316,7 +316,7 @@ p$Entrop(v=2)
 A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Finn 1993")
-p$NormEntropUser()
+p$NormEntropUser(v=2)
 
 
 ## ------------------------------------------------
@@ -326,37 +326,37 @@ p$NormEntropUser()
 A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Finn 1993")
-p$NormEntropProd()
+p$NormEntropProd(v=2)
 
 
 ## ------------------------------------------------
 ## Method `ConfMatrix$AvNormEntrop`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$AvNormEntrop()
+p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p$AvNormEntrop(v=2)
 
 
 ## ------------------------------------------------
 ## Method `ConfMatrix$GeomAvNormEntrop`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$GeomAvNormEntrop()
+p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p$GeomAvNormEntrop(v=2)
 
 
 ## ------------------------------------------------
 ## Method `ConfMatrix$AvMaxNormEntrop`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+A<-matrix(c(8,0,0,0,0,16,0,0,0,0,8,0,0,0,0,16),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$AvMaxNormEntrop()
+p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p$AvMaxNormEntrop(v=2)
 
 
 ## ------------------------------------------------
@@ -425,9 +425,9 @@ p$QIndep.test()
 ## Method `ConfMatrix$DetailedCondKappa`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+A<-matrix(c(0.2361,0.0694,0.1389,0.0556,0.1667,0.0417,0.1111,0,0.1806),
+ncol=3,nrow=3)
+p<-ConfMatrix$new(A,Source="Czaplewski 1994")
 p$DetailedCondKappa ()
 
 
@@ -435,9 +435,9 @@ p$DetailedCondKappa ()
 ## Method `ConfMatrix$QES`
 ## ------------------------------------------------
 
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+A<-matrix(c(3,2,1,1,3,3,2,0,1),
+nrow=3,ncol=3)
+p<-ConfMatrix$new(A,Source="Pontius Jr. and Santacruz 2023")
 p$QES()
 
 
@@ -479,7 +479,7 @@ A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-ConfMatrix$new(A,Source="Muñoz 2016")
-p$MNormalize()$values
+p$MNormalize()
 
 
 ## ------------------------------------------------
@@ -669,6 +669,10 @@ p$print()
 \insertRef{turk1979gt}{ConfMatrix}
 
 \insertRef{goodman1968analysis}{ConfMatrix}
+
+\insertRef{diffeR}{ConfMatrix}
+
+\insertRef{condkappa}{ConfMatrix}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -2648,7 +2652,7 @@ and confidence interval.
 \preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Finn 1993")
-p$NormEntropUser()
+p$NormEntropUser(v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -2720,7 +2724,7 @@ and confidence interval.
 \preformatted{A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
 nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Finn 1993")
-p$NormEntropProd()
+p$NormEntropProd(v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -2797,10 +2801,10 @@ and reference), its variance and confidence interval.}
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$AvNormEntrop()
+p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p$AvNormEntrop(v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -2878,10 +2882,10 @@ and reference), its variance and confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+\preformatted{A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$GeomAvNormEntrop()
+p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p$GeomAvNormEntrop(v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -2962,10 +2966,10 @@ reference), its variance, and its confidence interval.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+\preformatted{A<-matrix(c(8,0,0,0,0,16,0,0,0,0,8,0,0,0,0,16),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-p$AvMaxNormEntrop()
+p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+p$AvMaxNormEntrop(v=2)
 
 }
 \if{html}{\out{</div>}}
@@ -3428,9 +3432,9 @@ producer, and its corresponding standard deviation.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+\preformatted{A<-matrix(c(0.2361,0.0694,0.1389,0.0556,0.1667,0.0417,0.1111,0,0.1806),
+ncol=3,nrow=3)
+p<-ConfMatrix$new(A,Source="Czaplewski 1994")
 p$DetailedCondKappa ()
 
 }
@@ -3463,9 +3467,9 @@ classes of the components of quantity, exchange and turn.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-nrow=4,ncol=4)
-p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+\preformatted{A<-matrix(c(3,2,1,1,3,3,2,0,1),
+nrow=3,ncol=3)
+p<-ConfMatrix$new(A,Source="Pontius Jr. and Santacruz 2023")
 p$QES()
 
 }
@@ -3487,14 +3491,14 @@ a percentage (parameter RaR !=1).
 
 The matematical expression is:
  \deqn{
-MTypify=\dfrac{CM}{\sum^M_{i,j=1} x_{ij}}
+MTypify=\dfrac{Values}{\sum^M_{i,j=1} x_{ij}}
 }
 
 where:
 
 \enumerate{
-  \item MTyipify: typified matrix.
-  \item CM: Confusion Matrix.
+  \item MTypify: typified matrix.
+  \item Values: Matrix of integer values.
   \item \eqn{x_{ij}}: matrix element.
 }
 \subsection{Usage}{
@@ -3631,7 +3635,7 @@ normalized matrix.
 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
 p<-ConfMatrix$new(A,Source="Muñoz 2016")
-p$MNormalize()$values
+p$MNormalize()
 
 }
 \if{html}{\out{</div>}}
@@ -3916,16 +3920,16 @@ for the computations.
 The mathematical expression is:
 
 \deqn{
-Z = \dfrac{|OA_A-OA_B|}{\sqrt{(\sigma^2_{OA_A}+\sigma^2_{OA_B})}}
+Z = \dfrac{|O_A-O_B|}{\sqrt{(\sigma^2_{O_A}+\sigma^2_{O_B})}}
 }
 
 Where:
 \enumerate{
  \item \eqn{Z}: statistic.
-  \item \eqn{OA_A}: overall index of matrix A
-  \item \eqn{OA_B}: overall index of matrix B
-  \item \eqn{\sigma^2_{OA_A}}: variance of \eqn{OA_A}.
-  \item \eqn{\sigma^2_{OA_B}}: variance of \eqn{OA_B}.
+  \item \eqn{O_A}: overall index of matrix A
+  \item \eqn{O_B}: overall index of matrix B
+  \item \eqn{\sigma^2_{O_A}}: variance of \eqn{O_A}.
+  \item \eqn{\sigma^2_{O_B}}: variance of \eqn{O_B}.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$OverallAcc.test(f, a = NULL)}\if{html}{\out{</div>}}

@@ -79,6 +79,10 @@
 #'
 #' \insertRef{goodman1968analysis}{ConfMatrix}
 #'
+#' \insertRef{diffeR}{ConfMatrix}
+#'
+#' \insertRef{condkappa}{ConfMatrix}
+#'
 #' @aliases ConfMatrix
 
 
@@ -1915,7 +1919,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
       #' nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Finn 1993")
-      #' p$NormEntropUser()
+      #' p$NormEntropUser(v=2)
       #'
       #' @aliases NULL
 
@@ -1985,7 +1989,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' A<-matrix(c(35,4,12,2,14,11,9,5,11,3,38,12,1,0,4,2),
       #' nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Finn 1993")
-      #' p$NormEntropProd()
+      #' p$NormEntropProd(v=2)
       #'
       #' @aliases NULL
 
@@ -2058,10 +2062,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' entropy (arithmetic mean of the entropies on the product
       #' and reference), its variance and confidence interval.}
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' p$AvNormEntrop()
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+      #' p$AvNormEntrop(v=2)
       #'
       #' @aliases NULL
 
@@ -2139,10 +2143,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' and reference), its variance and confidence interval.
       #' }
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' A<-matrix(c(0,12,0,0,12,0,0,0,0,0,0,12,0,0,12,0),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' p$GeomAvNormEntrop()
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+      #' p$GeomAvNormEntrop(v=2)
       #'
       #' @aliases NULL
 
@@ -2218,10 +2222,10 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' reference), its variance, and its confidence interval.
       #' }
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
+      #' A<-matrix(c(8,0,0,0,0,16,0,0,0,0,8,0,0,0,0,16),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' p$AvMaxNormEntrop()
+      #' p<-ConfMatrix$new(A,Source="Liu et al. 2007")
+      #' p$AvMaxNormEntrop(v=2)
       #'
       #' @aliases NULL
 
@@ -2290,7 +2294,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      Tau = function(a=NULL){
         Ca<-1/nrow(self$Values)
         Tau <- ((self$OverallAcc()[[1]]-Ca)/(1-Ca))
-        VarTau <- ((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$Values)*(1-Ca)))
+        VarTau <- ((self$OverallAcc()[[1]]*(1-self$OverallAcc()[[1]]))/(sum(self$Values)*(1-Ca)^2))
         ConfInt <- private$ConfInt(Tau,VarTau,a)
      return(list(Tau=Tau,VarTau=VarTau,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
@@ -2732,9 +2736,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @return A list of real values containing conditional Kappa index of the user and the
       #' producer, and its corresponding standard deviation.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-      #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+      #' A<-matrix(c(0.2361,0.0694,0.1389,0.0556,0.1667,0.0417,0.1111,0,0.1806),
+      #' ncol=3,nrow=3)
+      #' p<-ConfMatrix$new(A,Source="Czaplewski 1994")
       #' p$DetailedCondKappa ()
       #'
       #' @aliases NULL
@@ -2786,9 +2790,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' quantity, exchange, and shift. In addition to the differences for
       #' classes of the components of quantity, exchange and turn.
       #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
-      #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+      #' A<-matrix(c(3,2,1,1,3,3,2,0,1),
+      #' nrow=3,ncol=3)
+      #' p<-ConfMatrix$new(A,Source="Pontius Jr. and Santacruz 2023")
       #' p$QES()
       #'
       #' @aliases NULL
@@ -2843,14 +2847,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description
       #' The matematical expression is:
       #'  \deqn{
-      #' MTypify=\dfrac{CM}{\sum^M_{i,j=1} x_{ij}}
+      #' MTypify=\dfrac{Values}{\sum^M_{i,j=1} x_{ij}}
       #' }
       #'
       #' where:
       #'
       #' \enumerate{
-      #'   \item MTyipify: typified matrix.
-      #'   \item CM: Confusion Matrix.
+      #'   \item MTypify: typified matrix.
+      #'   \item Values: Matrix of integer values.
       #'   \item \eqn{x_{ij}}: matrix element.
       #' }
       #' @param RaR "1" indicates result as real, other values mean percentage
@@ -2992,7 +2996,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' 32,0,197,5,151,119,135,726,6774,75,1,553,0,105,601,110,174,155,8257,8,0,
       #' 29,36,280,0,0,6,5,2993,0,115,2,0,4,124,595,0,0,4374),nrow=9,ncol=9)
       #' p<-ConfMatrix$new(A,Source="Muñoz 2016")
-      #' p$MNormalize()$values
+      #' p$MNormalize()
       #'
       #' @aliases NULL
 
@@ -3133,8 +3137,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        nc <- nrow(self$Values)
        SumaMatriz <-sum(self$Values)
       # In %
-       ConfM<- self$Values/SumaMatriz
+       #ConfM<- self$Values/SumaMatriz
       # UnWeighted marginals (prob)
+       ConfM<-self$Values
        pcol <- apply(ConfM,2,sum)
        prow<- apply(ConfM,1,sum)
       # Weighted matrix
@@ -3368,16 +3373,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The mathematical expression is:
       #'
       #' \deqn{
-      #' Z = \dfrac{|OA_A-OA_B|}{\sqrt{(\sigma^2_{OA_A}+\sigma^2_{OA_B})}}
+      #' Z = \dfrac{|O_A-O_B|}{\sqrt{(\sigma^2_{O_A}+\sigma^2_{O_B})}}
       #' }
       #'
       #' Where:
       #' \enumerate{
       #'  \item \eqn{Z}: statistic.
-      #'   \item \eqn{OA_A}: overall index of matrix A
-      #'   \item \eqn{OA_B}: overall index of matrix B
-      #'   \item \eqn{\sigma^2_{OA_A}}: variance of \eqn{OA_A}.
-      #'   \item \eqn{\sigma^2_{OA_B}}: variance of \eqn{OA_B}.
+      #'   \item \eqn{O_A}: overall index of matrix A
+      #'   \item \eqn{O_B}: overall index of matrix B
+      #'   \item \eqn{\sigma^2_{O_A}}: variance of \eqn{O_A}.
+      #'   \item \eqn{\sigma^2_{O_B}}: variance of \eqn{O_B}.
       #' }
       #' @param a \verb{
       #' Significance level. By default a=0.05.
