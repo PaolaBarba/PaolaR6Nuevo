@@ -238,7 +238,9 @@ for the computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -276,7 +278,9 @@ are followed for the computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -313,7 +317,9 @@ followed for the computations.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{a}}{significance level. By default a=0.05.}
+\item{\code{a}}{\verb{
+significance level. By default a=0.05.
+}}
 }
 \if{html}{\out{</div>}}
 }

@@ -247,7 +247,9 @@ QCCS <- R6Class("QCCS",
       #' The Bonferroni method is used.
       #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
       #' for the computations.
-      #' @param a significance level. By default a=0.05.
+      #' @param a \verb{
+      #' significance level. By default a=0.05.
+      #' }
       #' @return The p value of the exact test using Bonferroni.
       #' @examples
       #' Vectors<-list(c(47,4,0),c(44,5,3))
@@ -302,7 +304,9 @@ QCCS <- R6Class("QCCS",
       #' The references
       #' \insertCite{QCCS,alba2020}{ConfMatrix}
       #' are followed for the computations.
-      #' @param a significance level. By default a=0.05.
+      #' @param a \verb{
+      #' significance level. By default a=0.05.
+      #' }
       #' @return The p value derived from the chi square test.
       #' @examples
       #' Vectors<-list(c(18,0,3,0),c(27,19))
@@ -367,7 +371,9 @@ QCCS <- R6Class("QCCS",
       #' square test is used. The Bonferroni method is used.
       #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are
       #' followed for the computations.
-      #' @param a significance level. By default a=0.05.
+      #' @param a \verb{
+      #' significance level. By default a=0.05.
+      #' }
       #' @return The p value from the chi square test.
       #' @examples
       #' Vectors<-list(c(18,0,3,0),c(27,19))
