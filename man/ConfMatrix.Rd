@@ -680,7 +680,6 @@ p$print()
 
 \insertRef{fleiss1969}{ConfMatrix}
 
-\insertRef{alba2009}{ConfMatrix}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
