@@ -679,6 +679,8 @@ p$print()
 \insertRef{naesset1996}{ConfMatrix}
 
 \insertRef{fleiss1969}{ConfMatrix}
+
+\insertRef{alba2009}{ConfMatrix}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -722,23 +724,38 @@ By default, is NULL.
 \itemize{
 \item \href{#method-ConfMatrix-new}{\code{ConfMatrix$new()}}
 \item \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}}
 \item \href{#method-ConfMatrix-UserAcc_i}{\code{ConfMatrix$UserAcc_i()}}
 \item \href{#method-ConfMatrix-AvUserAcc}{\code{ConfMatrix$AvUserAcc()}}
 \item \href{#method-ConfMatrix-CombUserAcc}{\code{ConfMatrix$CombUserAcc()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}
 \item \href{#method-ConfMatrix-ProdAcc_i}{\code{ConfMatrix$ProdAcc_i()}}
 \item \href{#method-ConfMatrix-AvProdAcc}{\code{ConfMatrix$AvProdAcc()}}
 \item \href{#method-ConfMatrix-CombProdAcc}{\code{ConfMatrix$CombProdAcc()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-CombUserProdAcc}{\code{ConfMatrix$CombUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc}{\code{ConfMatrix$AvUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc_i}{\code{ConfMatrix$AvUserProdAcc_i()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-UserKappa_i}{\code{ConfMatrix$UserKappa_i()}}
 \item \href{#method-ConfMatrix-ModKappaUser_i}{\code{ConfMatrix$ModKappaUser_i()}}
 \item \href{#method-ConfMatrix-ProdKappa_i}{\code{ConfMatrix$ProdKappa_i()}}
 \item \href{#method-ConfMatrix-ModKappaProd_i}{\code{ConfMatrix$ModKappaProd_i()}}
 \item \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}}
 \item \href{#method-ConfMatrix-ModKappa}{\code{ConfMatrix$ModKappa()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-EntUser_i}{\code{ConfMatrix$EntUser_i()}}
 \item \href{#method-ConfMatrix-NormEntUser}{\code{ConfMatrix$NormEntUser()}}
 \item \href{#method-ConfMatrix-EntProd_i}{\code{ConfMatrix$EntProd_i()}}
@@ -747,6 +764,9 @@ By default, is NULL.
 \item \href{#method-ConfMatrix-AvNormEnt}{\code{ConfMatrix$AvNormEnt()}}
 \item \href{#method-ConfMatrix-GeomAvNormEnt}{\code{ConfMatrix$GeomAvNormEnt()}}
 \item \href{#method-ConfMatrix-AvMaxNormEnt}{\code{ConfMatrix$AvMaxNormEnt()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-Sucess}{\code{ConfMatrix$Sucess()}}
 \item \href{#method-ConfMatrix-Sucess_i}{\code{ConfMatrix$Sucess_i()}}
 \item \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}}
@@ -756,24 +776,39 @@ By default, is NULL.
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-DetailKappa}{\code{ConfMatrix$DetailKappa()}}
 \item \href{#method-ConfMatrix-DetailCondKappa}{\code{ConfMatrix$DetailCondKappa()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-DetailWTau}{\code{ConfMatrix$DetailWTau()}}
 \item \href{#method-ConfMatrix-DetailWKappa}{\code{ConfMatrix$DetailWKappa()}}
 \item \href{#method-ConfMatrix-UserProdAcc_W}{\code{ConfMatrix$UserProdAcc_W()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
 \item \href{#method-ConfMatrix-AllParameters}{\code{ConfMatrix$AllParameters()}}
 \item \href{#method-ConfMatrix-MBootStrap}{\code{ConfMatrix$MBootStrap()}}
 \item \href{#method-ConfMatrix-MNormalize}{\code{ConfMatrix$MNormalize()}}
 \item \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-StHell}{\code{ConfMatrix$StHell()}}
 \item \href{#method-ConfMatrix-Kappa.test}{\code{ConfMatrix$Kappa.test()}}
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
 \item \href{#method-ConfMatrix-TSCM.test}{\code{ConfMatrix$TSCM.test()}}
 \item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-plot.global}{\code{ConfMatrix$plot.global()}}
 \item \href{#method-ConfMatrix-plot.class}{\code{ConfMatrix$plot.class()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
@@ -3170,7 +3205,7 @@ p$GroundTruth_i(3)
 \subsection{Method \code{UserProdAcc()}}{
 Public method that calculates the user’s and the
 producer’s indexes jointly. This method is equivalent to the methods
-[ConfMatrix$UserAcc] and [ConfMatrix$ProdAcc].
+\href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}} and \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$UserProdAcc()}\if{html}{\out{</div>}}
 }
@@ -3542,8 +3577,8 @@ p$MTypify(RaR=5)
 \subsection{Method \code{AllParameters()}}{
 Public method in which multiple parameters are
 calculated for the given confusion matrix. This method is
-equivalent to [ConfMatrix$OverallAcc],[ConfMatrix$UserAcc],
-[ConfMatrix$ProdAcc],[ConfMatrix$Kappa] and [ConfMatrix$MPseudoZeroes].
+equivalent to \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}},\href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}},
+\href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}},\href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}} and \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AllParameters()}\if{html}{\out{</div>}}
 }
@@ -3630,10 +3665,7 @@ Number of iteration. By default iter=1000.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\verb{
-A list formed by the original confusion matrix and the
-normalized matrix.
-}
+A list formed by the original confusion matrix and the normalized matrix.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -4030,8 +4062,8 @@ p$QIndep.test()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.global}{}}}
 \subsection{Method \code{plot.global()}}{
 Public method that provides a graph of the indices of
-the functions [ConfMatrix$OverallAcc], [ConfMatrix$Kappa],
-[ConfMatrix$Tau], [ConfMatrix$AvHellAcc] and [ConfMatrix$AvShortAcc]
+the functions \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}, \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}},
+\href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}, \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}} and \href{#method-ConfMatrix-AvShortAcc}{\code{ConfMatrix$AvShortAcc()}}
  with their corresponding standard deviations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.global()}\if{html}{\out{</div>}}

@@ -31,6 +31,7 @@
 #' @importFrom gridExtra grid.arrange
 #' @importFrom ggplot2 ggplot aes xlab ylab theme geom_point geom_errorbar
 #' @references
+#'
 #' \insertRef{congalton2008}{ConfMatrix}
 #'
 #' \insertRef{liu2007}{ConfMatrix}
@@ -88,6 +89,7 @@
 #' \insertRef{naesset1996}{ConfMatrix}
 #'
 #' \insertRef{fleiss1969}{ConfMatrix}
+#'
 #'
 #' @aliases ConfMatrix
 
@@ -334,6 +336,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #' @return A list of real values containing the overall accuracy,
       #' its variance, and its confidence interval.
+      #'
+      #'
       #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
@@ -3116,10 +3120,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param iter \verb{
       #' Number of iteration. By default iter=1000.
       #' }
-      #' @return \verb{
-      #' A list formed by the original confusion matrix and the
+      #' @return A list formed by the original confusion matrix and the
       #' normalized matrix.
-      #' }
+      #'
       #' @examples
       #' A<-matrix(c(238051,7,132,0,0,24,9,2,189,1,4086,188,0,4,16,45,1,0,939,5082,
       #' 51817,0,34,500,1867,325,17,0,0,5,11148,1618,78,0,0,0,0,48,4,834,2853,340,
@@ -3471,7 +3474,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' (instances of the ConfMatrix class)
       #' The test considers the individual cell values in the matrices.
       #' To use this test, the column vectors are chained one after the other.
-      #' The reference \insertCite{garcia2018}{ConfMatrix} is followed for
+      #' The reference \insertCite{garcia2018}{ConfMatrix} are followed for
       #' the computations.
       #' @param B \verb{
       #' Number of bootstraps that you want to generate.
