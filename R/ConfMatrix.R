@@ -13,7 +13,7 @@
 #' will be invoked. Mnemonic method names are proposed and are therefore
 #' long, for example methods that provide averages start with "AV" and
 #' those that provide combinations start with "Comb". Methods related
-#' to a specific class end with the ending "_i".
+#' to a specific thematics class end with the ending "_i".
 #'
 #' @note Error Messages: List of possible errors:
 #' \itemize{
@@ -90,6 +90,20 @@
 #'
 #' \insertRef{fleiss1969}{ConfMatrix}
 #'
+#' @section Mathematical elements:
+#' \itemize{
+#'   \item \eqn{x_{ii}}: diagonal element of the matrix.
+#'   \item \eqn{x_{ij}}: element of the matrix.
+#'   \item \eqn{x_{i+}}: sum of all elements in rows i.
+#'   \item \eqn{x_{+j}}: sum of all elements in column j.
+#'   \item \eqn{M}: number of classes.
+#'   \item \eqn{ExpAcc}: expected accuracy of agreement if agreement
+#'   were purely random.
+#' \deqn{
+#' ExpAcc= \dfrac{x_{+ j}x_{i +}}{ ( \sum_{i,j=1}^M x_{ij} )^{2} }
+#' }
+#'}
+#'
 #'
 #' @aliases ConfMatrix
 
@@ -105,10 +119,10 @@ ConfMatrix <- R6Class("ConfMatrix",
     Values = NULL,
     #' @field ID
     #'\verb{
-    #' Identifier. It is a character string with a maximum length of 50
-    #' characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
-    #' Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
-    #'}
+    #' Identifier. It is a character string with a maximum length of 50 characters.
+    #' By default,} \eqn{CM_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be the
+    #' number of ConfMatrix instances already defined in the session.
+    #' }
     ID = NULL,
     #' @field Date
     #' \verb{
@@ -117,22 +131,20 @@ ConfMatrix <- R6Class("ConfMatrix",
     #'
     #'}
     Date = NULL,
-    #' @field ClassName
+    #' @field ClassNames
     #'\verb{
-    #' Name of the classes. It is given by a character strings vector whose
-    #' elements are the name of the classes. Each element of the vector is
-    #' a string of maximum 20 characters. By default for the column elements
-    #' they will be} \eqn{Ref_{i}} \verb{and for the elements of row}
-    #' \eqn{C_{i}} \verb{, with} \eqn{i} \verb{being the
-    #' corresponding row or column number.
+    #' Name of the classes. It is given by a character strings vector whose elements
+    #' are the name of the classes. Each element of the vector is a string of maximum
+    #' 20 characters. By default for the column elements they will be} \eqn{PC_i}
+    #' (Producer class) \verb{and for the elements of row} \eqn{UC_i}\verb{ (User class), with} \eqn{i} \verb{being the correspond-
+    #' ing row or column number.
     #' }
-    ClassName=NULL,
+    ClassNames=NULL,
     #' @field Source
     #'  \verb{
-    #' Indicates where the matrix comes from (article, project, etc.).
-    #' It is suggested to enter a reference or a DOI. A character
-    #' string with a maximum length of 80 characters can be entered.
-    #' By default, is NULL.
+    #' Indicates where the matrix comes from (article, project, etc.). It is suggest-
+    #' ed to enter a reference or a DOI. A character string with a maximum length of
+    #' 80 characters can be entered. By default, is NULL.
     #' }
     Source=NULL,
 
@@ -153,9 +165,9 @@ ConfMatrix <- R6Class("ConfMatrix",
     #'
     #' @param ID
     #'\verb{
-    #' Identifier. It is a character string with a maximum length of 50
-    #' characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
-    #' Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
+    #' Identifier. It is a character string with a maximum length of 50 characters.
+    #' By default,} \eqn{CM_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be the
+    #' number of ConfMatrix instances already defined in the session.
     #'}
     #' @param Date
     #'\verb{
@@ -163,21 +175,21 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' By default the date provided by the system will be taken.
     #'
     #'}
-    #' @param ClassName
+    #' @param ClassNames
     #' \verb{
-    #' Name of the classes. It is given by a character strings vector whose
-    #' elements are the name of the classes. Each element of the vector is
-    #' a string of maximum 20 characters. By default for the column elements
-    #' they will be} \eqn{Ref_i} \verb{and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
-    #' corresponding row or column number.
+    #' Name of the classes. It is given by a character strings vector whose elements
+    #' are the name of the classes. Each element of the vector is a string of maximum
+    #' 20 characters. By default for the column elements they will be} \eqn{PC_i}
+    #' (Producer class) \verb{and for the elements of row} \eqn{UC_i}\verb{ (User class), with} \eqn{i} \verb{being the correspond-
+    #' ing row or column number.
     #' }
     #' @param Source
     #' \verb{
-    #' Indicates where the matrix comes from (article, project, etc.).
-    #' It is suggested to enter a reference or a DOI. A character
-    #' string with a maximum length of 80 characters can be entered.
-    #' By default, is NULL.
+    #' Indicates where the matrix comes from (article, project, etc.). It is suggest-
+    #' ed to enter a reference or a DOI. A character string with a maximum length of
+    #' 80 characters can be entered. By default, is NULL.
     #' }
+    #'
     #' @return Object of the ConfMatrix class, or an error message.
     #'
     #' @examples
@@ -187,9 +199,9 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' Source="Congalton and Green, 2008")
     #'
     #' @aliases NULL
-
+##Lo hago para intentar dar valores concreto y no siempre CM1
 #All parameters are entered
-initialize = function(Values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
+initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 # Initializing values -----------------------------------------------------
@@ -202,9 +214,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
   #ID="Name" or ID=YYYYMMDD
 
   if(is.null(ID)){
-    secuencia <- paste("CM_",seq(1:999),sep="")
-    self$ID <- secuencia[1]
-    secuencia <- setdiff(secuencia, secuencia[1])
+    secuencia <- private$secuencia()
+    self$ID <- paste("CM_", secuencia, sep="")
   }else{
     self$ID<-substr(ID,1,50)
   }
@@ -217,26 +228,26 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
 
   colname<-c()
   rowname<-c()
-  if(!is.null(ClassName)){
-    self$ClassName<-ClassName
+  if(!is.null(ClassNames)){
+    self$ClassNames<-ClassNames
 
     for(i in 1:sqrt(length(self$Values))){
-      colname<-c(colname,sprintf("Ref_%.20s",self$ClassName[i]))
-      rowname<-c(rowname,sprintf("C_%.20s",self$ClassName[i]))
+      colname<-c(colname,sprintf("PC_%.20s",self$ClassNames[i]))
+      rowname<-c(rowname,sprintf("UC_%.20s",self$ClassNames[i]))
     }
 
-    self$ClassName <- ClassName
+    self$ClassNames <- ClassNames
     colnames(self$Values)<-colname
     rownames(self$Values)<-rowname
 
   }else{
     for(i in 1:nrow(self$Values)){
-      colname<-c(colname,sprintf("Ref_%d",i))
-      rowname<-c(rowname,sprintf("C_%d",i))
+      colname<-c(colname,sprintf("PC_%d",i))
+      rowname<-c(rowname,sprintf("UC_%d",i))
     }
     colnames(self$Values)<-colname
     rownames(self$Values)<-rowname
-    self$ClassName<-c(1:nrow(self$Values))
+    self$ClassNames<-c(1:nrow(self$Values))
       }
 
 
@@ -312,8 +323,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The method also offers the variance and confidence interval.
       #' The reference \insertCite{congalton2008}{ConfMatrix}
       #' is followed for the computations.
-      #' @description
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' OverallAcc = \dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
@@ -369,8 +378,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The method also offers the variance and confidence interval.
       #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
       #' for the computations.
-      #' @description
-      #' The mathematical expression is:
       #' \deqn{
       #' UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
       #' }
@@ -642,7 +649,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' calculations.
       #' @description
       #'  \deqn{
-      #' ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^M x_{ij}}
+      #' ProdAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
       #' }
       #'\deqn{
       #' \sigma^2_{ProdAcc_i}=\dfrac{ProdAcc_i \cdot (1-ProdAcc_i)}{N_{ProdAcc_i}}
@@ -652,7 +659,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' \enumerate{
       #'   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-      #'   \item \eqn{x_{jj}}: diagonal element of the matrix.
+      #'   \item \eqn{x_{ii}}: diagonal element of the matrix.
       #'   \item \eqn{x_{ij}}: element of the matrix.
       #'   \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of
       #'   the index.
@@ -890,8 +897,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The method also offers the variance and confidence
       #' interval. The reference \insertCite{liu2007}{ConfMatrix}
       #' is followed for the calculations.
-      #' @description
-      #' The mathematical expression is:
       #'  \deqn{
       #' AvUserProdAcc_i=\dfrac{UserAcc_i+ProdAcc_i}{2}
       #' }
@@ -1936,7 +1941,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The method also offers the variance and confidence interval.
       #' The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
       #' are followed for the calculations.
-      #' @description The mathematical expression is:
       #'  \deqn{
       #' Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
       #' }
@@ -1983,8 +1987,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The method also offers the variance and confidence interval.
       #' The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
       #' are followed for the calculations.
-      #' @description
-      #' The mathematical expression is:
       #'  \deqn{
       #' Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
       #' }
@@ -2271,8 +2273,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' variance and confidence interval.
       #' The reference \insertCite{ma1995Tau}{ConfMatrix} is followed
       #' for the computations.
-      #' @description
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
@@ -2325,8 +2325,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates the Ground Truth index
       #' , its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
       #' is followed for the computations.
-      #' @description
-      #' The mathematical expression is:
       #'
       #' To calculate \eqn{R} we begin the following iterative process:
       #' Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
@@ -2448,8 +2446,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates the Ground Truth index
       #' for class i, its variance and confidence interval.The reference
       #' \insertCite{turk1979gt}{ConfMatrix} is followed for the computations.
-      #' @description
-      #' The mathematical expression is:
       #'
       #' To calculate R_i we begin the following iterative process:
       #' Take the original matrix by replacing its diagonal elements with 0.
@@ -2562,7 +2558,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the sample variance. The reference
       #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
       #'
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
@@ -2664,8 +2659,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
       #'
       #'
-      #' @description
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' CondKappa_{user}=\dfrac{\dfrac{x_{ii}}{x_{i+}}-x_{+j}}{1-x_{+j}}
@@ -2802,7 +2795,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the general Tau
       #' concordance index (weighted) and its standard deviation.
-      #' @param WV Weights vector (as matrix)
+      #' @param WV \verb{
+      #' Weights vector (as matrix)
+      #' }
       #' @return  A list with the weighted Tau index, the weight matrix,
       #' its standard deviation and its statistics.
       #' @examples
@@ -2978,8 +2973,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' values can be presented as real values (parameter RaR=1), or as
       #' a percentage (parameter RaR !=1).
       #'
-      #' @description
-      #' The matematical expression is:
       #'  \deqn{
       #' MTypify=\dfrac{Values}{\sum^M_{i,j=1} x_{ij}}
       #' }
@@ -3210,7 +3203,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' between two elements of the ConfMatrix class.
       #' The reference \insertCite{garcia2018}{ConfMatrix} is followed
       #' for the computations.
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' HD = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
@@ -3278,7 +3270,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' significantly different when using the kappa indexes.
       #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
       #' for the computations.
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2_{k_A}+\sigma^2_{k_B})}}
@@ -3341,7 +3332,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' significantly different using their overall accuracy indexes.
       #' The reference \insertCite{book,ma1995Tau}{ConfMatrix} are followed
       #' for the computations.
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' Z = \dfrac{|O_A-O_B|}{\sqrt{(\sigma^2_{O_A}+\sigma^2_{O_B})}}
@@ -3406,7 +3396,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' significantly different using their Tau indexes.
       #' The reference \insertCite{book,ma1995Tau}{ConfMatrix} are followed
       #' for the computations.
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' Z = \dfrac{|\tau_A-\tau_B|}{\sqrt{(\sigma^2_{\tau_A}+\sigma^2_{\tau_B})}}
@@ -3567,7 +3556,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'  quasi-independence test for the elements of a confusion matrix.
       #'  The reference
       #'  \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
-      #' The mathematical expression is:
       #'
       #' \deqn{
       #' G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
@@ -3720,7 +3708,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
       #' nrow=4,ncol=4)
-      #' p<-ConfMatrix$new(A,ClassName=c("Deciduous","conifer",
+      #' p<-ConfMatrix$new(A,ClassNames=c("Deciduous","conifer",
       #' "agriculture","shrub"),Source="Congalton and Green 2008")
       #' p$print()
       #'
@@ -3731,7 +3719,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       cat("-------------------------------------\n")
       cat(sprintf("Date\n %s \n", self$Date))
       cat("-------------------------------------\n")
-      cat("ClassName\n", self$ClassName, "\n")
+      cat("ClassNames\n", self$ClassNames, "\n")
       cat("-------------------------------------\n")
       cat("Source\n", self$Source, "\n")
       cat("-------------------------------------\n")
@@ -3742,7 +3730,31 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
    ),
+
+# Private functions -------------------------------------------------------
+
    private = list(
+
+     secuencia = function() {
+       # Listar todas las variables en el entorno actual
+       variables <- ls(envir = .GlobalEnv)
+
+       # Verificar si cada variable es una instancia de ConfMatrix, manejando posibles errores
+       es_confmatrix <- sapply(variables, function(x) {
+         obj <- tryCatch(get(x, envir = .GlobalEnv), error = function(e) NULL)
+         if (!is.null(obj)) {
+           return(inherits(obj, "ConfMatrix"))
+         } else {
+           return(FALSE)
+         }
+       }, USE.NAMES = FALSE)
+
+       # Contar cuántas variables son instancias de ConfMatrix
+       numero_confmatrix <- sum(es_confmatrix, na.rm = TRUE)
+
+       # Devolver el siguiente número de ID
+       return(numero_confmatrix + 1)
+     },
 
      ConfInt=function(p,var,a=NULL){
 
@@ -3765,10 +3777,6 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        sumcol<-apply(v,2,sum)
        return(sumcol)
      }
-
-
-
-
 
    ),
    active = list(

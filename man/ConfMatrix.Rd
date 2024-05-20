@@ -17,7 +17,7 @@ to the rows. First, an object of this class of object must be created
 will be invoked. Mnemonic method names are proposed and are therefore
 long, for example methods that provide averages start with "AV" and
 those that provide combinations start with "Comb". Methods related
-to a specific class end with the ending "_i".
+to a specific thematics class end with the ending "_i".
 }
 \note{
 Error Messages: List of possible errors:
@@ -31,6 +31,22 @@ Error Messages: List of possible errors:
  \item \code{Error type 7}: It is not a matrix.
 }
 }
+\section{Mathematical elements}{
+
+\itemize{
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
+  \item \eqn{x_{ij}}: element of the matrix.
+  \item \eqn{x_{i+}}: sum of all elements in rows i.
+  \item \eqn{x_{+j}}: sum of all elements in column j.
+  \item \eqn{M}: number of classes.
+  \item \eqn{ExpAcc}: expected accuracy of agreement if agreement
+  were purely random.
+\deqn{
+ExpAcc= \dfrac{x_{+ j}x_{i +}}{ ( \sum_{i,j=1}^M x_{ij} )^{2} }
+}
+}
+}
+
 \examples{
 
 ## ------------------------------------------------
@@ -616,7 +632,7 @@ p$plot.class()
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,ClassName=c("Deciduous","conifer",
+p<-ConfMatrix$new(A,ClassNames=c("Deciduous","conifer",
 "agriculture","shrub"),Source="Congalton and Green 2008")
 p$print()
 
@@ -679,7 +695,6 @@ p$print()
 \insertRef{naesset1996}{ConfMatrix}
 
 \insertRef{fleiss1969}{ConfMatrix}
-
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -689,9 +704,9 @@ Matrix of integer values. An matrix must be added.
 }}
 
 \item{\code{ID}}{\verb{
-Identifier. It is a character string with a maximum length of 50
-characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
-Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
+Identifier. It is a character string with a maximum length of 50 characters.
+By default,} \eqn{CM_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be the
+number of ConfMatrix instances already defined in the session.
 }}
 
 \item{\code{Date}}{\verb{
@@ -700,20 +715,18 @@ By default the date provided by the system will be taken.
 
 }}
 
-\item{\code{ClassName}}{\verb{
-Name of the classes. It is given by a character strings vector whose
-elements are the name of the classes. Each element of the vector is
-a string of maximum 20 characters. By default for the column elements
-they will be} \eqn{Ref_{i}} \verb{and for the elements of row}
-\eqn{C_{i}} \verb{, with} \eqn{i} \verb{being the
-corresponding row or column number.
+\item{\code{ClassNames}}{\verb{
+Name of the classes. It is given by a character strings vector whose elements
+are the name of the classes. Each element of the vector is a string of maximum
+20 characters. By default for the column elements they will be} \eqn{PC_i}
+(Producer class) \verb{and for the elements of row} \eqn{UC_i}\verb{ (User class), with} \eqn{i} \verb{being the correspond-
+ing row or column number.
 }}
 
 \item{\code{Source}}{\verb{
-Indicates where the matrix comes from (article, project, etc.).
-It is suggested to enter a reference or a DOI. A character
-string with a maximum length of 80 characters can be entered.
-By default, is NULL.
+Indicates where the matrix comes from (article, project, etc.). It is suggest-
+ed to enter a reference or a DOI. A character string with a maximum length of
+80 characters can be entered. By default, is NULL.
 }}
 }
 \if{html}{\out{</div>}}
@@ -723,38 +736,23 @@ By default, is NULL.
 \itemize{
 \item \href{#method-ConfMatrix-new}{\code{ConfMatrix$new()}}
 \item \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}}
 \item \href{#method-ConfMatrix-UserAcc_i}{\code{ConfMatrix$UserAcc_i()}}
 \item \href{#method-ConfMatrix-AvUserAcc}{\code{ConfMatrix$AvUserAcc()}}
 \item \href{#method-ConfMatrix-CombUserAcc}{\code{ConfMatrix$CombUserAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}
 \item \href{#method-ConfMatrix-ProdAcc_i}{\code{ConfMatrix$ProdAcc_i()}}
 \item \href{#method-ConfMatrix-AvProdAcc}{\code{ConfMatrix$AvProdAcc()}}
 \item \href{#method-ConfMatrix-CombProdAcc}{\code{ConfMatrix$CombProdAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-CombUserProdAcc}{\code{ConfMatrix$CombUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc}{\code{ConfMatrix$AvUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc_i}{\code{ConfMatrix$AvUserProdAcc_i()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserKappa_i}{\code{ConfMatrix$UserKappa_i()}}
 \item \href{#method-ConfMatrix-ModKappaUser_i}{\code{ConfMatrix$ModKappaUser_i()}}
 \item \href{#method-ConfMatrix-ProdKappa_i}{\code{ConfMatrix$ProdKappa_i()}}
 \item \href{#method-ConfMatrix-ModKappaProd_i}{\code{ConfMatrix$ModKappaProd_i()}}
 \item \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}}
 \item \href{#method-ConfMatrix-ModKappa}{\code{ConfMatrix$ModKappa()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-EntUser_i}{\code{ConfMatrix$EntUser_i()}}
 \item \href{#method-ConfMatrix-NormEntUser}{\code{ConfMatrix$NormEntUser()}}
 \item \href{#method-ConfMatrix-EntProd_i}{\code{ConfMatrix$EntProd_i()}}
@@ -763,9 +761,6 @@ By default, is NULL.
 \item \href{#method-ConfMatrix-AvNormEnt}{\code{ConfMatrix$AvNormEnt()}}
 \item \href{#method-ConfMatrix-GeomAvNormEnt}{\code{ConfMatrix$GeomAvNormEnt()}}
 \item \href{#method-ConfMatrix-AvMaxNormEnt}{\code{ConfMatrix$AvMaxNormEnt()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Sucess}{\code{ConfMatrix$Sucess()}}
 \item \href{#method-ConfMatrix-Sucess_i}{\code{ConfMatrix$Sucess_i()}}
 \item \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}}
@@ -775,39 +770,24 @@ By default, is NULL.
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-DetailKappa}{\code{ConfMatrix$DetailKappa()}}
 \item \href{#method-ConfMatrix-DetailCondKappa}{\code{ConfMatrix$DetailCondKappa()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-DetailWTau}{\code{ConfMatrix$DetailWTau()}}
 \item \href{#method-ConfMatrix-DetailWKappa}{\code{ConfMatrix$DetailWKappa()}}
 \item \href{#method-ConfMatrix-UserProdAcc_W}{\code{ConfMatrix$UserProdAcc_W()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
 \item \href{#method-ConfMatrix-AllParameters}{\code{ConfMatrix$AllParameters()}}
 \item \href{#method-ConfMatrix-MBootStrap}{\code{ConfMatrix$MBootStrap()}}
 \item \href{#method-ConfMatrix-MNormalize}{\code{ConfMatrix$MNormalize()}}
 \item \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-StHell}{\code{ConfMatrix$StHell()}}
 \item \href{#method-ConfMatrix-Kappa.test}{\code{ConfMatrix$Kappa.test()}}
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
 \item \href{#method-ConfMatrix-TSCM.test}{\code{ConfMatrix$TSCM.test()}}
 \item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-plot.global}{\code{ConfMatrix$plot.global()}}
 \item \href{#method-ConfMatrix-plot.class}{\code{ConfMatrix$plot.class()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
@@ -826,7 +806,13 @@ ConfMatrix instance includes a series of checks on the data. If
 checks are not met, the system generates coded error messages.
 The optional possibility of adding metadata to the matrix is offered.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(Values, ID = NULL, Date = NULL, ClassName = NULL, Source = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$new(
+  Values,
+  ID = NULL,
+  Date = NULL,
+  ClassNames = NULL,
+  Source = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -837,9 +823,9 @@ Matrix of integer values. A matrix must be added.
 }}
 
 \item{\code{ID}}{\verb{
-Identifier. It is a character string with a maximum length of 50
-characters. By default,} \eqn{CM_i} \verb{will be taken as identification.
-Where} \eqn{i \in (1,999)} \verb{will be the number of ConfMatrix instances already defined.
+Identifier. It is a character string with a maximum length of 50 characters.
+By default,} \eqn{CM_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be the
+number of ConfMatrix instances already defined in the session.
 }}
 
 \item{\code{Date}}{\verb{
@@ -848,19 +834,18 @@ By default the date provided by the system will be taken.
 
 }}
 
-\item{\code{ClassName}}{\verb{
-Name of the classes. It is given by a character strings vector whose
-elements are the name of the classes. Each element of the vector is
-a string of maximum 20 characters. By default for the column elements
-they will be} \eqn{Ref_i} \verb{and for the elements of row} \eqn{C_i}\verb{, with} \eqn{i} \verb{being the
-corresponding row or column number.
+\item{\code{ClassNames}}{\verb{
+Name of the classes. It is given by a character strings vector whose elements
+are the name of the classes. Each element of the vector is a string of maximum
+20 characters. By default for the column elements they will be} \eqn{PC_i}
+(Producer class) \verb{and for the elements of row} \eqn{UC_i}\verb{ (User class), with} \eqn{i} \verb{being the correspond-
+ing row or column number.
 }}
 
 \item{\code{Source}}{\verb{
-Indicates where the matrix comes from (article, project, etc.).
-It is suggested to enter a reference or a DOI. A character
-string with a maximum length of 80 characters can be entered.
-By default, is NULL.
+Indicates where the matrix comes from (article, project, etc.). It is suggest-
+ed to enter a reference or a DOI. A character string with a maximum length of
+80 characters can be entered. By default, is NULL.
 }}
 }
 \if{html}{\out{</div>}}
@@ -892,9 +877,6 @@ number of correct classifications) by the total number of cases.
 The method also offers the variance and confidence interval.
 The reference \insertCite{congalton2008}{ConfMatrix}
 is followed for the computations.
-
-
-The mathematical expression is:
 
 \deqn{
 OverallAcc = \dfrac{\sum_{i=1}^{M} x_{ii}}{\sum_{i, j=1}^{M} x_{ij}}
@@ -953,9 +935,6 @@ the sum of all values in the row of the class i (row marginal).
 The method also offers the variance and confidence interval.
 The reference \insertCite{congalton2008}{ConfMatrix} is followed
 for the computations.
-
-
-The mathematical expression is:
 \deqn{
 UserAcc=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
 }
@@ -1257,7 +1236,7 @@ calculations.
 
 
 \deqn{
-ProdAcc_{i}=\dfrac{x_{jj}}{\sum_{j=1}^M x_{ij}}
+ProdAcc_{i}=\dfrac{x_{ii}}{\sum_{j=1}^M x_{ij}}
 }
 \deqn{
 \sigma^2_{ProdAcc_i}=\dfrac{ProdAcc_i \cdot (1-ProdAcc_i)}{N_{ProdAcc_i}}
@@ -1267,7 +1246,7 @@ where:
 
 \enumerate{
   \item \eqn{ProdAcc_i}: producer accuracy index for class i.
-  \item \eqn{x_{jj}}: diagonal element of the matrix.
+  \item \eqn{x_{ii}}: diagonal element of the matrix.
   \item \eqn{x_{ij}}: element of the matrix.
   \item \eqn{N_{ProdAcc_i}}: number of cases involved in the calculation of
   the index.
@@ -1548,9 +1527,6 @@ user’s and producer’s accuracies for a specific class i
 The method also offers the variance and confidence
 interval. The reference \insertCite{liu2007}{ConfMatrix}
 is followed for the calculations.
-
-
-The mathematical expression is:
  \deqn{
 AvUserProdAcc_i=\dfrac{UserAcc_i+ProdAcc_i}{2}
 }
@@ -2598,9 +2574,6 @@ overall estimation of classification effectiveness.
 The method also offers the variance and confidence interval.
 The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
 are followed for the calculations.
-
-
-The mathematical expression is:
  \deqn{
 Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
 }
@@ -2657,9 +2630,6 @@ effectiveness for one particular class of interest.
 The method also offers the variance and confidence interval.
 The references \insertCite{koukoulas2001,turk2002}{ConfMatrix}
 are followed for the calculations.
-
-
-The mathematical expression is:
  \deqn{
 Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
 }
@@ -2973,9 +2943,6 @@ variance and confidence interval.
 The reference \insertCite{ma1995Tau}{ConfMatrix} is followed
 for the computations.
 
-
-The mathematical expression is:
-
 \deqn{
 Tau = \dfrac{OverallAcc-PrAgCoef}{1-PrAgCoef}
 }
@@ -3036,9 +3003,6 @@ p$Tau()
 Public method that calculates the Ground Truth index
 , its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
 is followed for the computations.
-
-
-The mathematical expression is:
 
 To calculate \eqn{R} we begin the following iterative process:
 Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0} equal to user accuracy and
@@ -3118,9 +3082,6 @@ p$GroundTruth()
 Public method that calculates the Ground Truth index
 for class i, its variance and confidence interval.The reference
 \insertCite{turk1979gt}{ConfMatrix} is followed for the computations.
-
-
-The mathematical expression is:
 
 To calculate R_i we begin the following iterative process:
 Take the original matrix by replacing its diagonal elements with 0.
@@ -3204,7 +3165,7 @@ p$GroundTruth_i(3)
 \subsection{Method \code{UserProdAcc()}}{
 Public method that calculates the user’s and the
 producer’s indexes jointly. This method is equivalent to the methods
-\href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}} and \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}.
+[ConfMatrix$UserAcc] and [ConfMatrix$ProdAcc].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$UserProdAcc()}\if{html}{\out{</div>}}
 }
@@ -3236,7 +3197,6 @@ to test its significance. The delta method has been used to calculate
 the sample variance. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
 
-The mathematical expression is:
 
 \deqn{
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
@@ -3324,7 +3284,6 @@ producer (j) and its standard deviations. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
 
 
-The mathematical expression is:
 
 \deqn{
 CondKappa_{user}=\dfrac{\dfrac{x_{ii}}{x_{i+}}-x_{+j}}{1-x_{+j}}
@@ -3419,7 +3378,9 @@ concordance index (weighted) and its standard deviation.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{WV}}{Weights vector (as matrix)}
+\item{\code{WV}}{\verb{
+Weights vector (as matrix)
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -3529,8 +3490,6 @@ typed matrix the sum of all values is unity. The resulting
 values can be presented as real values (parameter RaR=1), or as
 a percentage (parameter RaR !=1).
 
-
-The matematical expression is:
  \deqn{
 MTypify=\dfrac{Values}{\sum^M_{i,j=1} x_{ij}}
 }
@@ -3576,8 +3535,8 @@ p$MTypify(RaR=5)
 \subsection{Method \code{AllParameters()}}{
 Public method in which multiple parameters are
 calculated for the given confusion matrix. This method is
-equivalent to \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}},\href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}},
-\href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}},\href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}} and \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}.
+equivalent to [ConfMatrix$OverallAcc],[ConfMatrix$UserAcc],
+[ConfMatrix$ProdAcc],[ConfMatrix$Kappa] and [ConfMatrix$MPseudoZeroes].
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AllParameters()}\if{html}{\out{</div>}}
 }
@@ -3664,7 +3623,8 @@ Number of iteration. By default iter=1000.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list formed by the original confusion matrix and the normalized matrix.
+A list formed by the original confusion matrix and the
+normalized matrix.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3722,7 +3682,6 @@ Public method that provides the Hellinger distance
 between two elements of the ConfMatrix class.
 The reference \insertCite{garcia2018}{ConfMatrix} is followed
 for the computations.
-The mathematical expression is:
 
 \deqn{
 HD = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
@@ -3786,7 +3745,6 @@ confusion matrices (instances of the ConfMatrix class), are
 significantly different when using the kappa indexes.
 The reference \insertCite{congalton2008}{ConfMatrix} is followed
 for the computations.
-The mathematical expression is:
 
 \deqn{
 Z = \dfrac{|k_A-k_B|}{\sqrt{(\sigma^2_{k_A}+\sigma^2_{k_B})}}
@@ -3844,7 +3802,6 @@ confusion matrices (instances of the ConfMatrix class), are
 significantly different using their overall accuracy indexes.
 The reference \insertCite{book,ma1995Tau}{ConfMatrix} are followed
 for the computations.
-The mathematical expression is:
 
 \deqn{
 Z = \dfrac{|O_A-O_B|}{\sqrt{(\sigma^2_{O_A}+\sigma^2_{O_B})}}
@@ -3902,7 +3859,6 @@ confusion matrices (instances of the ConfMatrix class), are
 significantly different using their Tau indexes.
 The reference \insertCite{book,ma1995Tau}{ConfMatrix} are followed
 for the computations.
-The mathematical expression is:
 
 \deqn{
 Z = \dfrac{|\tau_A-\tau_B|}{\sqrt{(\sigma^2_{\tau_A}+\sigma^2_{\tau_B})}}
@@ -3962,7 +3918,7 @@ based on the Hellinger distance between two confusion matrices
 (instances of the ConfMatrix class)
 The test considers the individual cell values in the matrices.
 To use this test, the column vectors are chained one after the other.
-The reference \insertCite{garcia2018}{ConfMatrix} is followed for
+The reference \insertCite{garcia2018}{ConfMatrix} are followed for
 the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, B = NULL, a = NULL)}\if{html}{\out{</div>}}
@@ -4014,7 +3970,6 @@ Public method that performs the
  quasi-independence test for the elements of a confusion matrix.
  The reference
  \insertCite{turk1979gt,goodman1968analysis}{ConfMatrix} are followed for the computations.
-The mathematical expression is:
 
 \deqn{
 G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
@@ -4061,8 +4016,8 @@ p$QIndep.test()
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.global}{}}}
 \subsection{Method \code{plot.global()}}{
 Public method that provides a graph of the indices of
-the functions \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}, \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}},
-\href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}, \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}} and \href{#method-ConfMatrix-AvShortAcc}{\code{ConfMatrix$AvShortAcc()}}
+the functions [ConfMatrix$OverallAcc], [ConfMatrix$Kappa],
+[ConfMatrix$Tau], [ConfMatrix$AvHellAcc] and [ConfMatrix$AvShortAcc]
  with their corresponding standard deviations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.global()}\if{html}{\out{</div>}}
@@ -4131,7 +4086,7 @@ source and confusion matrix.
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),
 nrow=4,ncol=4)
-p<-ConfMatrix$new(A,ClassName=c("Deciduous","conifer",
+p<-ConfMatrix$new(A,ClassNames=c("Deciduous","conifer",
 "agriculture","shrub"),Source="Congalton and Green 2008")
 p$print()
 
