@@ -4,7 +4,7 @@
 #' the product be more or less equivalent, for the QCCS it is required
 #' that the reference be actually of higher quality than the product.
 #' This forces us to leave the marginals corresponding to the reference
-#' fixed. That is why we work in columns. In this way, the QCCS class
+#' fixed. That is why we work by columns. In this way, the QCCS class
 #' works with a confusion matrix expressed as a set of column vectors
 #' and it will be analyzed by columns. A QCCS is constructed by comparing
 #' a sample of a set of common positions in the product and the ground
@@ -13,9 +13,9 @@
 #' correspond to the columns and that the classes of the
 #' product to be valued correspond to the rows. On the other hand, the
 #' concept of QCCS is directly linked to quality control, so the
-#' specifications of this control must be indicated. Specifications are
-#' stated as percentages. E.g. for class "A" under consideration, a
-#' minimum quality value is established (e.g. better than 90%), and
+#' specifications of this control must be indicated \insertCite{QCCS}{ConfMatrix}.
+#' Specifications are stated as percentages. E.g. for class "A" under
+#' consideration, a minimum quality value is established (e.g. better than 90%), and
 #' maximum values of confusion with other categories (e.g. confusion
 #' between A and B less than 5%). The specifications are proportions of
 #' a multinomial. First, an object of this class of object must be
@@ -49,19 +49,19 @@ QCCS <- R6Class("QCCS",
    public = list(
     #' @field Vectors
     #'\verb{
-     #'List of integer data vectors.
-     #'}
+    #'List of integer values data for the vectors.
+    #'}
     Vectors = NULL,
     #' @field Prob
     #'\verb{
-    #'List of probability vectors.
+    #'List of probability values corresponding to each of the vectors.
     #'}
     Prob = NULL,
     #' @field ID
     #'\verb{
-    #' Identifier. It is a character string with a maximum length of 50
-    #' characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
-    #' Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
+    #'Identifier. It is a character string with a maximum length of 50 characters.
+    #'By default,} \eqn{QCCS_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be the
+    #'number of QCCS instances already defined in the session.
     #'}
     ID=NULL,
     #' @field Date
@@ -70,20 +70,19 @@ QCCS <- R6Class("QCCS",
     #'By default the date provided by the system will be taken.
     #'}
     Date=NULL,
-    #' @field ClassName
+    #' @field ClassNames
     #'\verb{
-    #' Name of the classes. It is given by a character strings vector whose
-    #' elements are the name of the classes. Each element of the vector is
-    #' a string of maximum 20 characters. By default for the column elements
-    #' they will be} \eqn{Ref_i'}.
+    #' Name of the classes. It is given by a character strings vector whose elements
+    #' are the name of the classes. Each element of the vector is a string of maximum
+    #' 20 characters. By default for the column elements they will be} \eqn{PC_i'} \verb{ (Producer
+    #' class).}
     #'
-    ClassName=NULL,
+    ClassNames=NULL,
     #' @field Source
     #'\verb{
-    #'Indicates where the "vectors" and "prob" parameters come from (article,
-    #'project, etc.). It is suggested to enter a reference or a DOI. A character
-    #'string with a maximum length of 80 characters can be entered. By default,
-    #'is NULL.
+    #' Indicates where the "vectors" and "prob" parameters come from (article, project,
+    #' etc.). It is suggested to enter a reference or a DOI. A character string with
+    #' a maximum length of 80 characters can be entered. By default, is NULL.
     #'}
     Source=NULL,
 
@@ -97,37 +96,35 @@ QCCS <- R6Class("QCCS",
     #' The values of the data vectors represent the classes of ground truth.
     #' @param Vectors
     #' \verb{
-    #' List of integer data vectors.
+    #' List of integer values data for the vectors.
     #' }
     #' @param Prob
     #' \verb{
-    #' List of probability vectors.
+    #' List of probability values corresponding to each of the vectors.
     #' }
     #' @param ID
     #'\verb{
-    #' Identifier. It is a character string with a maximum length of 50
-    #' characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
-    #' Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
+    #'Identifier. It is a character string with a maximum length of 50 characters.
+    #'By default,} \eqn{QCCS_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be
+    #'the number of QCCS instances already defined in the session.
     #'}
     #' @param Date
     #'\verb{
     #' Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
     #' By default the date provided by the system will be taken.
-    #'
     #'}
-    #' @param ClassName
+    #' @param ClassNames
     #' \verb{
-    #' Name of the classes. It is given by a character strings vector whose
-    #' elements are the name of the classes. Each element of the vector is
-    #' a string of maximum 20 characters. By default for the column elements
-    #' they will be} \eqn{Ref_i'}.
+    #' Name of the classes. It is given by a character strings vector whose elements
+    #' are the name of the classes. Each element of the vector is a string of maximum
+    #' 20 characters. By default for the column elements they will be} \eqn{PC_i'} \verb{ (Producer
+    #' class).}
     #'
     #' @param Source
     #' \verb{
-    #' Indicates where the "Vectors" and "Prob" parameters come from (article,
-    #' project, etc.). It is suggested to enter a reference or a DOI. A character
-    #' string with a maximum length of 80 characters can be entered. By default,
-    #' is NULL.
+    #' Indicates where the "vectors" and "prob" parameters come from (article, proj-
+    #' ect, etc.). It is suggested to enter a reference or a DOI. A character string
+    #' with a maximum length of 80 characters can be entered. By default, is NULL.
     #' }
     #' @examples
     #' Vectors<-list(c(47,4,0),c(44,5,3))
@@ -137,7 +134,7 @@ QCCS <- R6Class("QCCS",
     #'
     #' @aliases NULL
 
-  initialize = function(Vectors,Prob,ID=NULL,Date=NULL,ClassName=NULL,Source=NULL) {
+  initialize = function(Vectors,Prob,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 # Optional values ---------------------------------------------------------
@@ -147,9 +144,8 @@ QCCS <- R6Class("QCCS",
     self$Prob <- Prob
 
     if(is.null(ID)){
-      secuencia <- paste("QCCS_",seq(1:999),sep="")
-      self$ID <- secuencia[1]
-      secuencia <- setdiff(secuencia, secuencia[1])
+      secuencia <- private$secuencia()
+      self$ID <- paste("QCCS_",secuencia,sep="")
     }else{
       self$ID<-substr(ID,1,50)
     }
@@ -158,17 +154,17 @@ QCCS <- R6Class("QCCS",
     }else{self$Date <- Sys.Date()}
 
     colname<-c()
-    if (!is.null(ClassName)) {
-      self$ClassName <- ClassName
+    if (!is.null(ClassNames)) {
+      self$ClassNames <- ClassNames
       for (i in 1:length(self$Vectors)) {
-        colname <- c(colname, sprintf("Ref_%.20s", self$ClassName[i]))
+        colname <- c(colname, sprintf("PC_%.20s", self$ClassNames[i]))
       }
       names(self$Vectors) <- colname
 
     } else {
-      self$ClassName <- ClassName
+      self$ClassNames <- ClassNames
       for (i in 1:length(self$Vectors)) {
-        colname <- c(colname, sprintf("Ref_%d", i))
+        colname <- c(colname, sprintf("PC_%d", i))
       }
       names(self$Vectors) <- colname
     }
@@ -236,6 +232,39 @@ QCCS <- R6Class("QCCS",
 
 
 
+# print function ----------------------------------------------------------
+
+      #' @description Public method that shows all the data entered
+      #' by the user.
+      #' @return QCCS object identifier, Date, name of classes, source
+      #' of data and data vectors and probability.
+      #' @examples
+      #' Vectors<-list(c(18,0,3,0),c(27,19))
+      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A<-QCCS$new(Vectors,Prob,
+      #' Source="Alba-Fernández et al. 2020")
+      #' A$print()
+      #'
+      #' @aliases NULL
+
+    print=function(){
+      cat("Identifier (ID)\n", self$ID, "\n")
+      cat("-------------------------------------\n")
+      cat(sprintf("Date\n %s \n", self$Date))
+      cat("-------------------------------------\n")
+      cat("Source\n", self$Source, "\n")
+      cat("-------------------------------------\n")
+      for(i in 1:length(self$Vectors)){
+        cat("Name of Class|",names(self$Vectors)[i], "\n")
+        cat("Vector       |",self$Vectors[[i]],"\n")
+        cat("Probability  |",self$Prob[[i]],"\n")
+        cat("-------------------------------------\n")
+
+      }
+
+    },
+
+
 # To calculate p-value, use test-ntol (method private) --------------------
 # Multinomial or binomial Exact Tests -------------------------------------
 
@@ -245,8 +274,8 @@ QCCS <- R6Class("QCCS",
       #' An exact test is applied to each of the multinomials
       #' that are defined for each column.
       #' The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
-      #' for the computations.
+      #' The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+      #' are followed for the computations.
       #' @param a \verb{
       #' significance level. By default a=0.05.
       #' }
@@ -295,14 +324,67 @@ QCCS <- R6Class("QCCS",
     },
 
 
+# ji multinomial or binomial test ----------------------------------------------
+
+      #' @description Public method that using a QCCS object instance
+      #' calculates whether the data meets specifications in each of the classes.
+      #' The Chi square test is used. The Bonferroni method is used.
+      #' The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+      #' are followed for the computations.
+      #' @param a \verb{
+      #' significance level. By default a=0.05.
+      #' }
+      #' @return The p value from the chi square test.
+      #' @examples
+      #' Vectors<-list(c(18,0,3,0),c(27,19))
+      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+      #' A <- QCCS$new(Vectors,Prob,
+      #' Source="Alba-Fernández et al. 2020")
+      #' A$Ji.test()
+      #'
+      #' @aliases NULL
+
+    Ji.test=function(a=NULL){
+      if(is.null(a)){
+      a<-0.05
+      }else{a<-a}
+
+      #number of Vectors and Prob Vectors
+      n <- length(self$Vectors)
+      m <- length(self$Prob)
+      p_value<-c()
+      k<-0
+      #for each vector
+        for (j in 1:n) {
+        #elements of each vector
+        vi <- self$Vectors[[j]]
+        pi <- self$Prob[[j]]
+        ni <- length(vi)
+        mi <- length(pi)
+        k<-ni-1
+        pj<-c()
+        for (i in 1:ni){
+          pj<-c(pj,(vi[i]-sum(vi)*pi[i])/sqrt(sum(vi)*pi[i]))
+        }
+        ST<-sum(pj^2)
+
+        pvalue<-pchisq(ST, k, lower.tail=FALSE)
+        p_value<-c(p_value,pvalue)
+        }
+
+        ap<-private$MethBonf(p_value,a)
+
+    return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
+    },
+
 
 # ji global multinomial or binomial test ----------------------------------------------
 
       #' @description Public method that using a QCCS
       #' object instance calculates whether the data meets
-      #' specifications. The chi square test is used.
+      #' specifications. The Chi square test is used.
       #' The references
-      #' \insertCite{QCCS,alba2020}{ConfMatrix}
+      #' \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
       #' are followed for the computations.
       #' @param a \verb{
       #' significance level. By default a=0.05.
@@ -353,101 +435,16 @@ QCCS <- R6Class("QCCS",
 
     if(p_value>a){
       cat("The null hypothesis is not rejected.\n",p_value,">=",a)
-      cat("\nThe set of elements are well defined")
+      cat("\nThe set of elements are well defined\n")
     }else{
       cat("The null hypothesis is rejected.\n",p_value,"<",a)
-      cat("\nThe set of elements are not well defined")
+      cat("\nThe set of elements are not well defined\n")
 
     }
 
     return(p_value)
-    },
-
-
-# ji multinomial or binomial test ----------------------------------------------
-
-      #' @description Public method that using a QCCS object instance
-      #' calculates whether the data meets specifications. The chi
-      #' square test is used. The Bonferroni method is used.
-      #' The references \insertCite{QCCS,alba2020}{ConfMatrix} are
-      #' followed for the computations.
-      #' @param a \verb{
-      #' significance level. By default a=0.05.
-      #' }
-      #' @return The p value from the chi square test.
-      #' @examples
-      #' Vectors<-list(c(18,0,3,0),c(27,19))
-      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A <- QCCS$new(Vectors,Prob,
-      #' Source="Alba-Fernández et al. 2020")
-      #' A$Ji.test()
-      #'
-      #' @aliases NULL
-
-    Ji.test=function(a=NULL){
-      if(is.null(a)){
-      a<-0.05
-      }else{a<-a}
-
-      #number of Vectors and Prob Vectors
-      n <- length(self$Vectors)
-      m <- length(self$Prob)
-      p_value<-c()
-      k<-0
-      #for each vector
-        for (j in 1:n) {
-        #elements of each vector
-        vi <- self$Vectors[[j]]
-        pi <- self$Prob[[j]]
-        ni <- length(vi)
-        mi <- length(pi)
-        k<-ni-1
-        pj<-c()
-        for (i in 1:ni){
-          pj<-c(pj,(vi[i]-sum(vi)*pi[i])/sqrt(sum(vi)*pi[i]))
-        }
-        ST<-sum(pj^2)
-
-        pvalue<-pchisq(ST, k, lower.tail=FALSE)
-        p_value<-c(p_value,pvalue)
-        }
-
-        ap<-private$MethBonf(p_value,a)
-
-    return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
-    },
-
-# print function ----------------------------------------------------------
-
-      #' @description Public method that shows all the data entered
-      #' by the user.
-      #' @return QCCS object identifier, Date, name of classes, source
-      #' of data and data vectors and probability.
-      #' @examples
-      #' Vectors<-list(c(18,0,3,0),c(27,19))
-      #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-      #' A<-QCCS$new(Vectors,Prob,
-      #' Source="Alba-Fernández et al. 2020")
-      #' A$print()
-      #'
-      #' @aliases NULL
-
-    print=function(){
-      cat("Identifier (ID)\n", self$ID, "\n")
-      cat("-------------------------------------\n")
-      cat(sprintf("Date\n %s \n", self$Date))
-      cat("-------------------------------------\n")
-      cat("Source\n", self$Source, "\n")
-      cat("-------------------------------------\n")
-      for(i in 1:length(self$Vectors)){
-        cat("Name of Class|",names(self$Vectors)[i], "\n")
-        cat("Vector       |",self$Vectors[[i]],"\n")
-        cat("Probability  |",self$Prob[[i]],"\n")
-        cat("-------------------------------------\n")
-
-      }
-
     }
+
 
 
   ),
@@ -581,7 +578,28 @@ QCCS <- R6Class("QCCS",
       p<-pbinom(M,N,p)
       p_value<-p[1]
      return(p_value)
-    }
+    },
+
+    secuencia = function() {
+       # Listar todas las variables en el entorno actual
+       variables <- ls(envir = .GlobalEnv)
+
+       # Verificar si cada variable es una instancia de QCCS, manejando posibles errores
+       es_qccs <- sapply(variables, function(x) {
+         obj <- tryCatch(get(x, envir = .GlobalEnv), error = function(e) NULL)
+         if (!is.null(obj)) {
+           return(inherits(obj, "QCCS"))
+         } else {
+           return(FALSE)
+         }
+       }, USE.NAMES = FALSE)
+
+       # Contar cuántas variables son instancias de ConfMatrix
+       numero_qccs <- sum(es_qccs, na.rm = TRUE)
+
+       # Devolver el siguiente número de ID
+       return(numero_qccs + 1)
+     }
 
  )
 )

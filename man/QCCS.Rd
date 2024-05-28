@@ -9,7 +9,7 @@ that while forming a confusion matrix requires that the reference and
 the product be more or less equivalent, for the QCCS it is required
 that the reference be actually of higher quality than the product.
 This forces us to leave the marginals corresponding to the reference
-fixed. That is why we work in columns. In this way, the QCCS class
+fixed. That is why we work by columns. In this way, the QCCS class
 works with a confusion matrix expressed as a set of column vectors
 and it will be analyzed by columns. A QCCS is constructed by comparing
 a sample of a set of common positions in the product and the ground
@@ -18,11 +18,11 @@ QCCS. It is considered that the classes of the ground truth
 correspond to the columns and that the classes of the
 product to be valued correspond to the rows. On the other hand, the
 concept of QCCS is directly linked to quality control, so the
-specifications of this control must be indicated. Specifications are
-stated as percentages. E.g. for class "A" under consideration, a
-minimum quality value is established (e.g. better than 90%), and
+specifications of this control must be indicated \insertCite{QCCS}{ConfMatrix}.
+Specifications are stated as percentages. E.g. for class "A" under
+consideration, a minimum quality value is established (e.g. better than 90\%), and
 maximum values of confusion with other categories (e.g. confusion
-between A and B less than 5%). The specifications are proportions of
+between A and B less than 5\%). The specifications are proportions of
 a multinomial. First, an object of this class of object must be
 created (instantiated) and then the methods that offer the index
 calculations will be invoked.
@@ -30,13 +30,13 @@ calculations will be invoked.
 \note{
 Error Messages: List of possible errors:
 \itemize{
- \item \code{Error type 1}: Different number of data vectors and probability.
- \item \code{Error type 2}: Different number of elements in the pair of data
- vectors and probabilities.
- \item \code{Error type 3}: The sum of the elements of the data vectors is 0.
- \item \code{Error type 4}: The sum of each probability vectors must be 1.
- \item \code{Error type 5}: Some element of the data vector is negative.
- \item \code{Error type 6}: Some element of the probability vector is negative.
+\item \code{Error type 1}: Different number of data vectors and probability.
+\item \code{Error type 2}: Different number of elements in the pair of data
+vectors and probabilities.
+\item \code{Error type 3}: The sum of the elements of the data vectors is 0.
+\item \code{Error type 4}: The sum of each probability vectors must be 1.
+\item \code{Error type 5}: Some element of the data vector is negative.
+\item \code{Error type 6}: Some element of the probability vector is negative.
 }
 }
 \examples{
@@ -52,6 +52,17 @@ Source="Ariza-Lopez et al. 2019")
 
 
 ## ------------------------------------------------
+## Method `QCCS$print`
+## ------------------------------------------------
+
+Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(Vectors,Prob,
+Source="Alba-Fernández et al. 2020")
+A$print()
+
+
+## ------------------------------------------------
 ## Method `QCCS$Exact.test`
 ## ------------------------------------------------
 
@@ -60,17 +71,6 @@ Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
 A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
 A$Exact.test()
-
-
-## ------------------------------------------------
-## Method `QCCS$JiGlobal.test`
-## ------------------------------------------------
-
-Vectors<-list(c(18,0,3,0),c(27,19))
-Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(Vectors,Prob,
-Source="Alba-Fernández et al. 2020")
-A$JiGlobal.test()
 
 
 ## ------------------------------------------------
@@ -85,14 +85,14 @@ A$Ji.test()
 
 
 ## ------------------------------------------------
-## Method `QCCS$print`
+## Method `QCCS$JiGlobal.test`
 ## ------------------------------------------------
 
 Vectors<-list(c(18,0,3,0),c(27,19))
 Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(Vectors,Prob,
+A <- QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
-A$print()
+A$JiGlobal.test()
 
 }
 \references{
@@ -104,17 +104,17 @@ A$print()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{Vectors}}{\verb{
-List of integer data vectors.
+List of integer values data for the vectors.
 }}
 
 \item{\code{Prob}}{\verb{
-List of probability vectors.
+List of probability values corresponding to each of the vectors.
 }}
 
 \item{\code{ID}}{\verb{
-Identifier. It is a character string with a maximum length of 50
-characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
-Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
+Identifier. It is a character string with a maximum length of 50 characters.
+By default,} \eqn{QCCS_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be the
+number of QCCS instances already defined in the session.
 }}
 
 \item{\code{Date}}{\verb{
@@ -122,17 +122,16 @@ Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
 By default the date provided by the system will be taken.
 }}
 
-\item{\code{ClassName}}{\verb{
-Name of the classes. It is given by a character strings vector whose
-elements are the name of the classes. Each element of the vector is
-a string of maximum 20 characters. By default for the column elements
-they will be} \eqn{Ref_i'}.}
+\item{\code{ClassNames}}{\verb{
+Name of the classes. It is given by a character strings vector whose elements
+are the name of the classes. Each element of the vector is a string of maximum
+20 characters. By default for the column elements they will be} \eqn{PC_i'} \verb{ (Producer
+class).}}
 
 \item{\code{Source}}{\verb{
-Indicates where the "vectors" and "prob" parameters come from (article,
-project, etc.). It is suggested to enter a reference or a DOI. A character
-string with a maximum length of 80 characters can be entered. By default,
-is NULL.
+Indicates where the "vectors" and "prob" parameters come from (article, project,
+etc.). It is suggested to enter a reference or a DOI. A character string with
+a maximum length of 80 characters can be entered. By default, is NULL.
 }}
 }
 \if{html}{\out{</div>}}
@@ -141,10 +140,10 @@ is NULL.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
-\item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
-\item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}
-\item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
 \item \href{#method-QCCS-print}{\code{QCCS$print()}}
+\item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
+\item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
+\item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -164,7 +163,7 @@ The values of the data vectors represent the classes of ground truth.
   Prob,
   ID = NULL,
   Date = NULL,
-  ClassName = NULL,
+  ClassNames = NULL,
   Source = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -173,36 +172,34 @@ The values of the data vectors represent the classes of ground truth.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{Vectors}}{\verb{
-List of integer data vectors.
+List of integer values data for the vectors.
 }}
 
 \item{\code{Prob}}{\verb{
-List of probability vectors.
+List of probability values corresponding to each of the vectors.
 }}
 
 \item{\code{ID}}{\verb{
-Identifier. It is a character string with a maximum length of 50
-characters. By default,} \eqn{QCCS_i} \verb{will be taken as identification.
-Where} \eqn{i \in (1,999)} \verb{will be the number of QCCS instances already defined.
+Identifier. It is a character string with a maximum length of 50 characters.
+By default,} \eqn{QCCS_i} \verb{will be taken as identification. Where} \eqn{i \in [1,999]} \verb{will be
+the number of QCCS instances already defined in the session.
 }}
 
 \item{\code{Date}}{\verb{
 Date provided by the user in format DDMMYYYY, "DD-MM-YYYY", "DD/MM/YYYY".
 By default the date provided by the system will be taken.
-
 }}
 
-\item{\code{ClassName}}{\verb{
-Name of the classes. It is given by a character strings vector whose
-elements are the name of the classes. Each element of the vector is
-a string of maximum 20 characters. By default for the column elements
-they will be} \eqn{Ref_i'}.}
+\item{\code{ClassNames}}{\verb{
+Name of the classes. It is given by a character strings vector whose elements
+are the name of the classes. Each element of the vector is a string of maximum
+20 characters. By default for the column elements they will be} \eqn{PC_i'} \verb{ (Producer
+class).}}
 
 \item{\code{Source}}{\verb{
-Indicates where the "Vectors" and "Prob" parameters come from (article,
-project, etc.). It is suggested to enter a reference or a DOI. A character
-string with a maximum length of 80 characters can be entered. By default,
-is NULL.
+Indicates where the "vectors" and "prob" parameters come from (article, proj-
+ect, etc.). It is suggested to enter a reference or a DOI. A character string
+with a maximum length of 80 characters can be entered. By default, is NULL.
 }}
 }
 \if{html}{\out{</div>}}
@@ -221,6 +218,34 @@ Source="Ariza-Lopez et al. 2019")
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-QCCS-print"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-print}{}}}
+\subsection{Method \code{print()}}{
+Public method that shows all the data entered
+by the user.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+QCCS object identifier, Date, name of classes, source
+of data and data vectors and probability.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{Vectors<-list(c(18,0,3,0),c(27,19))
+Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
+A<-QCCS$new(Vectors,Prob,
+Source="Alba-Fernández et al. 2020")
+A$print()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-QCCS-Exact.test"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-Exact.test}{}}}
 \subsection{Method \code{Exact.test()}}{
@@ -229,8 +254,8 @@ instance calculates whether the data meets specifications.
 An exact test is applied to each of the multinomials
 that are defined for each column.
 The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{ConfMatrix} are followed
-for the computations.
+The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(a = NULL)}\if{html}{\out{</div>}}
 }
@@ -262,54 +287,14 @@ A$Exact.test()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-JiGlobal.test"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-JiGlobal.test}{}}}
-\subsection{Method \code{JiGlobal.test()}}{
-Public method that using a QCCS
-object instance calculates whether the data meets
-specifications. The chi square test is used.
-The references
-\insertCite{QCCS,alba2020}{ConfMatrix}
-are followed for the computations.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(a = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{a}}{\verb{
-significance level. By default a=0.05.
-}}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The p value derived from the chi square test.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{Vectors<-list(c(18,0,3,0),c(27,19))
-Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A <- QCCS$new(Vectors,Prob,
-Source="Alba-Fernández et al. 2020")
-A$JiGlobal.test()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-QCCS-Ji.test"></a>}}
 \if{latex}{\out{\hypertarget{method-QCCS-Ji.test}{}}}
 \subsection{Method \code{Ji.test()}}{
 Public method that using a QCCS object instance
-calculates whether the data meets specifications. The chi
-square test is used. The Bonferroni method is used.
-The references \insertCite{QCCS,alba2020}{ConfMatrix} are
-followed for the computations.
+calculates whether the data meets specifications in each of the classes.
+The Chi square test is used. The Bonferroni method is used.
+The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(a = NULL)}\if{html}{\out{</div>}}
 }
@@ -341,26 +326,38 @@ A$Ji.test()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-QCCS-print"></a>}}
-\if{latex}{\out{\hypertarget{method-QCCS-print}{}}}
-\subsection{Method \code{print()}}{
-Public method that shows all the data entered
-by the user.
+\if{html}{\out{<a id="method-QCCS-JiGlobal.test"></a>}}
+\if{latex}{\out{\hypertarget{method-QCCS-JiGlobal.test}{}}}
+\subsection{Method \code{JiGlobal.test()}}{
+Public method that using a QCCS
+object instance calculates whether the data meets
+specifications. The Chi square test is used.
+The references
+\insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+are followed for the computations.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QCCS$print()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(a = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{a}}{\verb{
+significance level. By default a=0.05.
+}}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-QCCS object identifier, Date, name of classes, source
-of data and data vectors and probability.
+The p value derived from the chi square test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{Vectors<-list(c(18,0,3,0),c(27,19))
 Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
-A<-QCCS$new(Vectors,Prob,
+A <- QCCS$new(Vectors,Prob,
 Source="Alba-Fernández et al. 2020")
-A$print()
+A$JiGlobal.test()
 
 }
 \if{html}{\out{</div>}}
