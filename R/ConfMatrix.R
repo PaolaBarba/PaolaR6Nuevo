@@ -3410,6 +3410,15 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Bootstrap is applied to the matrices to obtain a consistent estimator.
       #' The reference \insertCite{garcia2018}{ConfMatrix} are followed for
       #' the computations.
+      #' The calculation consists of obtaining a statistic, which we will call
+      #' \eqn{T_{n,m}}, between both matrices from [ConfMatrix$StHell.test].
+      #' Bootstrap is then applied to the confusion matrices to obtain
+      #' simulations of both matrices. [ConfMatrix$StHell.test] is applied
+      #' again to these simulations and we will obtain the statistics
+      #' \eqn{T^*_{n,m}}. The p value is defined as:
+      #' \deqn{
+      #' \hat{p}=\dfrac{Card(T^*_{n,m} \geq T^*_{n,m})}{B}
+      #' }
       #' @param B \verb{
       #' Number of bootstraps that you want to generate. By default B=1000.
       #' }

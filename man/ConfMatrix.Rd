@@ -2026,19 +2026,14 @@ to test its significance. The delta method has been used to calculate
 the sample variance. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
 
-\deqn{
-Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
-}
+Be
 
 \deqn{
 ExpAcc= \dfrac{x_{+ j} \cdot x_{i +}}{\sum_{(i,j=1}^M x_{ij})^{2}}
 }
-\deqn{
-\sigma^2_{Kappa} = \dfrac{1}{N_{Total}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
-+ \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
-+ \dfrac{(1-\theta_1)^2(\theta_4-4\theta_2^2)}{(1-\theta_2)^4} \right)
-}
-where
+
+
+
 
 \deqn{
 \theta_1=OverallAcc= \sum_{i, j=1}^{M} \dfrac{ x_{ii}}{ x_{ij}}
@@ -2060,6 +2055,21 @@ where
 (x_{j+}+x_{+i})^2
 }
 
+Therefore,
+
+
+\deqn{
+Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
+}
+
+\deqn{
+\sigma^2_{Kappa} = \dfrac{1}{N_{Total}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
++ \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
++ \dfrac{(1-\theta_1)^2(\theta_4-4\theta_2^2)}{(1-\theta_2)^4} \right)
+}
+
+Its statistic is given by:
+
 \deqn{
 Z=\dfrac{Kappa}{\sqrt{\sigma^2_{Kappa}}}
 }
@@ -2070,7 +2080,6 @@ Where:
 were purely random.
 \item \eqn{OverallAcc}: overall accuracy.
 \item \eqn{\theta_1, \theta_2, \theta_3, \theta_4}: real values.
-\item \eqn{Z}: the test statistic.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailKappa()}\if{html}{\out{</div>}}
@@ -2328,7 +2337,6 @@ Z=\dfrac{Tau_W}{\sqrt{\sigma^2_{Tau_W}}}
 Where:
 \enumerate{
 \item \eqn{\theta_1, \theta_2, \theta_3, \theta_4}: real values.
-\item \eqn{Z}: the test statistic.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailWTau(WV)}\if{html}{\out{</div>}}
@@ -3787,6 +3795,16 @@ The test considers the individual cell values in the matrices.
 Bootstrap is applied to the matrices to obtain a consistent estimator.
 The reference \insertCite{garcia2018}{ConfMatrix} are followed for
 the computations.
+
+The calculation consists of obtaining a statistic, which we will call
+\eqn{T_{n,m}}, between both matrices from \link{ConfMatrix$StHell.test} .
+Bootstrap is then applied to the confusion matrices to obtain
+simulations of both matrices. \link{ConfMatrix$StHell.test} is applied
+again to these simulations and we will obtain the statistics
+\eqn{T^*_{n,m}}. The p value is defined as:
+\deqn{
+\hat{p}=\dfrac{Card(T^*_{n,m} \geq T_{n,m})}{B}
+}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, B = NULL, a = NULL)}\if{html}{\out{</div>}}
 }

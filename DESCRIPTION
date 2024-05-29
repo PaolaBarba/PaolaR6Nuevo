@@ -2,8 +2,8 @@ Package: ConfMatrix
 Type: Package
 Title: Confusion Matrix
 Version: 0.1.0
-Author: Paola Barba Ceballos
-Maintainer: Paola Barba Ceballos <pbarba@ujaen.es>
+Author: Paola Barba Ceballos, Francisco Javier Ariza López, José Rodríguez Avi, Silverio Vilchez López, María Virtudes Alba Fernández.
+Maintainer: Silverio Vilchez López <svilchez@ujaen.es>
 Description: This package provides thematic quality indices for the evaluation and quality control of geospatial data products (e.g. thematic maps, remote sensing classifications, etc.). The indices offered are based on the so-called confusion matrix. This matrix is constructed by comparing the assigned classes or attributes of a set of pairs of positions or objects in the product and the ground truth. In this package it is considered that the classes of the ground truth correspond to the columns and that the classes of the product to be valued correspond to the rows. The package offers two object classes with their methods: ConfMatrix and QCCS. The ConfMatrix class of objects offers more than 20 methods based on the confusion matrix. The QCCS class of objects offers a different perspective in which the ground truth is considered to allow the values of the column marginals to be fixed, see Ariza-López et al. (2019) for more details. The package was created with R6.
 Imports: R6, Rdpack, ggplot2, gridExtra
 RdMacros: Rdpack
