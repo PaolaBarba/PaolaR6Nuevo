@@ -700,31 +700,19 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-plot.UserProdAcc}{\code{ConfMatrix$plot.UserProdAcc()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
 \item \href{#method-ConfMatrix-AllParameters}{\code{ConfMatrix$AllParameters()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}}
 \item \href{#method-ConfMatrix-UserAcc_i}{\code{ConfMatrix$UserAcc_i()}}
 \item \href{#method-ConfMatrix-AvUserAcc}{\code{ConfMatrix$AvUserAcc()}}
 \item \href{#method-ConfMatrix-CombUserAcc}{\code{ConfMatrix$CombUserAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}
 \item \href{#method-ConfMatrix-ProdAcc_i}{\code{ConfMatrix$ProdAcc_i()}}
 \item \href{#method-ConfMatrix-AvProdAcc}{\code{ConfMatrix$AvProdAcc()}}
 \item \href{#method-ConfMatrix-CombProdAcc}{\code{ConfMatrix$CombProdAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-CombUserProdAcc}{\code{ConfMatrix$CombUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc}{\code{ConfMatrix$AvUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc_i}{\code{ConfMatrix$AvUserProdAcc_i()}}
 \item \href{#method-ConfMatrix-UserProdAcc_W}{\code{ConfMatrix$UserProdAcc_W()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}
 \item \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}}
 \item \href{#method-ConfMatrix-ModKappa}{\code{ConfMatrix$ModKappa()}}
@@ -735,14 +723,8 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-DetailKappa}{\code{ConfMatrix$DetailKappa()}}
 \item \href{#method-ConfMatrix-DetailCondKappa}{\code{ConfMatrix$DetailCondKappa()}}
 \item \href{#method-ConfMatrix-DetailWKappa}{\code{ConfMatrix$DetailWKappa()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
 \item \href{#method-ConfMatrix-DetailWTau}{\code{ConfMatrix$DetailWTau()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Ent}{\code{ConfMatrix$Ent()}}
 \item \href{#method-ConfMatrix-AvNormEnt}{\code{ConfMatrix$AvNormEnt()}}
 \item \href{#method-ConfMatrix-GeomAvNormEnt}{\code{ConfMatrix$GeomAvNormEnt()}}
@@ -751,31 +733,19 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-NormEntUser}{\code{ConfMatrix$NormEntUser()}}
 \item \href{#method-ConfMatrix-EntProd_i}{\code{ConfMatrix$EntProd_i()}}
 \item \href{#method-ConfMatrix-NormEntProd}{\code{ConfMatrix$NormEntProd()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Sucess}{\code{ConfMatrix$Sucess()}}
 \item \href{#method-ConfMatrix-Sucess_i}{\code{ConfMatrix$Sucess_i()}}
 \item \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}}
 \item \href{#method-ConfMatrix-AvHellAcc_i}{\code{ConfMatrix$AvHellAcc_i()}}
 \item \href{#method-ConfMatrix-AvShortAcc}{\code{ConfMatrix$AvShortAcc()}}
 \item \href{#method-ConfMatrix-ShortAcc_i}{\code{ConfMatrix$ShortAcc_i()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
 \item \href{#method-ConfMatrix-MBootStrap}{\code{ConfMatrix$MBootStrap()}}
 \item \href{#method-ConfMatrix-MNormalize}{\code{ConfMatrix$MNormalize()}}
 \item \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Kappa.test}{\code{ConfMatrix$Kappa.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
@@ -784,7 +754,6 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-StHell.test}{\code{ConfMatrix$StHell.test()}}
 }
 }
-
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ConfMatrix-new"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-new}{}}}
@@ -862,8 +831,8 @@ cm<-ConfMatrix$new (A,ID="5",Date="27-10-2023",Source="Congalton and Green,
 \if{latex}{\out{\hypertarget{method-ConfMatrix-plot.index}{}}}
 \subsection{Method \code{plot.index()}}{
 Public method that provides a graph of the indices of
-the functions \link{ConfMatrix$OverallAcc}, \link{ConfMatrix$Kappa},
-\link{ConfMatrix$Tau}, \link{ConfMatrix$AvHellAcc} and \link{ConfMatrix$AvShortAcc}
+the functions ConfMatrix$OverallAcc, ConfMatrix$Kappa,
+ConfMatrix$Tau, ConfMatrix$AvHellAcc and ConfMatrix$AvShortAcc
 with their corresponding standard deviations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$plot.index()}\if{html}{\out{</div>}}
@@ -945,8 +914,8 @@ p$print()
 \subsection{Method \code{AllParameters()}}{
 Public method in which multiple parameters are
 calculated for the given confusion matrix. This method is
-equivalent to \link{ConfMatrix$OverallAcc},\link{ConfMatrix$UserAcc},
-\link{ConfMatrix$ProdAcc},\link{ConfMatrix$Kappa} and \link{ConfMatrix$MPseudoZeroes}.
+equivalent to ConfMatrix$OverallAcc,ConfMatrix$UserAcc,
+ConfMatrix$ProdAcc,ConfMatrix$Kappa and ConfMatrix$MPseudoZeroes.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$AllParameters()}\if{html}{\out{</div>}}
 }
@@ -1380,7 +1349,7 @@ p$CombProdAcc()
 \subsection{Method \code{UserProdAcc()}}{
 Public method that calculates the user’s and the
 producer’s indexes jointly. This method is equivalent to the methods
-\link{ConfMatrix$UserAcc} and \link{ConfMatrix$ProdAcc}.
+ConfMatrix$UserAcc and ConfMatrix$ProdAcc.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$UserProdAcc()}\if{html}{\out{</div>}}
 }
@@ -2026,14 +1995,19 @@ to test its significance. The delta method has been used to calculate
 the sample variance. The reference
 \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
 
-Be
+\deqn{
+Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
+}
 
 \deqn{
 ExpAcc= \dfrac{x_{+ j} \cdot x_{i +}}{\sum_{(i,j=1}^M x_{ij})^{2}}
 }
-
-
-
+\deqn{
+\sigma^2_{Kappa} = \dfrac{1}{N_{Total}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
++ \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
++ \dfrac{(1-\theta_1)^2(\theta_4-4\theta_2^2)}{(1-\theta_2)^4} \right)
+}
+where
 
 \deqn{
 \theta_1=OverallAcc= \sum_{i, j=1}^{M} \dfrac{ x_{ii}}{ x_{ij}}
@@ -2055,21 +2029,6 @@ ExpAcc= \dfrac{x_{+ j} \cdot x_{i +}}{\sum_{(i,j=1}^M x_{ij})^{2}}
 (x_{j+}+x_{+i})^2
 }
 
-Therefore,
-
-
-\deqn{
-Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
-}
-
-\deqn{
-\sigma^2_{Kappa} = \dfrac{1}{N_{Total}} \left( \dfrac{\theta_1 (1-\theta_1) }{(1-\theta_2)^2}
-+ \dfrac{2(1-\theta_1)(2\theta_1\theta_2-\theta_3)}{(1-\theta_2)^3}
-+ \dfrac{(1-\theta_1)^2(\theta_4-4\theta_2^2)}{(1-\theta_2)^4} \right)
-}
-
-Its statistic is given by:
-
 \deqn{
 Z=\dfrac{Kappa}{\sqrt{\sigma^2_{Kappa}}}
 }
@@ -2080,6 +2039,7 @@ Where:
 were purely random.
 \item \eqn{OverallAcc}: overall accuracy.
 \item \eqn{\theta_1, \theta_2, \theta_3, \theta_4}: real values.
+\item \eqn{Z}: the test statistic.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailKappa()}\if{html}{\out{</div>}}
@@ -2337,6 +2297,7 @@ Z=\dfrac{Tau_W}{\sqrt{\sigma^2_{Tau_W}}}
 Where:
 \enumerate{
 \item \eqn{\theta_1, \theta_2, \theta_3, \theta_4}: real values.
+\item \eqn{Z}: the test statistic.
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$DetailWTau(WV)}\if{html}{\out{</div>}}
@@ -3795,15 +3756,14 @@ The test considers the individual cell values in the matrices.
 Bootstrap is applied to the matrices to obtain a consistent estimator.
 The reference \insertCite{garcia2018}{ConfMatrix} are followed for
 the computations.
-
 The calculation consists of obtaining a statistic, which we will call
-\eqn{T_{n,m}}, between both matrices from \link{ConfMatrix$StHell.test} .
+\eqn{T_{n,m}}, between both matrices from ConfMatrix$StHell.test.
 Bootstrap is then applied to the confusion matrices to obtain
-simulations of both matrices. \link{ConfMatrix$StHell.test} is applied
+simulations of both matrices. ConfMatrix$StHell.test is applied
 again to these simulations and we will obtain the statistics
 \eqn{T^*_{n,m}}. The p value is defined as:
 \deqn{
-\hat{p}=\dfrac{Card(T^*_{n,m} \geq T_{n,m})}{B}
+\hat{p}=\dfrac{Card(T^*_{n,m} \geq T^*_{n,m})}{B}
 }
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, B = NULL, a = NULL)}\if{html}{\out{</div>}}
@@ -3859,7 +3819,7 @@ G^2 = 2 \cdot \sum \log \dfrac{x_{ij}}{E_{ij}}
 }
 
 Following the procedure for calculating the elements
-of the function \link{ConfMatrix$GroundTruth}, we will have to \eqn{E_{ij}}
+of the function ConfMatrix$GroundTruth, we will have to \eqn{E_{ij}}
 is obtained from:
 
 \deqn{f_{ij}=U_j \cdot V_i}

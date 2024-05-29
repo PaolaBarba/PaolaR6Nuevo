@@ -141,9 +141,6 @@ a maximum length of 80 characters can be entered. By default, is NULL.
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
 \item \href{#method-QCCS-print}{\code{QCCS$print()}}
-
-\eqn{ }
-
 \item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
 \item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
 \item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}

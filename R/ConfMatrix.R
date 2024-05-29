@@ -319,8 +319,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that provides a graph of the indices of
-      #' the functions [ConfMatrix$OverallAcc], [ConfMatrix$Kappa],
-      #' [ConfMatrix$Tau], [ConfMatrix$AvHellAcc] and [ConfMatrix$AvShortAcc]
+      #' the functions ConfMatrix$OverallAcc, ConfMatrix$Kappa,
+      #' ConfMatrix$Tau, ConfMatrix$AvHellAcc and ConfMatrix$AvShortAcc
       #'  with their corresponding standard deviations.
       #' @return A graph of the indices of the functions OverallAcc, Kappa,
       #' Tau, AvHellAcc, AvShortAcc with their corresponding
@@ -431,8 +431,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method in which multiple parameters are
       #' calculated for the given confusion matrix. This method is
-      #' equivalent to [ConfMatrix$OverallAcc],[ConfMatrix$UserAcc],
-      #' [ConfMatrix$ProdAcc],[ConfMatrix$Kappa] and [ConfMatrix$MPseudoZeroes].
+      #' equivalent to ConfMatrix$OverallAcc,ConfMatrix$UserAcc,
+      #' ConfMatrix$ProdAcc,ConfMatrix$Kappa and ConfMatrix$MPseudoZeroes.
       #' @return The following list of elements: the confusion matrix,
       #' dimension, total sum of cell values, overall accuracy, overall
       #' accuracy variance, global kappa index, global kappa simplified
@@ -829,7 +829,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the user’s and the
       #' producer’s indexes jointly. This method is equivalent to the methods
-      #' [ConfMatrix$UserAcc] and [ConfMatrix$ProdAcc].
+      #' ConfMatrix$UserAcc and ConfMatrix$ProdAcc.
       #' @return A list containing the producer's and user's accuracies and
       #' their standard deviations, respectively.
       #' @examples
@@ -3411,9 +3411,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The reference \insertCite{garcia2018}{ConfMatrix} are followed for
       #' the computations.
       #' The calculation consists of obtaining a statistic, which we will call
-      #' \eqn{T_{n,m}}, between both matrices from [ConfMatrix$StHell.test].
+      #' \eqn{T_{n,m}}, between both matrices from ConfMatrix$StHell.test.
       #' Bootstrap is then applied to the confusion matrices to obtain
-      #' simulations of both matrices. [ConfMatrix$StHell.test] is applied
+      #' simulations of both matrices. ConfMatrix$StHell.test is applied
       #' again to these simulations and we will obtain the statistics
       #' \eqn{T^*_{n,m}}. The p value is defined as:
       #' \deqn{
@@ -3514,7 +3514,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' }
       #'
       #' Following the procedure for calculating the elements
-      #' of the function [ConfMatrix$GroundTruth], we will have to \eqn{E_{ij}}
+      #' of the function ConfMatrix$GroundTruth, we will have to \eqn{E_{ij}}
       #' is obtained from:
       #'
       #' \deqn{f_{ij}=U_j \cdot V_i}
