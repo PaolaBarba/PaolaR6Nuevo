@@ -33,9 +33,9 @@
 #'  \item \code{Error type 6}: Some element of the probability vector is negative.
 #'}
 #' @references
-#' \insertRef{QCCS}{ConfMatrix}
-#'
 #' \insertRef{alba2020}{ConfMatrix}
+#'
+#' \insertRef{QCCS}{ConfMatrix}
 #' @importFrom R6 R6Class
 #' @importFrom stats dmultinom pchisq
 #' @importFrom Rdpack reprompt

@@ -18,7 +18,7 @@ QCCS. It is considered that the classes of the ground truth
 correspond to the columns and that the classes of the
 product to be valued correspond to the rows. On the other hand, the
 concept of QCCS is directly linked to quality control, so the
-specifications of this control must be indicated \insertCite{QCCS}{ConfMatrix}.
+specifications of this control must be indicated \insertCite{QCCS;textual}{ConfMatrix}.
 Specifications are stated as percentages. E.g. for class "A" under
 consideration, a minimum quality value is established (e.g. better than 90\%), and
 maximum values of confusion with other categories (e.g. confusion
@@ -96,9 +96,9 @@ A$JiGlobal.test()
 
 }
 \references{
-\insertRef{QCCS}{ConfMatrix}
-
 \insertRef{alba2020}{ConfMatrix}
+
+\insertRef{QCCS}{ConfMatrix}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -141,6 +141,9 @@ a maximum length of 80 characters can be entered. By default, is NULL.
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
 \item \href{#method-QCCS-print}{\code{QCCS$print()}}
+
+\eqn{ }
+
 \item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
 \item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
 \item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}
@@ -254,7 +257,7 @@ instance calculates whether the data meets specifications.
 An exact test is applied to each of the multinomials
 that are defined for each column.
 The Bonferroni method is used.
-The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+The references \insertCite{QCCS;textual}{ConfMatrix} and \insertCite{alba2020;textual}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(a = NULL)}\if{html}{\out{</div>}}
@@ -293,7 +296,7 @@ A$Exact.test()
 Public method that using a QCCS object instance
 calculates whether the data meets specifications in each of the classes.
 The Chi square test is used. The Bonferroni method is used.
-The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+The references \insertCite{QCCS;textual}{ConfMatrix} and \insertCite{alba2020;textual}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(a = NULL)}\if{html}{\out{</div>}}
@@ -333,7 +336,7 @@ Public method that using a QCCS
 object instance calculates whether the data meets
 specifications. The Chi square test is used.
 The references
-\insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
+\insertCite{QCCS;textual}{ConfMatrix} and \insertCite{alba2020;textual}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(a = NULL)}\if{html}{\out{</div>}}

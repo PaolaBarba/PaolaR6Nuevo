@@ -599,63 +599,63 @@ r$StHell.test(f)
 
 }
 \references{
-\insertRef{congalton2008}{ConfMatrix}
-
-\insertRef{liu2007}{ConfMatrix}
-
-\insertRef{koukoulas2001}{ConfMatrix}
-
-\insertRef{turk2002}{ConfMatrix}
-
-\insertRef{hellden1980}{ConfMatrix}
-
-\insertRef{rosenfield1986}{ConfMatrix}
-
-\insertRef{short1982}{ConfMatrix}
-
-\insertRef{finn1993}{ConfMatrix}
-
-\insertRef{tung1988}{ConfMatrix}
-
-\insertRef{cohen1960}{ConfMatrix}
-
-\insertRef{strehl2002}{ConfMatrix}
-
-\insertRef{ghosh2002}{ConfMatrix}
-
-\insertRef{strehl2002relationship}{ConfMatrix}
-
-\insertRef{book}{ConfMatrix}
-
-\insertRef{pontius2014}{ConfMatrix}
+\insertRef{alba2020}{ConfMatrix}
 
 \insertRef{ariza2011}{ConfMatrix}
 
+\insertRef{book}{ConfMatrix}
+
+\insertRef{cohen1960}{ConfMatrix}
+
+\insertRef{congalton2008}{ConfMatrix}
+
+\insertRef{condkappa}{ConfMatrix}
+
 \insertRef{fienberg1970}{ConfMatrix}
 
-\insertRef{munoz2016}{ConfMatrix}
+\insertRef{finn1993}{ConfMatrix}
+
+\insertRef{fleiss1969}{ConfMatrix}
 
 \insertRef{foody1992}{ConfMatrix}
 
 \insertRef{garcia2018}{ConfMatrix}
 
-\insertRef{ma1995Tau}{ConfMatrix}
-
-\insertRef{alba2020}{ConfMatrix}
-
-\insertRef{turk1979gt}{ConfMatrix}
+\insertRef{ghosh2002}{ConfMatrix}
 
 \insertRef{goodman1968analysis}{ConfMatrix}
 
-\insertRef{diffeR}{ConfMatrix}
+\insertRef{hellden1980}{ConfMatrix}
 
-\insertRef{condkappa}{ConfMatrix}
+\insertRef{koukoulas2001}{ConfMatrix}
 
 \insertRef{labatut2011}{ConfMatrix}
 
+\insertRef{liu2007}{ConfMatrix}
+
+\insertRef{ma1995Tau}{ConfMatrix}
+
+\insertRef{munoz2016}{ConfMatrix}
+
 \insertRef{naesset1996}{ConfMatrix}
 
-\insertRef{fleiss1969}{ConfMatrix}
+\insertRef{pontius2014}{ConfMatrix}
+
+\insertRef{diffeR}{ConfMatrix}
+
+\insertRef{rosenfield1986}{ConfMatrix}
+
+\insertRef{short1982}{ConfMatrix}
+
+\insertRef{strehl2002relationship}{ConfMatrix}
+
+\insertRef{strehl2002}{ConfMatrix}
+
+\insertRef{tung1988}{ConfMatrix}
+
+\insertRef{turk1979gt}{ConfMatrix}
+
+\insertRef{turk2002}{ConfMatrix}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -700,19 +700,31 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-plot.UserProdAcc}{\code{ConfMatrix$plot.UserProdAcc()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
 \item \href{#method-ConfMatrix-AllParameters}{\code{ConfMatrix$AllParameters()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}}
 \item \href{#method-ConfMatrix-UserAcc_i}{\code{ConfMatrix$UserAcc_i()}}
 \item \href{#method-ConfMatrix-AvUserAcc}{\code{ConfMatrix$AvUserAcc()}}
 \item \href{#method-ConfMatrix-CombUserAcc}{\code{ConfMatrix$CombUserAcc()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}
 \item \href{#method-ConfMatrix-ProdAcc_i}{\code{ConfMatrix$ProdAcc_i()}}
 \item \href{#method-ConfMatrix-AvProdAcc}{\code{ConfMatrix$AvProdAcc()}}
 \item \href{#method-ConfMatrix-CombProdAcc}{\code{ConfMatrix$CombProdAcc()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-CombUserProdAcc}{\code{ConfMatrix$CombUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc}{\code{ConfMatrix$AvUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc_i}{\code{ConfMatrix$AvUserProdAcc_i()}}
 \item \href{#method-ConfMatrix-UserProdAcc_W}{\code{ConfMatrix$UserProdAcc_W()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}
 \item \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}}
 \item \href{#method-ConfMatrix-ModKappa}{\code{ConfMatrix$ModKappa()}}
@@ -723,8 +735,14 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-DetailKappa}{\code{ConfMatrix$DetailKappa()}}
 \item \href{#method-ConfMatrix-DetailCondKappa}{\code{ConfMatrix$DetailCondKappa()}}
 \item \href{#method-ConfMatrix-DetailWKappa}{\code{ConfMatrix$DetailWKappa()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
 \item \href{#method-ConfMatrix-DetailWTau}{\code{ConfMatrix$DetailWTau()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-Ent}{\code{ConfMatrix$Ent()}}
 \item \href{#method-ConfMatrix-AvNormEnt}{\code{ConfMatrix$AvNormEnt()}}
 \item \href{#method-ConfMatrix-GeomAvNormEnt}{\code{ConfMatrix$GeomAvNormEnt()}}
@@ -733,19 +751,31 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-NormEntUser}{\code{ConfMatrix$NormEntUser()}}
 \item \href{#method-ConfMatrix-EntProd_i}{\code{ConfMatrix$EntProd_i()}}
 \item \href{#method-ConfMatrix-NormEntProd}{\code{ConfMatrix$NormEntProd()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-Sucess}{\code{ConfMatrix$Sucess()}}
 \item \href{#method-ConfMatrix-Sucess_i}{\code{ConfMatrix$Sucess_i()}}
 \item \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}}
 \item \href{#method-ConfMatrix-AvHellAcc_i}{\code{ConfMatrix$AvHellAcc_i()}}
 \item \href{#method-ConfMatrix-AvShortAcc}{\code{ConfMatrix$AvShortAcc()}}
 \item \href{#method-ConfMatrix-ShortAcc_i}{\code{ConfMatrix$ShortAcc_i()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
 \item \href{#method-ConfMatrix-MBootStrap}{\code{ConfMatrix$MBootStrap()}}
 \item \href{#method-ConfMatrix-MNormalize}{\code{ConfMatrix$MNormalize()}}
 \item \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Kappa.test}{\code{ConfMatrix$Kappa.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
@@ -949,7 +979,7 @@ The user's accuracy for the class \eqn{i} of a thematic product is
 calculated by dividing the value in the diagonal of class \eqn{i} by
 the sum of all values in the row of the class \eqn{i} (row marginal).
 The method also offers the variance and confidence interval.
-The reference \insertCite{congalton2008}{ConfMatrix} is followed
+The reference \insertCite{congalton2008;textual}{ConfMatrix} is followed
 for the computations.
 \deqn{
 UserAcc=\dfrac{x_{ii}}{x_{i+}}
@@ -997,7 +1027,7 @@ instance. The user’s accuracy for the class \eqn{i} of a thematic
 product is calculated by dividing the value in the diagonal of
 class \eqn{i} by the sum of all values in the row of the class i
 (row marginal). The method also offers the variance and confidence
-interval. The reference \insertCite{congalton2008}{ConfMatrix}
+interval. The reference \insertCite{congalton2008;textual}{ConfMatrix}
 is followed for the computations.
 
 
@@ -1046,7 +1076,7 @@ p$UserAcc_i(2)
 Public method that provides the arithmetic average,
 without weighing, of all user’s accuracies of a ConfMatrix object
 instance. The method also offers the variance and confidence
-interval. The reference \insertCite{tung1988}{ConfMatrix} is
+interval. The reference \insertCite{tung1988;textual}{ConfMatrix} is
 followed for the calculations.
 
 
@@ -1094,7 +1124,7 @@ Public method that provides the combined user's accuracy.
 Which is the average of the overall accuracy and the average user's
 accuracy. The method also offers the
 variance and confidence interval. The reference
-\insertCite{tung1988}{ConfMatrix} is followed for the calculations.
+\insertCite{tung1988;textual}{ConfMatrix} is followed for the calculations.
 
 
 \deqn{
@@ -1149,7 +1179,7 @@ of a thematic product is calculated by dividing the value
 in the diagonal of class \eqn{i} by the sum of all values in the
 row of the class \eqn{i} (column marginal). The method also
 offers the variance and confidence interval. The reference
-\insertCite{congalton2008}{ConfMatrix} if followed for the
+\insertCite{congalton2008;textual}{ConfMatrix} if followed for the
 computations.
 
 
@@ -1200,7 +1230,7 @@ thematic product is calculated by dividing the value in the
 diagonal of class \eqn{i} by the sum of all values in the column
 of the class \eqn{i} (column marginal). The method also offers
 the variance and confidence interval. The reference
-\insertCite{congalton2008}{ConfMatrix} is followed for the
+\insertCite{congalton2008;textual}{ConfMatrix} is followed for the
 calculations.
 
 
@@ -1251,7 +1281,7 @@ p$ProdAcc_i(1)
 Public method that provides the arithmetic
 average of all producer’s accuracies of a ConfMatrix object
 instance. The method also offers the variance and confidence
-interval. The reference \insertCite{tung1988}{ConfMatrix}
+interval. The reference \insertCite{tung1988;textual}{ConfMatrix}
 is followed for the calculations.
 
 
@@ -1299,7 +1329,7 @@ Public method that provides the combined producer's
 accuracy. Which is the average of the overall accuracy and the average
 producer accuracy. The method also offers the
 variance and confidence interval. The reference
-\insertCite{tung1988}{ConfMatrix} is followed for the calculations.
+\insertCite{tung1988;textual}{ConfMatrix} is followed for the calculations.
 
 
 \deqn{
@@ -1379,7 +1409,7 @@ defined by the average of the overall accuracy and the Hellden's
 average accuracy, which refers to the average user's and producer's
 accuracies. The method also offers the
 variance and confidence interval. The reference
-\insertCite{liu2007}{ConfMatrix} is followed for the calculations.
+\insertCite{liu2007;textual}{ConfMatrix} is followed for the calculations.
 
 
 \deqn{
@@ -1432,7 +1462,7 @@ Public method that provides the arithmetic
 average of all user’s and producer’s accuracy indexes of
 a ConfMatrix object instance. The method also offers the
 variance and confidence interval. The reference
-\insertCite{liu2007}{ConfMatrix} is followed for the
+\insertCite{liu2007;textual}{ConfMatrix} is followed for the
 calculations.
 
 
@@ -1486,7 +1516,7 @@ p$AvUserProdAcc()
 Public method that provides the average of
 user’s and producer’s accuracies for a specific class i.
 The method also offers the variance and confidence
-interval. The reference \insertCite{liu2007}{ConfMatrix}
+interval. The reference \insertCite{liu2007;textual}{ConfMatrix}
 is followed for the calculations.
 \deqn{
 AvUserProdAcc_i=\dfrac{UserAcc_i+ProdAcc_i}{2}
@@ -1540,7 +1570,7 @@ p$AvUserProdAcc_i(2)
 \subsection{Method \code{UserProdAcc_W()}}{
 Public method that calculates the weighted user's,
 producer’s and overall accuracies and their standard deviations.
-The reference \insertCite{congalton2008}{ConfMatrix} is followed
+The reference \insertCite{congalton2008;textual}{ConfMatrix} is followed
 for the computations.
 
 Be
@@ -1602,7 +1632,7 @@ Overall Accuracy. The Overall Accuracy is calculated by dividing
 the sum of the entries that form the major diagonal (i.e., the
 number of correct classifications) by the total number of cases.
 The method also offers the variance and confidence interval.
-The reference \insertCite{congalton2008}{ConfMatrix}
+The reference \insertCite{congalton2008;textual}{ConfMatrix}
 is followed for the computations.
 
 \deqn{
@@ -1649,7 +1679,7 @@ Public method that provides Kappa coefficient,
 which measures the relationship between the observed proportion
 of agreement and the proportion expected to occur by chance.
 The method also offers the variance and confidence interval.
-The reference \insertCite{cohen1960}{ConfMatrix} is followed
+The reference \insertCite{cohen1960;textual}{ConfMatrix} is followed
 for the calculations.
 
 
@@ -1706,7 +1736,7 @@ p$Kappa()
 Public method that provides the overall modified
 kappa coefficient. The method also offers the
 variance and confidence interval. The references
-\insertCite{stehman1997}{ConfMatrix} and \insertCite{foody1992}{ConfMatrix}
+\insertCite{stehman1997;textual}{ConfMatrix} and \insertCite{foody1992;textual}{ConfMatrix}
 are followed for the calculations.
 
 \deqn{
@@ -1757,7 +1787,7 @@ p$ModKappa()
 Public method derived by the kappa coefficient evaluated
 from the user's perspective, for a specific class i. The method
 also offers the variance and confidence interval. The reference
-\insertCite{rosenfield1986}{ConfMatrix} is followed
+\insertCite{rosenfield1986;textual}{ConfMatrix} is followed
 for the calculations.
 
 
@@ -1819,7 +1849,7 @@ kappa coefficient, which provides the modified kappa coefficient
 from the user's perspective and for a specific class i. Equitable probabilities
 of belonging to each class are assumed. The method also offers
 the variance and confidence interval. The references
-\insertCite{stehman1997}{ConfMatrix} and \insertCite{foody1992}{ConfMatrix}
+\insertCite{stehman1997;textual}{ConfMatrix} and \insertCite{foody1992;textual}{ConfMatrix}
 are followed for the calculations.
 \deqn{
 ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{M}}
@@ -1874,7 +1904,7 @@ p$ModKappaUser_i(2)
 Public method derived by the kappa coefficient evaluated
 from the producer's perspective, for a specific class i. The method
 also offers the variance and confidence interval. The reference
-\insertCite{rosenfield1986}{ConfMatrix} is followed
+\insertCite{rosenfield1986;textual}{ConfMatrix} is followed
 for the calculations.
 
 
@@ -1936,7 +1966,7 @@ kappa coefficient, which provides the modified kappa coefficient
 from the producer's perspective and for a specific class i. Equitable
 probabilities of belonging to each class are assumed. The method also
 offers the variance and confidence interval. The references
-\insertCite{stehman1997}{ConfMatrix} and \insertCite{foody1992}{ConfMatrix}
+\insertCite{stehman1997;textual}{ConfMatrix} and \insertCite{foody1992;textual}{ConfMatrix}
 are followed for the calculations.
 
 
@@ -1993,7 +2023,7 @@ Public method that calculates the general Kappa
 agreement index, its standard deviation and the test statistic
 to test its significance. The delta method has been used to calculate
 the sample variance. The reference
-\insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+\insertCite{congalton2008;textual}{ConfMatrix} is followed for the computations.
 
 \deqn{
 Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
@@ -2068,7 +2098,7 @@ p$DetailKappa()
 Public method that calculates the Kappa class agreement
 index (conditional Kappa) from the perspective of user (i) and
 producer (j) and its standard deviations. The reference
-\insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+\insertCite{congalton2008;textual}{ConfMatrix} is followed for the computations.
 
 \deqn{
 CondKappa_{user}=\dfrac{\dfrac{x_{ii}}{x_{i+}}-x_{+j}}{1-x_{+j}}
@@ -2113,7 +2143,7 @@ p$DetailCondKappa ()
 \subsection{Method \code{DetailWKappa()}}{
 Public method that calculates the general Kappa agreement
 index (weighted) and its standard deviation. The reference
-\insertCite{fleiss1969,naesset1996}{ConfMatrix} and \insertCite{congalton2008}{ConfMatrix}
+\insertCite{fleiss1969,naesset1996;textual}{ConfMatrix} and \insertCite{congalton2008;textual}{ConfMatrix}
 are followed for the computations.
 
 Be \eqn{p_{ij}=\dfrac{x_{ij}}{\sum^M_{i,j} x_{ij}}} for each element \eqn{i,j} for the matrix
@@ -2194,7 +2224,7 @@ its variance. Its value indicates how much the classification has
 improved compared to a random classification of the N elements into
 M groups. The method also offers the
 variance and confidence interval.
-The reference \insertCite{ma1995Tau}{ConfMatrix} is followed
+The reference \insertCite{ma1995Tau;textual}{ConfMatrix} is followed
 for the computations.
 
 \deqn{
@@ -2336,7 +2366,7 @@ p$DetailWTau(WV)
 Public method for calculating product entropy,which
 refers to the lack of orden and predictability that the product
 presents. The method also offers the variance and confidence
-interval. The reference \insertCite{finn1993}{ConfMatrix} is
+interval. The reference \insertCite{finn1993;textual}{ConfMatrix} is
 followed for the calculations.
 \deqn{
 Ent=\sum^M_{i,j=1} \left(\dfrac{x_{ij}}{\sum^M_{i,j=1} x_{ij}}
@@ -2386,7 +2416,7 @@ p$Ent(v=2)
 Public method that calculates normalized entropy using
 the arithmetic mean of the entropies on the product and the
 reference. The method also offers the variance and confidence interval. The reference
-\insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
+\insertCite{strehl2002;textual}{ConfMatrix} is followed for the calculations.
 \deqn{
 AvNormEnt=\dfrac{2Ent}{Ent_i(A)+Ent_i(B)}
 }
@@ -2453,7 +2483,7 @@ p$AvNormEnt(v=2)
 Public method that calculates the normalized entropy
 using the geometric mean of the product and reference entropies.
 The method also offers the variance and confidence interval.
-The reference \insertCite{ghosh2002}{ConfMatrix} is followed
+The reference \insertCite{ghosh2002;textual}{ConfMatrix} is followed
 for the calculations.
 
 
@@ -2523,7 +2553,7 @@ p$GeomAvNormEnt(v=2)
 Public method that provides normalized entropy using
 the arithmetic mean of the maximum entropies of the product and
 reference. The method also offers the variance and confidence interval.
-The reference \insertCite{strehl2002relationship}{ConfMatrix} is
+The reference \insertCite{strehl2002relationship;textual}{ConfMatrix} is
 followed for the calculations.
 
 
@@ -2594,7 +2624,7 @@ p$AvMaxNormEnt(v=2)
 Public method that calculates relative change of
 entropy for a given class \eqn{i} of the product. The method also
 offers the variance and confidence interval.
-The reference \insertCite{finn1993}{ConfMatrix} is followed for
+The reference \insertCite{finn1993;textual}{ConfMatrix} is followed for
 the calculations.
 
 
@@ -2669,7 +2699,7 @@ p$EntUser_i(1,v=2)
 Public method that calculates normalized entropy
 of the product. The method also offers the variance and
 confidence interval. The reference
-\insertCite{finn1993}{ConfMatrix} is followed for the calculations.
+\insertCite{finn1993;textual}{ConfMatrix} is followed for the calculations.
 
 
 \deqn{
@@ -2730,7 +2760,7 @@ p$NormEntUser(v=2)
 Public method that calculates relative change of
 entropy for a given a class \eqn{i} of the reference from the producer's
 perspective. The method also offers the variance and confidence interval.
-The reference \insertCite{stehman1997}{ConfMatrix} is followed for
+The reference \insertCite{stehman1997;textual}{ConfMatrix} is followed for
 the calculations.
 
 \deqn{
@@ -2802,7 +2832,7 @@ p$EntProd_i(3,v=2)
 \subsection{Method \code{NormEntProd()}}{
 Public method that calculates normalized entropy of
 the reference from the producer's perspective. The method also offers the variance and confidence
-interval. The reference \insertCite{finn1993}{ConfMatrix} is
+interval. The reference \insertCite{finn1993;textual}{ConfMatrix} is
 followed for the calculations.
 
 
@@ -2866,8 +2896,8 @@ Public method that provides the Classification
 Success Index (CSI) which considers all classes and gives an
 overall estimation of classification effectiveness.
 The method also offers the variance and confidence interval.
-The references \insertCite{koukoulas2001}{ConfMatrix} and
-\insertCite{turk2002}{ConfMatrix} are followed for the calculations.
+The references \insertCite{koukoulas2001;textual}{ConfMatrix} and
+\insertCite{turk2002;textual}{ConfMatrix} are followed for the calculations.
 \deqn{
 Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
 }
@@ -2918,7 +2948,7 @@ Public method that provides the Individual
 Classification Success Index (ICSI) which considers  the classification
 effectiveness for one particular class of interest.
 The method also offers the variance and confidence interval.
-The references \insertCite{koukoulas2001}{ConfMatrix} and \insertCite{turk2002}{ConfMatrix}
+The references \insertCite{koukoulas2001;textual}{ConfMatrix} and \insertCite{turk2002;textual}{ConfMatrix}
 are followed for the calculations.
 \deqn{
 Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
@@ -2979,7 +3009,7 @@ or element assigned to a specific class on the reference has a
 correspondence of the same class in the homologous position or
 element in the product. The method also offers the
 variance and confidence interval.
-The reference \insertCite{liu2007}{ConfMatrix} is followed for
+The reference \insertCite{liu2007;textual}{ConfMatrix} is followed for
 the calculations.
 
 
@@ -3027,7 +3057,7 @@ p$AvHellAcc()
 Public method that provides the Hellden’ average
 accuracy for the specified class. The method also offers the variance and
 confidence interval. The references
-\insertCite{hellden1980}{ConfMatrix} and \insertCite{rosenfield1986}{ConfMatrix} are
+\insertCite{hellden1980;textual}{ConfMatrix} and \insertCite{rosenfield1986;textual}{ConfMatrix} are
 followed for the calculations.
 
 
@@ -3087,7 +3117,7 @@ well-classified elements (value on the diagonal) and the subtraction
 of that same value on the errors of omission and commission (rest of
 values in the column and row) corresponding to each class. The method
 also offers the variance and confidence interval. The
-reference \insertCite{liu2007}{ConfMatrix} is followed for
+reference \insertCite{liu2007;textual}{ConfMatrix} is followed for
 the calculations.
 
 
@@ -3135,7 +3165,7 @@ p$AvShortAcc()
 Public method that provides the Short's mapping
 accuracy for each class. The method also offers the
 variance and confidence interval. The references
-\insertCite{rosenfield1986}{ConfMatrix} and \insertCite{short1982}{ConfMatrix}
+\insertCite{rosenfield1986;textual}{ConfMatrix} and \insertCite{short1982;textual}{ConfMatrix}
 are followed for the calculations.
 \deqn{
 ShortAcc_i=\dfrac{x_{ii}}{ \overline{x}_{+ i}+
@@ -3182,7 +3212,7 @@ p$ShortAcc_i(2)
 \if{latex}{\out{\hypertarget{method-ConfMatrix-GroundTruth}{}}}
 \subsection{Method \code{GroundTruth()}}{
 Public method that calculates the Ground Truth index,
-its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
+its variance and confidence interval.The reference \insertCite{turk1979gt;textual}{ConfMatrix}
 is followed for the computations.
 
 To calculate \eqn{R} we begin the following iterative process:
@@ -3261,7 +3291,7 @@ p$GroundTruth()
 \subsection{Method \code{GroundTruth_i()}}{
 Public method that calculates the Ground Truth index
 for class i, its variance and confidence interval.The reference
-\insertCite{turk1979gt}{ConfMatrix} is followed for the computations.
+\insertCite{turk1979gt;textual}{ConfMatrix} is followed for the computations.
 
 To calculate R_i we begin the following iterative process:
 Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0=\dfrac{\overline{x}_{i+}}{\sum_{i=1}^M \overline{x}_{i+}}}
@@ -3347,7 +3377,7 @@ represents transitions from class \eqn{i} to \eqn{j} and a transition from class
 to class \eqn{i} in an identical number of cases. Shift refers to the
 difference remaining after subtracting quantity difference and exchange
 from the overall difference. The reference
-\insertCite{pontius2014}{ConfMatrix} is followed for the computations.
+\insertCite{pontius2014;textual}{ConfMatrix} is followed for the computations.
 
 Where
 \deqn{
@@ -3447,7 +3477,7 @@ p$MTypify(RaR=5)
 Public method that provides B resamples, using a
 multinomial distribution, of the confusion matrix of a ConfMatrix
 object. As a result, a set of bootstrapped cases is offered. The
-reference \insertCite{fienberg1970}{ConfMatrix} is
+reference \insertCite{fienberg1970;textual}{ConfMatrix} is
 followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$MBootStrap(B, pr = NULL)}\if{html}{\out{</div>}}
@@ -3485,8 +3515,8 @@ p$MBootStrap(2)
 \subsection{Method \code{MNormalize()}}{
 Public method that carries out an iterative process in
 order to equals one the sum of values by rows and columns.
-The references \insertCite{fienberg1970}{ConfMatrix} and
-\insertCite{munoz2016}{ConfMatrix} are followed for the computations.
+The references \insertCite{fienberg1970;textual}{ConfMatrix} and
+\insertCite{munoz2016;textual}{ConfMatrix} are followed for the computations.
 
 The following iterative process is used:
 
@@ -3537,7 +3567,7 @@ Public method that small values are calculated for empty
 cells of the matrix. All non-empty cells of the matrix change their
 values. This function will not be applied if all the elements of the
 matrix are different from 0.
-The reference \insertCite{munoz2016}{ConfMatrix} is followed
+The reference \insertCite{munoz2016;textual}{ConfMatrix} is followed
 for the computations.
 
 Let \eqn{x_{ij}} be the elements of the instance.
@@ -3584,7 +3614,7 @@ p$MPseudoZeroes()
 Public method that tests whether two independent
 confusion matrices (instances of the ConfMatrix class), are
 significantly different using their overall accuracy indexes.
-The reference \insertCite{congalton2008}{ConfMatrix} and \insertCite{ma1995Tau}{ConfMatrix} are followed
+The reference \insertCite{congalton2008;textual}{ConfMatrix} and \insertCite{ma1995Tau;textual}{ConfMatrix} are followed
 for the computations.
 
 \deqn{
@@ -3640,7 +3670,7 @@ p$OverallAcc.test(f)
 Public method that tests whether two independent
 confusion matrices (instances of the ConfMatrix class), are
 significantly different when using the kappa indexes.
-The reference \insertCite{congalton2008}{ConfMatrix} is followed
+The reference \insertCite{congalton2008;textual}{ConfMatrix} is followed
 for the computations.
 
 \deqn{
@@ -3696,8 +3726,8 @@ p$Kappa.test(f)
 Public method that tests whether two independent
 confusion matrices (instances of the ConfMatrix class), are
 significantly different using their Tau indexes.
-The reference \insertCite{congalton2008}{ConfMatrix} and
-\insertCite{ma1995Tau}{ConfMatrix} are followed for the computations.
+The reference \insertCite{congalton2008;textual}{ConfMatrix} and
+\insertCite{ma1995Tau;textual}{ConfMatrix} are followed for the computations.
 
 \deqn{
 Z = \dfrac{|\tau_A-\tau_B|}{\sqrt{(\sigma^2_{\tau_A}+\sigma^2_{\tau_B})}}
@@ -3754,7 +3784,7 @@ based on the Hellinger distance between two confusion matrices
 (instances of the ConfMatrix class).
 The test considers the individual cell values in the matrices.
 Bootstrap is applied to the matrices to obtain a consistent estimator.
-The reference \insertCite{garcia2018}{ConfMatrix} are followed for
+The reference \insertCite{garcia2018;textual}{ConfMatrix} are followed for
 the computations.
 The calculation consists of obtaining a statistic, which we will call
 \eqn{T_{n,m}}, between both matrices from ConfMatrix$StHell.test.
@@ -3811,7 +3841,7 @@ p$TSCM.test(f)
 Public method that performs the
 quasi-independence test for the elements of a confusion matrix.
 The reference
-\insertCite{turk1979gt}{ConfMatrix} and \insertCite{goodman1968analysis}{ConfMatrix}
+\insertCite{turk1979gt;textual}{ConfMatrix} and \insertCite{goodman1968analysis;textual}{ConfMatrix}
 are followed for the computations.
 
 \deqn{
@@ -3870,7 +3900,7 @@ p$QIndep.test()
 \subsection{Method \code{StHell.test()}}{
 Public method that provides the Hellinger distance
 between two elements of the ConfMatrix class.
-The reference \insertCite{garcia2018}{ConfMatrix} is followed
+The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
 for the computations.
 
 \deqn{

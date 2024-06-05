@@ -32,63 +32,64 @@
 #' @importFrom ggplot2 ggplot aes xlab ylab theme geom_point geom_errorbar
 #' @references
 #'
-#' \insertRef{congalton2008}{ConfMatrix}
-#'
-#' \insertRef{liu2007}{ConfMatrix}
-#'
-#' \insertRef{koukoulas2001}{ConfMatrix}
-#'
-#' \insertRef{turk2002}{ConfMatrix}
-#'
-#' \insertRef{hellden1980}{ConfMatrix}
-#'
-#' \insertRef{rosenfield1986}{ConfMatrix}
-#'
-#' \insertRef{short1982}{ConfMatrix}
-#'
-#' \insertRef{finn1993}{ConfMatrix}
-#'
-#' \insertRef{tung1988}{ConfMatrix}
-#'
-#' \insertRef{cohen1960}{ConfMatrix}
-#'
-#' \insertRef{strehl2002}{ConfMatrix}
-#'
-#' \insertRef{ghosh2002}{ConfMatrix}
-#'
-#' \insertRef{strehl2002relationship}{ConfMatrix}
-#'
-#' \insertRef{book}{ConfMatrix}
-#'
-#' \insertRef{pontius2014}{ConfMatrix}
+#' \insertRef{alba2020}{ConfMatrix}
 #'
 #' \insertRef{ariza2011}{ConfMatrix}
 #'
+#' \insertRef{book}{ConfMatrix}
+#'
+#' \insertRef{cohen1960}{ConfMatrix}
+#'
+#' \insertRef{congalton2008}{ConfMatrix}
+#'
+#' \insertRef{condkappa}{ConfMatrix}
+#'
 #' \insertRef{fienberg1970}{ConfMatrix}
 #'
-#' \insertRef{munoz2016}{ConfMatrix}
+#' \insertRef{finn1993}{ConfMatrix}
+#'
+#' \insertRef{fleiss1969}{ConfMatrix}
 #'
 #' \insertRef{foody1992}{ConfMatrix}
 #'
 #' \insertRef{garcia2018}{ConfMatrix}
 #'
-#' \insertRef{ma1995Tau}{ConfMatrix}
-#'
-#' \insertRef{alba2020}{ConfMatrix}
-#'
-#' \insertRef{turk1979gt}{ConfMatrix}
+#' \insertRef{ghosh2002}{ConfMatrix}
 #'
 #' \insertRef{goodman1968analysis}{ConfMatrix}
 #'
-#' \insertRef{diffeR}{ConfMatrix}
+#' \insertRef{hellden1980}{ConfMatrix}
 #'
-#' \insertRef{condkappa}{ConfMatrix}
+#' \insertRef{koukoulas2001}{ConfMatrix}
 #'
 #' \insertRef{labatut2011}{ConfMatrix}
 #'
+#' \insertRef{liu2007}{ConfMatrix}
+#'
+#' \insertRef{ma1995Tau}{ConfMatrix}
+#'
+#' \insertRef{munoz2016}{ConfMatrix}
+#'
 #' \insertRef{naesset1996}{ConfMatrix}
 #'
-#' \insertRef{fleiss1969}{ConfMatrix}
+#' \insertRef{pontius2014}{ConfMatrix}
+#'
+#' \insertRef{diffeR}{ConfMatrix}
+#'
+#' \insertRef{rosenfield1986}{ConfMatrix}
+#'
+#' \insertRef{short1982}{ConfMatrix}
+#'
+#' \insertRef{strehl2002relationship}{ConfMatrix}
+#'
+#' \insertRef{strehl2002}{ConfMatrix}
+#'
+#' \insertRef{tung1988}{ConfMatrix}
+#'
+#' \insertRef{turk1979gt}{ConfMatrix}
+#'
+#' \insertRef{turk2002}{ConfMatrix}
+#'
 #'
 #' @section Mathematical elements:
 #' \itemize{
@@ -110,6 +111,7 @@
 #'
 #'
 #' @aliases ConfMatrix
+
 
 
 
@@ -481,7 +483,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' calculated by dividing the value in the diagonal of class \eqn{i} by
       #' the sum of all values in the row of the class \eqn{i} (row marginal).
       #' The method also offers the variance and confidence interval.
-      #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
+      #' The reference \insertCite{congalton2008;textual}{ConfMatrix} is followed
       #' for the computations.
       #' \deqn{
       #' UserAcc=\dfrac{x_{ii}}{x_{i+}}
@@ -502,6 +504,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' p$UserAcc()
       #'
       #' @aliases NULL
+
 
 
      UserAcc = function(a=NULL){
@@ -528,7 +531,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' product is calculated by dividing the value in the diagonal of
       #' class \eqn{i} by the sum of all values in the row of the class i
       #' (row marginal). The method also offers the variance and confidence
-      #' interval. The reference \insertCite{congalton2008}{ConfMatrix}
+      #' interval. The reference \insertCite{congalton2008;textual}{ConfMatrix}
       #' is followed for the computations.
       #' @description
       #'  \deqn{
@@ -567,7 +570,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the arithmetic average,
       #' without weighing, of all user’s accuracies of a ConfMatrix object
       #' instance. The method also offers the variance and confidence
-      #' interval. The reference \insertCite{tung1988}{ConfMatrix} is
+      #' interval. The reference \insertCite{tung1988;textual}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
       #'  \deqn{
@@ -610,7 +613,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Which is the average of the overall accuracy and the average user's
       #' accuracy. The method also offers the
       #' variance and confidence interval. The reference
-      #' \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
+      #' \insertCite{tung1988;textual}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombUserAcc=\dfrac{OverallAcc+AvUserAcc}{2}
@@ -656,7 +659,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' in the diagonal of class \eqn{i} by the sum of all values in the
       #' row of the class \eqn{i} (column marginal). The method also
       #' offers the variance and confidence interval. The reference
-      #' \insertCite{congalton2008}{ConfMatrix} if followed for the
+      #' \insertCite{congalton2008;textual}{ConfMatrix} if followed for the
       #' computations.
       #' @description
       #'  \deqn{
@@ -703,7 +706,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' diagonal of class \eqn{i} by the sum of all values in the column
       #' of the class \eqn{i} (column marginal). The method also offers
       #' the variance and confidence interval. The reference
-      #' \insertCite{congalton2008}{ConfMatrix} is followed for the
+      #' \insertCite{congalton2008;textual}{ConfMatrix} is followed for the
       #' calculations.
       #' @description
       #'  \deqn{
@@ -746,7 +749,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the arithmetic
       #' average of all producer’s accuracies of a ConfMatrix object
       #' instance. The method also offers the variance and confidence
-      #' interval. The reference \insertCite{tung1988}{ConfMatrix}
+      #' interval. The reference \insertCite{tung1988;textual}{ConfMatrix}
       #' is followed for the calculations.
       #' @description
       #'  \deqn{
@@ -786,7 +789,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' accuracy. Which is the average of the overall accuracy and the average
       #' producer accuracy. The method also offers the
       #' variance and confidence interval. The reference
-      #' \insertCite{tung1988}{ConfMatrix} is followed for the calculations.
+      #' \insertCite{tung1988;textual}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombProdAcc=\dfrac{OverallAcc+AvProdAcc}{2}
@@ -859,7 +862,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' average accuracy, which refers to the average user's and producer's
       #' accuracies. The method also offers the
       #' variance and confidence interval. The reference
-      #' \insertCite{liu2007}{ConfMatrix} is followed for the calculations.
+      #' \insertCite{liu2007;textual}{ConfMatrix} is followed for the calculations.
       #' @description
       #'  \deqn{
       #' CombUserProdAcc=\dfrac{OverallAcc+AvHellAcc}{2}
@@ -903,7 +906,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' average of all user’s and producer’s accuracy indexes of
       #' a ConfMatrix object instance. The method also offers the
       #' variance and confidence interval. The reference
-      #' \insertCite{liu2007}{ConfMatrix} is followed for the
+      #' \insertCite{liu2007;textual}{ConfMatrix} is followed for the
       #' calculations.
       #' @description
       #'  \deqn{
@@ -947,7 +950,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the average of
       #' user’s and producer’s accuracies for a specific class i.
       #' The method also offers the variance and confidence
-      #' interval. The reference \insertCite{liu2007}{ConfMatrix}
+      #' interval. The reference \insertCite{liu2007;textual}{ConfMatrix}
       #' is followed for the calculations.
       #'  \deqn{
       #' AvUserProdAcc_i=\dfrac{UserAcc_i+ProdAcc_i}{2}
@@ -995,7 +998,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the weighted user's,
       #' producer’s and overall accuracies and their standard deviations.
-      #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
+      #' The reference \insertCite{congalton2008;textual}{ConfMatrix} is followed
       #' for the computations.
       #'
       #' Be
@@ -1106,7 +1109,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' the sum of the entries that form the major diagonal (i.e., the
       #' number of correct classifications) by the total number of cases.
       #' The method also offers the variance and confidence interval.
-      #' The reference \insertCite{congalton2008}{ConfMatrix}
+      #' The reference \insertCite{congalton2008;textual}{ConfMatrix}
       #' is followed for the computations.
       #'
       #' \deqn{
@@ -1149,7 +1152,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' which measures the relationship between the observed proportion
       #' of agreement and the proportion expected to occur by chance.
       #' The method also offers the variance and confidence interval.
-      #' The reference \insertCite{cohen1960}{ConfMatrix} is followed
+      #' The reference \insertCite{cohen1960;textual}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #' \deqn{
@@ -1203,7 +1206,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the overall modified
       #' kappa coefficient. The method also offers the
       #' variance and confidence interval. The references
-      #' \insertCite{stehman1997}{ConfMatrix} and \insertCite{foody1992}{ConfMatrix}
+      #' \insertCite{stehman1997;textual}{ConfMatrix} and \insertCite{foody1992;textual}{ConfMatrix}
       #' are followed for the calculations.
       #'
       #'  \deqn{
@@ -1246,7 +1249,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method derived by the kappa coefficient evaluated
       #' from the user's perspective, for a specific class i. The method
       #' also offers the variance and confidence interval. The reference
-      #' \insertCite{rosenfield1986}{ConfMatrix} is followed
+      #' \insertCite{rosenfield1986;textual}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'  \deqn{
@@ -1306,7 +1309,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' from the user's perspective and for a specific class i. Equitable probabilities
       #' of belonging to each class are assumed. The method also offers
       #' the variance and confidence interval. The references
-      #' \insertCite{stehman1997}{ConfMatrix} and \insertCite{foody1992}{ConfMatrix}
+      #' \insertCite{stehman1997;textual}{ConfMatrix} and \insertCite{foody1992;textual}{ConfMatrix}
       #' are followed for the calculations.
       #'  \deqn{
       #' ModKappaUser_i=\dfrac{UserAcc_i-\dfrac{1}{M}}
@@ -1357,7 +1360,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method derived by the kappa coefficient evaluated
       #' from the producer's perspective, for a specific class i. The method
       #' also offers the variance and confidence interval. The reference
-      #' \insertCite{rosenfield1986}{ConfMatrix} is followed
+      #' \insertCite{rosenfield1986;textual}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'  \deqn{
@@ -1414,7 +1417,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' from the producer's perspective and for a specific class i. Equitable
       #' probabilities of belonging to each class are assumed. The method also
       #' offers the variance and confidence interval. The references
-      #' \insertCite{stehman1997}{ConfMatrix} and \insertCite{foody1992}{ConfMatrix}
+      #' \insertCite{stehman1997;textual}{ConfMatrix} and \insertCite{foody1992;textual}{ConfMatrix}
       #' are followed for the calculations.
       #' @description
       #'  \deqn{
@@ -1463,7 +1466,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' agreement index, its standard deviation and the test statistic
       #' to test its significance. The delta method has been used to calculate
       #' the sample variance. The reference
-      #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+      #' \insertCite{congalton2008;textual}{ConfMatrix} is followed for the computations.
       #'
       #' \deqn{
       #' Kappa=\dfrac{OverallAcc-ExpAcc}{1-ExpAcc}
@@ -1555,7 +1558,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates the Kappa class agreement
       #' index (conditional Kappa) from the perspective of user (i) and
       #' producer (j) and its standard deviations. The reference
-      #' \insertCite{congalton2008}{ConfMatrix} is followed for the computations.
+      #' \insertCite{congalton2008;textual}{ConfMatrix} is followed for the computations.
       #'
       #' \deqn{
       #' CondKappa_{user}=\dfrac{\dfrac{x_{ii}}{x_{i+}}-x_{+j}}{1-x_{+j}}
@@ -1623,7 +1626,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the general Kappa agreement
       #' index (weighted) and its standard deviation. The reference
-      #' \insertCite{fleiss1969,naesset1996}{ConfMatrix} and \insertCite{congalton2008}{ConfMatrix}
+      #' \insertCite{fleiss1969,naesset1996;textual}{ConfMatrix} and \insertCite{congalton2008;textual}{ConfMatrix}
       #' are followed for the computations.
       #'
       #' Be \eqn{p_{ij}=\dfrac{x_{ij}}{\sum^M_{i,j} x_{ij}}} for each element \eqn{i,j} for the matrix
@@ -1724,7 +1727,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' improved compared to a random classification of the N elements into
       #' M groups. The method also offers the
       #' variance and confidence interval.
-      #' The reference \insertCite{ma1995Tau}{ConfMatrix} is followed
+      #' The reference \insertCite{ma1995Tau;textual}{ConfMatrix} is followed
       #' for the computations.
       #'
       #' \deqn{
@@ -1870,7 +1873,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method for calculating product entropy,which
       #' refers to the lack of orden and predictability that the product
       #' presents. The method also offers the variance and confidence
-      #' interval. The reference \insertCite{finn1993}{ConfMatrix} is
+      #' interval. The reference \insertCite{finn1993;textual}{ConfMatrix} is
       #' followed for the calculations.
       #'  \deqn{
       #' Ent=\sum^M_{i,j=1} \left(\dfrac{x_{ij}}{\sum^M_{i,j=1} x_{ij}}
@@ -1931,7 +1934,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates normalized entropy using
       #' the arithmetic mean of the entropies on the product and the
       #' reference. The method also offers the variance and confidence interval. The reference
-      #' \insertCite{strehl2002}{ConfMatrix} is followed for the calculations.
+      #' \insertCite{strehl2002;textual}{ConfMatrix} is followed for the calculations.
       #' \deqn{
       #' AvNormEnt=\dfrac{2Ent}{Ent_i(A)+Ent_i(B)}
       #' }
@@ -1999,7 +2002,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates the normalized entropy
       #' using the geometric mean of the product and reference entropies.
       #' The method also offers the variance and confidence interval.
-      #' The reference \insertCite{ghosh2002}{ConfMatrix} is followed
+      #' The reference \insertCite{ghosh2002;textual}{ConfMatrix} is followed
       #' for the calculations.
       #' @description
       #'
@@ -2068,7 +2071,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides normalized entropy using
       #' the arithmetic mean of the maximum entropies of the product and
       #' reference. The method also offers the variance and confidence interval.
-      #' The reference \insertCite{strehl2002relationship}{ConfMatrix} is
+      #' The reference \insertCite{strehl2002relationship;textual}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
       #' \deqn{
@@ -2133,7 +2136,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' @description Public method that calculates relative change of
      #' entropy for a given class \eqn{i} of the product. The method also
      #' offers the variance and confidence interval.
-     #' The reference \insertCite{finn1993}{ConfMatrix} is followed for
+     #' The reference \insertCite{finn1993;textual}{ConfMatrix} is followed for
      #' the calculations.
      #' @description
      #' \deqn{
@@ -2223,7 +2226,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that calculates normalized entropy
       #' of the product. The method also offers the variance and
       #' confidence interval. The reference
-      #' \insertCite{finn1993}{ConfMatrix} is followed for the calculations.
+      #' \insertCite{finn1993;textual}{ConfMatrix} is followed for the calculations.
       #' @description
       #'
       #' \deqn{
@@ -2287,7 +2290,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
      #' @description Public method that calculates relative change of
      #' entropy for a given a class \eqn{i} of the reference from the producer's
      #' perspective. The method also offers the variance and confidence interval.
-     #' The reference \insertCite{stehman1997}{ConfMatrix} is followed for
+     #' The reference \insertCite{stehman1997;textual}{ConfMatrix} is followed for
      #' the calculations.
      #'
      #' \deqn{
@@ -2363,7 +2366,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates normalized entropy of
       #' the reference from the producer's perspective. The method also offers the variance and confidence
-      #' interval. The reference \insertCite{finn1993}{ConfMatrix} is
+      #' interval. The reference \insertCite{finn1993;textual}{ConfMatrix} is
       #' followed for the calculations.
       #' @description
       #' \deqn{
@@ -2431,8 +2434,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Success Index (CSI) which considers all classes and gives an
       #' overall estimation of classification effectiveness.
       #' The method also offers the variance and confidence interval.
-      #' The references \insertCite{koukoulas2001}{ConfMatrix} and
-      #' \insertCite{turk2002}{ConfMatrix} are followed for the calculations.
+      #' The references \insertCite{koukoulas2001;textual}{ConfMatrix} and
+      #' \insertCite{turk2002;textual}{ConfMatrix} are followed for the calculations.
       #'  \deqn{
       #' Sucess=1-(1-AvUserAcc+1-AvProdAcc)=AvUserAcc+AvProdAcc-1
       #' }
@@ -2473,7 +2476,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' Classification Success Index (ICSI) which considers  the classification
       #' effectiveness for one particular class of interest.
       #' The method also offers the variance and confidence interval.
-      #' The references \insertCite{koukoulas2001}{ConfMatrix} and \insertCite{turk2002}{ConfMatrix}
+      #' The references \insertCite{koukoulas2001;textual}{ConfMatrix} and \insertCite{turk2002;textual}{ConfMatrix}
       #' are followed for the calculations.
       #'  \deqn{
       #' Sucess_i=1-(1-UserAcc_i+1-ProdAcc_i)=UserAcc_i+ProdAcc_i-1
@@ -2525,7 +2528,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' correspondence of the same class in the homologous position or
       #' element in the product. The method also offers the
       #' variance and confidence interval.
-      #' The reference \insertCite{liu2007}{ConfMatrix} is followed for
+      #' The reference \insertCite{liu2007;textual}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -2564,7 +2567,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the Hellden’ average
       #' accuracy for the specified class. The method also offers the variance and
       #' confidence interval. The references
-      #' \insertCite{hellden1980}{ConfMatrix} and \insertCite{rosenfield1986}{ConfMatrix} are
+      #' \insertCite{hellden1980;textual}{ConfMatrix} and \insertCite{rosenfield1986;textual}{ConfMatrix} are
       #' followed for the calculations.
       #' @description
       #'  \deqn{
@@ -2622,7 +2625,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' of that same value on the errors of omission and commission (rest of
       #' values in the column and row) corresponding to each class. The method
       #' also offers the variance and confidence interval. The
-      #' reference \insertCite{liu2007}{ConfMatrix} is followed for
+      #' reference \insertCite{liu2007;textual}{ConfMatrix} is followed for
       #' the calculations.
       #' @description
       #'  \deqn{
@@ -2668,7 +2671,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides the Short's mapping
       #' accuracy for each class. The method also offers the
       #' variance and confidence interval. The references
-      #' \insertCite{rosenfield1986}{ConfMatrix} and \insertCite{short1982}{ConfMatrix}
+      #' \insertCite{rosenfield1986;textual}{ConfMatrix} and \insertCite{short1982;textual}{ConfMatrix}
       #' are followed for the calculations.
       #'  \deqn{
       #' ShortAcc_i=\dfrac{x_{ii}}{ \overline{x}_{+ i}+
@@ -2715,7 +2718,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
 
       #' @description Public method that calculates the Ground Truth index,
-      #' its variance and confidence interval.The reference \insertCite{turk1979gt}{ConfMatrix}
+      #' its variance and confidence interval.The reference \insertCite{turk1979gt;textual}{ConfMatrix}
       #' is followed for the computations.
       #'
       #' To calculate \eqn{R} we begin the following iterative process:
@@ -2837,7 +2840,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that calculates the Ground Truth index
       #' for class i, its variance and confidence interval.The reference
-      #' \insertCite{turk1979gt}{ConfMatrix} is followed for the computations.
+      #' \insertCite{turk1979gt;textual}{ConfMatrix} is followed for the computations.
       #'
       #' To calculate R_i we begin the following iterative process:
       #' Be \eqn{U_j^{(0)}=f_j^0} with \eqn{f_j^0=\dfrac{\overline{x}_{i+}}{\sum_{i=1}^M \overline{x}_{i+}}}
@@ -2919,7 +2922,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' to class \eqn{i} in an identical number of cases. Shift refers to the
       #' difference remaining after subtracting quantity difference and exchange
       #' from the overall difference. The reference
-      #' \insertCite{pontius2014}{ConfMatrix} is followed for the computations.
+      #' \insertCite{pontius2014;textual}{ConfMatrix} is followed for the computations.
       #'
       #' Where
       #' \deqn{
@@ -3053,7 +3056,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that provides B resamples, using a
       #' multinomial distribution, of the confusion matrix of a ConfMatrix
       #' object. As a result, a set of bootstrapped cases is offered. The
-      #' reference \insertCite{fienberg1970}{ConfMatrix} is
+      #' reference \insertCite{fienberg1970;textual}{ConfMatrix} is
       #' followed for the computations.
       #' @param B Number of resamples.
       #' @param pr Vector with resampling probabilities. By default, the
@@ -3096,8 +3099,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that carries out an iterative process in
       #' order to equals one the sum of values by rows and columns.
-      #' The references \insertCite{fienberg1970}{ConfMatrix} and
-      #'  \insertCite{munoz2016}{ConfMatrix} are followed for the computations.
+      #' The references \insertCite{fienberg1970;textual}{ConfMatrix} and
+      #'  \insertCite{munoz2016;textual}{ConfMatrix} are followed for the computations.
       #'
       #' The following iterative process is used:
       #'
@@ -3153,7 +3156,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' cells of the matrix. All non-empty cells of the matrix change their
       #' values. This function will not be applied if all the elements of the
       #' matrix are different from 0.
-      #' The reference \insertCite{munoz2016}{ConfMatrix} is followed
+      #' The reference \insertCite{munoz2016;textual}{ConfMatrix} is followed
       #' for the computations.
       #'
       #' Let \eqn{x_{ij}} be the elements of the instance.
@@ -3219,7 +3222,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that tests whether two independent
       #' confusion matrices (instances of the ConfMatrix class), are
       #' significantly different using their overall accuracy indexes.
-      #' The reference \insertCite{congalton2008}{ConfMatrix} and \insertCite{ma1995Tau}{ConfMatrix} are followed
+      #' The reference \insertCite{congalton2008;textual}{ConfMatrix} and \insertCite{ma1995Tau;textual}{ConfMatrix} are followed
       #' for the computations.
       #'
       #' \deqn{
@@ -3281,7 +3284,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that tests whether two independent
       #' confusion matrices (instances of the ConfMatrix class), are
       #' significantly different when using the kappa indexes.
-      #' The reference \insertCite{congalton2008}{ConfMatrix} is followed
+      #' The reference \insertCite{congalton2008;textual}{ConfMatrix} is followed
       #' for the computations.
       #'
       #' \deqn{
@@ -3342,8 +3345,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that tests whether two independent
       #' confusion matrices (instances of the ConfMatrix class), are
       #' significantly different using their Tau indexes.
-      #' The reference \insertCite{congalton2008}{ConfMatrix} and
-      #' \insertCite{ma1995Tau}{ConfMatrix} are followed for the computations.
+      #' The reference \insertCite{congalton2008;textual}{ConfMatrix} and
+      #' \insertCite{ma1995Tau;textual}{ConfMatrix} are followed for the computations.
       #'
       #' \deqn{
       #' Z = \dfrac{|\tau_A-\tau_B|}{\sqrt{(\sigma^2_{\tau_A}+\sigma^2_{\tau_B})}}
@@ -3408,7 +3411,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' (instances of the ConfMatrix class).
       #' The test considers the individual cell values in the matrices.
       #' Bootstrap is applied to the matrices to obtain a consistent estimator.
-      #' The reference \insertCite{garcia2018}{ConfMatrix} are followed for
+      #' The reference \insertCite{garcia2018;textual}{ConfMatrix} are followed for
       #' the computations.
       #' The calculation consists of obtaining a statistic, which we will call
       #' \eqn{T_{n,m}}, between both matrices from ConfMatrix$StHell.test.
@@ -3506,7 +3509,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @description Public method that performs the
       #'  quasi-independence test for the elements of a confusion matrix.
       #'  The reference
-      #'  \insertCite{turk1979gt}{ConfMatrix} and \insertCite{goodman1968analysis}{ConfMatrix}
+      #'  \insertCite{turk1979gt;textual}{ConfMatrix} and \insertCite{goodman1968analysis;textual}{ConfMatrix}
       #'  are followed for the computations.
       #'
       #' \deqn{
@@ -3580,7 +3583,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       #' @description Public method that provides the Hellinger distance
       #' between two elements of the ConfMatrix class.
-      #' The reference \insertCite{garcia2018}{ConfMatrix} is followed
+      #' The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
       #' for the computations.
       #'
       #' \deqn{
