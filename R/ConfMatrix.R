@@ -3242,8 +3242,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param f \verb{
       #' Instance of ConfMatrix class.
       #' }
-      #' @return A list with the value of the test statistic and its z
-      #' score for a given significance level.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
       #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -3271,13 +3270,21 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #Ma-Tau
       Z<-abs(k1-k2)/sqrt(v1+v2)
 
-      cl<-qnorm(1-a/2)
+      #cl<-qnorm(1-a/2)
 
-      if(Z>-cl & Z<cl){
-        cat("The null hypothesis is not rejected.\nTherefore, the overall values and the\nconfusion matrices do not present\nsignificant differences.\n")
-      }else{cat("The null hypothesis is rejected.\nTherefore, their overall values and confusion\nmatrices are significantly different.\n")}
+      htest_result <- list(
+        statistic = paste("Statistic =",round(Z,4)),                    # Value of the test statistic
+        # parameter = NULL,                 # There are no additional parameters in this test
+        p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
+        null.value = 0,                   # Null hypothesis: there is no difference in overall accuracy
+        alternative="two.sided",
+        method = "Test for overall accuracy difference", # Method used
+        data.name = paste("Overall accuracy of", self$ID ,"vs overall accuracy of",f$ID) # Name of the data compared
+        # estimate = c(O_A = k1, O_B = k2)  # Estimates of overall accuracy
+      )
 
-    return(list(Statistic=Z,Z=cl))
+      class(htest_result) <- "htest"
+      return(htest_result)
     },
 
 
@@ -3304,8 +3311,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
-      #' @return A list with the value of the test statistic and its
-      #' z score for a given significance level.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
       #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -3333,11 +3339,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         Z<-abs(k1-k2)/(sqrt(v1+v2))
         cl<-qnorm(1-a/2)
 
-        if(Z>-cl & Z<cl){
-          cat("The null hypothesis is not rejected.\nTherefore, the kappa values and the\nconfusion matrices do not present\nsignificant differences.\n")
-        }else{cat("The null hypothesis is rejected.\nTherefore, their kappa values and confusion\nmatrices are significantly different.\n")}
+        htest_result <- list(
+          statistic = paste("Statistic =",round(Z,4)),   # Value of the test statistic
+          #parameter = NULL,                 # There are no additional parameters in this test
+          p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
+          null.value = 0,                   # Null hypothesis: there is no difference in the kappa index
+          alternative = "two.sided", # Alternative hypothesis: there is a difference in the kappa indices
+          method = "Test for kappa difference", # Method used
+          data.name = paste("Kappa index of", self$ID ,"vs Kappa index of", f$ID) # Name of the data compared
+          # estimate = c(k1 = k1, k2 = k2)  # Kappa index estimates
+        )
 
-        return(list(Statistic=Z,Z=cl))
+        class(htest_result) <- "htest"
+        return(htest_result)
       },
 
 
@@ -3365,8 +3379,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
-      #' @return A list with the value of the test statistic and its z
-      #' score for a given significance level.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
       #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
@@ -3397,11 +3410,19 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       cl<-qnorm(1-a/2)
 
-      if(Z>-cl & Z<cl){
-          cat("The null hypothesis is not rejected.\nTherefore, the tau values and the\nconfusion matrices do not present\nsignificant differences.\n")
-      }else{cat("The null hypothesis is rejected.\nTherefore, their tau values and confusion\nmatrices are significantly different.\n")}
+      htest_result <- list(
+        statistic = paste("Statistic =",round(Z,4)),      # Value of the test statistic
+        #parameter = NULL,                 # There are no additional parameters in this test
+        p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
+        null.value = 0,                   # Null hypothesis: there is no difference in the tau indexes
+        alternative = "two.sided", # Alternative hypothesis: there is a difference in the tau indexes
+        method = "Test for tau difference", # Method used
+        data.name = paste("Tau index of",self$ID,"vs Tau index of",f$ID) # Name of the data compared
+        # estimate = c(k1 = k1, k2 = k2)  # Tau index estimates
+      )
 
-    return(list(Statistic=Z,Z=cl))
+      class(htest_result) <- "htest"
+      return(htest_result)
     },
 
 
@@ -3431,14 +3452,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
-      #' @return A list with the value of the test statistic and its z
-      #' score for a given significance level.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
       #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
+      #' C<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f<-ConfMatrix$new(C,Source="Congalton and Green 2008")
       #' p$TSCM.test(f)
       #'
       #' @aliases NULL
@@ -3457,13 +3477,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       }else{a<-a}
 
       A<-self$Values
-      B<-f$Values
+      C<-f$Values
       n<-length(A)
-      m<-length(B)
+      m<-length(C)
       p2<-A/sum(A)
-      q2<-B/sum(B)
+      q2<-C/sum(C)
 
-      p_orig<-self$StHell.test(f)
+      p_orig<-self$StHell.test(f)[[1]][[1]]
 
       #Probability defined between p and q
       p_0<-c()
@@ -3481,7 +3501,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       Tn<-c()
 
       for (i in 1:length(p1)) {
-        Tn1<-self$StHell.test(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))
+        Tn1<-self$StHell.test(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))[[1]][[1]]
         Tn<-c(Tn,Tn1)
       }
       #Those that meet the condition of being greater than the original
@@ -3496,15 +3516,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #mean p
       pvalue<-length(Tn_boot)/length(Tn)
 
-     if(pvalue>a){
-       cat("The null hypothesis is not rejected,\nboth confusion matrices exhibit\na similar level of accuracy.\n")
-     }else{
-       cat("The hypothesis that both distributions are is still\nrejected and the confusion matrices,\ntherefore, are not similar.\n")
-     }
-    return(list(pvalue=pvalue, alpha=a))
+      htest_result <- list(
+        #Puede que Tn_boot de problemas por ser un vector/ poner sino Tn_obs que es el valor que marca cuando
+        #se tiene en cuenta Tn_boot o no
+       # statistic = Tn_boot,     # Value of the test statistic
+        #parameter = NULL,       # There are no additional parameters in this test
+        p.value = pvalue,        # p-value
+        null.value = 0,  # Null hypothesis: there is no difference in the confusion matrices
+        alternative = "two.sided", # Alternative hypothesis: there is difference in the confusion matrices
+        method = "TSCM-test for evaluate the similarity between two confusion matrices.\nBased on the discrete squared
+        Hellinger distance", # Method used
+        data.name = paste(self$ID , "vs", f$ID) # Name of the data compared
+
+      )
+
+      class(htest_result) <- "htest"
+      return(htest_result)
     },
-
-
 
       #' @description Public method that performs the
       #'  quasi-independence test for the elements of a confusion matrix.
@@ -3537,8 +3565,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param a \verb{
       #' Significance level. By default a=0.05.
       #' }
-      #' @return A list of the statistic's value and its z-score for a given
-      #' significance level.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
+      #'
       #' @examples
       #' A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,
       #' ncol=5)
@@ -3558,7 +3586,16 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
       matr2<-A_0/Expfij
       matr2[is.nan(matr2)] <- 0
+      # matr2[is.nan(matr2) | is.infinite(matr2)] <- 0
+      # matr2[is.nan(matr2)] <- 1e-10
 
+      # Calcular logaritmos
+     # log_matr2 <- log(matr2 + 1e-10) # Añadir un pequeño valor para evitar log(0)
+      # for (i in 1:nrow(A_0)) {
+      #   for (j in 1:nrow(A_0)) {
+      #     matr2[i,j] <- log(matr2[i,j])
+      #   }
+      # }
       for (i in 1:nrow(A_0)) {
         for (j in 1:nrow(A_0)) {
           if(matr2[i,j]==0){
@@ -3571,12 +3608,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       Z<-2*sum(matr2)
       ji_critico<-qchisq(1-a/2,k)
+      p.value <- pchisq(Z, df = k, lower.tail = FALSE)
 
-      if(Z<ji_critico){
-        cat("The null hypothesis is not rejected.\nTherefore, the quasi-independence between observed frequencies\nand expected is not rejected.\n")
-      }else{cat("The null hypothesis is rejected.\nTherefore, the quasi-independence between observedfrequencies\nand expected is rejected.\n")}
+      # Crear un objeto htest
+      htest_result <- list(
+        statistic = paste("Statistic =",round(Z,4)),
+       # parameter = k,
+        p.value = p.value,
+        method = "Quasi-Independence Test",
+        data.name = paste("ConfMatrix"),
+       alternative="two.sided",
+        null.value = "Quasi-independence"
+      )
 
-      return(list(Statistic=Z,Z=ji_critico))
+      class(htest_result) <- "htest"
+
+      return(htest_result)
+
     },
 
 
@@ -3640,8 +3688,23 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       }else{
         p_orig <- 4*((sum(self$Values)*sum(B)/(sum(self$Values)+sum(B))) *
                        sum((sqrt(p) - sqrt(q))^2))
+        # grados de libertad
+        df <- length(p) - 1
 
-      return(StHell=p_orig)
+        # Cálculo del p-valor usando la distribución chi-cuadrado
+        p_value <- pchisq(p_orig, df, lower.tail = FALSE)
+
+        result <- list(
+          statistic =  paste("Statistic =",round(p_orig,4)),
+          p.value = p_value,
+          method = "Hellinger Distance Test",
+          data.name = paste(self$ID, "and", f$ID)
+        )
+        class(result) <- "htest"
+
+      return(result)
+
+     # return(StHell=p_orig)
       }
     }
 

@@ -572,8 +572,8 @@ p$Tau.test(f)
 
 A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
+C<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-ConfMatrix$new(C,Source="Congalton and Green 2008")
 p$TSCM.test(f)
 
 
@@ -700,31 +700,19 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-plot.UserProdAcc}{\code{ConfMatrix$plot.UserProdAcc()}}
 \item \href{#method-ConfMatrix-print}{\code{ConfMatrix$print()}}
 \item \href{#method-ConfMatrix-AllParameters}{\code{ConfMatrix$AllParameters()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserAcc}{\code{ConfMatrix$UserAcc()}}
 \item \href{#method-ConfMatrix-UserAcc_i}{\code{ConfMatrix$UserAcc_i()}}
 \item \href{#method-ConfMatrix-AvUserAcc}{\code{ConfMatrix$AvUserAcc()}}
 \item \href{#method-ConfMatrix-CombUserAcc}{\code{ConfMatrix$CombUserAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-ProdAcc}{\code{ConfMatrix$ProdAcc()}}
 \item \href{#method-ConfMatrix-ProdAcc_i}{\code{ConfMatrix$ProdAcc_i()}}
 \item \href{#method-ConfMatrix-AvProdAcc}{\code{ConfMatrix$AvProdAcc()}}
 \item \href{#method-ConfMatrix-CombProdAcc}{\code{ConfMatrix$CombProdAcc()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-UserProdAcc}{\code{ConfMatrix$UserProdAcc()}}
 \item \href{#method-ConfMatrix-CombUserProdAcc}{\code{ConfMatrix$CombUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc}{\code{ConfMatrix$AvUserProdAcc()}}
 \item \href{#method-ConfMatrix-AvUserProdAcc_i}{\code{ConfMatrix$AvUserProdAcc_i()}}
 \item \href{#method-ConfMatrix-UserProdAcc_W}{\code{ConfMatrix$UserProdAcc_W()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-OverallAcc}{\code{ConfMatrix$OverallAcc()}}
 \item \href{#method-ConfMatrix-Kappa}{\code{ConfMatrix$Kappa()}}
 \item \href{#method-ConfMatrix-ModKappa}{\code{ConfMatrix$ModKappa()}}
@@ -735,14 +723,8 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-DetailKappa}{\code{ConfMatrix$DetailKappa()}}
 \item \href{#method-ConfMatrix-DetailCondKappa}{\code{ConfMatrix$DetailCondKappa()}}
 \item \href{#method-ConfMatrix-DetailWKappa}{\code{ConfMatrix$DetailWKappa()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Tau}{\code{ConfMatrix$Tau()}}
 \item \href{#method-ConfMatrix-DetailWTau}{\code{ConfMatrix$DetailWTau()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Ent}{\code{ConfMatrix$Ent()}}
 \item \href{#method-ConfMatrix-AvNormEnt}{\code{ConfMatrix$AvNormEnt()}}
 \item \href{#method-ConfMatrix-GeomAvNormEnt}{\code{ConfMatrix$GeomAvNormEnt()}}
@@ -751,31 +733,19 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-NormEntUser}{\code{ConfMatrix$NormEntUser()}}
 \item \href{#method-ConfMatrix-EntProd_i}{\code{ConfMatrix$EntProd_i()}}
 \item \href{#method-ConfMatrix-NormEntProd}{\code{ConfMatrix$NormEntProd()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-Sucess}{\code{ConfMatrix$Sucess()}}
 \item \href{#method-ConfMatrix-Sucess_i}{\code{ConfMatrix$Sucess_i()}}
 \item \href{#method-ConfMatrix-AvHellAcc}{\code{ConfMatrix$AvHellAcc()}}
 \item \href{#method-ConfMatrix-AvHellAcc_i}{\code{ConfMatrix$AvHellAcc_i()}}
 \item \href{#method-ConfMatrix-AvShortAcc}{\code{ConfMatrix$AvShortAcc()}}
 \item \href{#method-ConfMatrix-ShortAcc_i}{\code{ConfMatrix$ShortAcc_i()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
 \item \href{#method-ConfMatrix-MBootStrap}{\code{ConfMatrix$MBootStrap()}}
 \item \href{#method-ConfMatrix-MNormalize}{\code{ConfMatrix$MNormalize()}}
 \item \href{#method-ConfMatrix-MPseudoZeroes}{\code{ConfMatrix$MPseudoZeroes()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-OverallAcc.test}{\code{ConfMatrix$OverallAcc.test()}}
 \item \href{#method-ConfMatrix-Kappa.test}{\code{ConfMatrix$Kappa.test()}}
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
@@ -3646,8 +3616,7 @@ Significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the value of the test statistic and its z
-score for a given significance level.
+A list of class "htest" containing the results of the hypothesis test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3702,8 +3671,7 @@ Significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the value of the test statistic and its
-z score for a given significance level.
+A list of class "htest" containing the results of the hypothesis test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3758,8 +3726,7 @@ Significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the value of the test statistic and its z
-score for a given significance level.
+A list of class "htest" containing the results of the hypothesis test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -3817,15 +3784,14 @@ Significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list with the value of the test statistic and its z
-score for a given significance level.
+A list of class "htest" containing the results of the hypothesis test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
 p<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
+C<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-ConfMatrix$new(C,Source="Congalton and Green 2008")
 p$TSCM.test(f)
 
 }
@@ -3878,8 +3844,7 @@ Significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of the statistic's value and its z-score for a given
-significance level.
+A list of class "htest" containing the results of the hypothesis test.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

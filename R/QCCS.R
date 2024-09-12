@@ -279,9 +279,11 @@ QCCS <- R6Class("QCCS",
       #' @param a \verb{
       #' significance level. By default a=0.05.
       #' }
-      #' @return The p value of the exact test using Bonferroni.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
+      #' In addition, the value of the Bonferroni criterion, the original data vectors
+      #' and the probability vectors are also returned.
       #' @examples
-      #' Vectors<-list(c(47,4,0),c(44,5,3))
+      #' Vectors<-list(c(47,4,0),c(40,5,3))
       #' Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
       #' A<-QCCS$new(Vectors,Prob,
       #' Source="Ariza-Lopez et al. 2019")
@@ -316,11 +318,25 @@ QCCS <- R6Class("QCCS",
           p_value<-c(p_value,p_value1)
         }
 
-      sol <- c(sol, p_value)
+     sol <- c(sol, p_value)
 
       ap<-private$MethBonf(sol,a)
 
-    return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
+      result <- lapply(1:n, function(i) {
+        structure(
+        list(
+        method = "Exact Test with Bonferroni Correction",
+        null.value="correctly classified elements",
+        alternative="two.sided",
+        p.value = p_value[i],
+        data.name = "Vectors and Probabilities"
+      ),
+
+      class = "htest"
+      )})
+      return(list(htest_objects=result,Bonferroni_correction = ap$Bonferroni,
+                  OriginalVectors = self$Vectors,OriginalProb = self$Prob))
+    #return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
     },
 
 
@@ -334,7 +350,9 @@ QCCS <- R6Class("QCCS",
       #' @param a \verb{
       #' significance level. By default a=0.05.
       #' }
-      #' @return The p value from the chi square test.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
+      #' In addition, the value of the Bonferroni criterion, the original data vectors
+      #' and the probability vectors are also returned.
       #' @examples
       #' Vectors<-list(c(18,0,3,0),c(27,19))
       #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
@@ -354,6 +372,8 @@ QCCS <- R6Class("QCCS",
       m <- length(self$Prob)
       p_value<-c()
       k<-0
+      statistics <- c()
+      df <- c()
       #for each vector
         for (j in 1:n) {
         #elements of each vector
@@ -367,14 +387,33 @@ QCCS <- R6Class("QCCS",
           pj<-c(pj,(vi[i]-sum(vi)*pi[i])/sqrt(sum(vi)*pi[i]))
         }
         ST<-sum(pj^2)
-
+        statistics <- c(statistics, ST)
+        df <- c(df, k)
         pvalue<-pchisq(ST, k, lower.tail=FALSE)
         p_value<-c(p_value,pvalue)
         }
 
         ap<-private$MethBonf(p_value,a)
 
-    return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
+        # Create an htest object for each test
+        htest_objects <- lapply(1:n, function(i) {
+          structure(
+            list(
+              statistic = c(X2 = statistics[i]), #e
+              parameter = c(df = df[i]), # grados libertad
+              null.value="correctly classified elements",
+              alternative="two.sided",
+              p.value = p_value[i],
+              method = "Chi-squared test with Bonferroni method",
+              data.name = paste("Vector", i)
+            ),
+            class = "htest"
+          )
+        })
+
+        return(list(htest_objects = htest_objects,Bonferroni_correction = ap$Bonferroni,
+          OriginalVectors = self$Vectors,OriginalProb = self$Prob))
+    #return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
     },
 
 
@@ -389,7 +428,9 @@ QCCS <- R6Class("QCCS",
       #' @param a \verb{
       #' significance level. By default a=0.05.
       #' }
-      #' @return The p value derived from the chi square test.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
+      #' In addition, the original data vectors and the probability vectors are also
+      #' returned.
       #' @examples
       #' Vectors<-list(c(18,0,3,0),c(27,19))
       #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
@@ -433,16 +474,21 @@ QCCS <- R6Class("QCCS",
 
     p_value<-pchisq(Suma, k, lower.tail=FALSE)
 
-    if(p_value>a){
-      cat("The null hypothesis is not rejected.\n",p_value,">=",a)
-      cat("\nThe set of elements are well defined\n")
-    }else{
-      cat("The null hypothesis is rejected.\n",p_value,"<",a)
-      cat("\nThe set of elements are not well defined\n")
+    htest_result <- structure(
+      list(
+        statistic = c(X2 = Suma),
+        parameter = c(df = k),
+        null.value="correctly classified elements",
+        alternative="two.sided",
+        p.value = p_value,
+        method = "Global Chi-squared test",
+        data.name = "Combined Vectors"
+      ),
+      class = "htest"
+    )
 
-    }
-
-    return(p_value)
+    return(list(htest_result,OriginalVectors = self$Vectors,
+                OriginalProb = self$Prob))
     }
 
 
@@ -463,11 +509,11 @@ QCCS <- R6Class("QCCS",
        }else{a<-a}
        n<-length(pvalue)
         v<-a/n
-       for (i in 1:n) {
-         if(pvalue[i]>v){
-           cat(" The null hypothesis is not rejected.\n ",pvalue[i],">=",v,"\n")
-         }else{cat(" The null hypothesis is rejected.\n ",pvalue[i],"<",v,"\n")}
-       }
+       # for (i in 1:n) {
+       #   if(pvalue[i]>v){
+       #     cat(" The null hypothesis is not rejected.\n ",pvalue[i],">=",v,"\n")
+       #   }else{cat(" The null hypothesis is rejected.\n ",pvalue[i],"<",v,"\n")}
+       # }
        return(list(p_value=pvalue,Bonferroni=v))
      },
 

@@ -18,7 +18,7 @@ QCCS. It is considered that the classes of the ground truth
 correspond to the columns and that the classes of the
 product to be valued correspond to the rows. On the other hand, the
 concept of QCCS is directly linked to quality control, so the
-specifications of this control must be indicated \insertCite{QCCS;textual}{ConfMatrix}.
+specifications of this control must be indicated \insertCite{QCCS}{ConfMatrix}.
 Specifications are stated as percentages. E.g. for class "A" under
 consideration, a minimum quality value is established (e.g. better than 90\%), and
 maximum values of confusion with other categories (e.g. confusion
@@ -66,7 +66,7 @@ A$print()
 ## Method `QCCS$Exact.test`
 ## ------------------------------------------------
 
-Vectors<-list(c(47,4,0),c(44,5,3))
+Vectors<-list(c(47,4,0),c(40,5,3))
 Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
 A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
@@ -141,9 +141,6 @@ a maximum length of 80 characters can be entered. By default, is NULL.
 \itemize{
 \item \href{#method-QCCS-new}{\code{QCCS$new()}}
 \item \href{#method-QCCS-print}{\code{QCCS$print()}}
-
-\eqn{ }
-
 \item \href{#method-QCCS-Exact.test}{\code{QCCS$Exact.test()}}
 \item \href{#method-QCCS-Ji.test}{\code{QCCS$Ji.test()}}
 \item \href{#method-QCCS-JiGlobal.test}{\code{QCCS$JiGlobal.test()}}
@@ -257,7 +254,7 @@ instance calculates whether the data meets specifications.
 An exact test is applied to each of the multinomials
 that are defined for each column.
 The Bonferroni method is used.
-The references \insertCite{QCCS;textual}{ConfMatrix} and \insertCite{alba2020;textual}{ConfMatrix}
+The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Exact.test(a = NULL)}\if{html}{\out{</div>}}
@@ -273,11 +270,13 @@ significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The p value of the exact test using Bonferroni.
+A list of class "htest" containing the results of the hypothesis test.
+In addition, the value of the Bonferroni criterion, the original data vectors
+and the probability vectors are also returned.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{Vectors<-list(c(47,4,0),c(44,5,3))
+\preformatted{Vectors<-list(c(47,4,0),c(40,5,3))
 Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
 A<-QCCS$new(Vectors,Prob,
 Source="Ariza-Lopez et al. 2019")
@@ -296,7 +295,7 @@ A$Exact.test()
 Public method that using a QCCS object instance
 calculates whether the data meets specifications in each of the classes.
 The Chi square test is used. The Bonferroni method is used.
-The references \insertCite{QCCS;textual}{ConfMatrix} and \insertCite{alba2020;textual}{ConfMatrix}
+The references \insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$Ji.test(a = NULL)}\if{html}{\out{</div>}}
@@ -312,7 +311,9 @@ significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The p value from the chi square test.
+A list of class "htest" containing the results of the hypothesis test.
+In addition, the value of the Bonferroni criterion, the original data vectors
+and the probability vectors are also returned.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -336,7 +337,7 @@ Public method that using a QCCS
 object instance calculates whether the data meets
 specifications. The Chi square test is used.
 The references
-\insertCite{QCCS;textual}{ConfMatrix} and \insertCite{alba2020;textual}{ConfMatrix}
+\insertCite{QCCS}{ConfMatrix} and \insertCite{alba2020}{ConfMatrix}
 are followed for the computations.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{QCCS$JiGlobal.test(a = NULL)}\if{html}{\out{</div>}}
@@ -352,7 +353,9 @@ significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The p value derived from the chi square test.
+A list of class "htest" containing the results of the hypothesis test.
+In addition, the original data vectors and the probability vectors are also
+returned.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
