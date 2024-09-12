@@ -1,3 +1,4 @@
 Manual del paquete ConfMatrix
 
-[Manual_ConfMatrix.pdf](https://github.com/PaolaBarba/PaolaR6Nuevo/files/15481511/Manual_ConfMatrix.pdf)
+
+[Manual_ConfMatrix.pdf](https://github.com/user-attachments/files/15582717/Manual_ConfMatrix.pdf)
