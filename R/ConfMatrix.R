@@ -3273,7 +3273,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #cl<-qnorm(1-a/2)
 
       htest_result <- list(
-        statistic = paste("Statistic =",round(Z,4)),                    # Value of the test statistic
+        statistic = c(Z=round(Z,4)),                    # Value of the test statistic
         # parameter = NULL,                 # There are no additional parameters in this test
         p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
         null.value = 0,                   # Null hypothesis: there is no difference in overall accuracy
@@ -3340,7 +3340,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         cl<-qnorm(1-a/2)
 
         htest_result <- list(
-          statistic = paste("Statistic =",round(Z,4)),   # Value of the test statistic
+          statistic = c(Z=round(Z,4)),                    # Value of the test statistic
           #parameter = NULL,                 # There are no additional parameters in this test
           p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
           null.value = 0,                   # Null hypothesis: there is no difference in the kappa index
@@ -3411,7 +3411,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       cl<-qnorm(1-a/2)
 
       htest_result <- list(
-        statistic = paste("Statistic =",round(Z,4)),      # Value of the test statistic
+        statistic = c(Z=round(Z,4)),                    # Value of the test statistic
         #parameter = NULL,                 # There are no additional parameters in this test
         p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
         null.value = 0,                   # Null hypothesis: there is no difference in the tau indexes
@@ -3586,16 +3586,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
       matr2<-A_0/Expfij
       matr2[is.nan(matr2)] <- 0
-      # matr2[is.nan(matr2) | is.infinite(matr2)] <- 0
-      # matr2[is.nan(matr2)] <- 1e-10
 
-      # Calcular logaritmos
-     # log_matr2 <- log(matr2 + 1e-10) # Añadir un pequeño valor para evitar log(0)
-      # for (i in 1:nrow(A_0)) {
-      #   for (j in 1:nrow(A_0)) {
-      #     matr2[i,j] <- log(matr2[i,j])
-      #   }
-      # }
       for (i in 1:nrow(A_0)) {
         for (j in 1:nrow(A_0)) {
           if(matr2[i,j]==0){
@@ -3612,8 +3603,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       # Crear un objeto htest
       htest_result <- list(
-        statistic = paste("Statistic =",round(Z,4)),
-       # parameter = k,
+        statistic = c(Z=round(Z,4)),     # Value of the test statistic
+        # parameter = k,
         p.value = p.value,
         method = "Quasi-Independence Test",
         data.name = paste("ConfMatrix"),
@@ -3657,8 +3648,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for each cell is taken.
       #' }
       #'
-      #' @return A real value for the statistical test based on the
-      #' Hellinger distance.
+      #' @return A list of class "htest" containing the results of the hypothesis test.
+      #'
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
@@ -3695,7 +3686,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         p_value <- pchisq(p_orig, df, lower.tail = FALSE)
 
         result <- list(
-          statistic =  paste("Statistic =",round(p_orig,4)),
+          statistic = c(Z=round(p_orig,4)),                    # Value of the test statistic
           p.value = p_value,
           method = "Hellinger Distance Test",
           data.name = paste(self$ID, "and", f$ID)
