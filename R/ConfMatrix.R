@@ -3564,7 +3564,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       Tn<-c()
 
       for (i in 1:length(p1)) {
-        Tn1<-self$HellingerDist(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))[[1]][[1]]
+        Tn1<-self$HellingerDist(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))
         Tn<-c(Tn,Tn1)
       }
       #Those that meet the condition of being greater than the original
