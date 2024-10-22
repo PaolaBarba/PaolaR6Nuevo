@@ -2908,6 +2908,69 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
                 Conf_Int=ConfInt,ExpFrec=Expfij))
     },
 
+      #' @description Public method that provides the value of a test statistic 
+      #' based on the Hellinger distance between two confusion matrices.
+      #' The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
+      #' for the computations.
+      #'
+      #' \deqn{
+      #' HellingerDist = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
+      #' }
+      #'
+      #' Where:
+      #' \enumerate{
+      #'   \item \eqn{n_{A}}: sum of elements of the matrix A.
+      #'   \item \eqn{m_{B}}: sum of elements of the matrix B.
+      #'   \item \eqn{p_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix A.
+      #'   \item \eqn{q_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix B.
+      #' }
+      #' @param f \verb{
+      #' Element of the ConfMatrix.
+      #' }
+      #' @param p \verb{
+      #' probability vector of matrix A. By default, relative frequencies observed
+      #' for each cell is taken.
+      #' }
+      #' @param q \verb{
+      #' probability vector of matrix B. By default, relative frequencies observed
+      #' for each cell is taken.
+      #' }
+      #'
+      #' @return The value of the test statistic based on the Hellinger distance.
+      #' @examples
+      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+      #' r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
+      #' r$HellingerDist(f)
+      #'
+      #' @aliases NULL
+
+    HellingerDist = function(f,p=NULL,q=NULL){
+
+      if(class(f)[1]!="ConfMatrix"){
+       warning("A ConfMatrix element is not being introduced\n")
+        stop(" ")
+      }
+      A<-self$Values
+      B<-f$Values
+      if(is.null(p)){
+      p<-A/sum(A)
+      }else{p<-p}
+      if(is.null(q)){
+        q<-B/sum(B)
+      }else{q<-q}
+
+      if(length(q)!=length(p)){
+        stop("Probabilities with different sizes.")
+      }else{
+        p_orig <- 4*((sum(self$Values)*sum(B)/(sum(self$Values)+sum(B))) *
+                       sum((sqrt(p) - sqrt(q))^2))
+
+      return(HellingerDist=p_orig)
+      }
+    },
+
 
 
 
@@ -3435,9 +3498,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' The reference \insertCite{garcia2018;textual}{ConfMatrix} are followed for
       #' the computations.
       #' The calculation consists of obtaining a statistic, which we will call
-      #' \eqn{T_{n,m}}, between both matrices from ConfMatrix$StHell.test.
+      #' \eqn{T_{n,m}}, between both matrices from ConfMatrix$HellingerDist.
       #' Bootstrap is then applied to the confusion matrices to obtain
-      #' simulations of both matrices. ConfMatrix$StHell.test is applied
+      #' simulations of both matrices. ConfMatrix$HellingerDist is applied
       #' again to these simulations and we will obtain the statistics
       #' \eqn{T^*_{n,m}}. The p value is defined as:
       #' \deqn{
@@ -3483,7 +3546,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       p2<-A/sum(A)
       q2<-C/sum(C)
 
-      p_orig<-self$StHell.test(f)[[1]][[1]]
+      p_orig<-self$HellingerDist(f)
 
       #Probability defined between p and q
       p_0<-c()
@@ -3501,7 +3564,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       Tn<-c()
 
       for (i in 1:length(p1)) {
-        Tn1<-self$StHell.test(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))[[1]][[1]]
+        Tn1<-self$HellingerDist(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))[[1]][[1]]
         Tn<-c(Tn,Tn1)
       }
       #Those that meet the condition of being greater than the original
@@ -3616,92 +3679,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
 
       return(htest_result)
 
-    },
-
-
-
-      #' @description Public method that provides the Hellinger distance
-      #' between two elements of the ConfMatrix class.
-      #' The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
-      #' for the computations.
-      #'
-      #' \deqn{
-      #' HD = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
-      #' }
-      #'
-      #' Where:
-      #' \enumerate{
-      #'   \item \eqn{n_{A}}: sum of elements of the matrix A.
-      #'   \item \eqn{m_{B}}: sum of elements of the matrix B.
-      #'   \item \eqn{p_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix A.
-      #'   \item \eqn{q_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix B.
-      #' }
-      #' @param f \verb{
-      #' Element of the ConfMatrix.
-      #' }
-      #' @param p \verb{
-      #' probability vector of matrix A. By default, relative frequencies observed
-      #' for each cell is taken.
-      #' }
-      #' @param q \verb{
-      #' probability vector of matrix B. By default, relative frequencies observed
-      #' for each cell is taken.
-      #' }
-      #'
-      #' @return A list of class "htest" containing the results of the hypothesis test.
-      #'
-      #' @examples
-      #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-      #' r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-      #' B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-      #' f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
-      #' r$StHell.test(f)
-      #'
-      #' @aliases NULL
-
-    StHell.test = function(f,p=NULL,q=NULL){
-
-      if(class(f)[1]!="ConfMatrix"){
-       warning("A ConfMatrix element is not being introduced\n")
-        stop(" ")
-      }
-      A<-self$Values
-      B<-f$Values
-      if(is.null(p)){
-      p<-A/sum(A)
-      }else{p<-p}
-      if(is.null(q)){
-        q<-B/sum(B)
-      }else{q<-q}
-
-      if(length(q)!=length(p)){
-        stop("Probabilities with different sizes.")
-      }else{
-        p_orig <- 4*((sum(self$Values)*sum(B)/(sum(self$Values)+sum(B))) *
-                       sum((sqrt(p) - sqrt(q))^2))
-        # grados de libertad
-        df <- length(p) - 1
-
-        # Cálculo del p-valor usando la distribución chi-cuadrado
-        p_value <- pchisq(p_orig, df, lower.tail = FALSE)
-
-        result <- list(
-          statistic = c(Z=round(p_orig,4)),                    # Value of the test statistic
-          p.value = p_value,
-          method = "Hellinger Distance Test",
-          data.name = paste(self$ID, "and", f$ID)
-        )
-        class(result) <- "htest"
-
-      return(result)
-
-     # return(StHell=p_orig)
-      }
     }
-
-
-
-
 
 
    ),

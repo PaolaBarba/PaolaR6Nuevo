@@ -484,6 +484,17 @@ p$GroundTruth_i(3)
 
 
 ## ------------------------------------------------
+## Method `ConfMatrix$HellingerDist`
+## ------------------------------------------------
+
+A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
+r$HellingerDist(f)
+
+
+## ------------------------------------------------
 ## Method `ConfMatrix$QES`
 ## ------------------------------------------------
 
@@ -585,17 +596,6 @@ A<-matrix(c(148,1,8,2,0,0,50,15,3,0,1,6,39,7,1,1,0,6,25,1,1,0,0,1,6),nrow=5,
 ncol=5)
 p<-ConfMatrix$new(A,Source= "Türk 1979")
 p$QIndep.test()
-
-
-## ------------------------------------------------
-## Method `ConfMatrix$StHell.test`
-## ------------------------------------------------
-
-A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
-r$StHell.test(f)
 
 }
 \references{
@@ -741,6 +741,7 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-ShortAcc_i}{\code{ConfMatrix$ShortAcc_i()}}
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
+\item \href{#method-ConfMatrix-HellingerDist}{\code{ConfMatrix$HellingerDist()}}
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
 \item \href{#method-ConfMatrix-MTypify}{\code{ConfMatrix$MTypify()}}
 \item \href{#method-ConfMatrix-MBootStrap}{\code{ConfMatrix$MBootStrap()}}
@@ -751,7 +752,6 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-Tau.test}{\code{ConfMatrix$Tau.test()}}
 \item \href{#method-ConfMatrix-TSCM.test}{\code{ConfMatrix$TSCM.test()}}
 \item \href{#method-ConfMatrix-QIndep.test}{\code{ConfMatrix$QIndep.test()}}
-\item \href{#method-ConfMatrix-StHell.test}{\code{ConfMatrix$StHell.test()}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -3336,6 +3336,66 @@ p$GroundTruth_i(3)
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ConfMatrix-HellingerDist"></a>}}
+\if{latex}{\out{\hypertarget{method-ConfMatrix-HellingerDist}{}}}
+\subsection{Method \code{HellingerDist()}}{
+Public method that provides the value of a test statistic
+based on the Hellinger distance between two confusion matrices.
+The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
+for the computations.
+
+\deqn{
+HellingerDist = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
+}
+
+Where:
+\enumerate{
+\item \eqn{n_{A}}: sum of elements of the matrix A.
+\item \eqn{m_{B}}: sum of elements of the matrix B.
+\item \eqn{p_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix A.
+\item \eqn{q_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix B.
+}
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$HellingerDist(f, p = NULL, q = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{f}}{\verb{
+Element of the ConfMatrix.
+}}
+
+\item{\code{p}}{\verb{
+probability vector of matrix A. By default, relative frequencies observed
+for each cell is taken.
+}}
+
+\item{\code{q}}{\verb{
+probability vector of matrix B. By default, relative frequencies observed
+for each cell is taken.
+}}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The value of the test statistic based on the Hellinger distance.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
+r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
+B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
+f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
+r$HellingerDist(f)
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ConfMatrix-QES"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-QES}{}}}
 \subsection{Method \code{QES()}}{
@@ -3754,9 +3814,9 @@ Bootstrap is applied to the matrices to obtain a consistent estimator.
 The reference \insertCite{garcia2018;textual}{ConfMatrix} are followed for
 the computations.
 The calculation consists of obtaining a statistic, which we will call
-\eqn{T_{n,m}}, between both matrices from ConfMatrix$StHell.test.
+\eqn{T_{n,m}}, between both matrices from ConfMatrix$HellingerDist.
 Bootstrap is then applied to the confusion matrices to obtain
-simulations of both matrices. ConfMatrix$StHell.test is applied
+simulations of both matrices. ConfMatrix$HellingerDist is applied
 again to these simulations and we will obtain the statistics
 \eqn{T^*_{n,m}}. The p value is defined as:
 \deqn{
@@ -3852,67 +3912,6 @@ A list of class "htest" containing the results of the hypothesis test.
 ncol=5)
 p<-ConfMatrix$new(A,Source= "Türk 1979")
 p$QIndep.test()
-
-}
-\if{html}{\out{</div>}}
-
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ConfMatrix-StHell.test"></a>}}
-\if{latex}{\out{\hypertarget{method-ConfMatrix-StHell.test}{}}}
-\subsection{Method \code{StHell.test()}}{
-Public method that provides the Hellinger distance
-between two elements of the ConfMatrix class.
-The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
-for the computations.
-
-\deqn{
-HD = \dfrac{4n_{A}m_{B}}{n_{A}+m_{B}} \sum^{M}_{i=1} (\sqrt{p_i}-\sqrt{q_i})^2
-}
-
-Where:
-\enumerate{
-\item \eqn{n_{A}}: sum of elements of the matrix A.
-\item \eqn{m_{B}}: sum of elements of the matrix B.
-\item \eqn{p_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix A.
-\item \eqn{q_i}: probability that element \eqn{i \in [1, \cdots, MxM]} is well classified in matrix B.
-}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$StHell.test(f, p = NULL, q = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{f}}{\verb{
-Element of the ConfMatrix.
-}}
-
-\item{\code{p}}{\verb{
-probability vector of matrix A. By default, relative frequencies observed
-for each cell is taken.
-}}
-
-\item{\code{q}}{\verb{
-probability vector of matrix B. By default, relative frequencies observed
-for each cell is taken.
-}}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-A real value for the statistical test based on the
-Hellinger distance.
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
-r<-ConfMatrix$new(A,Source="Congalton and Green 2008")
-B<-matrix(c(45,6,0,4,4,91,8,7,12,5,55,3,24,8,9,55),nrow=4,ncol=4)
-f<-ConfMatrix$new(B,Source="Congalton and Green 2008")
-r$StHell.test(f)
 
 }
 \if{html}{\out{</div>}}
