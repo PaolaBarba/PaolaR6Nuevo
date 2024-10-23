@@ -270,9 +270,11 @@ significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of class "htest" containing the results of the hypothesis test.
-In addition, the value of the Bonferroni criterion, the original data vectors
-and the probability vectors are also returned.
+A list of the "htest" class containing the results of the hypothesis test.
+The p-value returned is the lowest of those obtained for the data analyzed.
+In addition, the Bonferroni criterion value, the p-values obtained for each column,
+the original data vectors and the probability vectors are also returned as
+parameters of the htest class.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
@@ -311,9 +313,11 @@ significance level. By default a=0.05.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A list of class "htest" containing the results of the hypothesis test.
-In addition, the value of the Bonferroni criterion, the original data vectors
-and the probability vectors are also returned.
+A list of the "htest" class containing the results of the hypothesis test.
+The p-value returned is the lowest of those obtained for the data analyzed.
+In addition, the Bonferroni criterion value, the obtained p-values, the degrees of
+freedom and the statistics obtained for each column, the original data vectors
+and the probability vectors are also returned as parameters of the htest class.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}

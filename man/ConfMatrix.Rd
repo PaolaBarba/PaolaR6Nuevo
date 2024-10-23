@@ -3659,7 +3659,7 @@ Where:
 \item \eqn{\sigma^2_{O_B}}: variance of \eqn{O_B}.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$OverallAcc.test(f, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$OverallAcc.test(f)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3667,10 +3667,6 @@ Where:
 \describe{
 \item{\code{f}}{\verb{
 Instance of ConfMatrix class.
-}}
-
-\item{\code{a}}{\verb{
-Significance level. By default a=0.05.
 }}
 }
 \if{html}{\out{</div>}}
@@ -3714,7 +3710,7 @@ Where:
 \item \eqn{\sigma^2_{k_B}}: variance of \eqn{k_B}.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Kappa.test(f, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Kappa.test(f)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3722,10 +3718,6 @@ Where:
 \describe{
 \item{\code{f}}{\verb{
 Element of the ConfMatrix class.
-}}
-
-\item{\code{a}}{\verb{
-Significance level. By default a=0.05.
 }}
 }
 \if{html}{\out{</div>}}
@@ -3769,7 +3761,7 @@ Where:
 \item \eqn{\sigma^2_{\tau_B}}: variance of \eqn{\tau_B}.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Tau.test(f, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$Tau.test(f)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3777,10 +3769,6 @@ Where:
 \describe{
 \item{\code{f}}{\verb{
 Element of the ConfMatrix class.
-}}
-
-\item{\code{a}}{\verb{
-Significance level. By default a=0.05.
 }}
 }
 \if{html}{\out{</div>}}
@@ -3823,7 +3811,7 @@ again to these simulations and we will obtain the statistics
 \hat{p}=\dfrac{Card(T^*_{n,m} \geq T^*_{n,m})}{B}
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, B = NULL, a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$TSCM.test(f, B = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -3835,10 +3823,6 @@ Element of the ConfMatrix class.
 
 \item{\code{B}}{\verb{
 Number of bootstraps that you want to generate. By default B=1000.
-}}
-
-\item{\code{a}}{\verb{
-Significance level. By default a=0.05.
 }}
 }
 \if{html}{\out{</div>}}
@@ -3891,18 +3875,9 @@ Where:
 \item \eqn{E_{ij}}: expected frequency.
 }
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QIndep.test(a = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ConfMatrix$QIndep.test()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{a}}{\verb{
-Significance level. By default a=0.05.
-}}
-}
-\if{html}{\out{</div>}}
-}
 \subsection{Returns}{
 A list of class "htest" containing the results of the hypothesis test.
 }

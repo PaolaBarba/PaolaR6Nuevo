@@ -268,53 +268,57 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 # Matrix check ------------------------------------------------------------
 
-  error1<- FALSE
-  error2<- FALSE
-  error3<- FALSE
-  error4<- FALSE
-  error5<- FALSE
-  error6<- FALSE
-  error7<- FALSE
+  #error1<- FALSE
+  #error2<- FALSE
+  #error3<- FALSE
+  #error4<- FALSE
+  #error5<- FALSE
+  #error6<- FALSE
+  #error7<- FALSE
    if((nfilas != ncolumnas)) {
-     error1<- TRUE
-     print("Error type 1: Non-square matrix\n")
+     #error1<- TRUE
+     stop("Error type 1: Non-square matrix\n")
    }
 
    if((nk==1)){
-     error2<-TRUE
-     print("Error type 2: Single element matrix\n")
+     #error2<-TRUE
+     stop("Error type 2: Single element matrix\n")
    }
 
-   for (i in 1:nfilas){
-    for (j in 1:ncolumnas){
-      if(self$Values[i,j]<0){
-     error3<-TRUE
-     cat("Error type 3: negative values.\nIn position:",i,j,
-         ". Value:",self$Values[i,j],"\n")
-      }
-     }
-    }
-   if(sum(self$Values)==0 ){
-     error4<-TRUE
-     print("Error type 4: Sum of elements 0\n")
+   # for (i in 1:nfilas){
+   #  for (j in 1:ncolumnas){
+   #    if(self$Values[i,j]<0){
+   #   #error3<-TRUE
+   #   cat("Error type 3: negative values.\nIn position:",i,j,
+   #       ". Value:",self$Values[i,j],"\n")
+   #    }
+   #   }
+   #  }
+  
+  if(length(self$Values[self$Values<0])>0)
+    stop("Error type 3: negative values.")
+
+  if(sum(self$Values)==0 ){
+     #error4<-TRUE
+     stop("Error type 4: Sum of elements 0\n")
    }
    if(sum(apply(self$Values,1,sum))==0 ){
-     error5<-TRUE
-     print("Error type 5: Sum of rows 0\n")
+     #error5<-TRUE
+     stop("Error type 5: Sum of rows 0\n")
    }
    if(sum(apply(self$Values,2,sum))==0 ){
-     error6<-TRUE
-     print("Error type 6: Sum of columns 0\n")
+     #error6<-TRUE
+     stop("Error type 6: Sum of columns 0\n")
    }
    if(is.matrix(self$Values) == FALSE){
-     error7<-TRUE
-     print("Error type 7: It is not a matrix\n")
+     #error7<-TRUE
+     stop("Error type 7: It is not a matrix\n")
    }
-if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
-    || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
-   warning("Type errors 1, 2, 3, 4, 5, 6 or 7\n")
-   stop()
-   }
+# if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
+#     || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
+#    warning("Type errors 1, 2, 3, 4, 5, 6 or 7\n")
+#    stop()
+#    }
   },
 
 # graphics ----------------------------------------------------------------
@@ -3299,9 +3303,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{\sigma^2_{O_A}}: variance of \eqn{O_A}.
       #'   \item \eqn{\sigma^2_{O_B}}: variance of \eqn{O_B}.
       #' }
-      #' @param a \verb{
-      #' Significance level. By default a=0.05.
-      #' }
+#      #' @param a \verb{
+#      #' Significance level. By default a=0.05.
+#      #' }
       #' @param f \verb{
       #' Instance of ConfMatrix class.
       #' }
@@ -3316,14 +3320,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-    OverallAcc.test=function(f,a=NULL){
+    OverallAcc.test=function(f){#,a=NULL){
       if(class(f)[1]!="ConfMatrix"){
-        warning("A ConfMatrix element is not being introduced")
-        stop(" ")
+        stop("A ConfMatrix element is not being introduced")
       }
-      if(is.null(a)){
-        a<-0.05
-      }else{a<-a}
+      # if(is.null(a)){
+      #   a<-0.05
+      # }else{a<-a}
 
       k1<-self$OverallAcc()[[1]]
       k2<-f$OverallAcc()[[1]]
@@ -3339,8 +3342,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         statistic = c(Z=round(Z,4)),                    # Value of the test statistic
         # parameter = NULL,                 # There are no additional parameters in this test
         p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
-        null.value = 0,                   # Null hypothesis: there is no difference in overall accuracy
-        alternative="two.sided",
+        #null.value = 0,                   # Null hypothesis: there is no difference in overall accuracy
+        #alternative="two.sided",
         method = "Test for overall accuracy difference", # Method used
         data.name = paste("Overall accuracy of", self$ID ,"vs overall accuracy of",f$ID) # Name of the data compared
         # estimate = c(O_A = k1, O_B = k2)  # Estimates of overall accuracy
@@ -3368,9 +3371,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{\sigma^2_{k_A}}: variance of \eqn{k_A}.
       #'   \item \eqn{\sigma^2_{k_B}}: variance of \eqn{k_B}.
       #' }
-      #' @param a \verb{
-      #' Significance level. By default a=0.05.
-      #' }
+#     #' @param a \verb{
+#     #' Significance level. By default a=0.05.
+#     #' }
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
@@ -3385,14 +3388,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-      Kappa.test=function(f,a=NULL){
+      Kappa.test=function(f){#,a=NULL){
         if(class(f)[1]!="ConfMatrix"){
-          warning("A ConfMatrix element is not being introduced")
-          stop(" ")
+          stop("A ConfMatrix element is not being introduced")
         }
-        if(is.null(a)){
-          a<-0.05
-        }else{a<-a}
+        # if(is.null(a)){
+        #   a<-0.05
+        # }else{a<-a}
 
         k1<-self$Kappa()[[1]]
         k2<-f$Kappa()[[1]]
@@ -3400,14 +3402,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         v2<-f$Kappa()[[2]]
 
         Z<-abs(k1-k2)/(sqrt(v1+v2))
-        cl<-qnorm(1-a/2)
+       # cl<-qnorm(1-a/2)
 
         htest_result <- list(
           statistic = c(Z=round(Z,4)),                    # Value of the test statistic
           #parameter = NULL,                 # There are no additional parameters in this test
           p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
-          null.value = 0,                   # Null hypothesis: there is no difference in the kappa index
-          alternative = "two.sided", # Alternative hypothesis: there is a difference in the kappa indices
+          #null.value = 0,                   # Null hypothesis: there is no difference in the kappa index
+          #alternative = "two.sided", # Alternative hypothesis: there is a difference in the kappa indices
           method = "Test for kappa difference", # Method used
           data.name = paste("Kappa index of", self$ID ,"vs Kappa index of", f$ID) # Name of the data compared
           # estimate = c(k1 = k1, k2 = k2)  # Kappa index estimates
@@ -3436,9 +3438,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{\sigma^2_{\tau_A}}: variance of \eqn{\tau_A}.
       #'   \item \eqn{\sigma^2_{\tau_B}}: variance of \eqn{\tau_B}.
       #' }
-      #' @param a \verb{
-      #' Significance level. By default a=0.05.
-      #' }
+#      #' @param a \verb{
+#      #' Significance level. By default a=0.05.
+#      #' }
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
@@ -3453,14 +3455,13 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-    Tau.test=function(f,a=NULL){
+    Tau.test=function(f){#,a=NULL){
       if(class(f)[1]!="ConfMatrix"){
-        warning("A ConfMatrix element is not being introduced")
-        stop(" ")
+        stop("A ConfMatrix element is not being introduced")
       }
-      if(is.null(a)){
-        a<-0.05
-      }else{a<-a}
+      # if(is.null(a)){
+      #   a<-0.05
+      # }else{a<-a}
 
       k1<-self$Tau()[[1]]
       k2<-f$Tau()[[1]]
@@ -3471,14 +3472,14 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #Ma-Tau
       Z<-abs(k1-k2)/sqrt(v1+v2)
 
-      cl<-qnorm(1-a/2)
+      #cl<-qnorm(1-a/2)
 
       htest_result <- list(
         statistic = c(Z=round(Z,4)),                    # Value of the test statistic
         #parameter = NULL,                 # There are no additional parameters in this test
         p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
-        null.value = 0,                   # Null hypothesis: there is no difference in the tau indexes
-        alternative = "two.sided", # Alternative hypothesis: there is a difference in the tau indexes
+        #null.value = 0,                   # Null hypothesis: there is no difference in the tau indexes
+        #alternative = "two.sided", # Alternative hypothesis: there is a difference in the tau indexes
         method = "Test for tau difference", # Method used
         data.name = paste("Tau index of",self$ID,"vs Tau index of",f$ID) # Name of the data compared
         # estimate = c(k1 = k1, k2 = k2)  # Tau index estimates
@@ -3509,9 +3510,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @param B \verb{
       #' Number of bootstraps that you want to generate. By default B=1000.
       #' }
-      #' @param a \verb{
-      #' Significance level. By default a=0.05.
-      #' }
+#     #' @param a \verb{
+#     #' Significance level. By default a=0.05.
+#     #' }
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
@@ -3526,18 +3527,18 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'
       #' @aliases NULL
 
-    TSCM.test=function(f,B=NULL,a=NULL){
+    TSCM.test=function(f,B=NULL){
       if(class(f)[1]!="ConfMatrix"){
-        warning("A ConfMatrix element is not being introduced")
-        stop(" ")
+        stop("A ConfMatrix element is not being introduced")
+        
       }
       if(is.null(B)){
         B<-1000
       }else{B<-B}
-
-      if(is.null(a)){
-        a<-0.05
-      }else{a<-a}
+# 
+#       if(is.null(a)){
+#         a<-0.05
+#       }else{a<-a}
 
       A<-self$Values
       C<-f$Values
@@ -3585,8 +3586,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
        # statistic = Tn_boot,     # Value of the test statistic
         #parameter = NULL,       # There are no additional parameters in this test
         p.value = pvalue,        # p-value
-        null.value = 0,  # Null hypothesis: there is no difference in the confusion matrices
-        alternative = "two.sided", # Alternative hypothesis: there is difference in the confusion matrices
+        #null.value = 0,  # Null hypothesis: there is no difference in the confusion matrices
+        #alternative = "two.sided", # Alternative hypothesis: there is difference in the confusion matrices
         method = "TSCM-test for evaluate the similarity between two confusion matrices.\nBased on the discrete squared
         Hellinger distance", # Method used
         data.name = paste(self$ID , "vs", f$ID) # Name of the data compared
@@ -3625,9 +3626,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #'   \item \eqn{x_{ij}}: matrix element. Observed frequency.
       #'   \item \eqn{E_{ij}}: expected frequency.
       #' }
-      #' @param a \verb{
-      #' Significance level. By default a=0.05.
-      #' }
+#      #' @param a \verb{
+#      #' Significance level. By default a=0.05.
+#      #' }
       #' @return A list of class "htest" containing the results of the hypothesis test.
       #'
       #' @examples
@@ -3639,11 +3640,11 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' @aliases NULL
 
 
-    QIndep.test=function(a=NULL){
-      if(is.null(a)){
-        a<-0.05
-      }else{a<-a}
-      A_0<-self$Values-diag(diag(self$Values),nrow(self$Values),
+    QIndep.test=function(){
+      # if(is.null(a)){
+      #   a<-0.05
+      # }else{a<-a}
+       A_0<-self$Values-diag(diag(self$Values),nrow(self$Values),
           nrow(self$Values))
       Expfij<-self$GroundTruth()[[4]]
       k<-ncol(A_0)*ncol(A_0)-3*ncol(A_0)+1
@@ -3661,7 +3662,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       }
 
       Z<-2*sum(matr2)
-      ji_critico<-qchisq(1-a/2,k)
+     # ji_critico<-qchisq(1-a/2,k)
       p.value <- pchisq(Z, df = k, lower.tail = FALSE)
 
       # Crear un objeto htest
@@ -3670,9 +3671,9 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
         # parameter = k,
         p.value = p.value,
         method = "Quasi-Independence Test",
-        data.name = paste("ConfMatrix"),
-       alternative="two.sided",
-        null.value = "Quasi-independence"
+        data.name = paste("ConfMatrix")
+      # alternative="two.sided",
+      #  null.value = "Quasi-independence"
       )
 
       class(htest_result) <- "htest"

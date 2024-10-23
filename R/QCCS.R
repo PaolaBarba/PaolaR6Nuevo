@@ -173,19 +173,19 @@ QCCS <- R6Class("QCCS",
     }else{self$Source<-NULL}
 
 # Initializing values and checking if they are correct values -----------
-    error1<- FALSE
-    error2<- FALSE
-    error3<- FALSE
-    error4<- FALSE
-    error5<- FALSE
-    error6<- FALSE
+    # error1<- FALSE
+    # error2<- FALSE
+    # error3<- FALSE
+    # error4<- FALSE
+    # error5<- FALSE
+    # error6<- FALSE
 
 
     n <- length(self$Vectors)
     m <- length(self$Prob)
       if (n != m) {
-        error1<-TRUE
-        cat("Error type 1: There must be the same number of\ndata columns as Probability columns")
+        #error1<-TRUE
+        stop("Error type 1: There must be the same number of\ndata columns as Probability columns")
       }
 
       for (i in 1:n) {
@@ -196,35 +196,42 @@ QCCS <- R6Class("QCCS",
 
       # check
         if ((ni != mi) == TRUE) {
-          error2<-TRUE
-          cat("Error type 2: The vectors and their corresponding\nprobabilities must have the same size\n")
+          #error2<-TRUE
+          stop("Error type 2: The vectors and their corresponding\nprobabilities must have the same size\n")
         }
         if(sum(vi)==0){
-          error3<-TRUE
-          cat("Error type 3: The sum of the elements of the\ndata vectors is 0\n")
+          #error3<-TRUE
+          stop("Error type 3: The sum of the elements of the\ndata vectors is 0\n")
         }
         if(sum(pi)!=1){
-          error4<-TRUE
-          cat("Error type 4: The sum of each probability\nvectors must be 1\n")
+         # error4<-TRUE
+          stop("Error type 4: The sum of each probability\nvectors must be 1\n")
         }
 
-        for (i in 1:ni) {
-
-        if(vi[i]<0){
-          error5<-TRUE
-          cat("Error type 5: Some element of the data\nvector is negative\n",vi,"\n")
-        }
-        if(pi[i]<0){
-          error6<-TRUE
-          cat("Error type 6: Some element of the probability\nvector is negative.\n",pi,"\n")
-        }
-        }
+        if(length(vi[vi<0])>0)
+          stop("Error type 5: Some element of the data\nvector is negative\n")
+        
+        if(length(pi[pi<0])>0)
+          stop("Error type 6: Some element of the probability\nvector is negative.\n")
+        
+        # for (i in 1:ni) {
+        # 
+        # if(vi[i]<0){
+        #   #error5<-TRUE
+        #   cat("Error type 5: Some element of the data\nvector is negative\n",vi,"\n")
+        # }
+        #   
+        # if(pi[i]<0){
+        #   error6<-TRUE
+        #   cat("Error type 6: Some element of the probability\nvector is negative.\n",pi,"\n")
+        # }
+        # }
       }
-    if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE)
-        || (error4 == TRUE) || (error5==TRUE) || (error6==TRUE)) {
-      warning("Type errors 1, 2, 3, 4, 5 or 6\n")
-      stop()
-    }
+    # if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE)
+    #     || (error4 == TRUE) || (error5==TRUE) || (error6==TRUE)) {
+    #   warning("Type errors 1, 2, 3, 4, 5 or 6\n")
+    #   stop()
+    # }
   },
 
 
@@ -279,15 +286,19 @@ QCCS <- R6Class("QCCS",
       #' @param a \verb{
       #' significance level. By default a=0.05.
       #' }
-      #' @return A list of class "htest" containing the results of the hypothesis test.
-      #' In addition, the value of the Bonferroni criterion, the original data vectors
-      #' and the probability vectors are also returned.
+      #' @return A list of the "htest" class containing the results of the hypothesis test. 
+      #' The p-value returned is the lowest of those obtained for the data analyzed. 
+      #' In addition, the Bonferroni criterion value, the p-values obtained for each column,
+      #' the original data vectors and the probability vectors are also returned as 
+      #' parameters of the htest class.
       #' @examples
+#      #' \donttest{
       #' Vectors<-list(c(47,4,0),c(40,5,3))
       #' Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
       #' A<-QCCS$new(Vectors,Prob,
       #' Source="Ariza-Lopez et al. 2019")
       #' A$Exact.test()
+#      #' }
       #'
       #' @aliases NULL
 
@@ -319,24 +330,25 @@ QCCS <- R6Class("QCCS",
         }
 
      sol <- c(sol, p_value)
-
-      ap<-private$MethBonf(sol,a)
-
-      result <- lapply(1:n, function(i) {
-        structure(
-        list(
+# Se puede eliminar MethBonf, mirar todas las func
+     # ap<-private$MethBonf(sol,a)
+      
+      htest_result <- list(
         method = "Exact Test with Bonferroni Correction",
-        null.value="correctly classified elements",
-        alternative="two.sided",
-        p.value = p_value[i],
-        data.name = "Vectors and Probabilities"
-      ),
+        #null.value="correctly classified elements",
+        #alternative="two.sided",
+        p.value = min(p_value),
+        data.name = "Vectors and Probabilities",
+        Bonferroni.criterion=a/length(p_value),
+        Individual.pvalues=p_value,
+        OriginalVectors=self$Vectors,
+        OriginalProb=self$Prob
+      )
+      class(htest_result) <- "htest"
 
-      class = "htest"
-      )})
-      return(list(htest_objects=result,Bonferroni_correction = ap$Bonferroni,
-                  OriginalVectors = self$Vectors,OriginalProb = self$Prob))
-    #return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
+      return(htest_result)
+      # return(list(htest_objects=result,Bonferroni_correction = ap$Bonferroni,
+      #             OriginalVectors = self$Vectors,OriginalProb = self$Prob))
     },
 
 
@@ -350,9 +362,11 @@ QCCS <- R6Class("QCCS",
       #' @param a \verb{
       #' significance level. By default a=0.05.
       #' }
-      #' @return A list of class "htest" containing the results of the hypothesis test.
-      #' In addition, the value of the Bonferroni criterion, the original data vectors
-      #' and the probability vectors are also returned.
+      #' @return A list of the "htest" class containing the results of the hypothesis test.
+      #' The p-value returned is the lowest of those obtained for the data analyzed. 
+      #' In addition, the Bonferroni criterion value, the obtained p-values, the degrees of
+      #' freedom and the statistics obtained for each column, the original data vectors 
+      #' and the probability vectors are also returned as parameters of the htest class.
       #' @examples
       #' Vectors<-list(c(18,0,3,0),c(27,19))
       #' Prob<-list(c(0.85,0.1,0.03,0.02),c(0.8,0.2))
@@ -393,27 +407,28 @@ QCCS <- R6Class("QCCS",
         p_value<-c(p_value,pvalue)
         }
 
-        ap<-private$MethBonf(p_value,a)
-
+        #ap<-private$MethBonf(p_value,a)
+        
         # Create an htest object for each test
-        htest_objects <- lapply(1:n, function(i) {
-          structure(
-            list(
-              statistic = c(X2 = statistics[i]), #e
-              parameter = c(df = df[i]), # grados libertad
-              null.value="correctly classified elements",
-              alternative="two.sided",
-              p.value = p_value[i],
+        htest_result <- list(
+              #null.value="correctly classified elements",
+              #alternative="two.sided",
+              p.value = min(p_value),
               method = "Chi-squared test with Bonferroni method",
-              data.name = paste("Vector", i)
-            ),
-            class = "htest"
-          )
-        })
-
-        return(list(htest_objects = htest_objects,Bonferroni_correction = ap$Bonferroni,
-          OriginalVectors = self$Vectors,OriginalProb = self$Prob))
-    #return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
+              data.name = "Vectors and Probabilities",
+              Bonferroni.criterion=a/length(p_value),
+              Individual.pvalues=p_value,
+              Individual.statistics = statistics, #e
+              Individual.parameters = df, # grados libertad
+              OriginalVectors=self$Vectors,
+              OriginalProb=self$Prob
+        )
+        class(htest_result) <- "htest"
+        
+        return(htest_result)        
+    #     return(list(htest_objects = htest_objects,Bonferroni_correction = ap$Bonferroni,
+    #       OriginalVectors = self$Vectors,OriginalProb = self$Prob))
+    # #return(list(ap,OriginalVectors=self$Vectors,OriginalProb=self$Prob))
     },
 
 
@@ -474,21 +489,21 @@ QCCS <- R6Class("QCCS",
 
     p_value<-pchisq(Suma, k, lower.tail=FALSE)
 
-    htest_result <- structure(
-      list(
+    htest_result <- list(
         statistic = c(X2 = Suma),
         parameter = c(df = k),
-        null.value="correctly classified elements",
-        alternative="two.sided",
+        #null.value="correctly classified elements",
+        #alternative="two.sided",
         p.value = p_value,
         method = "Global Chi-squared test",
-        data.name = "Combined Vectors"
-      ),
-      class = "htest"
-    )
+        data.name = "Vectors and Probabilities",
+        OriginalVectors = self$Vectors,
+        OriginalProb = self$Prob
+      )
+    class(htest_result) <- "htest"
+    
 
-    return(list(htest_result,OriginalVectors = self$Vectors,
-                OriginalProb = self$Prob))
+    return(htest_result)
     }
 
 
@@ -503,19 +518,19 @@ QCCS <- R6Class("QCCS",
 
   private = list(
 
-     MethBonf = function(pvalue,a=NULL){
-       if(is.null(a)){
-         a<-0.05
-       }else{a<-a}
-       n<-length(pvalue)
-        v<-a/n
-       # for (i in 1:n) {
-       #   if(pvalue[i]>v){
-       #     cat(" The null hypothesis is not rejected.\n ",pvalue[i],">=",v,"\n")
-       #   }else{cat(" The null hypothesis is rejected.\n ",pvalue[i],"<",v,"\n")}
-       # }
-       return(list(p_value=pvalue,Bonferroni=v))
-     },
+     # MethBonf = function(pvalue,a=NULL){
+     #   if(is.null(a)){
+     #     a<-0.05
+     #   }else{a<-a}
+     #   n<-length(pvalue)
+     #    v<-a/n
+     #   # for (i in 1:n) {
+     #   #   if(pvalue[i]>v){
+     #   #     cat(" The null hypothesis is not rejected.\n ",pvalue[i],">=",v,"\n")
+     #   #   }else{cat(" The null hypothesis is rejected.\n ",pvalue[i],"<",v,"\n")}
+     #   # }
+     #   return(list(p_value=pvalue,Bonferroni=v))
+     # },
 
 
 
