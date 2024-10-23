@@ -2908,8 +2908,8 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
                 Conf_Int=ConfInt,ExpFrec=Expfij))
     },
 
-      #' @description Public method that provides the value of a test statistic 
-      #' based on the Hellinger distance between two confusion matrices.
+      #' @description Public method that provides that Hellinger distance 
+      #' between two confusion matrices.
       #' The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
       #' for the computations.
       #'
@@ -2936,7 +2936,7 @@ if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
       #' for each cell is taken.
       #' }
       #'
-      #' @return The value of the test statistic based on the Hellinger distance.
+      #' @return A real value for the Hellinger distance.
       #' @examples
       #' A<-matrix(c(65,6,0,4,4,81,11,7,22,5,85,3,24,8,19,90),nrow=4,ncol=4)
       #' r<-ConfMatrix$new(A,Source="Congalton and Green 2008")

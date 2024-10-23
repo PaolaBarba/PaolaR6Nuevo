@@ -3339,8 +3339,8 @@ p$GroundTruth_i(3)
 \if{html}{\out{<a id="method-ConfMatrix-HellingerDist"></a>}}
 \if{latex}{\out{\hypertarget{method-ConfMatrix-HellingerDist}{}}}
 \subsection{Method \code{HellingerDist()}}{
-Public method that provides the value of a test statistic
-based on the Hellinger distance between two confusion matrices.
+Public method that provides that Hellinger distance
+between two confusion matrices.
 The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
 for the computations.
 
@@ -3379,7 +3379,7 @@ for each cell is taken.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-The value of the test statistic based on the Hellinger distance.
+A real value for the Hellinger distance.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
