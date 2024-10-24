@@ -204,7 +204,7 @@ ConfMatrix <- R6Class("ConfMatrix",
     #' 2008")
     #'
     #' @aliases NULL
-##Lo hago para intentar dar valores concreto y no siempre CM1
+
 #All parameters are entered
 initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
@@ -219,8 +219,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
   #ID="Name" or ID=YYYYMMDD
 
   if(is.null(ID)){
-    secuencia <- private$secuencia()
-    self$ID <- paste("CM_", secuencia, sep="")
+    sequence <- private$sequence()
+    self$ID <- paste("CM_", sequence, sep="")
   }else{
     self$ID<-substr(ID,1,50)
   }
@@ -268,57 +268,34 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 # Matrix check ------------------------------------------------------------
 
-  #error1<- FALSE
-  #error2<- FALSE
-  #error3<- FALSE
-  #error4<- FALSE
-  #error5<- FALSE
-  #error6<- FALSE
-  #error7<- FALSE
-   if((nfilas != ncolumnas)) {
-     #error1<- TRUE
+   if(nfilas != ncolumnas){
      stop("Error type 1: Non-square matrix\n")
    }
 
-   if((nk==1)){
-     #error2<-TRUE
+   if(nk==1){
      stop("Error type 2: Single element matrix\n")
    }
 
-   # for (i in 1:nfilas){
-   #  for (j in 1:ncolumnas){
-   #    if(self$Values[i,j]<0){
-   #   #error3<-TRUE
-   #   cat("Error type 3: negative values.\nIn position:",i,j,
-   #       ". Value:",self$Values[i,j],"\n")
-   #    }
-   #   }
-   #  }
-  
-  if(length(self$Values[self$Values<0])>0)
+  if(length(self$Values[self$Values<0])>0){
     stop("Error type 3: negative values.")
+  }
 
   if(sum(self$Values)==0 ){
-     #error4<-TRUE
      stop("Error type 4: Sum of elements 0\n")
-   }
+  }
+  
    if(sum(apply(self$Values,1,sum))==0 ){
-     #error5<-TRUE
      stop("Error type 5: Sum of rows 0\n")
    }
+  
    if(sum(apply(self$Values,2,sum))==0 ){
-     #error6<-TRUE
      stop("Error type 6: Sum of columns 0\n")
    }
+  
    if(is.matrix(self$Values) == FALSE){
-     #error7<-TRUE
      stop("Error type 7: It is not a matrix\n")
    }
-# if ((error1 == TRUE) || (error2==TRUE) || (error3 == TRUE) || (error4 == TRUE)
-#     || (error5==TRUE) || (error6 == TRUE) || (error7 == TRUE)) {
-#    warning("Type errors 1, 2, 3, 4, 5, 6 or 7\n")
-#    stop()
-#    }
+  
   },
 
 # graphics ----------------------------------------------------------------
@@ -426,8 +403,7 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       cat("-------------------------------------\n")
       cat("Source\n", self$Source, "\n")
       cat("-------------------------------------\n")
-      cat("Confusion Matrix\n")
-      print(self$Values)
+      cat("Confusion Matrix\n",self$Values,"\n")
 
     },
 
@@ -1050,42 +1026,27 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      #  The values of the weights for the off-diagonal cells
      #  must be in the range [0,1]
 
-
-     # UnWeighted marginals (quantities)
         ncol <- private$sumcol(self$Values)
         nrow<- private$sumfil(self$Values)
-
-        # In %
         ConfM<- self$Values/sum(self$Values)
 
-        # Weighted matrix %
         if(any(WM)>1){
           WM<-WM/sum(WM)
         }
         diag(WM)<-1
-
-        # Weighted matrix
         WConfM<-ConfM*WM
-
-        # Weighted OA
         WOverallAcc <- sum(diag(WConfM))/sum(WConfM)
-        # Weighted marginals
         mcol<- apply(WConfM,2,sum)
         mrow<- apply(WConfM,1,sum)
-        # UnWeighted marginals (proportions)
         pj <- apply(ConfM,2,sum)
         pi <- apply(ConfM,1,sum)
 
-        # Initialization of vectors
         nc <- nrow(ConfM)
         wi<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         wj<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        # Weighted per class user's and producer's accuracies
         wpcua<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         wpcpa<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        # Per class producer's accuracy standard deviation
         pcpasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
-        # Per class user's accuracy standard deviation
         pcuasd <-matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
 
             for (i in 1:nc){
@@ -1349,7 +1310,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
        ModKappaUser_i <- (self$UserAcc_i(i)[[1]] -
                          1/sqrt(length(self$Values)))/(1 -
                          1/sqrt(length(self$Values)))
-      # VarModKappaUser_i <- abs((ModKappaUser_i*(1-ModKappaUser_i))/private$sumfil(self$Values)[i])
        VarModKappaUser_i <- (self$UserAcc_i(i)[[1]]*(1-self$UserAcc_i(i)[[1]]))/
          (((1 - 1/sqrt(length(self$Values)))^2)*(private$sumfil(self$Values)[i]))
        ConfInt <- private$ConfInt(ModKappaUser_i,VarModKappaUser_i,a)
@@ -1536,18 +1496,16 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      DetailKappa=function (){
        nc <- nrow(self$Values)
        SumaMatriz <-sum(self$Values)
-
-       # The 4 coefficients
-       O1 <- sum(diag(self$Values))/SumaMatriz #OA
-       O2 <- sum((private$sumcol(self$Values)*private$sumfil(self$Values)))/(SumaMatriz*SumaMatriz) #EA
+       O1 <- sum(diag(self$Values))/SumaMatriz 
+       O2 <- sum((private$sumcol(self$Values)*private$sumfil(self$Values)))/(SumaMatriz*SumaMatriz) 
        O3 <- sum(diag(self$Values)*(private$sumcol(self$Values)+private$sumfil(self$Values)))/(SumaMatriz*SumaMatriz)
        mintermedia1<- matrix(rep(private$sumcol(self$Values), nc), nrow =nc, ncol=nc, byrow=TRUE)
        mintermedia2<- matrix(rep(private$sumfil(self$Values), nc), nrow =nc, ncol=nc, byrow=FALSE)
        mintermedia3 <-(mintermedia1+mintermedia2)^2
        O4 <- sum(self$Values*(t(mintermedia3)) )/(SumaMatriz*SumaMatriz*SumaMatriz)
-       t1 <- (1-O1) #no oa
-       t2<- (1-O2) #no ea
-       K <- (O1-O2)/t2 #Kappa
+       t1 <- (1-O1) 
+       t2<- (1-O2) 
+       K <- (O1-O2)/t2 
        t3<- 2*O1*O2-O3
        t4<- O4-4*(O2^2)
        t5<- O1*t1/(t2^2)+2*t1*t3/(t2^3)+(t1^2)*t4/(t2^4)
@@ -1596,13 +1554,9 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
      DetailCondKappa = function(){
        SumaMatriz <-sum(self$Values)
-        # In %
         ConfM<- self$Values/sum(self$Values)
-
-       # UnWeighted marginals (quantities)
         pcol <- apply(ConfM,2,sum)
         prow<- apply(ConfM,1,sum)
-       # Initialization of vectors
         nc  <- nrow(ConfM)
         Ki_ <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         K_j <- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
@@ -1690,20 +1644,17 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
        SumaMatriz <-sum(self$Values)
        ConfM<-self$Values
 
-      # In %
        if(any(ConfM)>1){
          ConfM<- self$Values/SumaMatriz
        }
-      # UnWeighted marginals (prob)
        pcol <- apply(ConfM,2,sum)
        prow<- apply(ConfM,1,sum)
-      # Weighted matrix %
+       
        if(any(WM)>1){
         WM<-WM/sum(WM)
         }
         diag(WM)<-1
 
-      # The 4 coefficients
        Ow1 <- sum(WM*ConfM)
        Ow2 <- sum(t(WM*prow)*pcol)
        c1<- (1-Ow1)
@@ -1846,9 +1797,7 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      DetailWTau = function(WV){
        nc <- nrow(self$Values)
        SumaMatriz <-sum(self$Values)
-      # In %
        ConfM<- self$Values/SumaMatriz
-      # UnWeighted marginals (prob)
        pcol <- apply(ConfM,2,sum)
        prow<- apply(ConfM,1,sum)
        O1 <- sum(diag(ConfM)  )
@@ -1858,8 +1807,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
        mintermedia2<- matrix(rep(WV, nc), nrow =nc, ncol=nc, byrow=TRUE)
        mintermedia3 <-(mintermedia1+mintermedia2)^2
        O4 <- sum(ConfM*mintermedia3)
-       t1<- (1-O1) #probabilidad error general proporcional
-       t2<- (1-O2) #probabilidad error productor proporcional
+       t1<- (1-O1) 
+       t2<- (1-O2) 
        t3<- O1*t1/(t2^2)
        t4<- 2*t1*(2*O1*O2-O3)/(t2^3)
        t5<- (t1^2)*(O4-4*O2^2)/(t2^4)
@@ -2201,12 +2150,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
        v<-v
       }else{v<-10}
 
-       #log10 ->Hartleys (entropy units)
-       #log2->bits
-       #LN->nats
-
-     #na.rm=TRUE. In this way it does the sum with the values it has and
-     #ignores NA
     Ent_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) *
                   (log(private$sumcol(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
     Ent_iAbi <- - sum ((self$Values[i,] / private$sumfil(self$Values)[i]) *
@@ -2605,7 +2548,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      AvHellAcc_i = function(i,a=NULL){
-
        if (self$UserAcc_i(i)[[1]] == 0 || self$ProdAcc_i(i)[[1]] == 0) {
         stop ("/ by 0")
        }else{
@@ -2951,10 +2893,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
     HellingerDist = function(f,p=NULL,q=NULL){
-
       if(class(f)[1]!="ConfMatrix"){
-       warning("A ConfMatrix element is not being introduced\n")
-        stop(" ")
+       stop("A ConfMatrix element is not being introduced\n")
       }
       A<-self$Values
       B<-f$Values
@@ -3033,8 +2973,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      QES = function(){
-      # Overall Quantity, Exchange and Shift values
-
       nc <- nrow(self$Values)
       SumaMatriz <-sum(self$Values)
       SumaDigonal<-sum(diag(self$Values))
@@ -3045,7 +2983,7 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       s<- matrix(rep(0, nc), nrow =1, ncol=nc, byrow=TRUE)
         for (j in 1:nc){
           for (i in 1:nc){
-            if (i>j){#diagonal 0//triangular superior
+            if (i>j){
             ee[i,j] <-  (min(self$Values[i,j], self$Values[j,i]))*2
             }else{
               ee[i,j] <- 0
@@ -3072,9 +3010,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 
-# Functions that use weight matrices --------------------------------------
-
-
 # Functions that return matrices ------------------------------------------
 
       #' @description Public method that typifies the confusion matrix.
@@ -3096,7 +3031,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' p<-ConfMatrix$new(A, Source="Congalton and Green 2008")
       #' p$MTypify(RaR=5)
 
-      #Cell Values of a matrix are typified
 
      MTypify =function(RaR=NULL){
         if(!is.null(RaR)){
@@ -3138,23 +3072,17 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      MBootStrap=function(B,pr=NULL){
-      #matrix range
       nc<-ncol(self$Values)
-      #convert to vector
-      #M1<-as.vector(self$Values)
       M1<-self$Values
-      #probability
       if(is.null(pr)){
         pr<-M1/sum(M1)
       }else{
         pr<-pr
       }
-
       #M2: matrix list
       M2<-list()
       #resampling with multinomial
       boots<-rmultinom(B,sum(M1),pr)
-
       #save simulated matrix
         for(i in 1:ncol(boots)){
           M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
@@ -3263,8 +3191,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
           if((self$Values[i,j]!=0)==TRUE){
             k=k+1
              if(k==length(self$Values)){
-               stop("The Pseudoceros Matrix removes the zeros from the matrix.
-                    Your matrix does not have any zeros to remove.")
+               stop("\nThe Pseudoceros Matrix removes the zeros from the matrix.
+                    Your matrix does not have any zeros to remove.\n")
              }}
         }
        }
@@ -3303,9 +3231,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'   \item \eqn{\sigma^2_{O_A}}: variance of \eqn{O_A}.
       #'   \item \eqn{\sigma^2_{O_B}}: variance of \eqn{O_B}.
       #' }
-#      #' @param a \verb{
-#      #' Significance level. By default a=0.05.
-#      #' }
       #' @param f \verb{
       #' Instance of ConfMatrix class.
       #' }
@@ -3320,33 +3245,23 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'
       #' @aliases NULL
 
-    OverallAcc.test=function(f){#,a=NULL){
+    OverallAcc.test=function(f){
       if(class(f)[1]!="ConfMatrix"){
         stop("A ConfMatrix element is not being introduced")
       }
-      # if(is.null(a)){
-      #   a<-0.05
-      # }else{a<-a}
 
       k1<-self$OverallAcc()[[1]]
       k2<-f$OverallAcc()[[1]]
       v1<-self$OverallAcc()[[2]]
       v2<-f$OverallAcc()[[2]]
 
-      #Ma-Tau
       Z<-abs(k1-k2)/sqrt(v1+v2)
 
-      #cl<-qnorm(1-a/2)
-
       htest_result <- list(
-        statistic = c(Z=round(Z,4)),                    # Value of the test statistic
-        # parameter = NULL,                 # There are no additional parameters in this test
-        p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
-        #null.value = 0,                   # Null hypothesis: there is no difference in overall accuracy
-        #alternative="two.sided",
-        method = "Test for overall accuracy difference", # Method used
-        data.name = paste("Overall accuracy of", self$ID ,"vs overall accuracy of",f$ID) # Name of the data compared
-        # estimate = c(O_A = k1, O_B = k2)  # Estimates of overall accuracy
+        statistic = c(Z=round(Z,4)),    
+        p.value = 2 * (1 - pnorm(abs(Z))),
+        method = "Test for overall accuracy difference",
+        data.name = paste("Overall accuracy of", self$ID ,"vs overall accuracy of",f$ID) 
       )
 
       class(htest_result) <- "htest"
@@ -3371,9 +3286,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'   \item \eqn{\sigma^2_{k_A}}: variance of \eqn{k_A}.
       #'   \item \eqn{\sigma^2_{k_B}}: variance of \eqn{k_B}.
       #' }
-#     #' @param a \verb{
-#     #' Significance level. By default a=0.05.
-#     #' }
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
@@ -3388,13 +3300,10 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'
       #' @aliases NULL
 
-      Kappa.test=function(f){#,a=NULL){
+      Kappa.test=function(f){
         if(class(f)[1]!="ConfMatrix"){
           stop("A ConfMatrix element is not being introduced")
         }
-        # if(is.null(a)){
-        #   a<-0.05
-        # }else{a<-a}
 
         k1<-self$Kappa()[[1]]
         k2<-f$Kappa()[[1]]
@@ -3402,17 +3311,12 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
         v2<-f$Kappa()[[2]]
 
         Z<-abs(k1-k2)/(sqrt(v1+v2))
-       # cl<-qnorm(1-a/2)
 
         htest_result <- list(
-          statistic = c(Z=round(Z,4)),                    # Value of the test statistic
-          #parameter = NULL,                 # There are no additional parameters in this test
-          p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
-          #null.value = 0,                   # Null hypothesis: there is no difference in the kappa index
-          #alternative = "two.sided", # Alternative hypothesis: there is a difference in the kappa indices
-          method = "Test for kappa difference", # Method used
-          data.name = paste("Kappa index of", self$ID ,"vs Kappa index of", f$ID) # Name of the data compared
-          # estimate = c(k1 = k1, k2 = k2)  # Kappa index estimates
+          statistic = c(Z=round(Z,4)),        
+          p.value = 2 * (1 - pnorm(abs(Z))),
+          method = "Test for kappa difference", 
+          data.name = paste("Kappa index of", self$ID ,"vs Kappa index of", f$ID) 
         )
 
         class(htest_result) <- "htest"
@@ -3438,9 +3342,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'   \item \eqn{\sigma^2_{\tau_A}}: variance of \eqn{\tau_A}.
       #'   \item \eqn{\sigma^2_{\tau_B}}: variance of \eqn{\tau_B}.
       #' }
-#      #' @param a \verb{
-#      #' Significance level. By default a=0.05.
-#      #' }
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
@@ -3455,34 +3356,23 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'
       #' @aliases NULL
 
-    Tau.test=function(f){#,a=NULL){
+    Tau.test=function(f){
       if(class(f)[1]!="ConfMatrix"){
         stop("A ConfMatrix element is not being introduced")
       }
-      # if(is.null(a)){
-      #   a<-0.05
-      # }else{a<-a}
 
       k1<-self$Tau()[[1]]
       k2<-f$Tau()[[1]]
       v1<-self$Tau()[[2]]
       v2<-f$Tau()[[2]]
 
-
-      #Ma-Tau
       Z<-abs(k1-k2)/sqrt(v1+v2)
 
-      #cl<-qnorm(1-a/2)
-
       htest_result <- list(
-        statistic = c(Z=round(Z,4)),                    # Value of the test statistic
-        #parameter = NULL,                 # There are no additional parameters in this test
-        p.value = 2 * (1 - pnorm(abs(Z))),# p-value, two-tailed
-        #null.value = 0,                   # Null hypothesis: there is no difference in the tau indexes
-        #alternative = "two.sided", # Alternative hypothesis: there is a difference in the tau indexes
-        method = "Test for tau difference", # Method used
-        data.name = paste("Tau index of",self$ID,"vs Tau index of",f$ID) # Name of the data compared
-        # estimate = c(k1 = k1, k2 = k2)  # Tau index estimates
+        statistic = c(Z=round(Z,4)),                    
+        p.value = 2 * (1 - pnorm(abs(Z))),
+        method = "Test for tau difference", 
+        data.name = paste("Tau index of",self$ID,"vs Tau index of",f$ID) 
       )
 
       class(htest_result) <- "htest"
@@ -3510,9 +3400,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @param B \verb{
       #' Number of bootstraps that you want to generate. By default B=1000.
       #' }
-#     #' @param a \verb{
-#     #' Significance level. By default a=0.05.
-#     #' }
       #' @param f \verb{
       #' Element of the ConfMatrix class.
       #' }
@@ -3529,16 +3416,11 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
     TSCM.test=function(f,B=NULL){
       if(class(f)[1]!="ConfMatrix"){
-        stop("A ConfMatrix element is not being introduced")
-        
+        stop("\nA ConfMatrix element is not being introduced.\n")
       }
       if(is.null(B)){
         B<-1000
       }else{B<-B}
-# 
-#       if(is.null(a)){
-#         a<-0.05
-#       }else{a<-a}
 
       A<-self$Values
       C<-f$Values
@@ -3555,12 +3437,13 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
         p_01<-(n*p2[i]+m*q2[i])/(n+m)
         p_0<-c(p_0,p_01)
       }
+
       #bootstrap
       q1<-list()
       p1<-list()
       p1<-self$MBootStrap(B,p_0)[[2]]
       q1<-f$MBootStrap(B,p_0)[[2]]
-      #calculation of hellinger statistics by pairs
+      #calculation of hellinger distance by pairs
 
       Tn<-c()
 
@@ -3576,22 +3459,13 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
           Tn_boot<-c(Tn_boot,Tn[i])
         }
       }
-
-      #mean p
       pvalue<-length(Tn_boot)/length(Tn)
 
       htest_result <- list(
-        #Puede que Tn_boot de problemas por ser un vector/ poner sino Tn_obs que es el valor que marca cuando
-        #se tiene en cuenta Tn_boot o no
-       # statistic = Tn_boot,     # Value of the test statistic
-        #parameter = NULL,       # There are no additional parameters in this test
-        p.value = pvalue,        # p-value
-        #null.value = 0,  # Null hypothesis: there is no difference in the confusion matrices
-        #alternative = "two.sided", # Alternative hypothesis: there is difference in the confusion matrices
+        p.value = pvalue,        
         method = "TSCM-test for evaluate the similarity between two confusion matrices.\nBased on the discrete squared
-        Hellinger distance", # Method used
-        data.name = paste(self$ID , "vs", f$ID) # Name of the data compared
-
+        Hellinger distance", 
+        data.name = paste(self$ID , "vs", f$ID) 
       )
 
       class(htest_result) <- "htest"
@@ -3626,9 +3500,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #'   \item \eqn{x_{ij}}: matrix element. Observed frequency.
       #'   \item \eqn{E_{ij}}: expected frequency.
       #' }
-#      #' @param a \verb{
-#      #' Significance level. By default a=0.05.
-#      #' }
       #' @return A list of class "htest" containing the results of the hypothesis test.
       #'
       #' @examples
@@ -3641,9 +3512,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
     QIndep.test=function(){
-      # if(is.null(a)){
-      #   a<-0.05
-      # }else{a<-a}
        A_0<-self$Values-diag(diag(self$Values),nrow(self$Values),
           nrow(self$Values))
       Expfij<-self$GroundTruth()[[4]]
@@ -3662,26 +3530,19 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       }
 
       Z<-2*sum(matr2)
-     # ji_critico<-qchisq(1-a/2,k)
       p.value <- pchisq(Z, df = k, lower.tail = FALSE)
 
-      # Crear un objeto htest
       htest_result <- list(
-        statistic = c(Z=round(Z,4)),     # Value of the test statistic
-        # parameter = k,
+        statistic = c(Z=round(Z,4)),     
         p.value = p.value,
         method = "Quasi-Independence Test",
         data.name = paste("ConfMatrix")
-      # alternative="two.sided",
-      #  null.value = "Quasi-independence"
       )
 
       class(htest_result) <- "htest"
-
       return(htest_result)
 
     }
-
 
    ),
 
@@ -3689,11 +3550,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
    private = list(
 
-     secuencia = function() {
-       # Listar todas las variables en el entorno actual
+     sequence = function() {
        variables <- ls(envir = .GlobalEnv)
-
-       # Verificar si cada variable es una instancia de ConfMatrix, manejando posibles errores
        es_confmatrix <- sapply(variables, function(x) {
          obj <- tryCatch(get(x, envir = .GlobalEnv), error = function(e) NULL)
          if (!is.null(obj)) {
@@ -3702,20 +3560,16 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
            return(FALSE)
          }
        }, USE.NAMES = FALSE)
-
-       # Contar cuántas variables son instancias de ConfMatrix
-       numero_confmatrix <- sum(es_confmatrix, na.rm = TRUE)
-
-       # Devolver el siguiente número de ID
-       return(numero_confmatrix + 1)
+       
+       number_confmatrix <- sum(es_confmatrix, na.rm = TRUE)
+       return(number_confmatrix + 1)
      },
 
+     
      ConfInt=function(p,var,a=NULL){
-
        if(is.null(a)){
          a<-0.05
        }else{a<-a}
-
        z<-qnorm(1-a/2)
        ConfInt_inf<-p-z*sqrt(var)
        ConfInt_sup<-p+z*sqrt(var)
