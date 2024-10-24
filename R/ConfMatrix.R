@@ -205,7 +205,6 @@ ConfMatrix <- R6Class("ConfMatrix",
     #'
     #' @aliases NULL
 
-#All parameters are entered
 initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
@@ -213,10 +212,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
   self$Values<-Values
-  #Source is optional so you can identify the origin of the matrix.
-  #If you add this value, a custom ID is given to the ConfMatrix
-  #otherwise you will be given today's date as ID
-  #ID="Name" or ID=YYYYMMDD
 
   if(is.null(ID)){
     sequence <- private$sequence()
@@ -225,8 +220,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
     self$ID<-substr(ID,1,50)
   }
 
-  #If no date is added (Date=2710, Date="27-10", Date="27/10")
-  #In that case the system date will be taken
   if(!is.null(Date)){
     self$Date<-Date
   }else{self$Date <- Sys.Date()}
@@ -260,8 +253,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
     self$Source <- substr(Source,1,80)
   }else{self$Source<-NULL}
 
-  #Values to check the ConfMatrix
-  #matrix rank
   nk<-nrow(self$Values)
   nfilas <- nrow(self$Values)
   ncolumnas <- ncol(self$Values)
@@ -316,12 +307,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
     plot.index=function(){
-    #OverallAcc
-    #Tau
-    #Kappa
-    #AvShortAcc
-    #AvHellAcc
-
       index1<-c(self$OverallAcc()[[1]],self$Tau()[[1]],self$Kappa()[[1]],
       self$AvHellAcc()[[1]],self$AvShortAcc()[[1]])
 
@@ -428,12 +413,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      AllParameters=function(){
-     # Overall Accuracy
-     # Kappa
-     # User accurary
-     # Producer accurary
-     # Variances
-     # Pseudozero matrix
       OverallAcc<-self$OverallAcc()
       dimension <- nrow(self$Values)
       SumaMatriz <-sum(self$Values)
@@ -488,7 +467,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
      UserAcc = function(a=NULL){
-     #matrix range
      n <- sqrt(length(self$Values))
      UserAcc <- rep(0,n)
      VarUserAcc<-rep(0,n)
@@ -823,7 +801,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      UserProdAcc =function(){
-      #  calculation of Class accuracies and standard deviations
       nc <- nrow(self$Values)
        for (i in 1:nc){
          pcpa <- self$ProdAcc()[[1]]
@@ -926,7 +903,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 
-
       #' @description Public method that provides the average of
       #' user’s and producer’s accuracies for a specific class i.
       #' The method also offers the variance and confidence
@@ -1020,12 +996,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      UserProdAcc_W =function(WM){
-     #  Calculation of weighted Class accuracies
-     #  The error matrix and the weight matrix are required
-     #  The weights for diagonal cells are 1
-     #  The values of the weights for the off-diagonal cells
-     #  must be in the range [0,1]
-
         ncol <- private$sumcol(self$Values)
         nrow<- private$sumfil(self$Values)
         ConfM<- self$Values/sum(self$Values)
@@ -1062,8 +1032,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
                  WPrAcc=wpcpa,WPrAccSDeviation=pcpasd,WUserAcc= wpcua,
                  WUserAccSDeviation=pcuasd))
      },
-
-
 
 
 # Functions that return indices, variances and confidence interval --------
@@ -1165,7 +1133,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      return(list(Kappa=kappa,VarKappa=VarKappa,
             Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
-
 
 
       #' @description Public method that provides the overall modified
@@ -1320,7 +1287,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 
-
       #' @description Public method derived by the kappa coefficient evaluated
       #' from the producer's perspective, for a specific class i. The method
       #' also offers the variance and confidence interval. The reference
@@ -1372,7 +1338,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      return(list(ProdKappa_i=ProdKappa_i,VarProdKappa_i=VarProdKappa_i,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
-
 
 
 
@@ -1509,8 +1474,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
        t3<- 2*O1*O2-O3
        t4<- O4-4*(O2^2)
        t5<- O1*t1/(t2^2)+2*t1*t3/(t2^3)+(t1^2)*t4/(t2^4)
-       SdK <- sqrt((1/SumaMatriz)*t5) #standard desviation kappa
-       CV <- K/SdK #the test statistic to test significance
+       SdK <- sqrt((1/SumaMatriz)*t5) 
+       CV <- K/SdK 
 
      return(list(K=K, SdK=SdK, CV=CV))
      },
@@ -2085,7 +2050,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 
-
      #' @description Public method that calculates relative change of
      #' entropy for a given class \eqn{i} of the product. The method also
      #' offers the variance and confidence interval.
@@ -2140,33 +2104,27 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      #'
      #' @aliases NULL
 
-        #They can be negative values if the entropy (uncertainty) increases and
-        #positive if entropy decreases
-        #Classes by rows. If any element is 0 in the row you get an error,
-        #due to log
-
     EntUser_i = function(i,a=NULL,v=NULL){
       if(!is.null(v)){
        v<-v
       }else{v<-10}
 
-    Ent_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) *
+      Ent_iA <- - sum ((private$sumcol(self$Values)/sum(self$Values)) *
                   (log(private$sumcol(self$Values)/sum(self$Values),base=v)),na.rm=TRUE)
-    Ent_iAbi <- - sum ((self$Values[i,] / private$sumfil(self$Values)[i]) *
+      Ent_iAbi <- - sum ((self$Values[i,] / private$sumfil(self$Values)[i]) *
                     log(self$Values[i,] / private$sumfil(self$Values)[i],base=v),na.rm=TRUE)
 
-    if (Ent_iA == 0){
-     stop("/by 0")
-    }else {
-      EntUser_i <- (Ent_iA - Ent_iAbi) / Ent_iA
-      VarEntUser_i <- abs((EntUser_i*(1-EntUser_i))/sum(self$Values))
-      ConfInt <- private$ConfInt(EntUser_i,VarEntUser_i,a)
+      if (Ent_iA == 0){
+        stop("/by 0")
+      }else {
+        EntUser_i <- (Ent_iA - Ent_iAbi) / Ent_iA
+        VarEntUser_i <- abs((EntUser_i*(1-EntUser_i))/sum(self$Values))
+        ConfInt <- private$ConfInt(EntUser_i,VarEntUser_i,a)
       }
-    return(list(EntUser_i=EntUser_i,VarEntUser_i=VarEntUser_i,
-                Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup),
-                Entrop_iA=Ent_iA,Entrop_iAbi=Ent_iAbi))
+      return(list(EntUser_i=EntUser_i,VarEntUser_i=VarEntUser_i,
+                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup),
+                  Entrop_iA=Ent_iA,Entrop_iAbi=Ent_iAbi))
     },
-
 
 
 
@@ -2310,7 +2268,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 
-
       #' @description Public method that calculates normalized entropy of
       #' the reference from the producer's perspective. The method also offers the variance and confidence
       #' interval. The reference \insertCite{finn1993;textual}{ConfMatrix} is
@@ -2373,7 +2330,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      },
 
 
-
 # Others index -------------------------------------------------------------------------
 
 
@@ -2415,7 +2371,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      return(list(Sucess=Sucess,VarSucess=VarSucess,
                  Conf_Int=c(ConfInt$ConfInt_inf,ConfInt$ConfInt_sup)))
      },
-
 
 
 
@@ -2661,8 +2616,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
 
 
-
-
       #' @description Public method that calculates the Ground Truth index,
       #' its variance and confidence interval.The reference \insertCite{turk1979gt;textual}{ConfMatrix}
       #' is followed for the computations.
@@ -2725,13 +2678,10 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
 
     GroundTruth=function(a=NULL){
       M<-self$Values
-      #Matrix without diagonal
       M_0<-M-diag(diag(M),nrow(M),nrow(M))
-      #Marginals of rows and columns of the matrix without diagonal
       fi<-apply(M_0,1,sum)/sum(M_0)
       fj<-apply(M_0,2,sum)/sum(M_0)
 
-      #calculation of U and V according to Turk 1979
       V<-list()
       U<-list()
       vi<-c()
@@ -2757,20 +2707,15 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
         }
         i=i+1
       }
-      #fij* turk
       fij<-U[[length(U)]]%*%t(V[[length(V)]])
-      #matrix fij* without diagonal
       fij_0<-fij-diag(diag(fij))
-      #expected frequency matrix
       Expfij<-fij_0*sum(M_0)
-      #Ri
       Ri<-c()
       for (i in 1:length(V[[length(V)]])) {
         Ri<-c(Ri,V[[length(V)]][i]/sum(V[[length(V)]]))
 
       }
       Ai<-self$ProdAcc()[[1]]
-      #index ground truth
       GroundTruth<-(Ai-Ri)/(1-Ri)
       VarGroundTruth<-(GroundTruth*(1-GroundTruth))/sum(self$Values)
       ConfInt<-list()
@@ -2783,6 +2728,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
     return(list(GroundTruth=GroundTruth,VarGroundTruth=VarGroundTruth,
                 Conf_Int=ConfInt,ExpFrec=Expfij))
     },
+
+
 
       #' @description Public method that calculates the Ground Truth index
       #' for class i, its variance and confidence interval.The reference
@@ -2854,6 +2801,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
                 Conf_Int=ConfInt,ExpFrec=Expfij))
     },
 
+
+
       #' @description Public method that provides that Hellinger distance 
       #' between two confusion matrices.
       #' The reference \insertCite{garcia2018;textual}{ConfMatrix} is followed
@@ -2914,8 +2863,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       return(HellingerDist=p_orig)
       }
     },
-
-
 
 
 # Functions that return multiple indices ----------------------------------
@@ -2998,7 +2945,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
         s[j]<-d[j]- q[j]-e[j]
         }
 
-
       D<- sum(d)/2
       Q<- sum(q)/2
       E<- sum(e)/2
@@ -3031,15 +2977,12 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' p<-ConfMatrix$new(A, Source="Congalton and Green 2008")
       #' p$MTypify(RaR=5)
 
-
      MTypify =function(RaR=NULL){
         if(!is.null(RaR)){
           RaR <- RaR
         }else{R<-1}
-      # Create a matrix in which all elements are proportions
-      # such that the sum of all the elements is 1
+       
       ConfM=self$Values
-
       M <- ConfM/(sum(ConfM))
         if (RaR==1){
         M <- ConfM/(sum(ConfM))
@@ -3050,7 +2993,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       return(list(OriginalMatrix=self$Values,TypifyMatrix=M))
       }
      },
-
 
 
 
@@ -3079,11 +3021,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       }else{
         pr<-pr
       }
-      #M2: matrix list
       M2<-list()
-      #resampling with multinomial
       boots<-rmultinom(B,sum(M1),pr)
-      #save simulated matrix
         for(i in 1:ncol(boots)){
           M2[[i]]<-matrix(boots[,i],ncol=nc,nrow=nc)
         }
@@ -3182,8 +3121,6 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' @aliases NULL
 
      MPseudoZeroes = function(){
-
-       #It checks if any element is 0
        k=0
        rg<-nrow(self$Values)
         for (i in 1:rg) {
@@ -3208,9 +3145,7 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
      },
 
 
-
 # test function -----------------------------------------------------------
-
 
 
 
@@ -3428,31 +3363,24 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       m<-length(C)
       p2<-A/sum(A)
       q2<-C/sum(C)
-
       p_orig<-self$HellingerDist(f)
-
-      #Probability defined between p and q
       p_0<-c()
       for(i in 1:length(p2)){
         p_01<-(n*p2[i]+m*q2[i])/(n+m)
         p_0<-c(p_0,p_01)
       }
 
-      #bootstrap
       q1<-list()
       p1<-list()
       p1<-self$MBootStrap(B,p_0)[[2]]
       q1<-f$MBootStrap(B,p_0)[[2]]
-      #calculation of hellinger distance by pairs
-
       Tn<-c()
 
       for (i in 1:length(p1)) {
         Tn1<-self$HellingerDist(f,p=(p1[[i]]/sum(p1[[i]])),q=(q1[[i]]/sum(q1[[i]])))
         Tn<-c(Tn,Tn1)
       }
-      #Those that meet the condition of being greater than the original
-      #statistic are saved.
+
       Tn_boot<-c()
       for (i in 1:length(Tn)) {
         if((Tn[i]>=p_orig)==TRUE){
