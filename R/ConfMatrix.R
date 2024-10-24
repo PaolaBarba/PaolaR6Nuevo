@@ -388,8 +388,8 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       cat("-------------------------------------\n")
       cat("Source\n", self$Source, "\n")
       cat("-------------------------------------\n")
-      cat("Confusion Matrix\n",self$Values,"\n")
-
+      cat("Confusion Matrix\n")
+      print(self$Values)
     },
 
 
@@ -3129,7 +3129,7 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
             k=k+1
              if(k==length(self$Values)){
                stop("\nThe Pseudoceros Matrix removes the zeros from the matrix.
-                    Your matrix does not have any zeros to remove.\n")
+                    \nYour matrix does not have any zeros to remove.\n")
              }}
         }
        }
