@@ -264,13 +264,11 @@ QCCS <- R6Class("QCCS",
       #' the original data vectors and the probability vectors are also returned as 
       #' parameters of the htest class.
       #' @examples
-#      #' \donttest{
       #' Vectors<-list(c(47,4,0),c(40,5,3))
       #' Prob<-list(c(0.95,0.04,0.01),c(0.88,0.1,0.02))
       #' A<-QCCS$new(Vectors,Prob,
       #' Source="Ariza-Lopez et al. 2019")
       #' A$Exact.test()
-#      #' }
       #'
       #' @aliases NULL
 
