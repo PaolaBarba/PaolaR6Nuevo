@@ -761,12 +761,12 @@ ed to enter a reference or a DOI. A character string with a maximum length of
 \item \href{#method-ConfMatrix-AvHellAcc_i}{\code{ConfMatrix$AvHellAcc_i()}}
 \item \href{#method-ConfMatrix-AvShortAcc}{\code{ConfMatrix$AvShortAcc()}}
 \item \href{#method-ConfMatrix-ShortAcc_i}{\code{ConfMatrix$ShortAcc_i()}}
-
-\eqn{ }
-
 \item \href{#method-ConfMatrix-GroundTruth}{\code{ConfMatrix$GroundTruth()}}
 \item \href{#method-ConfMatrix-GroundTruth_i}{\code{ConfMatrix$GroundTruth_i()}}
 \item \href{#method-ConfMatrix-HellingerDist}{\code{ConfMatrix$HellingerDist()}}
+
+\eqn{ }
+
 \item \href{#method-ConfMatrix-QES}{\code{ConfMatrix$QES()}}
 
 \eqn{ }
