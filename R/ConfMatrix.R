@@ -3330,7 +3330,7 @@ initialize = function(Values,ID=NULL,Date=NULL,ClassNames=NULL,Source=NULL) {
       #' again to these simulations and we will obtain the statistics
       #' \eqn{T^*_{n,m}}. The p value is defined as:
       #' \deqn{
-      #' \hat{p}=\dfrac{Card(T^*_{n,m} \geq T^*_{n,m})}{B}
+      #' \hat{p}=\dfrac{Card(T^*_{n,m} \geq T^_{n,m})}{B}
       #' }
       #' @param B \verb{
       #' Number of bootstraps that you want to generate. By default B=1000.
